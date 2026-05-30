@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       title: 'App',
-      home: CourseDetailsScreen(),
+      home: SignupScreen(),
     );
   }
 }
