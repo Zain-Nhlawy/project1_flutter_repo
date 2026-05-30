@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/features/auth/presentation/widgets/custom_text_field.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -22,7 +23,7 @@ class LoginScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
-                    height: size.height * 0.38,
+                    height: size.height * 0.35,
                     width: double.infinity,
                     decoration: const BoxDecoration(
                       gradient: AppColors.headerGradient,
@@ -41,18 +42,15 @@ class LoginScreen extends StatelessWidget {
                         SizedBox(height: size.height * 0.01),
                         Text(
                           "Welcome Back!",
-                          style: TextStyle(
+                          style: AppTextStyles.h2.copyWith(
                             color: AppColors.surface,
-                            fontSize: isTablet ? 34 : 28,
-                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           "Dive back into your learning",
-                          style: TextStyle(
+                          style: AppTextStyles.bodyMedium.copyWith(
                             color: Colors.white70,
-                            fontSize: isTablet ? 16 : 14,
                           ),
                         ),
                       ],
@@ -68,9 +66,7 @@ class LoginScreen extends StatelessWidget {
                       children: [
                         Text(
                           "Sign In",
-                          style: TextStyle(
-                            fontSize: isTablet ? 28 : 24,
-                            fontWeight: FontWeight.w800,
+                          style: AppTextStyles.h3.copyWith(
                             color: AppColors.textPrimary,
                           ),
                         ),
@@ -89,12 +85,11 @@ class LoginScreen extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           child: TextButton(
                             onPressed: () {},
-                            child: const Text(
+                            child: Text(
                               'Forgot Password?',
-                              style: TextStyle(
+                              style: AppTextStyles.bodyMedium.copyWith(
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.primary,
-                                fontSize: 16,
                               ),
                             ),
                           ),
@@ -125,13 +120,11 @@ class LoginScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(16),
                                 ),
                               ),
-                              child: const Center(
+                              child: Center(
                                 child: Text(
                                   "Log In",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
+                                  style: AppTextStyles.titleMedium.copyWith(
                                     color: AppColors.surface,
-                                    fontSize: 17,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -148,14 +141,11 @@ class LoginScreen extends StatelessWidget {
                               ),
                             ),
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
                               child: Text(
                                 "OR",
-                                style: TextStyle(
+                                style: AppTextStyles.label.copyWith(
                                   color: AppColors.textSecondary,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: isTablet ? 15 : 13,
                                 ),
                               ),
                             ),
@@ -175,17 +165,13 @@ class LoginScreen extends StatelessWidget {
                           ),
                           label: Text(
                             "Continue with Google",
-                            style: TextStyle(
+                            style: AppTextStyles.bodyMedium.copyWith(
                               color: AppColors.textPrimary,
                               fontWeight: FontWeight.w600,
-                              fontSize: isTablet ? 16 : 14,
                             ),
                           ),
                           style: OutlinedButton.styleFrom(
-                            minimumSize: const Size(
-                              double.infinity,
-                              56,
-                            ),
+                            minimumSize: const Size(double.infinity, 56),
                             backgroundColor: AppColors.surface,
                             side: const BorderSide(
                               color: AppColors.border,
@@ -199,17 +185,17 @@ class LoginScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
+                            Text(
                               "Don't have an account?",
-                              style: TextStyle(
+                              style: AppTextStyles.bodyMedium.copyWith(
                                 color: AppColors.textSecondary,
                               ),
                             ),
                             TextButton(
                               onPressed: () {},
-                              child: const Text(
+                              child: Text(
                                 "Sign Up",
-                                style: TextStyle(
+                                style: AppTextStyles.bodyMedium.copyWith(
                                   color: AppColors.primary,
                                   fontWeight: FontWeight.bold,
                                 ),

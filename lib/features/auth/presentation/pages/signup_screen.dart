@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/features/auth/presentation/widgets/custom_text_field.dart';
 import 'package:project1/features/auth/presentation/widgets/date_picker_field.dart';
 import 'package:project1/features/auth/presentation/widgets/image_picker_widget.dart';
@@ -39,18 +40,15 @@ class SignupScreen extends StatelessWidget {
                       children: [
                         Text(
                           "Create Account",
-                          style: TextStyle(
+                          style: AppTextStyles.h2.copyWith(
                             color: AppColors.surface,
-                            fontSize: isTablet ? 32 : 28,
-                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SizedBox(height: 5),
-                        const Text(
+                        Text(
                           "Start your ocean of learning today",
-                          style: TextStyle(
+                          style: AppTextStyles.bodyMedium.copyWith(
                             color: Colors.white70,
-                            fontSize: 14,
                           ),
                         ),
                       ],
@@ -129,10 +127,8 @@ class SignupScreen extends StatelessWidget {
                             ),
                             child: Text(
                               "Create Account",
-                              style: TextStyle(
+                              style: AppTextStyles.titleMedium.copyWith(
                                 color: AppColors.surface,
-                                fontSize: isTablet ? 18 : 16,
-                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
@@ -144,9 +140,9 @@ class SignupScreen extends StatelessWidget {
                             'assets/images/google.png',
                             height: 24,
                           ),
-                          label: const Text(
+                          label: Text(
                             "Continue with Google",
-                            style: TextStyle(
+                            style: AppTextStyles.bodyMedium.copyWith(
                               color: AppColors.textPrimary,
                               fontWeight: FontWeight.w600,
                             ),
@@ -166,19 +162,19 @@ class SignupScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
+                            Text(
                               "Already have an account?",
-                              style: TextStyle(
+                              style: AppTextStyles.bodyMedium.copyWith(
                                 color: AppColors.textSecondary,
                               ),
                             ),
                             TextButton(
                               onPressed: () => Navigator.pop(context),
-                              child: const Text(
+                              child: Text(
                                 "Log In",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
+                                style: AppTextStyles.bodyMedium.copyWith(
                                   color: AppColors.primary,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
