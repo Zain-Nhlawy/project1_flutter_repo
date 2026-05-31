@@ -3,6 +3,7 @@ import 'package:project1/config/theme/app_theme.dart';
 import 'package:project1/features/auth/presentation/pages/login_screen.dart';
 import 'package:project1/features/auth/presentation/pages/signup_screen.dart';
 import 'package:project1/features/courses/presentation/pages/course_details_screen.dart';
+import 'package:project1/features/quizzes/presentation/pages/quiz_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       title: 'App',
-      home: SignupScreen(),
+      home: QuizScreen(),
     );
   }
 }

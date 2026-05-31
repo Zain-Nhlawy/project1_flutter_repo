@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project1/config/theme/app_theme.dart';
 
 class CourseHeader extends StatelessWidget {
   const CourseHeader({super.key});
@@ -25,7 +26,7 @@ class CourseHeader extends StatelessWidget {
                 color: Colors.white.withOpacity(0.9),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(color: Theme.of(context).primaryColor.withOpacity(0.3)),
-                boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.15), blurRadius: 20, offset: const Offset(0, 10))],
+                boxShadow: const [AppTheme.primaryShadow,],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -20,4 +20,10 @@ class AppTheme {
       ),
     ),
   );
+
+  static const BoxShadow primaryShadow = BoxShadow(
+    color: Color(0xFFAECFFF),
+    blurRadius: 20,
+    offset: Offset(0, 10),
+  );
 }

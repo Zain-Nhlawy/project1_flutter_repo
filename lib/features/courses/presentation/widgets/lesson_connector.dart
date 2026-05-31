@@ -3,25 +3,52 @@ import 'package:flutter/material.dart';
 class LessonConnector extends StatelessWidget {
   final Widget child;
   final bool isLast;
-  const LessonConnector({super.key, required this.child, this.isLast = false});
+  final bool showTopLine;
+  final int num;
+
+  const LessonConnector({
+    super.key,
+    required this.child,
+    required this.num,
+    this.isLast = false,
+    this.showTopLine = true,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      foregroundPainter: isLast ? null : _LinePainter(color: Theme.of(context).primaryColor.withOpacity(0.3)),
-      child: child,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Column(
+          children: [
+            if (showTopLine)
+              Container(
+                width: 2,
+                height: 10,
+                color: Theme.of(context).primaryColor.withOpacity(0.3),
+              ),
+            CircleAvatar(
+              radius: 15,
+              backgroundColor: Theme.of(context).primaryColor,
+              child: Text(
+                "$num",
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                ),
+              ),
+            ),
+            if (!isLast)
+              Container(
+                width: 2,
+                height: 60,
+                color: Theme.of(context).primaryColor.withOpacity(0.3),
+              ),
+          ],
+        ),
+        const SizedBox(width: 15),
+        Expanded(child: child),
+      ],
     );
   }
-}
-
-class _LinePainter extends CustomPainter {
-  final Color color;
-  _LinePainter({required this.color});
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = color..strokeWidth = 2;
-    canvas.drawLine(Offset(25, 40), Offset(25, size.height + 10), paint);
-  }
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
