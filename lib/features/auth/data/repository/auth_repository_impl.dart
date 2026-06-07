@@ -41,6 +41,16 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<String> forgotPassword(Map<String, dynamic> body) async {
+    return await remote.forgotPassword(body);
+  }
+
+  @override
+  Future<String> resetPassword(Map<String, dynamic> body) async {
+    return await remote.resetPassword(body);
+  }
+
+  @override
   Future<void> logout() async {
     await remote.logout();
     await storage.delete(StorageKeys.token);

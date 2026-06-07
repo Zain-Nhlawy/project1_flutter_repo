@@ -39,6 +39,22 @@ class AuthRemoteDataSource {
     };
   }
 
+  Future<String> forgotPassword(Map<String, dynamic> body) async {
+    final res = await dioClient.dio.post(
+      '/authentication/forgot-password',
+      data: body,
+    );
+    return res.data['message'];
+  }
+
+  Future<String> resetPassword(Map<String, dynamic> body) async {
+    final res = await dioClient.dio.post(
+      '/authentication/reset-password',
+      data: body,
+    );
+    return res.data['message'];
+  }
+
   Future<void> logout() async {
     await dioClient.dio.post('/authentication/sign-out');
   }

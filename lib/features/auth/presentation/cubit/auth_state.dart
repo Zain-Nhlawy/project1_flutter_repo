@@ -1,27 +1,49 @@
 import 'package:project1/features/auth/data/models/user_model.dart';
 
-abstract class AuthState {}
+abstract class AuthState {
+  const AuthState();
+}
 
-class AuthInitial extends AuthState {}
+class AuthInitial extends AuthState {
+  const AuthInitial();
+}
 
-class AuthLoading extends AuthState {}
+class AuthLoading extends AuthState {
+  const AuthLoading();
+}
 
 class RegisterSuccess extends AuthState {
   final String message;
-  RegisterSuccess(this.message);
+
+  const RegisterSuccess(this.message);
 }
 
 class LoginSuccess extends AuthState {
   final dynamic user;
-  LoginSuccess(this.user);
+
+  const LoginSuccess(this.user);
 }
 
 class VerifyEmailSuccess extends AuthState {
   final String message;
-  VerifyEmailSuccess(this.message);
+
+  const VerifyEmailSuccess(this.message);
+}
+
+class ForgotPasswordSuccess extends AuthState {
+  final String message;
+
+  const ForgotPasswordSuccess(this.message);
+}
+
+class ResetPasswordSuccess extends AuthState {
+  final String message;
+  const ResetPasswordSuccess(this.message);
+
 }
 
 class AuthError extends AuthState {
   final String message;
-  AuthError(this.message);
+
+  const AuthError(this.message);
 }

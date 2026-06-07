@@ -6,9 +6,11 @@ import 'package:project1/features/auth/auth_token_manager.dart';
 import 'package:project1/features/auth/data/data_sources/auth_remote_datasource.dart';
 import 'package:project1/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:project1/features/auth/domain/repository/auth_repository.dart';
+import 'package:project1/features/auth/domain/use_case/forgot_password_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/register_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/login_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/logout_usecase.dart';
+import 'package:project1/features/auth/domain/use_case/reset_password_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/verify_email_usecase.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 
@@ -48,6 +50,8 @@ void setupDI() {
   getIt.registerLazySingleton(() => LoginUseCase(getIt<AuthRepository>()));
   getIt.registerLazySingleton(() => LogoutUseCase(getIt<AuthRepository>()));
   getIt.registerLazySingleton(() => VerifyEmailUseCase(getIt<AuthRepository>()));
+  getIt.registerLazySingleton(() => ForgotPasswordUseCase(getIt<AuthRepository>()));
+  getIt.registerLazySingleton(() => ResetPasswordUseCase(getIt<AuthRepository>()));
 
   getIt.registerFactory(
     () => AuthCubit(
@@ -55,6 +59,9 @@ void setupDI() {
       loginUseCase: getIt<LoginUseCase>(),
       logoutUseCase: getIt<LogoutUseCase>(),
       verifyEmailUseCase: getIt<VerifyEmailUseCase>(),
+      forgotPasswordUseCase: getIt<ForgotPasswordUseCase>(),
+      resetPasswordUseCase: getIt<ResetPasswordUseCase>(),
+      
     ),
   );
 }
