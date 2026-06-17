@@ -30,7 +30,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="http" 
-                      android:host="10.0.2.2" 
+                      android:host="192.168.1.101" 
                       android:port="3000" 
                       android:pathPattern="/authentication/reset-password" />
             </intent-filter>
