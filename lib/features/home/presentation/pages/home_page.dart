@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/features/home/presentation/widgets/main_header.dart';
 import '../widgets/section_header.dart';
 import '../widgets/demo_card.dart';

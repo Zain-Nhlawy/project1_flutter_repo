@@ -7,6 +7,7 @@ import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/pages/login_screen.dart';
 import 'package:project1/features/auth/presentation/pages/reset_password_screen.dart';
+import 'package:project1/features/home/presentation/pages/Navigations_tabs.dart' show NavigationsTabs;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
       title: 'App',
       home: initialToken != null && initialToken!.isNotEmpty
           ? ResetPasswordScreen(token: initialToken!)
-          : const LoginScreen(
+          : const NavigationsTabs(
             ),
     );
   }
