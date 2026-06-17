@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project1/features/demo/presentation/cubit/add_demo_state.dart';
+import 'package:project1/features/demo/presentation/cubit/add%20demo%20wizard/add_demo_state.dart';
 
 class AddDemoCubit extends Cubit<AddDemoState> {
   final PageController pageController = PageController();

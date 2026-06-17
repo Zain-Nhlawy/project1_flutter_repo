@@ -8,6 +8,10 @@ import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/pages/login_screen.dart';
 import 'package:project1/features/auth/presentation/pages/reset_password_screen.dart';
+
+import 'package:project1/features/home/presentation/pages/Navigations_tabs.dart'
+    show NavigationsTabs;
+
 import 'package:media_kit/media_kit.dart';
 import 'package:project1/features/quizzes/presentation/pages/quiz_screen.dart';
 
@@ -42,10 +46,7 @@ void main() async {
 class MyApp extends StatefulWidget {
   final String? initialToken;
 
-  const MyApp({
-    super.key,
-    this.initialToken,
-  });
+  const MyApp({super.key, this.initialToken});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -89,10 +90,10 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       title: 'App',
-      home: widget.initialToken != null &&
-              widget.initialToken!.isNotEmpty
+
+      home: widget.initialToken != null && widget.initialToken!.isNotEmpty
           ? ResetPasswordScreen(token: widget.initialToken!)
-          : const QuizScreen(),
+          : const LoginScreen(),
     );
   }
 }

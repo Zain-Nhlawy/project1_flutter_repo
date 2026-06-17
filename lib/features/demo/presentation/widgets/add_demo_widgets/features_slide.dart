@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
-import 'package:project1/features/demo/presentation/cubit/add_demo_cubit.dart';
-import 'package:project1/features/demo/presentation/cubit/add_demo_state.dart';
+import 'package:project1/features/demo/presentation/cubit/add%20demo%20wizard/add_demo_cubit.dart';
+import 'package:project1/features/demo/presentation/cubit/add%20demo%20wizard/add_demo_state.dart';
 
 class FeaturesSlide extends StatelessWidget {
   const FeaturesSlide({super.key});
