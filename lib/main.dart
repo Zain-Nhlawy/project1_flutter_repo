@@ -9,6 +9,7 @@ import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/pages/login_screen.dart';
 import 'package:project1/features/auth/presentation/pages/reset_password_screen.dart';
 import 'package:media_kit/media_kit.dart';
+import 'package:project1/features/quizzes/presentation/pages/quiz_screen.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -91,7 +92,7 @@ class _MyAppState extends State<MyApp> {
       home: widget.initialToken != null &&
               widget.initialToken!.isNotEmpty
           ? ResetPasswordScreen(token: widget.initialToken!)
-          : const LoginScreen(),
+          : const QuizScreen(),
     );
   }
 }
