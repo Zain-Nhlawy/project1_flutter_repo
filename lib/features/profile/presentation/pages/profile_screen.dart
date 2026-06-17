@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/features/profile/presentation/pages/security_settings_screen.dart';
 import '../widgets/profile_info_card.dart';
 import '../widgets/profile_section_title.dart';
 import '../widgets/profile_tile.dart';
@@ -176,6 +177,14 @@ class ProfileScreen extends StatelessWidget {
                           iconColor: Colors.blue,
                           title: "Privacy Policy",
                           showDivider: false,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const SecuritySettingsScreen(),
+                              ),
+                            );
+                          },
                           trailing: Icon(
                             Icons.chevron_right,
                             color: AppColors.textSecondary,
