@@ -54,20 +54,26 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is LoginSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Login successful!'),
-              backgroundColor: AppColors.success,
-            ),
-          );
-          
-          if (mounted) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (_) => const NavigationsTabs()),
+            final messenger = ScaffoldMessenger.of(context);
+            messenger.showSnackBar(
+              const SnackBar(
+                content: Text('Login successful!'),
+                backgroundColor: AppColors.success,
+                duration: Duration(milliseconds: 500),
+              ),
             );
-          }
-        } else if (state is AuthError) {
+            Future.delayed(const Duration(milliseconds: 500), () {
+              messenger.clearSnackBars();
+              if (mounted) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const NavigationsTabs(),
+                  ),
+                );
+              }
+            });
+          } else if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.message),
