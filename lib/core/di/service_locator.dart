@@ -13,6 +13,11 @@ import 'package:project1/features/auth/domain/use_case/logout_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/reset_password_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/verify_email_usecase.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:project1/features/demo/data/data_sources/demo_remote_datasource.dart';
+import 'package:project1/features/demo/data/repository/demo_repository.dart';
+import 'package:project1/features/demo/data/repository/demo_repository_impl.dart';
+import 'package:project1/features/demo/domain/use%20case/get_demos_usecase.dart';
+import 'package:project1/features/demo/presentation/cubit/demo_cubit.dart';
 
 final getIt = GetIt.instance;
 
@@ -52,6 +57,33 @@ void setupDI() {
   getIt.registerLazySingleton(() => VerifyEmailUseCase(getIt<AuthRepository>()));
   getIt.registerLazySingleton(() => ForgotPasswordUseCase(getIt<AuthRepository>()));
   getIt.registerLazySingleton(() => ResetPasswordUseCase(getIt<AuthRepository>()));
+
+
+getIt.registerLazySingleton<DemoRemoteDataSource>(
+  () => DemoRemoteDataSourceImpl(
+    dio: getIt<DioClient>().dio,
+  ),
+);
+
+getIt.registerLazySingleton<DemoRepository>(
+  () => DemoRepositoryImpl(
+    remoteDataSource: getIt<DemoRemoteDataSource>(),
+  ),
+);
+
+getIt.registerLazySingleton<GetDemosUseCase>(
+  () => GetDemosUseCase(
+    getIt<DemoRepository>(),
+  ),
+);
+
+
+getIt.registerFactory(
+  () => DemoCubit(
+    getDemosUseCase: getIt<GetDemosUseCase>(),
+  ),
+);
+  
 
   getIt.registerFactory(
     () => AuthCubit(

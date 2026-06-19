@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/features/demo/presentation/cubit/demo_cubit.dart';
 import 'package:project1/features/home/presentation/cubit/navigation_tabs_cubit.dart';
 import 'package:project1/features/home/presentation/cubit/navigation_tabs_state.dart';
 
@@ -15,10 +17,17 @@ class NavigationsTabs extends StatelessWidget {
     final screenHeight = size.height;
     final textScale = MediaQuery.textScalerOf(context).scale(1);
 
-    return BlocProvider(
-      create: (context) => NavigationTabsCubit(),
-      child: BlocBuilder<NavigationTabsCubit, NavigationTabsState>(
-        builder: (context, state) {
+    return MultiBlocProvider(
+  providers: [
+    BlocProvider(
+      create: (_) => NavigationTabsCubit(),
+    ),
+    BlocProvider(
+      create: (_) => getIt<DemoCubit>()..fetchDemos(),
+    ),
+  ],
+  child: BlocBuilder<NavigationTabsCubit, NavigationTabsState>(
+    builder: (context, state) {
           final cubit = context.read<NavigationTabsCubit>();
 
           return Scaffold(
