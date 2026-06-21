@@ -58,6 +58,33 @@ void setupDI() {
   getIt.registerLazySingleton(() => ForgotPasswordUseCase(getIt<AuthRepository>()));
   getIt.registerLazySingleton(() => ResetPasswordUseCase(getIt<AuthRepository>()));
 
+
+getIt.registerLazySingleton<DemoRemoteDataSource>(
+  () => DemoRemoteDataSourceImpl(
+    dio: getIt<DioClient>().dio,
+  ),
+);
+
+getIt.registerLazySingleton<DemoRepository>(
+  () => DemoRepositoryImpl(
+    remoteDataSource: getIt<DemoRemoteDataSource>(),
+  ),
+);
+
+getIt.registerLazySingleton<GetDemosUseCase>(
+  () => GetDemosUseCase(
+    getIt<DemoRepository>(),
+  ),
+);
+
+
+getIt.registerFactory(
+  () => DemoCubit(
+    getDemosUseCase: getIt<GetDemosUseCase>(),
+  ),
+);
+  
+
   getIt.registerFactory(
     () => AuthCubit(
       registerUseCase: getIt<RegisterUseCase>(),
