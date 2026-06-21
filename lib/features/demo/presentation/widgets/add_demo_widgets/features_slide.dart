@@ -4,6 +4,7 @@ import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/features/demo/presentation/cubit/add%20demo%20wizard/add_demo_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/add%20demo%20wizard/add_demo_state.dart';
+import 'package:project1/l10n/app_localizations.dart';
 
 class FeaturesSlide extends StatelessWidget {
   const FeaturesSlide({super.key});
@@ -12,6 +13,7 @@ class FeaturesSlide extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     final textScale = MediaQuery.textScalerOf(context).scale(1);
+    final localizations = AppLocalizations.of(context)!;
 
     return BlocBuilder<AddDemoCubit, AddDemoState>(
       builder: (context, state) {
@@ -24,7 +26,7 @@ class FeaturesSlide extends StatelessWidget {
             children: [
               SizedBox(height: size.height * 0.04),
               Text(
-                "Supercharge your Demo",
+                localizations.superchargeDemo,
                 style: AppTextStyles.h2.copyWith(
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.bold,
@@ -33,7 +35,7 @@ class FeaturesSlide extends StatelessWidget {
               ),
               SizedBox(height: size.height * 0.01),
               Text(
-                "Select optional add-ons to enhance your room. You can skip this if you don't need any.",
+                localizations.selectAddons,
                 style: AppTextStyles.bodyMedium.copyWith(
                   color: AppColors.textSecondary,
                   fontSize: 14 * textScale,
@@ -44,10 +46,13 @@ class FeaturesSlide extends StatelessWidget {
                 child: ListView.separated(
                   padding: EdgeInsets.only(bottom: size.height * 0.1),
                   itemCount: state.availableFeatures.length,
-                  separatorBuilder: (context, index) => SizedBox(height: size.height * 0.02),
+                  separatorBuilder: (context, index) =>
+                      SizedBox(height: size.height * 0.02),
                   itemBuilder: (context, index) {
                     final feature = state.availableFeatures[index];
-                    final isSelected = state.selectedFeatureIndices.contains(index);
+                    final isSelected = state.selectedFeatureIndices.contains(
+                      index,
+                    );
 
                     return InkWell(
                       onTap: () => cubit.toggleFeature(index),
@@ -68,7 +73,9 @@ class FeaturesSlide extends StatelessWidget {
                           boxShadow: [
                             if (!isSelected)
                               BoxShadow(
-                                color: AppColors.textSecondary.withOpacity(0.05),
+                                color: AppColors.textSecondary.withOpacity(
+                                  0.05,
+                                ),
                                 blurRadius: 10,
                                 offset: const Offset(0, 4),
                               ),
@@ -95,23 +102,26 @@ class FeaturesSlide extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         feature["title"],
-                                        style: AppTextStyles.titleMedium.copyWith(
-                                          color: AppColors.textPrimary,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16 * textScale,
-                                        ),
+                                        style: AppTextStyles.titleMedium
+                                            .copyWith(
+                                              color: AppColors.textPrimary,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16 * textScale,
+                                            ),
                                       ),
                                       Text(
                                         "\$${feature["price"].toStringAsFixed(2)}",
-                                        style: AppTextStyles.titleMedium.copyWith(
-                                          color: AppColors.primary,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16 * textScale,
-                                        ),
+                                        style: AppTextStyles.titleMedium
+                                            .copyWith(
+                                              color: AppColors.primary,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16 * textScale,
+                                            ),
                                       ),
                                     ],
                                   ),

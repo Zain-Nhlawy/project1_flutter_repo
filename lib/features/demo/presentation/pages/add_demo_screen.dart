@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/features/demo/presentation/widgets/add_demo_widgets/step_progress_indecator.dart';
+import 'package:project1/l10n/app_localizations.dart';
 import '../cubit/add demo wizard/add_demo_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/add%20demo%20wizard/add_demo_state.dart';
 import 'package:project1/features/demo/presentation/widgets/add_demo_widgets/demo_name_slide.dart';
@@ -16,6 +17,7 @@ class AddDemoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     final textScale = MediaQuery.textScalerOf(context).scale(1);
+    final localizations = AppLocalizations.of(context)!;
 
     return BlocProvider(
       create: (context) => AddDemoCubit(),
@@ -25,7 +27,7 @@ class AddDemoScreen extends StatelessWidget {
           child: BlocBuilder<AddDemoCubit, AddDemoState>(
             builder: (context, state) {
               final cubit = context.read<AddDemoCubit>();
-              
+
               return Column(
                 children: [
                   Padding(
@@ -91,7 +93,9 @@ class AddDemoScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                       child: Container(
                         width: double.infinity,
-                        padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
+                        padding: EdgeInsets.symmetric(
+                          vertical: size.height * 0.02,
+                        ),
                         decoration: BoxDecoration(
                           gradient: AppColors.buttonGradient,
                           borderRadius: BorderRadius.circular(16),
@@ -106,8 +110,10 @@ class AddDemoScreen extends StatelessWidget {
                         child: Center(
                           child: Text(
                             state.currentPage == 2
-                                ? "Pay \$${state.totalPrice.toStringAsFixed(2)} & Create"
-                                : "Continue",
+                                ? localizations.payAndCreate(
+                                    state.totalPrice.toStringAsFixed(2),
+                                  )
+                                : localizations.continueBtn,
                             style: AppTextStyles.titleMedium.copyWith(
                               color: AppColors.surface,
                               fontWeight: FontWeight.bold,

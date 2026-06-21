@@ -8,7 +8,6 @@ class GetDemosUseCase {
 
   GetDemosUseCase(this.repository);
 
-  // استخدام دالة call يجعل الكلاس يتصرف كأنه دالة قابلة للاستدعاء مباشرة
   Future<Either<String, List<DemoEntity>>> call() async {
     return await repository.getDemos();
   }

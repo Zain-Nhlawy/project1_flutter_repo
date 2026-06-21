@@ -3,17 +3,16 @@ import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:project1/l10n/app_localizations.dart'; 
 import 'package:project1/config/theme/app_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/pages/login_screen.dart';
 import 'package:project1/features/auth/presentation/pages/reset_password_screen.dart';
-
-import 'package:project1/features/home/presentation/pages/Navigations_tabs.dart'
-    show NavigationsTabs;
-
 import 'package:media_kit/media_kit.dart';
-import 'package:project1/features/quizzes/presentation/pages/quiz_screen.dart';
+import 'package:project1/l10n/l10n.dart';
+
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -90,7 +89,14 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       title: 'App',
-
+    supportedLocales: L10n.all,
+    locale : const Locale('ar'),
+    localizationsDelegates: const [
+      AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       home: widget.initialToken != null && widget.initialToken!.isNotEmpty
           ? ResetPasswordScreen(token: widget.initialToken!)
           : const LoginScreen(),

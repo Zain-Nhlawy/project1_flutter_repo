@@ -9,6 +9,7 @@ import 'package:project1/features/auth/presentation/pages/verify_email_screen.da
 import 'package:project1/features/auth/presentation/widgets/custom_text_field.dart';
 import 'package:project1/features/auth/presentation/widgets/date_picker_field.dart';
 import 'package:project1/features/auth/presentation/widgets/image_picker_widget.dart';
+import 'package:project1/l10n/app_localizations.dart';
 
 class SignupScreen extends StatelessWidget {
   final TextEditingController firstNameController = TextEditingController();
@@ -24,6 +25,7 @@ class SignupScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final isTablet = size.width >= 600;
+    final localizations = AppLocalizations.of(context)!;
 
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
@@ -71,24 +73,6 @@ class SignupScreen extends StatelessWidget {
                             bottom: Radius.circular(40),
                           ),
                         ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Create Account",
-                              style: AppTextStyles.h2.copyWith(
-                                color: AppColors.surface,
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              "Start your ocean of learning today",
-                              style: AppTextStyles.bodyMedium.copyWith(
-                                color: Colors.white70,
-                              ),
-                            ),
-                          ],
-                        ),
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(
@@ -105,7 +89,7 @@ class SignupScreen extends StatelessWidget {
                                 Expanded(
                                   child: CustomTextField(
                                     controller: firstNameController,
-                                    hintText: 'First Name',
+                                    hintText: localizations.firstNameHint,
                                     icon: Icons.person_outline,
                                   ),
                                 ),
@@ -113,7 +97,7 @@ class SignupScreen extends StatelessWidget {
                                 Expanded(
                                   child: CustomTextField(
                                     controller: lastNameController,
-                                    hintText: 'Last Name',
+                                    hintText: localizations.lastNameHint,
                                     icon: Icons.person_outline,
                                   ),
                                 ),
@@ -124,7 +108,7 @@ class SignupScreen extends StatelessWidget {
 
                             CustomTextField(
                               controller: emailController,
-                              hintText: 'Email Address',
+                              hintText: localizations.emailAddressHint,
                               icon: Icons.email_outlined,
                               keyboardType: TextInputType.emailAddress,
                             ),
@@ -139,7 +123,7 @@ class SignupScreen extends StatelessWidget {
 
                             CustomTextField(
                               controller: passwordController,
-                              hintText: 'Password',
+                              hintText: localizations.passwordHint,
                               isPassword: true,
                               icon: Icons.lock_outline,
                             ),
@@ -148,7 +132,7 @@ class SignupScreen extends StatelessWidget {
 
                             CustomTextField(
                               controller: confirmPasswordController,
-                              hintText: 'Confirm Password',
+                              hintText: localizations.confirmPasswordHint,
                               isPassword: true,
                               icon: Icons.lock_outline,
                             ),
@@ -180,9 +164,9 @@ class SignupScreen extends StatelessWidget {
                                               confirmPasswordController.text) {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
-                                              const SnackBar(
+                                              SnackBar(
                                                 content: Text(
-                                                  'Passwords do not match',
+                                                  localizations.passwordsDoNotMatch,
                                                 ),
                                               ),
                                             );
@@ -208,7 +192,7 @@ class SignupScreen extends StatelessWidget {
                                         ),
                                         child: Center(
                                           child: Text(
-                                            "Create Account",
+                                            localizations.createAccountBtn,
                                             style: AppTextStyles.titleMedium.copyWith(
                                               color: AppColors.surface,
                                               fontWeight: FontWeight.bold,
@@ -228,7 +212,7 @@ class SignupScreen extends StatelessWidget {
                                 height: 24,
                               ),
                               label: Text(
-                                "Continue with Google",
+                                localizations.continueWithGoogle,
                                 style: AppTextStyles.bodyMedium.copyWith(
                                   color: AppColors.textPrimary,
                                   fontWeight: FontWeight.w600,
@@ -252,7 +236,7 @@ class SignupScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Already have an account?",
+                                  localizations.alreadyHaveAccount,
                                   style: AppTextStyles.bodyMedium.copyWith(
                                     color: AppColors.textSecondary,
                                   ),
@@ -267,7 +251,7 @@ class SignupScreen extends StatelessWidget {
                                     );
                                   },
                                   child: Text(
-                                    "Log In",
+                                    localizations.logInLink,
                                     style: AppTextStyles.bodyMedium.copyWith(
                                       color: AppColors.primary,
                                       fontWeight: FontWeight.bold,

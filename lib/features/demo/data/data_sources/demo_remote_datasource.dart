@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:project1/core/network/dio_client.dart';
 import 'package:project1/features/demo/data/models/demo_model.dart';
 
 abstract class DemoRemoteDataSource {
@@ -8,12 +9,12 @@ abstract class DemoRemoteDataSource {
 class DemoRemoteDataSourceImpl implements DemoRemoteDataSource {
   final Dio dio;
 
-  DemoRemoteDataSourceImpl({required this.dio});
+  DemoRemoteDataSourceImpl(DioClient dioClient, {required this.dio});
 
   @override
   Future<List<DemoModel>> getDemos() async {
     try {
-      final response = await dio.get('/admin/demos');
+      final response = await dio.get('/demos');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final List<dynamic> dataList = response.data['data'];

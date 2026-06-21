@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/features/profile/presentation/pages/security_settings_screen.dart';
+import 'package:project1/l10n/app_localizations.dart';
 import '../widgets/profile_info_card.dart';
 import '../widgets/profile_section_title.dart';
 import '../widgets/profile_tile.dart';
@@ -13,6 +15,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     final textScale = MediaQuery.textScalerOf(context).scale(1);
+    final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -36,7 +39,7 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   SizedBox(height: size.height * 0.08),
                   Text(
-                    "Profile",
+                    localizations.profileTitle,
                     style: AppTextStyles.h2.copyWith(
                       color: AppColors.surface,
                       fontWeight: FontWeight.bold,
@@ -45,7 +48,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   SizedBox(height: size.height * 0.005),
                   Text(
-                    "Manage your account",
+                    localizations.manageAccount,
                     style: AppTextStyles.bodyMedium.copyWith(
                       color: AppColors.surface.withOpacity(0.8),
                       fontSize: 14 * textScale,
@@ -53,9 +56,11 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   SizedBox(height: size.height * 0.03),
                   const ProfileInfoCard(),
-                  const Align(
+                  Align(
                     alignment: Alignment.centerLeft,
-                    child: ProfileSectionTitle(title: "Preferences"),
+                    child: ProfileSectionTitle(
+                      title: localizations.secPreferences,
+                    ),
                   ),
                   Container(
                     decoration: BoxDecoration(
@@ -68,11 +73,11 @@ class ProfileScreen extends StatelessWidget {
                           icon: Icons.light_mode_outlined,
                           iconBackgroundColor: Colors.lightBlue,
                           iconColor: Colors.lightBlue,
-                          title: "Theme",
+                          title: localizations.tileTheme,
                           trailing: Row(
                             children: [
                               Text(
-                                "Light",
+                                localizations.themeLight,
                                 style: AppTextStyles.bodyMedium.copyWith(
                                   color: AppColors.textSecondary,
                                   fontSize: 14 * textScale,
@@ -91,11 +96,11 @@ class ProfileScreen extends StatelessWidget {
                           icon: Icons.language_rounded,
                           iconBackgroundColor: Colors.teal,
                           iconColor: Colors.teal,
-                          title: "Language",
+                          title: localizations.tileLanguage,
                           trailing: Row(
                             children: [
                               Text(
-                                "English",
+                                localizations.langEnglish,
                                 style: AppTextStyles.bodyMedium.copyWith(
                                   color: AppColors.primary,
                                   fontWeight: FontWeight.w600,
@@ -114,12 +119,12 @@ class ProfileScreen extends StatelessWidget {
                           icon: Icons.notifications_none_rounded,
                           iconBackgroundColor: Colors.purple,
                           iconColor: Colors.purple,
-                          title: "Notifications",
+                          title: localizations.tileNotifications,
                           showDivider: false,
                           trailing: Row(
                             children: [
                               Text(
-                                "On",
+                                localizations.notifOn,
                                 style: AppTextStyles.bodyMedium.copyWith(
                                   color: AppColors.textSecondary,
                                   fontSize: 14 * textScale,
@@ -138,9 +143,9 @@ class ProfileScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Align(
+                  Align(
                     alignment: Alignment.centerLeft,
-                    child: ProfileSectionTitle(title: "Support"),
+                    child: ProfileSectionTitle(title: localizations.secSupport),
                   ),
                   Container(
                     decoration: BoxDecoration(
@@ -153,7 +158,7 @@ class ProfileScreen extends StatelessWidget {
                           icon: Icons.chat_bubble_outline_rounded,
                           iconBackgroundColor: Colors.orange,
                           iconColor: Colors.orange,
-                          title: "Message Admins",
+                          title: localizations.tileMessageAdmins,
                           trailing: Icon(
                             Icons.chevron_right,
                             color: AppColors.textSecondary,
@@ -164,7 +169,7 @@ class ProfileScreen extends StatelessWidget {
                           icon: Icons.help_outline_rounded,
                           iconBackgroundColor: Colors.green,
                           iconColor: Colors.green,
-                          title: "Help & FAQ",
+                          title: localizations.tileHelpFAQ,
                           trailing: Icon(
                             Icons.chevron_right,
                             color: AppColors.textSecondary,
@@ -175,7 +180,7 @@ class ProfileScreen extends StatelessWidget {
                           icon: Icons.shield_outlined,
                           iconBackgroundColor: Colors.blue,
                           iconColor: Colors.blue,
-                          title: "Privacy Policy",
+                          title: localizations.tilePrivacyPolicy,
                           showDivider: false,
                           onTap: () {
                             Navigator.push(
@@ -217,7 +222,7 @@ class ProfileScreen extends StatelessWidget {
                           ),
                           SizedBox(width: size.width * 0.02),
                           Text(
-                            "Log Out",
+                            localizations.btnLogOut,
                             style: AppTextStyles.titleMedium.copyWith(
                               color: Colors.redAccent,
                               fontWeight: FontWeight.w600,

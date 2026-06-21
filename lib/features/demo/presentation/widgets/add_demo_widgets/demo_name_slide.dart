@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/l10n/app_localizations.dart';
 
 class DemoNameSlide extends StatelessWidget {
   const DemoNameSlide({super.key});
@@ -9,6 +10,7 @@ class DemoNameSlide extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     final textScale = MediaQuery.textScalerOf(context).scale(1);
+    final localizations = AppLocalizations.of(context)!;
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: size.width * 0.06),
@@ -17,7 +19,7 @@ class DemoNameSlide extends StatelessWidget {
         children: [
           SizedBox(height: size.height * 0.04),
           Text(
-            "Let's start with a name",
+            localizations.startWithName,
             style: AppTextStyles.h2.copyWith(
               color: AppColors.textPrimary,
               fontWeight: FontWeight.bold,
@@ -26,7 +28,7 @@ class DemoNameSlide extends StatelessWidget {
           ),
           SizedBox(height: size.height * 0.01),
           Text(
-            "Give your new demo a catchy title so you can easily identify it later.",
+            localizations.giveCatchyTitle,
             style: AppTextStyles.bodyMedium.copyWith(
               color: AppColors.textSecondary,
               fontSize: 14 * textScale,
@@ -35,15 +37,15 @@ class DemoNameSlide extends StatelessWidget {
           SizedBox(height: size.height * 0.05),
           _buildInputField(
             context: context,
-            label: "Demo Name",
-            hint: "e.g. Flutter Advanced Course",
+            label: localizations.labelDemoName,
+            hint: localizations.hintDemoName,
             icon: Icons.title_rounded,
           ),
           SizedBox(height: size.height * 0.03),
           _buildInputField(
             context: context,
-            label: "Short Description (Optional)",
-            hint: "What is this demo about?",
+            label: localizations.labelDescription,
+            hint: localizations.hintDescription,
             icon: Icons.description_outlined,
             maxLines: 3,
           ),
@@ -101,7 +103,11 @@ class DemoNameSlide extends StatelessWidget {
                         bottom: size.height * 0.06,
                         left: size.width * 0.03,
                       ),
-                      child: Icon(icon, color: AppColors.primary, size: 20 * textScale),
+                      child: Icon(
+                        icon,
+                        color: AppColors.primary,
+                        size: 20 * textScale,
+                      ),
                     ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),

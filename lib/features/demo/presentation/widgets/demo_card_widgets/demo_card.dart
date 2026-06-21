@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/l10n/app_localizations.dart';
 
 class DemoCard extends StatelessWidget {
   final String title;
   final String description;
   final String author;
-  final String buttonText;
   final int? usersCount;
 
   const DemoCard({
@@ -14,7 +14,6 @@ class DemoCard extends StatelessWidget {
     required this.title,
     required this.description,
     required this.author,
-    required this.buttonText,
     this.usersCount,
   });
 
@@ -22,6 +21,7 @@ class DemoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     final textScale = MediaQuery.textScalerOf(context).scale(1);
+    final localizations = AppLocalizations.of(context)!;
 
     return Container(
       width: double.infinity,
@@ -59,7 +59,7 @@ class DemoCard extends StatelessWidget {
           ),
           SizedBox(height: size.height * 0.015),
           Text(
-            "by $author",
+            localizations.byAuthor(author),
             style: AppTextStyles.label.copyWith(
               color: AppColors.textSecondary.withOpacity(0.7),
               fontSize: 12 * textScale,
@@ -79,7 +79,7 @@ class DemoCard extends StatelessWidget {
                     ),
                     SizedBox(width: size.width * 0.015),
                     Text(
-                      "$usersCount users",
+                      localizations.usersCountText(usersCount!),
                       style: AppTextStyles.label.copyWith(
                         color: AppColors.textSecondary,
                         fontSize: 12 * textScale,
@@ -106,11 +106,11 @@ class DemoCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      buttonText,
+                      localizations.see,
                       style: AppTextStyles.label.copyWith(
                         color: AppColors.surface,
                         fontWeight: FontWeight.w600,
-                        fontSize: 13 * textScale,
+                        fontSize: 14 * textScale,
                       ),
                     ),
                     SizedBox(width: size.width * 0.01),

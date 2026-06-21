@@ -4,6 +4,7 @@ import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/features/home/presentation/cubit/navigation_tabs_cubit.dart';
 import 'package:project1/features/home/presentation/cubit/navigation_tabs_state.dart';
+import 'package:project1/l10n/app_localizations.dart';
 
 class NavigationsTabs extends StatelessWidget {
   const NavigationsTabs({super.key});
@@ -14,6 +15,7 @@ class NavigationsTabs extends StatelessWidget {
     final screenWidth = size.width;
     final screenHeight = size.height;
     final textScale = MediaQuery.textScalerOf(context).scale(1);
+    final localizations = AppLocalizations.of(context)!;
 
     return BlocProvider(
       create: (context) => NavigationTabsCubit(),
@@ -37,6 +39,7 @@ class NavigationsTabs extends StatelessWidget {
               screenWidth,
               screenHeight,
               textScale,
+              localizations,
             ),
           );
         },
@@ -50,6 +53,7 @@ class NavigationsTabs extends StatelessWidget {
     double screenWidth,
     double screenHeight,
     double textScale,
+    AppLocalizations localizations,
   ) {
     return SafeArea(
       child: Container(
@@ -79,7 +83,7 @@ class NavigationsTabs extends StatelessWidget {
                 index: 0,
                 state: state,
                 cubit: cubit,
-                sideWord: "Main",
+                sideWord: localizations.navMain,
                 screenWidth: screenWidth,
                 screenHeight: screenHeight,
                 textScale: textScale,
@@ -91,7 +95,7 @@ class NavigationsTabs extends StatelessWidget {
                 index: 1,
                 state: state,
                 cubit: cubit,
-                sideWord: "History",
+                sideWord: localizations.navHistory,
                 screenWidth: screenWidth,
                 screenHeight: screenHeight,
                 textScale: textScale,
@@ -103,7 +107,7 @@ class NavigationsTabs extends StatelessWidget {
                 index: 2,
                 state: state,
                 cubit: cubit,
-                sideWord: "Profile",
+                sideWord: localizations.navProfile,
                 screenWidth: screenWidth,
                 screenHeight: screenHeight,
                 textScale: textScale,

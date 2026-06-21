@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/features/demo/presentation/pages/add_demo_screen.dart';
 import 'package:project1/features/home/presentation/widgets/state_card.dart';
+import 'package:project1/l10n/app_localizations.dart';
 
 class DashboardHeader extends StatelessWidget {
   const DashboardHeader({super.key});
@@ -11,6 +13,7 @@ class DashboardHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     final textScale = MediaQuery.textScalerOf(context).scale(1);
+    final localizations = AppLocalizations.of(context)!;
 
     return Container(
       width: double.infinity,
@@ -35,7 +38,7 @@ class DashboardHeader extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Good morning,",
+                    localizations.goodMorning,
                     style: AppTextStyles.bodyMedium.copyWith(
                       color: AppColors.surface,
                       fontSize: 16 * textScale,
@@ -81,7 +84,7 @@ class DashboardHeader extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      "Add Demo",
+                      localizations.addDemo,
                       style: AppTextStyles.titleMedium.copyWith(
                         color: AppColors.surface,
                         fontWeight: FontWeight.w600,
@@ -116,19 +119,19 @@ class DashboardHeader extends StatelessWidget {
           SizedBox(height: size.height * 0.04),
           Row(
             children: [
-              const Expanded(
+              Expanded(
                 child: StatCard(
                   icon: Icons.menu_book_rounded,
                   count: "3",
-                  label: "My Demos",
+                  label: localizations.statMyDemos,
                 ),
               ),
               SizedBox(width: size.width * 0.04),
-              const Expanded(
+              Expanded(
                 child: StatCard(
                   icon: Icons.star_border_rounded,
                   count: "2",
-                  label: "Enrolled",
+                  label: localizations.statEnrolled,
                 ),
               ),
             ],
