@@ -294,4 +294,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dateOfBirthHint => 'Date of Birth';
+
+  @override
+  String get nameRequiredError => 'Name should not be empty';
 }

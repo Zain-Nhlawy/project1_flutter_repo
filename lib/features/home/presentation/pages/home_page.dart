@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:project1/l10n/app_localizations.dart'; 
+import 'package:project1/l10n/app_localizations.dart';
 import 'package:project1/features/demo/domain/use%20case/get_demos_usecase.dart';
 import 'package:project1/features/demo/presentation/cubit/demo_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/demo_state.dart';
@@ -62,7 +62,9 @@ class HomePage extends StatelessWidget {
                           return ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: demosList.length,
+                            itemCount: demosList.length < 2
+                                ? demosList.length
+                                : 2,
                             itemBuilder: (context, index) {
                               final item = demosList[index];
 
@@ -76,8 +78,8 @@ class HomePage extends StatelessWidget {
                           );
                         }
 
-                          return Center(
-                          child: Text(localizations.pressButtonToFetch),
+                        return Center(
+                          child: Text(localizations.somethingWentWrong),
                         );
                       },
                     ),

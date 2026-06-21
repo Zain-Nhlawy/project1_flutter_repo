@@ -7,6 +7,10 @@ class AddDemoCubit extends Cubit<AddDemoState> {
 
   AddDemoCubit() : super(AddDemoState());
 
+  void updateDemoName(String name) {
+    emit(state.copyWith(demoName: name));
+  }
+
   void nextPage() {
     if (state.currentPage < 2) {
       final nextPage = state.currentPage + 1;

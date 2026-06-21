@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/features/demo/presentation/cubit/demo_cubit.dart';
 import 'package:project1/features/demo/presentation/pages/add_demo_screen.dart';
 import 'package:project1/features/home/presentation/widgets/state_card.dart';
 import 'package:project1/l10n/app_localizations.dart';
@@ -64,10 +66,14 @@ class DashboardHeader extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     onPressed: () {
+                      final currentDemoCubit = context.read<DemoCubit>();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => const AddDemoScreen(),
+                          builder: (routeContext) => BlocProvider.value(
+                            value: currentDemoCubit,
+                            child: const AddDemoScreen(),
+                          ),
                         ),
                       );
                     },

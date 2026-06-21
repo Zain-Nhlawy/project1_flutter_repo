@@ -18,6 +18,7 @@ import 'package:project1/features/demo/data/repository/demo_repository.dart';
 import 'package:project1/features/demo/data/repository/demo_repository_impl.dart';
 import 'package:project1/features/demo/domain/use%20case/get_demos_usecase.dart';
 import 'package:project1/features/demo/presentation/cubit/demo_cubit.dart';
+import 'package:project1/features/profile/presentation/cubit/locale_cubit.dart';
 
 final getIt = GetIt.instance;
 
@@ -83,6 +84,8 @@ void setupDI() {
   getIt.registerFactory(
     () => DemoCubit(getDemosUseCase: getIt<GetDemosUseCase>()),
   );
+
+  getIt.registerFactory(() => LocaleCubit());
 
   getIt.registerFactory(
     () => AuthCubit(

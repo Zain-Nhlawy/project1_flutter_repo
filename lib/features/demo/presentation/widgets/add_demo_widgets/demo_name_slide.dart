@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/features/demo/presentation/cubit/add%20demo%20wizard/add_demo_cubit.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class DemoNameSlide extends StatelessWidget {
@@ -40,6 +42,9 @@ class DemoNameSlide extends StatelessWidget {
             label: localizations.labelDemoName,
             hint: localizations.hintDemoName,
             icon: Icons.title_rounded,
+            onChanged: (value) {
+              context.read<AddDemoCubit>().updateDemoName(value);
+            },
           ),
           SizedBox(height: size.height * 0.03),
           _buildInputField(
@@ -48,6 +53,9 @@ class DemoNameSlide extends StatelessWidget {
             hint: localizations.hintDescription,
             icon: Icons.description_outlined,
             maxLines: 3,
+            onChanged: (value) {
+              // إذا كان عندك متغير للوصف مستقبلاً، بتستدعيه هون بنفس الطريقة
+            },
           ),
         ],
       ),
@@ -60,6 +68,7 @@ class DemoNameSlide extends StatelessWidget {
     required String hint,
     required IconData icon,
     int maxLines = 1,
+    void Function(String)? onChanged,
   }) {
     final size = MediaQuery.sizeOf(context);
     final textScale = MediaQuery.textScalerOf(context).scale(1);
@@ -89,6 +98,7 @@ class DemoNameSlide extends StatelessWidget {
             ],
           ),
           child: TextField(
+            onChanged: onChanged,
             maxLines: maxLines,
             decoration: InputDecoration(
               hintText: hint,

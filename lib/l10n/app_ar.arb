@@ -109,5 +109,6 @@
 "verificationLinkSent": "لقد أرسلنا رابط التحقق إلى:",
 "verifyBeforeLogin": "يرجى التحقق من بريدك الإلكتروني قبل تسجيل الدخول.",
 "backToLoginBtn": "العودة لتسجيل الدخول",
-"dateOfBirthHint": "تاريخ الميلاد"
+"dateOfBirthHint": "تاريخ الميلاد",
+"nameRequiredError" : "الاسم لا يجب ان يكون فارغاً"
 }

@@ -295,4 +295,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get dateOfBirthHint => 'تاريخ الميلاد';
+
+  @override
+  String get nameRequiredError => 'الاسم لا يجب ان يكون فارغاً';
 }

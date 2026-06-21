@@ -135,6 +135,7 @@
 "verificationLinkSent": "We sent a verification link to:",
 "verifyBeforeLogin": "Please verify your email before logging in.",
 "backToLoginBtn": "Back to Login",
-"dateOfBirthHint": "Date of Birth"
+"dateOfBirthHint": "Date of Birth",
+"nameRequiredError" : "Name should not be empty"
 
 }

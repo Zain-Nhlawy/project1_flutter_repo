@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart' show Colors, Icons;
-
-
+import 'package:flutter/material.dart';
 
 class AddDemoState {
   final int currentPage;
   final double basePrice;
   final List<Map<String, dynamic>> availableFeatures;
   final List<int> selectedFeatureIndices;
+  final String demoName;
 
   AddDemoState({
     this.currentPage = 0,
@@ -35,6 +34,7 @@ class AddDemoState {
       },
     ],
     this.selectedFeatureIndices = const [0],
+    this.demoName = '',
   });
 
   double get totalPrice {
@@ -48,12 +48,14 @@ class AddDemoState {
   AddDemoState copyWith({
     int? currentPage,
     List<int>? selectedFeatureIndices,
+    String? demoName,
   }) {
     return AddDemoState(
       currentPage: currentPage ?? this.currentPage,
       basePrice: basePrice,
       availableFeatures: availableFeatures,
       selectedFeatureIndices: selectedFeatureIndices ?? this.selectedFeatureIndices,
+      demoName: demoName ?? this.demoName,
     );
   }
 }

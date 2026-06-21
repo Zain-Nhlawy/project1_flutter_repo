@@ -6,6 +6,7 @@ import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/demo/presentation/cubit/demo_cubit.dart';
 import 'package:project1/features/home/presentation/cubit/navigation_tabs_cubit.dart';
 import 'package:project1/features/home/presentation/cubit/navigation_tabs_state.dart';
+import 'package:project1/features/profile/presentation/cubit/locale_cubit.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class NavigationsTabs extends StatelessWidget {
@@ -20,16 +21,12 @@ class NavigationsTabs extends StatelessWidget {
     final localizations = AppLocalizations.of(context)!;
 
     return MultiBlocProvider(
-  providers: [
-    BlocProvider(
-      create: (_) => NavigationTabsCubit(),
-    ),
-    BlocProvider(
-      create: (_) => getIt<DemoCubit>()..fetchDemos(),
-    ),
-  ],
-  child: BlocBuilder<NavigationTabsCubit, NavigationTabsState>(
-    builder: (context, state) {
+      providers: [
+        BlocProvider(create: (_) => NavigationTabsCubit()),
+        BlocProvider(create: (_) => getIt<DemoCubit>()..fetchDemos()),
+      ],
+      child: BlocBuilder<NavigationTabsCubit, NavigationTabsState>(
+        builder: (context, state) {
           final cubit = context.read<NavigationTabsCubit>();
 
           return Scaffold(

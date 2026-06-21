@@ -649,6 +649,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Date of Birth'**
   String get dateOfBirthHint;
+
+  /// No description provided for @nameRequiredError.
+  ///
+  /// In en, this message translates to:
+  /// **'Name should not be empty'**
+  String get nameRequiredError;
 }
 
 class _AppLocalizationsDelegate

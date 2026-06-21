@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:project1/l10n/app_localizations.dart'; 
+import 'package:project1/features/profile/presentation/cubit/locale_cubit.dart';
+import 'package:project1/l10n/app_localizations.dart';
 import 'package:project1/config/theme/app_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
@@ -12,7 +13,6 @@ import 'package:project1/features/auth/presentation/pages/login_screen.dart';
 import 'package:project1/features/auth/presentation/pages/reset_password_screen.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:project1/l10n/l10n.dart';
-
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -35,8 +35,11 @@ void main() async {
   } catch (_) {}
 
   runApp(
-    BlocProvider<AuthCubit>(
-      create: (_) => getIt<AuthCubit>(),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthCubit>(create: (_) => getIt<AuthCubit>()),
+        BlocProvider<LocaleCubit>(create: (_) => LocaleCubit()),
+      ],
       child: MyApp(initialToken: initialToken),
     ),
   );
@@ -84,22 +87,26 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: navigatorKey,
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      title: 'App',
-    supportedLocales: L10n.all,
-    locale : const Locale('ar'),
-    localizationsDelegates: const [
-      AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      home: widget.initialToken != null && widget.initialToken!.isNotEmpty
-          ? ResetPasswordScreen(token: widget.initialToken!)
-          : const LoginScreen(),
+    return BlocBuilder<LocaleCubit, Locale>(
+      builder: (context, locale) {
+        return MaterialApp(
+          navigatorKey: navigatorKey,
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.lightTheme,
+          title: 'App',
+          supportedLocales: L10n.all,
+          locale: locale,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          home: widget.initialToken != null && widget.initialToken!.isNotEmpty
+              ? ResetPasswordScreen(token: widget.initialToken!)
+              : const LoginScreen(),
+        );
+      },
     );
   }
 }
