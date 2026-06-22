@@ -24,10 +24,12 @@ final getIt = GetIt.instance;
 final String baseUrl = dotenv.env['BASE_URL'] ?? '';
 
 void setupDI() {
+  //storage
   getIt.registerLazySingleton<AppSecureStorage>(
     () => AppSecureStorage(),
   );
-
+  
+  //dio
   getIt.registerLazySingleton<DioClient>(
     () => DioClient(
       storage: getIt<AppSecureStorage>(),
@@ -36,55 +38,29 @@ void setupDI() {
     ),
   );
 
+
+
+  ////////////////////Auth////////////////////
   getIt.registerLazySingleton<AuthRemoteDataSource>(
     () => AuthRemoteDataSource(getIt<DioClient>()),
   );
-
   getIt.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(
       getIt<AuthRemoteDataSource>(),
       getIt<AppSecureStorage>(),
     ),
   );
-
   getIt.registerLazySingleton<AuthTokenManager>(
     () => AuthTokenManager(getIt<AppSecureStorage>()),
   );
-
+  //usecase
   getIt.registerLazySingleton(() => RegisterUseCase(getIt<AuthRepository>()));
   getIt.registerLazySingleton(() => LoginUseCase(getIt<AuthRepository>()));
   getIt.registerLazySingleton(() => LogoutUseCase(getIt<AuthRepository>()));
   getIt.registerLazySingleton(() => VerifyEmailUseCase(getIt<AuthRepository>()));
   getIt.registerLazySingleton(() => ForgotPasswordUseCase(getIt<AuthRepository>()));
   getIt.registerLazySingleton(() => ResetPasswordUseCase(getIt<AuthRepository>()));
-
-
-getIt.registerLazySingleton<DemoRemoteDataSource>(
-  () => DemoRemoteDataSourceImpl(
-    dio: getIt<DioClient>().dio,
-  ),
-);
-
-getIt.registerLazySingleton<DemoRepository>(
-  () => DemoRepositoryImpl(
-    remoteDataSource: getIt<DemoRemoteDataSource>(),
-  ),
-);
-
-getIt.registerLazySingleton<GetDemosUseCase>(
-  () => GetDemosUseCase(
-    getIt<DemoRepository>(),
-  ),
-);
-
-
-getIt.registerFactory(
-  () => DemoCubit(
-    getDemosUseCase: getIt<GetDemosUseCase>(),
-  ),
-);
-  
-
+  //cubit
   getIt.registerFactory(
     () => AuthCubit(
       registerUseCase: getIt<RegisterUseCase>(),
@@ -96,4 +72,29 @@ getIt.registerFactory(
       
     ),
   );
+  ////////////////////Auth////////////////////
+  
+
+  ////////////////////Demo////////////////////
+  getIt.registerLazySingleton<DemoRemoteDataSource>(
+    () => DemoRemoteDataSourceImpl(
+      dio: getIt<DioClient>().dio,
+    ),
+  );
+  getIt.registerLazySingleton<DemoRepository>(
+    () => DemoRepositoryImpl(
+      remoteDataSource: getIt<DemoRemoteDataSource>(),
+    ),
+  );
+  getIt.registerLazySingleton<GetDemosUseCase>(
+    () => GetDemosUseCase(
+      getIt<DemoRepository>(),
+    ),
+  );
+  getIt.registerFactory(
+    () => DemoCubit(
+      getDemosUseCase: getIt<GetDemosUseCase>(),
+    ),
+  );
+  ////////////////////Demo////////////////////
 }
