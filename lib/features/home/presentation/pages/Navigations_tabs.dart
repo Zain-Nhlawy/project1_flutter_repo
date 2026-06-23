@@ -17,7 +17,7 @@ class NavigationsTabs extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
     final screenWidth = size.width;
     final screenHeight = size.height;
-    final textScale = MediaQuery.textScalerOf(context).scale(1);
+    final textScale = MediaQuery.of(context).textScaleFactor;
     final localizations = AppLocalizations.of(context)!;
 
     return MultiBlocProvider(

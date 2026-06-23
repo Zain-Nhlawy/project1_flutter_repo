@@ -6,6 +6,7 @@ import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_state.dart';
 import 'package:project1/features/auth/presentation/widgets/custom_text_field.dart';
 import 'package:project1/l10n/app_localizations.dart';
+import 'package:project1/features/auth/presentation/pages/login_screen.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   final String token;
@@ -73,7 +74,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    Navigator.pushReplacementNamed(context, '/login');
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (_) => const LoginScreen(),
+                      ),
+                      (route) => false,
+                    );
                   },
                   child: Text(localizations.goToLoginBtn),
                 ),
@@ -171,7 +177,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                 ],
                               ),
                               child: ElevatedButton(
-                                onPressed: isLoading ? null : () => _handleResetPassword(localizations),
+                                onPressed: isLoading
+                                    ? null
+                                    : () => _handleResetPassword(localizations),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.transparent,
                                   shadowColor: Colors.transparent,

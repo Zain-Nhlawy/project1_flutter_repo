@@ -76,25 +76,25 @@ void setupDI() {
   
 
   ////////////////////Demo////////////////////
-  DemoRemoteDataSourceImpl(
-  getIt<DioClient>(),
-  dio: getIt<DioClient>().dio,
+getIt.registerLazySingleton<DemoRemoteDataSource>(
+  () => DemoRemoteDataSourceImpl(
+    getIt<DioClient>(),
+    dio: getIt<DioClient>().dio,
+  ),
 );
-  getIt.registerLazySingleton<DemoRepository>(
+getIt.registerLazySingleton<DemoRepository>(
   () => DemoRepositoryImpl(
     getIt<DioClient>(),
     remoteDataSource: getIt<DemoRemoteDataSource>(),
   ),
 );
-  getIt.registerLazySingleton<GetDemosUseCase>(
-    () => GetDemosUseCase(
-      getIt<DemoRepository>(),
-    ),
-  );
-  getIt.registerFactory(
-    () => DemoCubit(
-      getDemosUseCase: getIt<GetDemosUseCase>(),
-    ),
-  );
+getIt.registerLazySingleton<GetDemosUseCase>(
+  () => GetDemosUseCase(getIt<DemoRepository>()),
+);
+getIt.registerFactory(
+  () => DemoCubit(
+    getDemosUseCase: getIt<GetDemosUseCase>(),
+  ),
+);
   ////////////////////Demo////////////////////
 }

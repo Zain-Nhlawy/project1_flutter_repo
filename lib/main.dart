@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:project1/features/profile/presentation/cubit/locale_cubit.dart';
-import 'package:project1/l10n/app_localizations.dart';
+import 'package:media_kit/media_kit.dart';
 import 'package:project1/config/theme/app_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/features/auth/domain/use_case/verify_email_usecase.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/pages/login_screen.dart';
 import 'package:project1/features/auth/presentation/pages/reset_password_screen.dart';
-import 'package:media_kit/media_kit.dart';
+import 'package:project1/features/profile/presentation/cubit/locale_cubit.dart';
+import 'package:project1/l10n/app_localizations.dart';
 import 'package:project1/l10n/l10n.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -23,14 +24,22 @@ void main() async {
   await dotenv.load();
   setupDI();
 
-  String? initialToken;
+  String? initialResetToken;
 
   try {
     final appLinks = AppLinks();
     final uri = await appLinks.getInitialLink();
 
-    if (uri != null && uri.path.contains('reset-password')) {
-      initialToken = uri.queryParameters['token'];
+    if (uri != null) {
+      if (uri.path.contains('reset-password')) {
+        initialResetToken = uri.queryParameters['token'];
+      } else if (uri.path.contains('verify-email')) {
+        final token = uri.queryParameters['token'];
+
+        if (token != null && token.isNotEmpty) {
+          await getIt<VerifyEmailUseCase>()(token);
+        }
+      }
     }
   } catch (_) {}
 
@@ -40,15 +49,20 @@ void main() async {
         BlocProvider<AuthCubit>(create: (_) => getIt<AuthCubit>()),
         BlocProvider<LocaleCubit>(create: (_) => LocaleCubit()),
       ],
-      child: MyApp(initialToken: initialToken),
+      child: MyApp(
+        initialResetToken: initialResetToken,
+      ),
     ),
   );
 }
 
 class MyApp extends StatefulWidget {
-  final String? initialToken;
+  final String? initialResetToken;
 
-  const MyApp({super.key, this.initialToken});
+  const MyApp({
+    super.key,
+    this.initialResetToken,
+  });
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -64,7 +78,7 @@ class _MyAppState extends State<MyApp> {
 
     _appLinks = AppLinks();
 
-    _sub = _appLinks.uriLinkStream.listen((uri) {
+    _sub = _appLinks.uriLinkStream.listen((uri) async {
       if (uri.path.contains('reset-password')) {
         final token = uri.queryParameters['token'];
 
@@ -73,6 +87,21 @@ class _MyAppState extends State<MyApp> {
             MaterialPageRoute(
               builder: (_) => ResetPasswordScreen(token: token),
             ),
+          );
+        }
+      } else if (uri.path.contains('verify-email')) {
+        final token = uri.queryParameters['token'];
+
+        if (token != null && token.isNotEmpty) {
+          try {
+            await getIt<VerifyEmailUseCase>()(token);
+          } catch (_) {}
+
+          navigatorKey.currentState?.pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (_) => const LoginScreen(),
+            ),
+            (route) => false,
           );
         }
       }
@@ -102,8 +131,9 @@ class _MyAppState extends State<MyApp> {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          home: widget.initialToken != null && widget.initialToken!.isNotEmpty
-              ? ResetPasswordScreen(token: widget.initialToken!)
+          home: widget.initialResetToken != null &&
+                  widget.initialResetToken!.isNotEmpty
+              ? ResetPasswordScreen(token: widget.initialResetToken!)
               : const LoginScreen(),
         );
       },

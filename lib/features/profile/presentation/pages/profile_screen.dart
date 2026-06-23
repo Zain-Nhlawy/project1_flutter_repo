@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/pages/login_screen.dart';
 import 'package:project1/features/home/presentation/pages/Navigations_tabs.dart';
 import 'package:project1/features/profile/presentation/cubit/locale_cubit.dart';
@@ -213,7 +214,15 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   SizedBox(height: size.height * 0.03),
                   InkWell(
-                    onTap: () {},
+                    onTap: () async {
+                      await context.read<AuthCubit>().logout();
+
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (_) => const LoginScreen()),
+                        (route) => false,
+                      );
+                    },
                     borderRadius: BorderRadius.circular(20),
                     child: Container(
                       width: double.infinity,

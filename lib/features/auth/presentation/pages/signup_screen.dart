@@ -73,6 +73,25 @@ class SignupScreen extends StatelessWidget {
                             bottom: Radius.circular(40),
                           ),
                         ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              localizations.createAccountTitle,
+                              style: AppTextStyles.h2.copyWith(
+                                color: AppColors.surface,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              localizations.startLearningToday,
+                              textAlign: TextAlign.center,
+                              style: AppTextStyles.bodyMedium.copyWith(
+                                color: Colors.white70,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(
