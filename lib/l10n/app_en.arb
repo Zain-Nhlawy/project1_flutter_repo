@@ -1,0 +1,141 @@
+ {
+  "myDemos": "My Demos",
+  "somethingWentWrong": "Something went wrong",
+  "noDemosAvailable": "No demos available",
+  "pressButtonToFetch": "Press the button to fetch data",
+  "demosImIn": "Demos I'm In",
+  "seeAll": "See all",
+  "byAuthor": "by {author}",
+"@byAuthor": {
+  "placeholders": {
+    "author": {
+      "type": "String"
+    }
+  }
+},
+"usersCountText": "{count} users",
+"@usersCountText": {
+  "placeholders": {
+    "count": {
+      "type": "int"
+    }
+  }
+},
+"see": "See",
+"navMain": "Main",
+"navHistory": "History",
+"navProfile": "Profile",
+"goodMorning": "Good morning,",
+"addDemo": "Add Demo",
+"statMyDemos": "My Demos",
+"statEnrolled": "Enrolled",
+
+
+
+
+
+
+
+
+
+"profileTitle": "Profile",
+"manageAccount": "Manage your account",
+"secPreferences": "Preferences",
+"tileTheme": "Theme",
+"themeLight": "Light",
+"tileLanguage": "Language",
+"langEnglish": "English",
+"tileNotifications": "Notifications",
+"notifOn": "On",
+"secSupport": "Support",
+"tileMessageAdmins": "Message Admins",
+"tileHelpFAQ": "Help & FAQ",
+"tilePrivacyPolicy": "Privacy Policy",
+"btnLogOut": "Log Out",
+"profileEnrolled": "Enrolled",
+"profileDemos": "Demos",
+"continueBtn": "Continue",
+"payAndCreate": "Pay ${price} & Create",
+"@payAndCreate": {
+  "placeholders": {
+    "price": {
+      "type": "String"
+    }
+  }
+},
+"orderSummary": "Order Summary",
+"reviewDemoDetails": "Review your demo details and complete the payment.",
+"baseDemoReservation": "Base Demo Reservation",
+"selectedFeatures": "Selected Features",
+"noFeaturesSelected": "No features selected.",
+"totalAmount": "Total Amount",
+"startWithName": "Let's start with a name",
+"giveCatchyTitle": "Give your new demo a catchy title so you can easily identify it later.",
+"labelDemoName": "Demo Name",
+"hintDemoName": "e.g. Flutter Advanced Course",
+"labelDescription": "Short Description (Optional)",
+"hintDescription": "What is this demo about?",
+"errorDemoNameRequired": "Demo name is required, cannot be left empty",
+"superchargeDemo": "Supercharge your Demo",
+"selectAddons": "Select optional add-ons to enhance your room. You can skip this if you don't need any.",
+
+
+
+
+
+
+
+
+
+"pleaseEnterEmail": "Please enter your email address",
+"emailSent": "Email Sent",
+"ok": "OK",
+"forgotPasswordTitle": "Forgot Password",
+"resetPassword": "Reset Password",
+"forgotPasswordInstruction": "Enter your email address and we'll send you a link to reset your password.",
+"emailAddressLabel": "Email Address",
+"sendResetLink": "Send Reset Link",
+"pleaseEnterEmailPassword": "Please enter email and password",
+"loginSuccessful": "Login successful!",
+"welcomeBack": "Welcome Back!",
+"diveBackLearning": "Dive back into your learning",
+"signIn": "Sign In",
+"emailAddressHint": "Email Address",
+"passwordHint": "Password",
+"forgotPasswordLink": "Forgot Password?",
+"logInBtn": "Log In",
+"orDivider": "OR",
+"continueWithGoogle": "Continue with Google",
+"dontHaveAccount": "Don't have an account?",
+"signUpLink": "Sign Up",
+
+"pleaseEnterNewPassword": "Please enter new password",
+"passwordsDoNotMatch": "Passwords do not match",
+"successTitle": "Success",
+"goToLoginBtn": "Go to Login",
+"resetPasswordScreenTitle": "Reset Password",
+"createNewPassword": "Create New Password",
+"enterNewPasswordBelow": "Enter your new password below.",
+"newPasswordHint": "New Password",
+"confirmPasswordHint": "Confirm Password",
+"resetPasswordBtn": "Reset Password",
+"passwordsDoNotMatch": "Passwords do not match",
+"createAccountTitle": "Create Account",
+"startLearningToday": "Start your ocean of learning today",
+"firstNameHint": "First Name",
+"lastNameHint": "Last Name",
+"emailAddressHint": "Email Address",
+"passwordHint": "Password",
+"confirmPasswordHint": "Confirm Password",
+"createAccountBtn": "Create Account",
+"continueWithGoogle": "Continue with Google",
+"alreadyHaveAccount": "Already have an account?",
+"logInLink": "Log In",
+"checkYourEmail": "Check Your Email",
+"verificationLinkSent": "We sent a verification link to:",
+"verifyBeforeLogin": "Please verify your email before logging in.",
+"backToLoginBtn": "Back to Login",
+"dateOfBirthHint": "Date of Birth",
+"nameRequiredError" : "Name should not be empty"
+
+}

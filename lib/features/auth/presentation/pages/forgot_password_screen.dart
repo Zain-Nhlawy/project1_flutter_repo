@@ -5,6 +5,7 @@ import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_state.dart';
 import 'package:project1/features/auth/presentation/widgets/custom_text_field.dart';
+import 'package:project1/l10n/app_localizations.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -22,11 +23,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     super.dispose();
   }
 
-  void _handleForgotPassword() {
+  void _handleForgotPassword(AppLocalizations localizations) {
     if (emailController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter your email address'),
+        SnackBar(
+          content: Text(localizations.pleaseEnterEmail),
           backgroundColor: AppColors.error,
         ),
       );
@@ -44,6 +45,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final isTablet = size.width >= 600;
+    final localizations = AppLocalizations.of(context)!;
 
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
@@ -51,7 +53,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              title: const Text('Email Sent'),
+              title: Text(localizations.emailSent),
               content: Text(state.message),
               actions: [
                 TextButton(
@@ -59,7 +61,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     Navigator.pop(context);
                     Navigator.pop(context);
                   },
-                  child: const Text('OK'),
+                  child: Text(localizations.ok),
                 ),
               ],
             ),
@@ -83,7 +85,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             onPressed: () => Navigator.pop(context),
           ),
           title: Text(
-            'Forgot Password',
+            localizations.forgotPasswordTitle,
             style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
           ),
         ),
@@ -110,19 +112,19 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       ),
                       const SizedBox(height: 20),
                       Text(
-                        'Reset Password',
+                        localizations.resetPassword,
                         style: AppTextStyles.h2,
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        'Enter your email address and we\'ll send you a link to reset your password.',
+                        localizations.forgotPasswordInstruction,
                         style: AppTextStyles.bodyMedium.copyWith(
                           color: AppColors.textSecondary,
                         ),
                       ),
                       const SizedBox(height: 30),
                       CustomTextField(
-                        hintText: 'Email Address',
+                        hintText: localizations.emailAddressLabel,
                         icon: Icons.email_outlined,
                         controller: emailController,
                         keyboardType: TextInputType.emailAddress,
@@ -147,7 +149,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                 ],
                               ),
                               child: ElevatedButton(
-                                onPressed: isLoading ? null : _handleForgotPassword,
+                                onPressed: isLoading ? null : () => _handleForgotPassword(localizations),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.transparent,
                                   shadowColor: Colors.transparent,
@@ -167,7 +169,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                           ),
                                         )
                                       : Text(
-                                          "Send Reset Link",
+                                          localizations.sendResetLink,
                                           style: AppTextStyles.titleMedium.copyWith(
                                             color: AppColors.surface,
                                             fontWeight: FontWeight.bold,

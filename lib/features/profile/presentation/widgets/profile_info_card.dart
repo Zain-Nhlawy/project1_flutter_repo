@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/l10n/app_localizations.dart';
 
 class ProfileInfoCard extends StatelessWidget {
   const ProfileInfoCard({super.key});
@@ -9,6 +10,7 @@ class ProfileInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     final textScale = MediaQuery.textScalerOf(context).scale(1);
+    final localizations = AppLocalizations.of(context)!;
 
     return Container(
       width: double.infinity,
@@ -87,7 +89,7 @@ class ProfileInfoCard extends StatelessWidget {
                 icon: Icons.menu_book_rounded,
                 iconColor: Colors.blue,
                 count: "3",
-                label: "Demos",
+                label: localizations.profileDemos,
                 size: size,
                 textScale: textScale,
               ),
@@ -100,7 +102,7 @@ class ProfileInfoCard extends StatelessWidget {
                 icon: Icons.star_border_rounded,
                 iconColor: Colors.teal,
                 count: "2",
-                label: "Enrolled",
+                label: localizations.profileEnrolled,
                 size: size,
                 textScale: textScale,
               ),

@@ -6,6 +6,8 @@ import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/demo/presentation/cubit/demo_cubit.dart';
 import 'package:project1/features/home/presentation/cubit/navigation_tabs_cubit.dart';
 import 'package:project1/features/home/presentation/cubit/navigation_tabs_state.dart';
+import 'package:project1/features/profile/presentation/cubit/locale_cubit.dart';
+import 'package:project1/l10n/app_localizations.dart';
 
 class NavigationsTabs extends StatelessWidget {
   const NavigationsTabs({super.key});
@@ -16,18 +18,15 @@ class NavigationsTabs extends StatelessWidget {
     final screenWidth = size.width;
     final screenHeight = size.height;
     final textScale = MediaQuery.textScalerOf(context).scale(1);
+    final localizations = AppLocalizations.of(context)!;
 
     return MultiBlocProvider(
-  providers: [
-    BlocProvider(
-      create: (_) => NavigationTabsCubit(),
-    ),
-    BlocProvider(
-      create: (_) => getIt<DemoCubit>()..fetchDemos(),
-    ),
-  ],
-  child: BlocBuilder<NavigationTabsCubit, NavigationTabsState>(
-    builder: (context, state) {
+      providers: [
+        BlocProvider(create: (_) => NavigationTabsCubit()),
+        BlocProvider(create: (_) => getIt<DemoCubit>()..fetchDemos()),
+      ],
+      child: BlocBuilder<NavigationTabsCubit, NavigationTabsState>(
+        builder: (context, state) {
           final cubit = context.read<NavigationTabsCubit>();
 
           return Scaffold(
@@ -46,6 +45,7 @@ class NavigationsTabs extends StatelessWidget {
               screenWidth,
               screenHeight,
               textScale,
+              localizations,
             ),
           );
         },
@@ -59,6 +59,7 @@ class NavigationsTabs extends StatelessWidget {
     double screenWidth,
     double screenHeight,
     double textScale,
+    AppLocalizations localizations,
   ) {
     return SafeArea(
       child: Container(
@@ -88,7 +89,7 @@ class NavigationsTabs extends StatelessWidget {
                 index: 0,
                 state: state,
                 cubit: cubit,
-                sideWord: "Main",
+                sideWord: localizations.navMain,
                 screenWidth: screenWidth,
                 screenHeight: screenHeight,
                 textScale: textScale,
@@ -100,7 +101,7 @@ class NavigationsTabs extends StatelessWidget {
                 index: 1,
                 state: state,
                 cubit: cubit,
-                sideWord: "History",
+                sideWord: localizations.navHistory,
                 screenWidth: screenWidth,
                 screenHeight: screenHeight,
                 textScale: textScale,
@@ -112,7 +113,7 @@ class NavigationsTabs extends StatelessWidget {
                 index: 2,
                 state: state,
                 cubit: cubit,
-                sideWord: "Profile",
+                sideWord: localizations.navProfile,
                 screenWidth: screenWidth,
                 screenHeight: screenHeight,
                 textScale: textScale,

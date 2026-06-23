@@ -4,7 +4,7 @@ import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/features/demo/presentation/cubit/add%20demo%20wizard/add_demo_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/add%20demo%20wizard/add_demo_state.dart';
-
+import 'package:project1/l10n/app_localizations.dart';
 
 class CheckoutSlide extends StatelessWidget {
   const CheckoutSlide({super.key});
@@ -13,6 +13,7 @@ class CheckoutSlide extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     final textScale = MediaQuery.textScalerOf(context).scale(1);
+    final localizations = AppLocalizations.of(context)!;
 
     return BlocBuilder<AddDemoCubit, AddDemoState>(
       builder: (context, state) {
@@ -23,7 +24,7 @@ class CheckoutSlide extends StatelessWidget {
             children: [
               SizedBox(height: size.height * 0.04),
               Text(
-                "Order Summary",
+                localizations.orderSummary,
                 style: AppTextStyles.h2.copyWith(
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.bold,
@@ -32,7 +33,7 @@ class CheckoutSlide extends StatelessWidget {
               ),
               SizedBox(height: size.height * 0.01),
               Text(
-                "Review your demo details and complete the payment.",
+                localizations.reviewDemoDetails,
                 style: AppTextStyles.bodyMedium.copyWith(
                   color: AppColors.textSecondary,
                   fontSize: 14 * textScale,
@@ -56,7 +57,7 @@ class CheckoutSlide extends StatelessWidget {
                   children: [
                     _buildSummaryRow(
                       context: context,
-                      title: "Base Demo Reservation",
+                      title: localizations.baseDemoReservation,
                       price: "\$${state.basePrice.toStringAsFixed(2)}",
                       isBold: true,
                     ),
@@ -66,7 +67,7 @@ class CheckoutSlide extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "Selected Features",
+                        localizations.selectedFeatures,
                         style: AppTextStyles.label.copyWith(
                           color: AppColors.textSecondary,
                           fontWeight: FontWeight.bold,
@@ -79,7 +80,7 @@ class CheckoutSlide extends StatelessWidget {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "No features selected.",
+                          localizations.noFeaturesSelected,
                           style: AppTextStyles.label.copyWith(
                             color: AppColors.textSecondary.withOpacity(0.7),
                           ),
@@ -107,7 +108,7 @@ class CheckoutSlide extends StatelessWidget {
                       ),
                       child: _buildSummaryRow(
                         context: context,
-                        title: "Total Amount",
+                        title: localizations.totalAmount,
                         price: "\$${state.totalPrice.toStringAsFixed(2)}",
                         isBold: true,
                         titleColor: AppColors.primary,

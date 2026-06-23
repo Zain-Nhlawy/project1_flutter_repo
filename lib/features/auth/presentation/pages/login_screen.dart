@@ -8,6 +8,7 @@ import 'package:project1/features/auth/presentation/pages/forgot_password_screen
 import 'package:project1/features/auth/presentation/pages/signup_screen.dart';
 import 'package:project1/features/auth/presentation/widgets/custom_text_field.dart';
 import 'package:project1/features/home/presentation/pages/navigations_tabs.dart';
+import 'package:project1/l10n/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -27,11 +28,11 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void _handleLogin() {
+  void _handleLogin(AppLocalizations localizations) {
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter email and password'),
+        SnackBar(
+          content: Text(localizations.pleaseEnterEmailPassword),
           backgroundColor: AppColors.error,
         ),
       );
@@ -50,30 +51,29 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final isTablet = size.width >= 600;
+    final localizations = AppLocalizations.of(context)!;
 
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is LoginSuccess) {
-            final messenger = ScaffoldMessenger.of(context);
-            messenger.showSnackBar(
-              const SnackBar(
-                content: Text('Login successful!'),
-                backgroundColor: AppColors.success,
-                duration: Duration(milliseconds: 500),
-              ),
-            );
-            Future.delayed(const Duration(milliseconds: 500), () {
-              messenger.clearSnackBars();
-              if (mounted) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const NavigationsTabs(),
-                  ),
-                );
-              }
-            });
-          } else if (state is AuthError) {
+          final messenger = ScaffoldMessenger.of(context);
+          messenger.showSnackBar(
+            SnackBar(
+              content: Text(localizations.loginSuccessful),
+              backgroundColor: AppColors.success,
+              duration: const Duration(milliseconds: 500),
+            ),
+          );
+          Future.delayed(const Duration(milliseconds: 500), () {
+            messenger.clearSnackBars();
+            if (mounted) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const NavigationsTabs()),
+              );
+            }
+          });
+        } else if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.message),
@@ -112,14 +112,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           SizedBox(height: size.height * 0.01),
                           Text(
-                            "Welcome Back!",
+                            localizations.welcomeBack,
                             style: AppTextStyles.h2.copyWith(
                               color: AppColors.surface,
                             ),
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            "Dive back into your learning",
+                            localizations.diveBackLearning,
                             style: AppTextStyles.bodyMedium.copyWith(
                               color: Colors.white70,
                             ),
@@ -136,25 +136,25 @@ class _LoginScreenState extends State<LoginScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Sign In",
+                            localizations.signIn,
                             style: AppTextStyles.h3.copyWith(
                               color: AppColors.textPrimary,
                             ),
                           ),
                           const SizedBox(height: 25),
                           CustomTextField(
-                            hintText: 'Email Address',
+                            hintText: localizations.emailAddressHint,
                             icon: Icons.email_outlined,
                             controller: emailController,
                             keyboardType: TextInputType.emailAddress,
                           ),
                           const SizedBox(height: 16),
                           CustomTextField(
-                            hintText: 'Password',
+                            hintText: localizations.passwordHint,
                             isPassword: true,
                             icon: Icons.lock_outline,
                             controller: passwordController,
-                            onSubmitted: (_) => _handleLogin(),
+                            onSubmitted: (_) => _handleLogin(localizations),
                           ),
                           Align(
                             alignment: Alignment.centerRight,
@@ -163,12 +163,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (_) => const ForgotPasswordScreen(),
+                                    builder: (_) =>
+                                        const ForgotPasswordScreen(),
                                   ),
                                 );
                               },
                               child: Text(
-                                'Forgot Password?',
+                                localizations.forgotPasswordLink,
                                 style: AppTextStyles.bodyMedium.copyWith(
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.primary,
@@ -189,14 +190,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                     borderRadius: BorderRadius.circular(16),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: AppColors.primary.withOpacity(0.25),
+                                        color: AppColors.primary.withOpacity(
+                                          0.25,
+                                        ),
                                         blurRadius: 12,
                                         offset: const Offset(0, 4),
                                       ),
                                     ],
                                   ),
                                   child: ElevatedButton(
-                                    onPressed: isLoading ? null : _handleLogin,
+                                    onPressed: isLoading
+                                        ? null
+                                        : () => _handleLogin(localizations),
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.transparent,
                                       shadowColor: Colors.transparent,
@@ -216,11 +221,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                               ),
                                             )
                                           : Text(
-                                              "Log In",
-                                              style: AppTextStyles.titleMedium.copyWith(
-                                                color: AppColors.surface,
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                              localizations.logInBtn,
+                                              style: AppTextStyles.titleMedium
+                                                  .copyWith(
+                                                    color: AppColors.surface,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                             ),
                                     ),
                                   ),
@@ -232,24 +238,21 @@ class _LoginScreenState extends State<LoginScreen> {
                           Row(
                             children: [
                               const Expanded(
-                                child: Divider(
-                                  color: AppColors.border,
-                                ),
+                                child: Divider(color: AppColors.border),
                               ),
                               Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
                                 child: Text(
-                                  "OR",
+                                  localizations.orDivider,
                                   style: AppTextStyles.label.copyWith(
                                     color: AppColors.textSecondary,
                                   ),
                                 ),
                               ),
                               const Expanded(
-                                child: Divider(
-                                  color: AppColors.border,
-                                ),
+                                child: Divider(color: AppColors.border),
                               ),
                             ],
                           ),
@@ -261,7 +264,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               height: isTablet ? 24 : 22,
                             ),
                             label: Text(
-                              "Continue with Google",
+                              localizations.continueWithGoogle,
                               style: AppTextStyles.bodyMedium.copyWith(
                                 color: AppColors.textPrimary,
                                 fontWeight: FontWeight.w600,
@@ -270,9 +273,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             style: OutlinedButton.styleFrom(
                               minimumSize: const Size(double.infinity, 56),
                               backgroundColor: AppColors.surface,
-                              side: const BorderSide(
-                                color: AppColors.border,
-                              ),
+                              side: const BorderSide(color: AppColors.border),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(16),
                               ),
@@ -283,7 +284,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                "Don't have an account?",
+                                localizations.dontHaveAccount,
                                 style: AppTextStyles.bodyMedium.copyWith(
                                   color: AppColors.textSecondary,
                                 ),
@@ -298,7 +299,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   );
                                 },
                                 child: Text(
-                                  "Sign Up",
+                                  localizations.signUpLink,
                                   style: AppTextStyles.bodyMedium.copyWith(
                                     color: AppColors.primary,
                                     fontWeight: FontWeight.bold,

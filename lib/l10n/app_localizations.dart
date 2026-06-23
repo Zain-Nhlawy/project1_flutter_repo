@@ -1,0 +1,692 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart' as intl;
+
+import 'app_localizations_ar.dart';
+import 'app_localizations_en.dart';
+
+// ignore_for_file: type=lint
+
+/// Callers can lookup localized strings with an instance of AppLocalizations
+/// returned by `AppLocalizations.of(context)`.
+///
+/// Applications need to include `AppLocalizations.delegate()` in their app's
+/// `localizationDelegates` list, and the locales they support in the app's
+/// `supportedLocales` list. For example:
+///
+/// ```dart
+/// import 'l10n/app_localizations.dart';
+///
+/// return MaterialApp(
+///   localizationsDelegates: AppLocalizations.localizationsDelegates,
+///   supportedLocales: AppLocalizations.supportedLocales,
+///   home: MyApplicationHome(),
+/// );
+/// ```
+///
+/// ## Update pubspec.yaml
+///
+/// Please make sure to update your pubspec.yaml to include the following
+/// packages:
+///
+/// ```yaml
+/// dependencies:
+///   # Internationalization support.
+///   flutter_localizations:
+///     sdk: flutter
+///   intl: any # Use the pinned version from flutter_localizations
+///
+///   # Rest of dependencies
+/// ```
+///
+/// ## iOS Applications
+///
+/// iOS applications define key application metadata, including supported
+/// locales, in an Info.plist file that is built into the application bundle.
+/// To configure the locales supported by your app, you’ll need to edit this
+/// file.
+///
+/// First, open your project’s ios/Runner.xcworkspace Xcode workspace file.
+/// Then, in the Project Navigator, open the Info.plist file under the Runner
+/// project’s Runner folder.
+///
+/// Next, select the Information Property List item, select Add Item from the
+/// Editor menu, then select Localizations from the pop-up menu.
+///
+/// Select and expand the newly-created Localizations item then, for each
+/// locale your application supports, add a new item and select the locale
+/// you wish to add from the pop-up menu in the Value field. This list should
+/// be consistent with the languages listed in the AppLocalizations.supportedLocales
+/// property.
+abstract class AppLocalizations {
+  AppLocalizations(String locale)
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+
+  final String localeName;
+
+  static AppLocalizations? of(BuildContext context) {
+    return Localizations.of<AppLocalizations>(context, AppLocalizations);
+  }
+
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
+
+  /// A list of this localizations delegate along with the default localizations
+  /// delegates.
+  ///
+  /// Returns a list of localizations delegates containing this delegate along with
+  /// GlobalMaterialLocalizations.delegate, GlobalCupertinoLocalizations.delegate,
+  /// and GlobalWidgetsLocalizations.delegate.
+  ///
+  /// Additional delegates can be added by appending to this list in
+  /// MaterialApp. This list does not have to be used at all if a custom list
+  /// of delegates is preferred or required.
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
+
+  /// A list of this localizations delegate's supported locales.
+  static const List<Locale> supportedLocales = <Locale>[
+    Locale('ar'),
+    Locale('en'),
+  ];
+
+  /// No description provided for @myDemos.
+  ///
+  /// In en, this message translates to:
+  /// **'My Demos'**
+  String get myDemos;
+
+  /// No description provided for @somethingWentWrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get somethingWentWrong;
+
+  /// No description provided for @noDemosAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No demos available'**
+  String get noDemosAvailable;
+
+  /// No description provided for @pressButtonToFetch.
+  ///
+  /// In en, this message translates to:
+  /// **'Press the button to fetch data'**
+  String get pressButtonToFetch;
+
+  /// No description provided for @demosImIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Demos I\'m In'**
+  String get demosImIn;
+
+  /// No description provided for @seeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'See all'**
+  String get seeAll;
+
+  /// No description provided for @byAuthor.
+  ///
+  /// In en, this message translates to:
+  /// **'by {author}'**
+  String byAuthor(String author);
+
+  /// No description provided for @usersCountText.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} users'**
+  String usersCountText(int count);
+
+  /// No description provided for @see.
+  ///
+  /// In en, this message translates to:
+  /// **'See'**
+  String get see;
+
+  /// No description provided for @navMain.
+  ///
+  /// In en, this message translates to:
+  /// **'Main'**
+  String get navMain;
+
+  /// No description provided for @navHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get navHistory;
+
+  /// No description provided for @navProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get navProfile;
+
+  /// No description provided for @goodMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning,'**
+  String get goodMorning;
+
+  /// No description provided for @addDemo.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Demo'**
+  String get addDemo;
+
+  /// No description provided for @statMyDemos.
+  ///
+  /// In en, this message translates to:
+  /// **'My Demos'**
+  String get statMyDemos;
+
+  /// No description provided for @statEnrolled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enrolled'**
+  String get statEnrolled;
+
+  /// No description provided for @profileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profileTitle;
+
+  /// No description provided for @manageAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your account'**
+  String get manageAccount;
+
+  /// No description provided for @secPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferences'**
+  String get secPreferences;
+
+  /// No description provided for @tileTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get tileTheme;
+
+  /// No description provided for @themeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeLight;
+
+  /// No description provided for @tileLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get tileLanguage;
+
+  /// No description provided for @langEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get langEnglish;
+
+  /// No description provided for @tileNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get tileNotifications;
+
+  /// No description provided for @notifOn.
+  ///
+  /// In en, this message translates to:
+  /// **'On'**
+  String get notifOn;
+
+  /// No description provided for @secSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Support'**
+  String get secSupport;
+
+  /// No description provided for @tileMessageAdmins.
+  ///
+  /// In en, this message translates to:
+  /// **'Message Admins'**
+  String get tileMessageAdmins;
+
+  /// No description provided for @tileHelpFAQ.
+  ///
+  /// In en, this message translates to:
+  /// **'Help & FAQ'**
+  String get tileHelpFAQ;
+
+  /// No description provided for @tilePrivacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get tilePrivacyPolicy;
+
+  /// No description provided for @btnLogOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Log Out'**
+  String get btnLogOut;
+
+  /// No description provided for @profileEnrolled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enrolled'**
+  String get profileEnrolled;
+
+  /// No description provided for @profileDemos.
+  ///
+  /// In en, this message translates to:
+  /// **'Demos'**
+  String get profileDemos;
+
+  /// No description provided for @continueBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueBtn;
+
+  /// No description provided for @payAndCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay \${price} & Create'**
+  String payAndCreate(String price);
+
+  /// No description provided for @orderSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Summary'**
+  String get orderSummary;
+
+  /// No description provided for @reviewDemoDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Review your demo details and complete the payment.'**
+  String get reviewDemoDetails;
+
+  /// No description provided for @baseDemoReservation.
+  ///
+  /// In en, this message translates to:
+  /// **'Base Demo Reservation'**
+  String get baseDemoReservation;
+
+  /// No description provided for @selectedFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected Features'**
+  String get selectedFeatures;
+
+  /// No description provided for @noFeaturesSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'No features selected.'**
+  String get noFeaturesSelected;
+
+  /// No description provided for @totalAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Amount'**
+  String get totalAmount;
+
+  /// No description provided for @startWithName.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s start with a name'**
+  String get startWithName;
+
+  /// No description provided for @giveCatchyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Give your new demo a catchy title so you can easily identify it later.'**
+  String get giveCatchyTitle;
+
+  /// No description provided for @labelDemoName.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo Name'**
+  String get labelDemoName;
+
+  /// No description provided for @hintDemoName.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Flutter Advanced Course'**
+  String get hintDemoName;
+
+  /// No description provided for @labelDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Short Description (Optional)'**
+  String get labelDescription;
+
+  /// No description provided for @hintDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'What is this demo about?'**
+  String get hintDescription;
+
+  /// No description provided for @errorDemoNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo name is required, cannot be left empty'**
+  String get errorDemoNameRequired;
+
+  /// No description provided for @superchargeDemo.
+  ///
+  /// In en, this message translates to:
+  /// **'Supercharge your Demo'**
+  String get superchargeDemo;
+
+  /// No description provided for @selectAddons.
+  ///
+  /// In en, this message translates to:
+  /// **'Select optional add-ons to enhance your room. You can skip this if you don\'t need any.'**
+  String get selectAddons;
+
+  /// No description provided for @pleaseEnterEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your email address'**
+  String get pleaseEnterEmail;
+
+  /// No description provided for @emailSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Sent'**
+  String get emailSent;
+
+  /// No description provided for @ok.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get ok;
+
+  /// No description provided for @forgotPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password'**
+  String get forgotPasswordTitle;
+
+  /// No description provided for @resetPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get resetPassword;
+
+  /// No description provided for @forgotPasswordInstruction.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email address and we\'ll send you a link to reset your password.'**
+  String get forgotPasswordInstruction;
+
+  /// No description provided for @emailAddressLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Address'**
+  String get emailAddressLabel;
+
+  /// No description provided for @sendResetLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Reset Link'**
+  String get sendResetLink;
+
+  /// No description provided for @pleaseEnterEmailPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter email and password'**
+  String get pleaseEnterEmailPassword;
+
+  /// No description provided for @loginSuccessful.
+  ///
+  /// In en, this message translates to:
+  /// **'Login successful!'**
+  String get loginSuccessful;
+
+  /// No description provided for @welcomeBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome Back!'**
+  String get welcomeBack;
+
+  /// No description provided for @diveBackLearning.
+  ///
+  /// In en, this message translates to:
+  /// **'Dive back into your learning'**
+  String get diveBackLearning;
+
+  /// No description provided for @signIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get signIn;
+
+  /// No description provided for @emailAddressHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Address'**
+  String get emailAddressHint;
+
+  /// No description provided for @passwordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get passwordHint;
+
+  /// No description provided for @forgotPasswordLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password?'**
+  String get forgotPasswordLink;
+
+  /// No description provided for @logInBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Log In'**
+  String get logInBtn;
+
+  /// No description provided for @orDivider.
+  ///
+  /// In en, this message translates to:
+  /// **'OR'**
+  String get orDivider;
+
+  /// No description provided for @continueWithGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Google'**
+  String get continueWithGoogle;
+
+  /// No description provided for @dontHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account?'**
+  String get dontHaveAccount;
+
+  /// No description provided for @signUpLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Up'**
+  String get signUpLink;
+
+  /// No description provided for @pleaseEnterNewPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter new password'**
+  String get pleaseEnterNewPassword;
+
+  /// No description provided for @passwordsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get passwordsDoNotMatch;
+
+  /// No description provided for @successTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get successTitle;
+
+  /// No description provided for @goToLoginBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Login'**
+  String get goToLoginBtn;
+
+  /// No description provided for @resetPasswordScreenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get resetPasswordScreenTitle;
+
+  /// No description provided for @createNewPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Create New Password'**
+  String get createNewPassword;
+
+  /// No description provided for @enterNewPasswordBelow.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your new password below.'**
+  String get enterNewPasswordBelow;
+
+  /// No description provided for @newPasswordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'New Password'**
+  String get newPasswordHint;
+
+  /// No description provided for @confirmPasswordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get confirmPasswordHint;
+
+  /// No description provided for @resetPasswordBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get resetPasswordBtn;
+
+  /// No description provided for @createAccountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get createAccountTitle;
+
+  /// No description provided for @startLearningToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Start your ocean of learning today'**
+  String get startLearningToday;
+
+  /// No description provided for @firstNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'First Name'**
+  String get firstNameHint;
+
+  /// No description provided for @lastNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Name'**
+  String get lastNameHint;
+
+  /// No description provided for @createAccountBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get createAccountBtn;
+
+  /// No description provided for @alreadyHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account?'**
+  String get alreadyHaveAccount;
+
+  /// No description provided for @logInLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Log In'**
+  String get logInLink;
+
+  /// No description provided for @checkYourEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Check Your Email'**
+  String get checkYourEmail;
+
+  /// No description provided for @verificationLinkSent.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a verification link to:'**
+  String get verificationLinkSent;
+
+  /// No description provided for @verifyBeforeLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Please verify your email before logging in.'**
+  String get verifyBeforeLogin;
+
+  /// No description provided for @backToLoginBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Login'**
+  String get backToLoginBtn;
+
+  /// No description provided for @dateOfBirthHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Date of Birth'**
+  String get dateOfBirthHint;
+
+  /// No description provided for @nameRequiredError.
+  ///
+  /// In en, this message translates to:
+  /// **'Name should not be empty'**
+  String get nameRequiredError;
+}
+
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
+  const _AppLocalizationsDelegate();
+
+  @override
+  Future<AppLocalizations> load(Locale locale) {
+    return SynchronousFuture<AppLocalizations>(lookupAppLocalizations(locale));
+  }
+
+  @override
+  bool isSupported(Locale locale) =>
+      <String>['ar', 'en'].contains(locale.languageCode);
+
+  @override
+  bool shouldReload(_AppLocalizationsDelegate old) => false;
+}
+
+AppLocalizations lookupAppLocalizations(Locale locale) {
+  // Lookup logic when only language code is specified.
+  switch (locale.languageCode) {
+    case 'ar':
+      return AppLocalizationsAr();
+    case 'en':
+      return AppLocalizationsEn();
+  }
+
+  throw FlutterError(
+    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
+}

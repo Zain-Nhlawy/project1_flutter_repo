@@ -76,16 +76,16 @@ void setupDI() {
   
 
   ////////////////////Demo////////////////////
-  getIt.registerLazySingleton<DemoRemoteDataSource>(
-    () => DemoRemoteDataSourceImpl(
-      dio: getIt<DioClient>().dio,
-    ),
-  );
+  DemoRemoteDataSourceImpl(
+  getIt<DioClient>(),
+  dio: getIt<DioClient>().dio,
+);
   getIt.registerLazySingleton<DemoRepository>(
-    () => DemoRepositoryImpl(
-      remoteDataSource: getIt<DemoRemoteDataSource>(),
-    ),
-  );
+  () => DemoRepositoryImpl(
+    getIt<DioClient>(),
+    remoteDataSource: getIt<DemoRemoteDataSource>(),
+  ),
+);
   getIt.registerLazySingleton<GetDemosUseCase>(
     () => GetDemosUseCase(
       getIt<DemoRepository>(),

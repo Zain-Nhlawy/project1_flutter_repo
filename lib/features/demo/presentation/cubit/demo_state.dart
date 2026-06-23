@@ -17,3 +17,15 @@ class GetDemosError extends DemoState {
 
   GetDemosError(this.message);
 }
+
+class AddDemoLoading extends DemoState {
+
+}
+class AddDemoSuccess extends DemoState {
+
+}
+class AddDemoError extends DemoState {
+  final String message;
+
+  AddDemoError(this.message);
+}
