@@ -216,7 +216,6 @@ class ProfileScreen extends StatelessWidget {
                   InkWell(
                     onTap: () async {
                       await context.read<AuthCubit>().logout();
-
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(builder: (_) => const LoginScreen()),

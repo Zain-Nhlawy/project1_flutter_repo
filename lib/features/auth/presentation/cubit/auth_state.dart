@@ -42,6 +42,12 @@ class ResetPasswordSuccess extends AuthState {
 
 }
 
+class AuthChangePasswordSuccess extends AuthState {
+  final String message;
+
+  AuthChangePasswordSuccess(this.message);
+}
+
 class AuthError extends AuthState {
   final String message;
 

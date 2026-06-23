@@ -233,7 +233,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get pleaseEnterNewPassword => 'يرجى إدخال كلمة المرور الجديدة';
 
   @override
-  String get passwordsDoNotMatch => 'كلمات المرور غير متطابقة';
+  String get passwordsDoNotMatch => 'كلمتا المرور غير متطابقتين';
 
   @override
   String get successTitle => 'نجاح';
@@ -298,4 +298,26 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get nameRequiredError => 'الاسم لا يجب ان يكون فارغاً';
+
+  @override
+  String get changePassword => 'تغيير كلمة المرور';
+
+  @override
+  String get enterPasswordToContinue =>
+      'أدخل كلمة المرور الحالية والجديدة للمتابعة';
+
+  @override
+  String get oldPassword => 'كلمة المرور الحالية';
+
+  @override
+  String get pleaseFillAllFields => 'الرجاء تعبئة جميع الحقول';
+
+  @override
+  String get security => 'الأمان';
+
+  @override
+  String get twoFactorAuth => 'المصادقة الثنائية';
+
+  @override
+  String get extraSecurityLayer => 'إضافة طبقة أمان إضافية';
 }

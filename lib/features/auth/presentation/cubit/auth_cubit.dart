@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project1/features/auth/domain/use_case/change_password_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/forgot_password_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/login_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/logout_usecase.dart';
@@ -15,6 +16,7 @@ class AuthCubit extends Cubit<AuthState> {
   final VerifyEmailUseCase verifyEmailUseCase;
   final ForgotPasswordUseCase forgotPasswordUseCase;
   final ResetPasswordUseCase resetPasswordUseCase;
+  final ChangePasswordUseCase changePasswordUseCase;
 
   AuthCubit({
     required this.registerUseCase,
@@ -23,6 +25,7 @@ class AuthCubit extends Cubit<AuthState> {
     required this.verifyEmailUseCase,
     required this.forgotPasswordUseCase,
     required this.resetPasswordUseCase,
+    required this.changePasswordUseCase,
   }) : super(AuthInitial());
 
   Future<void> register(Map<String, dynamic> body) async {
@@ -68,6 +71,24 @@ Future<void> forgotPassword(Map<String, dynamic> body) async {
       emit(AuthError(e.toString()));
     }
   }
+
+  Future<void> changePassword({
+  required String oldPassword,
+  required String newPassword,
+}) async {
+  emit(AuthLoading());
+
+  try {
+    final message = await changePasswordUseCase(
+      oldPassword: oldPassword,
+      newPassword: newPassword,
+    );
+
+    emit(AuthChangePasswordSuccess(message));
+  } catch (e) {
+    emit(AuthError(e.toString()));
+  }
+}
 
   Future<void> logout() async {
     emit(AuthLoading());
