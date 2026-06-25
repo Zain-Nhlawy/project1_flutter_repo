@@ -63,6 +63,25 @@ class AuthRemoteDataSource {
   return res.data['message'];
 }
 
+Future<Map<String, dynamic>> googleLogin(String idToken) async {
+  final res = await dioClient.dio.post(
+    '/authentication/google/mobile',
+    data: {
+      'idToken': idToken,
+    },
+  );
+
+  final userData = res.data['data']['user'];
+  final accessToken = res.data['data']['accessToken'];
+  final refreshToken = res.data['data']['refreshToken'];
+
+  return {
+    ...userData,
+    'accessToken': accessToken,
+    'refreshToken': refreshToken,
+  };
+}
+
   Future<void> logout() async {
     await dioClient.dio.post('/authentication/sign-out');
   }

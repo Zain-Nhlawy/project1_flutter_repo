@@ -225,7 +225,9 @@ class SignupScreen extends StatelessWidget {
                             const SizedBox(height: 20),
 
                             OutlinedButton.icon(
-                              onPressed: () {},
+                              onPressed: () {
+                                context.read<AuthCubit>().loginWithGoogle();
+                              },
                               icon: Image.asset(
                                 'assets/images/google.png',
                                 height: 24,

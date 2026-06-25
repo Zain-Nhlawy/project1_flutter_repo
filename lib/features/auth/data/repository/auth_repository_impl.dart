@@ -61,6 +61,26 @@ Future<String> changePassword({
   });
 }
 
+@override
+Future<UserEntity> googleLogin(String idToken) async {
+  final data = await remote.googleLogin(idToken);
+
+  final accessToken = data['accessToken'];
+  final refreshToken = data['refreshToken'];
+
+  await storage.write(StorageKeys.token, accessToken);
+  await storage.write(StorageKeys.refreshToken, refreshToken);
+
+  return UserEntity(
+    id: data['id']?.toString() ?? '',
+    firstName: data['firstName']?.toString() ?? '',
+    lastName: data['lastName']?.toString() ?? '',
+    email: data['email']?.toString() ?? '',
+    role: data['role']?.toString() ?? 'USER',
+    isEmailVerified: data['isEmailVerified'] ?? false,
+  );
+}
+
   @override
   Future<void> logout() async {
     await remote.logout();

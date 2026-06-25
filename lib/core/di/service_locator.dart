@@ -8,6 +8,7 @@ import 'package:project1/features/auth/data/repository/auth_repository_impl.dart
 import 'package:project1/features/auth/domain/repository/auth_repository.dart';
 import 'package:project1/features/auth/domain/use_case/change_password_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/forgot_password_usecase.dart';
+import 'package:project1/features/auth/domain/use_case/google_login_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/register_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/login_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/logout_usecase.dart';
@@ -62,6 +63,7 @@ void setupDI() {
   getIt.registerLazySingleton(() => ForgotPasswordUseCase(getIt<AuthRepository>()));
   getIt.registerLazySingleton(() => ResetPasswordUseCase(getIt<AuthRepository>()));
   getIt.registerLazySingleton(() => ChangePasswordUseCase(getIt<AuthRepository>()),);
+  getIt.registerLazySingleton(() => GoogleLoginUseCase(getIt()),);
   //cubit
   getIt.registerFactory(
     () => AuthCubit(
@@ -72,7 +74,7 @@ void setupDI() {
       forgotPasswordUseCase: getIt<ForgotPasswordUseCase>(),
       resetPasswordUseCase: getIt<ResetPasswordUseCase>(),
       changePasswordUseCase: getIt<ChangePasswordUseCase>(),
-      
+      googleLoginUseCase: getIt<GoogleLoginUseCase>(),      
     ),
   );
   ////////////////////Auth////////////////////

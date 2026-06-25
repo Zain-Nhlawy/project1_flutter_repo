@@ -6,6 +6,8 @@ import 'package:project1/features/auth/domain/use_case/logout_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/register_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/reset_password_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/verify_email_usecase.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:project1/features/auth/domain/use_case/google_login_usecase.dart';
 
 import 'auth_state.dart';
 
@@ -17,6 +19,7 @@ class AuthCubit extends Cubit<AuthState> {
   final ForgotPasswordUseCase forgotPasswordUseCase;
   final ResetPasswordUseCase resetPasswordUseCase;
   final ChangePasswordUseCase changePasswordUseCase;
+  final GoogleLoginUseCase googleLoginUseCase;
 
   AuthCubit({
     required this.registerUseCase,
@@ -26,6 +29,7 @@ class AuthCubit extends Cubit<AuthState> {
     required this.forgotPasswordUseCase,
     required this.resetPasswordUseCase,
     required this.changePasswordUseCase,
+    required this.googleLoginUseCase,
   }) : super(AuthInitial());
 
   Future<void> register(Map<String, dynamic> body) async {
@@ -85,6 +89,36 @@ Future<void> forgotPassword(Map<String, dynamic> body) async {
     );
 
     emit(AuthChangePasswordSuccess(message));
+  } catch (e) {
+    emit(AuthError(e.toString()));
+  }
+}
+
+final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
+Future<void> loginWithGoogle() async {
+  emit(AuthLoading());
+
+  await GoogleSignIn.instance.initialize(
+  serverClientId: "813919457973-59rpuvstsvj6d9el5nlu06q1kr5dps7i.apps.googleusercontent.com",
+);
+
+  try {
+    final GoogleSignInAccount googleUser =
+        await _googleSignIn.authenticate();
+
+    final GoogleSignInAuthentication googleAuth =
+        googleUser.authentication;
+
+    final String? idToken = googleAuth.idToken;
+
+    if (idToken == null) {
+      emit(const AuthError('Google id token not found'));
+      return;
+    }
+
+    final user = await googleLoginUseCase(idToken);
+
+    emit(LoginSuccess(user));
   } catch (e) {
     emit(AuthError(e.toString()));
   }

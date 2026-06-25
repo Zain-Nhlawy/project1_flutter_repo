@@ -10,5 +10,6 @@ abstract class AuthRepository {
   required String oldPassword,
   required String newPassword,
 });
+  Future<UserEntity> googleLogin(String idToken);
   Future<void> logout();
 }

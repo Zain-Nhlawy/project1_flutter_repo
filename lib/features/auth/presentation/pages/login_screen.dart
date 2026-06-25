@@ -258,7 +258,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           const SizedBox(height: 25),
                           OutlinedButton.icon(
-                            onPressed: () {},
+                            onPressed: () {
+                              context.read<AuthCubit>().loginWithGoogle();
+                            },
                             icon: Image.asset(
                               'assets/images/google.png',
                               height: isTablet ? 24 : 22,
