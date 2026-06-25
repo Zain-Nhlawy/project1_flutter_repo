@@ -697,6 +697,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add an extra layer of security'**
   String get extraSecurityLayer;
+
+  /// No description provided for @resendVerificationEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend verification email'**
+  String get resendVerificationEmail;
+
+  /// No description provided for @didntReceiveEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Didn\'t receive the email?'**
+  String get didntReceiveEmail;
 }
 
 class _AppLocalizationsDelegate

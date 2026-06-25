@@ -320,4 +320,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get extraSecurityLayer => 'إضافة طبقة أمان إضافية';
+
+  @override
+  String get resendVerificationEmail => 'إعادة إرسال رابط التحقق';
+
+  @override
+  String get didntReceiveEmail => 'لم يصلك البريد الإلكتروني؟';
 }

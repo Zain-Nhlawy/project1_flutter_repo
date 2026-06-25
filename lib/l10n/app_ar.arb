@@ -120,5 +120,7 @@
 "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين",
 "security": "الأمان",
 "twoFactorAuth": "المصادقة الثنائية",
-"extraSecurityLayer": "إضافة طبقة أمان إضافية"
+"extraSecurityLayer": "إضافة طبقة أمان إضافية",
+"resendVerificationEmail": "إعادة إرسال رابط التحقق",
+"didntReceiveEmail": "لم يصلك البريد الإلكتروني؟"
 }

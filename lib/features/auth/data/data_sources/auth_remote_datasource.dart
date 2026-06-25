@@ -22,6 +22,15 @@ class AuthRemoteDataSource {
     return res.data['message'];
   }
 
+  Future<String> resendVerificationEmail(String email) async {
+  final res = await dioClient.dio.post(
+    '/authentication/resend-verification-email',
+    data: {'email': email},
+  );
+
+  return res.data['message'] ?? 'Success';
+}
+
   Future<Map<String, dynamic>> login(Map<String, dynamic> body) async {
     final res = await dioClient.dio.post(
       '/authentication/sign-in',

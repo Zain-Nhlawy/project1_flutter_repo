@@ -4,6 +4,7 @@ import 'package:project1/features/auth/domain/use_case/forgot_password_usecase.d
 import 'package:project1/features/auth/domain/use_case/login_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/logout_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/register_usecase.dart';
+import 'package:project1/features/auth/domain/use_case/resend_verification_email_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/reset_password_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/verify_email_usecase.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -20,6 +21,7 @@ class AuthCubit extends Cubit<AuthState> {
   final ResetPasswordUseCase resetPasswordUseCase;
   final ChangePasswordUseCase changePasswordUseCase;
   final GoogleLoginUseCase googleLoginUseCase;
+  final ResendVerificationEmailUseCase resendVerificationEmailUseCase;
 
   AuthCubit({
     required this.registerUseCase,
@@ -30,6 +32,7 @@ class AuthCubit extends Cubit<AuthState> {
     required this.resetPasswordUseCase,
     required this.changePasswordUseCase,
     required this.googleLoginUseCase,
+    required this.resendVerificationEmailUseCase,
   }) : super(AuthInitial());
 
   Future<void> register(Map<String, dynamic> body) async {
@@ -144,4 +147,18 @@ Future<void> loginWithGoogle() async {
     emit(AuthError(e.toString()));
   }
 }
+
+Future<void> resendVerificationEmail(String email) async {
+  emit(AuthLoading());
+
+  try {
+    final message =
+        await resendVerificationEmailUseCase(email);
+
+    emit(ResendVerificationEmailSuccess(message));
+  } catch (e) {
+    emit(AuthError(e.toString()));
+  }
+}
+
 }

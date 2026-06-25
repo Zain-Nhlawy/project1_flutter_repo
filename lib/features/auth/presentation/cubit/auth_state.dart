@@ -30,6 +30,12 @@ class VerifyEmailSuccess extends AuthState {
   const VerifyEmailSuccess(this.message);
 }
 
+class ResendVerificationEmailSuccess extends AuthState {
+  final String message;
+
+  const ResendVerificationEmailSuccess(this.message);
+}
+
 class ForgotPasswordSuccess extends AuthState {
   final String message;
 

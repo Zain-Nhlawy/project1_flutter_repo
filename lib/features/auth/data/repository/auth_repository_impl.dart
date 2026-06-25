@@ -21,6 +21,11 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+Future<String> resendVerificationEmail(String email) {
+  return remote.resendVerificationEmail(email);
+}
+
+  @override
   Future<UserEntity> login(Map<String, dynamic> body) async {
     final data = await remote.login(body);
 

@@ -146,6 +146,8 @@
 "passwordsDoNotMatch": "Passwords do not match",
 "security": "Security",
 "twoFactorAuth": "Two-Factor Authentication",
-"extraSecurityLayer": "Add an extra layer of security"
+"extraSecurityLayer": "Add an extra layer of security",
+"resendVerificationEmail": "Resend verification email",
+"didntReceiveEmail": "Didn't receive the email?"
 
 }

@@ -319,4 +319,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get extraSecurityLayer => 'Add an extra layer of security';
+
+  @override
+  String get resendVerificationEmail => 'Resend verification email';
+
+  @override
+  String get didntReceiveEmail => 'Didn\'t receive the email?';
 }

@@ -36,12 +36,12 @@
                 <data
                     android:scheme="https"
                     android:host="lincolms.me"
-                    android:pathPrefix="/authentication/verify-email" />
+                    android:pathPrefix="/verify-email" />
 
                 <data
                     android:scheme="https"
                     android:host="lincolms.me"
-                    android:pathPrefix="/authentication/reset-password" />
+                    android:pathPrefix="/reset-password" />
             </intent-filter>
 
 
