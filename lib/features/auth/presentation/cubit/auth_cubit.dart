@@ -9,7 +9,7 @@ import 'package:project1/features/auth/domain/use_case/reset_password_usecase.da
 import 'package:project1/features/auth/domain/use_case/verify_email_usecase.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:project1/features/auth/domain/use_case/google_login_usecase.dart';
-
+import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
 import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -22,6 +22,7 @@ class AuthCubit extends Cubit<AuthState> {
   final ChangePasswordUseCase changePasswordUseCase;
   final GoogleLoginUseCase googleLoginUseCase;
   final ResendVerificationEmailUseCase resendVerificationEmailUseCase;
+  final UserCubit userCubit;
 
   AuthCubit({
     required this.registerUseCase,
@@ -33,6 +34,7 @@ class AuthCubit extends Cubit<AuthState> {
     required this.changePasswordUseCase,
     required this.googleLoginUseCase,
     required this.resendVerificationEmailUseCase,
+    required this.userCubit,
   }) : super(AuthInitial());
 
   Future<void> register(Map<String, dynamic> body) async {
@@ -49,11 +51,59 @@ class AuthCubit extends Cubit<AuthState> {
   emit(AuthLoading());
   try {
     final user = await loginUseCase(body);
+
     if (!user.isEmailVerified) {
       emit(AuthError("Please verify your email first"));
       return;
     }
     emit(LoginSuccess(user));
+    await userCubit.getMe();
+  } catch (e) {
+    emit(AuthError(e.toString()));
+  }
+}
+
+final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
+Future<void> loginWithGoogle() async {
+  emit(AuthLoading());
+  await GoogleSignIn.instance.initialize(
+  serverClientId: "813919457973-59rpuvstsvj6d9el5nlu06q1kr5dps7i.apps.googleusercontent.com",
+);
+  try {
+    final GoogleSignInAccount googleUser =
+        await _googleSignIn.authenticate();
+    final GoogleSignInAuthentication googleAuth =
+        googleUser.authentication;
+    final String? idToken = googleAuth.idToken;
+    if (idToken == null) {
+      emit(const AuthError('Google id token not found'));
+      return;
+    }
+    final user = await googleLoginUseCase(idToken);
+    emit(LoginSuccess(user));
+    await userCubit.getMe();
+  } catch (e) {
+    emit(AuthError(e.toString()));
+  }
+}
+
+
+  Future<void> logout() async {
+    emit(AuthLoading());
+    try {
+      await logoutUseCase();
+      emit(AuthInitial());
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
+
+  Future<void> verifyEmail(String token) async {
+  emit(AuthLoading());
+
+  try {
+    final message = await verifyEmailUseCase(token);
+    emit(VerifyEmailSuccess(message));
   } catch (e) {
     emit(AuthError(e.toString()));
   }
@@ -84,65 +134,12 @@ Future<void> forgotPassword(Map<String, dynamic> body) async {
   required String newPassword,
 }) async {
   emit(AuthLoading());
-
   try {
     final message = await changePasswordUseCase(
       oldPassword: oldPassword,
       newPassword: newPassword,
     );
-
     emit(AuthChangePasswordSuccess(message));
-  } catch (e) {
-    emit(AuthError(e.toString()));
-  }
-}
-
-final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
-Future<void> loginWithGoogle() async {
-  emit(AuthLoading());
-
-  await GoogleSignIn.instance.initialize(
-  serverClientId: "813919457973-59rpuvstsvj6d9el5nlu06q1kr5dps7i.apps.googleusercontent.com",
-);
-
-  try {
-    final GoogleSignInAccount googleUser =
-        await _googleSignIn.authenticate();
-
-    final GoogleSignInAuthentication googleAuth =
-        googleUser.authentication;
-
-    final String? idToken = googleAuth.idToken;
-
-    if (idToken == null) {
-      emit(const AuthError('Google id token not found'));
-      return;
-    }
-
-    final user = await googleLoginUseCase(idToken);
-
-    emit(LoginSuccess(user));
-  } catch (e) {
-    emit(AuthError(e.toString()));
-  }
-}
-
-  Future<void> logout() async {
-    emit(AuthLoading());
-    try {
-      await logoutUseCase();
-      emit(AuthInitial());
-    } catch (e) {
-      emit(AuthError(e.toString()));
-    }
-  }
-
-  Future<void> verifyEmail(String token) async {
-  emit(AuthLoading());
-
-  try {
-    final message = await verifyEmailUseCase(token);
-    emit(VerifyEmailSuccess(message));
   } catch (e) {
     emit(AuthError(e.toString()));
   }

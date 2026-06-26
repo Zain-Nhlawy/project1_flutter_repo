@@ -5,11 +5,12 @@ abstract class AuthRepository {
   Future<String> verifyEmail(String token);
   Future<String> resendVerificationEmail(String email);
   Future<UserEntity> login(Map<String, dynamic> body);
+  Future<UserEntity> getMe();
   Future<String> forgotPassword(Map<String, dynamic> body);
   Future<String> resetPassword(Map<String, dynamic> body);
   Future<String> changePassword({
   required String oldPassword,
-  required String newPassword,
+  required String newPassword,  
 });
   Future<UserEntity> googleLogin(String idToken);
   Future<void> logout();

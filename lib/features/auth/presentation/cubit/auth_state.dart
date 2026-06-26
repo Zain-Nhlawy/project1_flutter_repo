@@ -1,5 +1,3 @@
-import 'package:project1/features/auth/data/models/user_model.dart';
-
 abstract class AuthState {
   const AuthState();
 }

@@ -8,6 +8,7 @@ import 'package:project1/features/auth/data/repository/auth_repository_impl.dart
 import 'package:project1/features/auth/domain/repository/auth_repository.dart';
 import 'package:project1/features/auth/domain/use_case/change_password_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/forgot_password_usecase.dart';
+import 'package:project1/features/auth/domain/use_case/get_me_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/google_login_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/register_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/login_usecase.dart';
@@ -16,6 +17,7 @@ import 'package:project1/features/auth/domain/use_case/resend_verification_email
 import 'package:project1/features/auth/domain/use_case/reset_password_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/verify_email_usecase.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:project1/features/demo/data/data_sources/demo_remote_datasource.dart';
 import 'package:project1/features/demo/data/repository/demo_repository.dart';
 import 'package:project1/features/demo/data/repository/demo_repository_impl.dart';
@@ -43,7 +45,7 @@ void setupDI() {
 
 
 
-  ////////////////////Auth////////////////////
+  ////////////////////Auth+user////////////////////
   getIt.registerLazySingleton<AuthRemoteDataSource>(
     () => AuthRemoteDataSource(getIt<DioClient>()),
   );
@@ -56,6 +58,7 @@ void setupDI() {
   getIt.registerLazySingleton<AuthTokenManager>(
     () => AuthTokenManager(getIt<AppSecureStorage>()),
   );
+
   //usecase
   getIt.registerLazySingleton(() => RegisterUseCase(getIt<AuthRepository>()));
   getIt.registerLazySingleton(() => LoginUseCase(getIt<AuthRepository>()));
@@ -64,8 +67,11 @@ void setupDI() {
   getIt.registerLazySingleton(() => ForgotPasswordUseCase(getIt<AuthRepository>()));
   getIt.registerLazySingleton(() => ResetPasswordUseCase(getIt<AuthRepository>()));
   getIt.registerLazySingleton(() => ChangePasswordUseCase(getIt<AuthRepository>()),);
-  getIt.registerLazySingleton(() => GoogleLoginUseCase(getIt()),);
-  getIt.registerLazySingleton(() => ResendVerificationEmailUseCase(getIt()),);
+  getIt.registerLazySingleton(() => GoogleLoginUseCase(getIt<AuthRepository>()),);
+  getIt.registerLazySingleton(() => ResendVerificationEmailUseCase(getIt<AuthRepository>()),);
+  getIt.registerLazySingleton<GetMeUseCase>(() => GetMeUseCase(getIt<AuthRepository>()),);
+  getIt.registerFactory<UserCubit>(() => UserCubit(getIt<GetMeUseCase>()),);
+
   //cubit
   getIt.registerFactory(
     () => AuthCubit(
@@ -77,10 +83,11 @@ void setupDI() {
       resetPasswordUseCase: getIt<ResetPasswordUseCase>(),
       changePasswordUseCase: getIt<ChangePasswordUseCase>(),
       googleLoginUseCase: getIt<GoogleLoginUseCase>(),   
-      resendVerificationEmailUseCase: getIt<ResendVerificationEmailUseCase>(),   
-    ),
+      resendVerificationEmailUseCase: getIt<ResendVerificationEmailUseCase>(),  
+      userCubit: getIt<UserCubit>(),
+      ),
   );
-  ////////////////////Auth////////////////////
+  ////////////////////Auth+user////////////////////
   
 
   ////////////////////Demo////////////////////

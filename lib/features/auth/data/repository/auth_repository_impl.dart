@@ -1,6 +1,7 @@
 import 'package:project1/core/storage/secure_storage.dart';
 import 'package:project1/core/storage/storage_keys.dart';
 import 'package:project1/features/auth/data/data_sources/auth_remote_datasource.dart';
+import 'package:project1/features/auth/data/models/user_model.dart';
 import 'package:project1/features/auth/domain/entities/user_entity.dart';
 import 'package:project1/features/auth/domain/repository/auth_repository.dart';
 
@@ -27,22 +28,31 @@ Future<String> resendVerificationEmail(String email) {
 
   @override
   Future<UserEntity> login(Map<String, dynamic> body) async {
-    final data = await remote.login(body);
+    final res = await remote.dioClient.dio.post('/authentication/sign-in', data: body);
+    final userModel = UserModel.fromJson(res.data['data']['user']);
+    await storage.write(StorageKeys.token, res.data['data']['accessToken']);
+    await storage.write(StorageKeys.refreshToken, res.data['data']['refreshToken']);
+    return userModel.toEntity();
+  }
 
-    final accessToken = data['accessToken'];
-    final refreshToken = data['refreshToken'];
-
-    await storage.write(StorageKeys.token, accessToken);
-    await storage.write(StorageKeys.refreshToken, refreshToken);
-
-    return UserEntity(
-      id: data['id']?.toString() ?? '',
-      firstName: data['firstName']?.toString() ?? '',
-      lastName: data['lastName']?.toString() ?? '',
-      email: data['email']?.toString() ?? '',
-      role: data['role']?.toString() ?? 'USER',
-      isEmailVerified: data['isEmailVerified'] ?? false,
+  @override
+  Future<UserEntity> googleLogin(String idToken) async {
+    final res = await remote.dioClient.dio.post(
+      '/authentication/google/mobile',
+      data: {'idToken': idToken},
     );
+    final userModel = UserModel.fromJson(res.data['data']['user']);
+
+    await storage.write(StorageKeys.token, res.data['data']['accessToken']);
+    await storage.write(StorageKeys.refreshToken, res.data['data']['refreshToken']);
+
+    return userModel.toEntity();
+  }
+
+  @override
+  Future<UserEntity> getMe() async {
+    final userModel = await remote.getMe();
+    return userModel.toEntity();
   }
 
   @override
@@ -64,26 +74,6 @@ Future<String> changePassword({
     "oldPassword": oldPassword,
     "newPassword": newPassword,
   });
-}
-
-@override
-Future<UserEntity> googleLogin(String idToken) async {
-  final data = await remote.googleLogin(idToken);
-
-  final accessToken = data['accessToken'];
-  final refreshToken = data['refreshToken'];
-
-  await storage.write(StorageKeys.token, accessToken);
-  await storage.write(StorageKeys.refreshToken, refreshToken);
-
-  return UserEntity(
-    id: data['id']?.toString() ?? '',
-    firstName: data['firstName']?.toString() ?? '',
-    lastName: data['lastName']?.toString() ?? '',
-    email: data['email']?.toString() ?? '',
-    role: data['role']?.toString() ?? 'USER',
-    isEmailVerified: data['isEmailVerified'] ?? false,
-  );
 }
 
   @override
