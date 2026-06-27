@@ -709,6 +709,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Didn\'t receive the email?'**
   String get didntReceiveEmail;
+
+  /// No description provided for @diagramEditor.
+  ///
+  /// In en, this message translates to:
+  /// **'Diagram Editor'**
+  String get diagramEditor;
+
+  /// No description provided for @diagramPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Diagram Preview'**
+  String get diagramPreview;
+
+  /// No description provided for @savedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved at'**
+  String get savedAt;
+
+  /// No description provided for @saveDiagram.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Diagram'**
+  String get saveDiagram;
+
+  /// No description provided for @whatDoYouWantToSave.
+  ///
+  /// In en, this message translates to:
+  /// **'What do you want to save?'**
+  String get whatDoYouWantToSave;
+
+  /// No description provided for @xmlOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'XML only'**
+  String get xmlOnly;
+
+  /// No description provided for @pngOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'PNG only'**
+  String get pngOnly;
+
+  /// No description provided for @both.
+  ///
+  /// In en, this message translates to:
+  /// **'Both'**
+  String get both;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @storagePermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'No storage permission. Please enable it from settings.'**
+  String get storagePermissionDenied;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @xmlSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'XML saved successfully'**
+  String get xmlSaved;
+
+  /// No description provided for @pngSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'PNG saved successfully'**
+  String get pngSaved;
 }
 
 class _AppLocalizationsDelegate

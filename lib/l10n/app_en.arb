@@ -148,6 +148,19 @@
 "twoFactorAuth": "Two-Factor Authentication",
 "extraSecurityLayer": "Add an extra layer of security",
 "resendVerificationEmail": "Resend verification email",
-"didntReceiveEmail": "Didn't receive the email?"
+"didntReceiveEmail": "Didn't receive the email?",
+"diagramEditor": "Diagram Editor",
+"diagramPreview": "Diagram Preview",
+"savedAt": "Saved at",
+"saveDiagram": "Save Diagram",
+"whatDoYouWantToSave": "What do you want to save?",
+"xmlOnly": "XML only",
+"pngOnly": "PNG only",
+"both": "Both",
+"cancel": "Cancel",
+"storagePermissionDenied": "No storage permission. Please enable it from settings.",
+"settings": "Settings",
+"xmlSaved": "XML saved successfully",
+"pngSaved": "PNG saved successfully"
 
 }

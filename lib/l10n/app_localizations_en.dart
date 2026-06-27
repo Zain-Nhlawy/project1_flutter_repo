@@ -325,4 +325,44 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get didntReceiveEmail => 'Didn\'t receive the email?';
+
+  @override
+  String get diagramEditor => 'Diagram Editor';
+
+  @override
+  String get diagramPreview => 'Diagram Preview';
+
+  @override
+  String get savedAt => 'Saved at';
+
+  @override
+  String get saveDiagram => 'Save Diagram';
+
+  @override
+  String get whatDoYouWantToSave => 'What do you want to save?';
+
+  @override
+  String get xmlOnly => 'XML only';
+
+  @override
+  String get pngOnly => 'PNG only';
+
+  @override
+  String get both => 'Both';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get storagePermissionDenied =>
+      'No storage permission. Please enable it from settings.';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get xmlSaved => 'XML saved successfully';
+
+  @override
+  String get pngSaved => 'PNG saved successfully';
 }
