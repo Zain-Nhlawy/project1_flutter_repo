@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/features/auth/domain/use_case/change_password_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/forgot_password_usecase.dart';
@@ -10,6 +12,7 @@ import 'package:project1/features/auth/domain/use_case/verify_email_usecase.dart
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:project1/features/auth/domain/use_case/google_login_usecase.dart';
 import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
+import 'package:project1/features/auth/upload_photo/domain/use_case/upload_photo_usecase.dart';
 import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -23,6 +26,8 @@ class AuthCubit extends Cubit<AuthState> {
   final GoogleLoginUseCase googleLoginUseCase;
   final ResendVerificationEmailUseCase resendVerificationEmailUseCase;
   final UserCubit userCubit;
+  final UploadPhotoUseCase uploadPhotoUseCase;
+  File? imageFile;
 
   AuthCubit({
     required this.registerUseCase,
@@ -35,17 +40,27 @@ class AuthCubit extends Cubit<AuthState> {
     required this.googleLoginUseCase,
     required this.resendVerificationEmailUseCase,
     required this.userCubit,
+    required this.uploadPhotoUseCase,
   }) : super(AuthInitial());
 
   Future<void> register(Map<String, dynamic> body) async {
-    emit(AuthLoading());
-    try {
-      final res = await registerUseCase(body);
-      emit(RegisterSuccess(res));
-    } catch (e) {
-      emit(AuthError(e.toString()));
+  emit(AuthLoading());
+  try {
+    String imageUrl = "";
+    if (imageFile != null) {
+      imageUrl = await uploadPhotoUseCase(imageFile!);
     }
+    final updatedBody = {
+      ...body,
+      "imagePath": imageUrl,
+    };
+    final res = await registerUseCase(updatedBody);
+
+    emit(RegisterSuccess(res));
+  } catch (e) {
+    emit(AuthError(e.toString()));
   }
+}
 
   Future<void> login(Map<String, dynamic> body) async {
   emit(AuthLoading());
@@ -156,6 +171,10 @@ Future<void> resendVerificationEmail(String email) async {
   } catch (e) {
     emit(AuthError(e.toString()));
   }
+}
+
+void setImage(File file) {
+  imageFile = file;
 }
 
 }

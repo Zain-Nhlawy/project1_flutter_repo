@@ -100,7 +100,13 @@ class SignupScreen extends StatelessWidget {
                         ),
                         child: Column(
                           children: [
-                            const ImagePickerWidget(),
+                            ImagePickerWidget(
+                              onImageSelected: (file) {
+                                if (file != null) {
+                                  context.read<AuthCubit>().setImage(file);
+                                }
+                              },
+                            ),
                             SizedBox(height: isTablet ? 28 : 20),
 
                             Row(
@@ -195,7 +201,6 @@ class SignupScreen extends StatelessWidget {
                                           context.read<AuthCubit>().register({
                                             "firstName": firstNameController.text,
                                             "lastName": lastNameController.text,
-                                            "imagePath": "123456789",
                                             "birthDate": dobController.text,
                                             "email": emailController.text,
                                             "password": passwordController.text,
@@ -295,5 +300,3 @@ class SignupScreen extends StatelessWidget {
     );
   }
 }
-
-
