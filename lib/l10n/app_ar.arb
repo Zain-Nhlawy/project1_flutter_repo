@@ -122,5 +122,18 @@
 "twoFactorAuth": "المصادقة الثنائية",
 "extraSecurityLayer": "إضافة طبقة أمان إضافية",
 "resendVerificationEmail": "إعادة إرسال رابط التحقق",
-"didntReceiveEmail": "لم يصلك البريد الإلكتروني؟"
+"didntReceiveEmail": "لم يصلك البريد الإلكتروني؟",
+"diagramEditor": "محرر المخططات",
+"diagramPreview": "معاينة المخطط",
+"savedAt": "محفوظ في",
+"saveDiagram": "حفظ المخطط",
+"whatDoYouWantToSave": "شو بدك تحفظ؟",
+"xmlOnly": "XML فقط",
+"pngOnly": "PNG فقط",
+"both": "الاثنين",
+"cancel": "إلغاء",
+"storagePermissionDenied": "ما عندك إذن تخزين، فعّله من الإعدادات",
+"settings": "الإعدادات",
+"xmlSaved": "تم حفظ XML بنجاح",
+"pngSaved": "تم حفظ PNG بنجاح"
 }

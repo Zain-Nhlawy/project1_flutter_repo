@@ -326,4 +326,43 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get didntReceiveEmail => 'لم يصلك البريد الإلكتروني؟';
+
+  @override
+  String get diagramEditor => 'محرر المخططات';
+
+  @override
+  String get diagramPreview => 'معاينة المخطط';
+
+  @override
+  String get savedAt => 'محفوظ في';
+
+  @override
+  String get saveDiagram => 'حفظ المخطط';
+
+  @override
+  String get whatDoYouWantToSave => 'شو بدك تحفظ؟';
+
+  @override
+  String get xmlOnly => 'XML فقط';
+
+  @override
+  String get pngOnly => 'PNG فقط';
+
+  @override
+  String get both => 'الاثنين';
+
+  @override
+  String get cancel => 'إلغاء';
+
+  @override
+  String get storagePermissionDenied => 'ما عندك إذن تخزين، فعّله من الإعدادات';
+
+  @override
+  String get settings => 'الإعدادات';
+
+  @override
+  String get xmlSaved => 'تم حفظ XML بنجاح';
+
+  @override
+  String get pngSaved => 'تم حفظ PNG بنجاح';
 }
