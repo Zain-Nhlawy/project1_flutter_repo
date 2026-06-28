@@ -1,8 +1,10 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/demo_cubit.dart';
 import 'package:project1/features/home/presentation/cubit/navigation_tabs_cubit.dart';
 import 'package:project1/features/home/presentation/cubit/navigation_tabs_state.dart';
@@ -17,13 +19,14 @@ class NavigationsTabs extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
     final screenWidth = size.width;
     final screenHeight = size.height;
-    final textScale = MediaQuery.textScalerOf(context).scale(1);
+    final textScale = MediaQuery.of(context).textScaleFactor;
     final localizations = AppLocalizations.of(context)!;
 
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => NavigationTabsCubit()),
         BlocProvider(create: (_) => getIt<DemoCubit>()..fetchDemos()),
+        BlocProvider(create: (_) => getIt<UserCubit>()..getMe()),
       ],
       child: BlocBuilder<NavigationTabsCubit, NavigationTabsState>(
         builder: (context, state) {
@@ -168,7 +171,7 @@ class NavigationsTabs extends StatelessWidget {
           SizedBox(height: screenHeight * 0.002),
           FittedBox(
             fit: BoxFit.scaleDown,
-            child: Text(
+            child: AutoSizeText(
               sideWord,
               style: AppTextStyles.label.copyWith(
                 fontSize: 12 * textScale,

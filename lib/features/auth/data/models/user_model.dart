@@ -1,22 +1,15 @@
-class UserModel {
-  final String id;
-  final String firstName;
-  final String lastName;
-  final String email;
-  final String birthDate;
-  final String imagePath;
-  final String role;
-  final bool isEmailVerified;
+import 'package:project1/features/auth/domain/entities/user_entity.dart';
 
-  UserModel({
-    required this.id,
-    required this.firstName,
-    required this.lastName,
-    required this.email,
-    required this.birthDate,
-    required this.imagePath,
-    required this.role,
-    required this.isEmailVerified,
+class UserModel extends UserEntity {
+  const UserModel({
+    required super.id,
+    required super.firstName,
+    required super.lastName,
+    required super.email,
+    required super.birthDate,
+    required super.imagePath,
+    required super.role,
+    required super.isEmailVerified,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -29,6 +22,19 @@ class UserModel {
       imagePath: json['imagePath'] ?? '',
       role: json['role'] ?? '',
       isEmailVerified: json['isEmailVerified'] ?? false,
+    );
+  }
+
+  UserEntity toEntity() {
+    return UserEntity(
+      id: id,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      birthDate: birthDate,
+      imagePath: imagePath,
+      role: role,
+      isEmailVerified: isEmailVerified,
     );
   }
 }

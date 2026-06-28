@@ -1,4 +1,5 @@
 import 'package:project1/core/network/dio_client.dart';
+import 'package:project1/features/auth/data/models/user_model.dart';
 
 class AuthRemoteDataSource {
   final DioClient dioClient;
@@ -22,22 +23,37 @@ class AuthRemoteDataSource {
     return res.data['message'];
   }
 
-  Future<Map<String, dynamic>> login(Map<String, dynamic> body) async {
+  Future<String> resendVerificationEmail(String email) async {
+  final res = await dioClient.dio.post(
+    '/authentication/resend-verification-email',
+    data: {'email': email},
+  );
+
+  return res.data['message'] ?? 'Success';
+}
+
+  Future<UserModel> login(Map<String, dynamic> body) async {
     final res = await dioClient.dio.post(
       '/authentication/sign-in',
-      data: body,
-    );
-
-    final userData = res.data['data']['user'];
-    final accessToken = res.data['data']['accessToken'];
-    final refreshToken = res.data['data']['refreshToken'];
-
-    return {
-      ...userData,
-      'accessToken': accessToken,
-      'refreshToken': refreshToken,
-    };
+      data: body
+      );
+    return UserModel.fromJson(res.data['data']['user']);
   }
+
+  Future<UserModel> googleLogin(String idToken) async {
+    final res = await dioClient.dio.post(
+      '/authentication/google/mobile',
+      data: {'idToken': idToken},
+    );
+    return UserModel.fromJson(res.data['data']['user']);
+  }
+
+  Future<UserModel> getMe() async {
+  final res = await dioClient.dio.get(
+    '/users/me'
+    );
+  return UserModel.fromJson(res.data['data']['user']);
+}
 
   Future<String> forgotPassword(Map<String, dynamic> body) async {
     final res = await dioClient.dio.post(
@@ -54,6 +70,14 @@ class AuthRemoteDataSource {
     );
     return res.data['message'];
   }
+
+  Future<String> changePassword(Map<String, dynamic> body) async {
+  final res = await dioClient.dio.post(
+    '/authentication/change-password',
+    data: body,
+  );
+  return res.data['message'];
+}
 
   Future<void> logout() async {
     await dioClient.dio.post('/authentication/sign-out');

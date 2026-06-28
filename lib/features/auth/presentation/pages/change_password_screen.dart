@@ -6,39 +6,41 @@ import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_state.dart';
 import 'package:project1/features/auth/presentation/widgets/custom_text_field.dart';
 import 'package:project1/l10n/app_localizations.dart';
-import 'package:project1/features/auth/presentation/pages/login_screen.dart';
 
-class ResetPasswordScreen extends StatefulWidget {
-  final String token;
-  const ResetPasswordScreen({super.key, required this.token});
+class ChangePasswordScreen extends StatefulWidget {
+  const ChangePasswordScreen({super.key});
 
   @override
-  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
+  State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
 }
 
-class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
-  final passwordController = TextEditingController();
+class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
+  final oldPasswordController = TextEditingController();
+  final newPasswordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
   @override
   void dispose() {
-    passwordController.dispose();
+    oldPasswordController.dispose();
+    newPasswordController.dispose();
     confirmPasswordController.dispose();
     super.dispose();
   }
 
-  void _handleResetPassword(AppLocalizations localizations) {
-    if (passwordController.text.isEmpty) {
+  void _handleChangePassword(AppLocalizations localizations) {
+    if (oldPasswordController.text.isEmpty ||
+        newPasswordController.text.isEmpty ||
+        confirmPasswordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(localizations.pleaseEnterNewPassword),
+          content: Text(localizations.pleaseFillAllFields),
           backgroundColor: AppColors.error,
         ),
       );
       return;
     }
 
-    if (passwordController.text != confirmPasswordController.text) {
+    if (newPasswordController.text != confirmPasswordController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(localizations.passwordsDoNotMatch),
@@ -48,12 +50,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       return;
     }
 
-    final body = {
-      "token": widget.token,
-      "password": passwordController.text,
-    };
-
-    context.read<AuthCubit>().resetPassword(body);
+    context.read<AuthCubit>().changePassword(
+          oldPassword: oldPasswordController.text,
+          newPassword: newPasswordController.text,
+        );
   }
 
   @override
@@ -64,28 +64,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is ResetPasswordSuccess) {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text(localizations.successTitle),
+        if (state is AuthChangePasswordSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
               content: Text(state.message),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                        builder: (_) => const LoginScreen(),
-                      ),
-                      (route) => false,
-                    );
-                  },
-                  child: Text(localizations.goToLoginBtn),
-                ),
-              ],
+              backgroundColor: Colors.green,
             ),
           );
+          Navigator.pop(context);
         } else if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -105,7 +91,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             onPressed: () => Navigator.pop(context),
           ),
           title: Text(
-            localizations.resetPasswordScreenTitle,
+            localizations.changePassword,
             style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
           ),
         ),
@@ -122,32 +108,38 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     maxWidth: isTablet ? 500 : double.infinity,
                   ),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Icon(
-                        Icons.lock_reset_outlined,
+                        Icons.lock_outline,
                         size: 80,
                         color: AppColors.primary,
                       ),
                       const SizedBox(height: 20),
                       Text(
-                        localizations.createNewPassword,
+                        localizations.changePassword,
                         style: AppTextStyles.h2,
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        localizations.enterNewPasswordBelow,
+                        localizations.enterPasswordToContinue,
                         style: AppTextStyles.bodyMedium.copyWith(
                           color: AppColors.textSecondary,
                         ),
                       ),
                       const SizedBox(height: 30),
                       CustomTextField(
+                        hintText: localizations.oldPassword,
+                        isPassword: true,
+                        icon: Icons.lock_outline,
+                        controller: oldPasswordController,
+                      ),
+                      const SizedBox(height: 16),
+                      CustomTextField(
                         hintText: localizations.newPasswordHint,
                         isPassword: true,
                         icon: Icons.lock_outline,
-                        controller: passwordController,
+                        controller: newPasswordController,
                       ),
                       const SizedBox(height: 16),
                       CustomTextField(
@@ -155,12 +147,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         isPassword: true,
                         icon: Icons.lock_outline,
                         controller: confirmPasswordController,
-                        onSubmitted: (_) => _handleResetPassword(localizations),
+                        onSubmitted: (_) =>
+                            _handleChangePassword(localizations),
                       ),
                       const SizedBox(height: 30),
                       BlocBuilder<AuthCubit, AuthState>(
                         builder: (context, state) {
                           final isLoading = state is AuthLoading;
+
                           return SizedBox(
                             width: double.infinity,
                             height: 56,
@@ -179,7 +173,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                               child: ElevatedButton(
                                 onPressed: isLoading
                                     ? null
-                                    : () => _handleResetPassword(localizations),
+                                    : () => _handleChangePassword(localizations),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.transparent,
                                   shadowColor: Colors.transparent,
@@ -199,8 +193,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                           ),
                                         )
                                       : Text(
-                                          localizations.resetPasswordBtn,
-                                          style: AppTextStyles.titleMedium.copyWith(
+                                          localizations.changePassword,
+                                          style: AppTextStyles.titleMedium
+                                              .copyWith(
                                             color: AppColors.surface,
                                             fontWeight: FontWeight.bold,
                                           ),

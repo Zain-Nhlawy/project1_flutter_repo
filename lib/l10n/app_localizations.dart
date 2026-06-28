@@ -563,13 +563,13 @@ abstract class AppLocalizations {
   /// No description provided for @newPasswordHint.
   ///
   /// In en, this message translates to:
-  /// **'New Password'**
+  /// **'New password'**
   String get newPasswordHint;
 
   /// No description provided for @confirmPasswordHint.
   ///
   /// In en, this message translates to:
-  /// **'Confirm Password'**
+  /// **'Confirm password'**
   String get confirmPasswordHint;
 
   /// No description provided for @resetPasswordBtn.
@@ -655,6 +655,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Name should not be empty'**
   String get nameRequiredError;
+
+  /// No description provided for @changePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get changePassword;
+
+  /// No description provided for @enterPasswordToContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your current and new password to continue'**
+  String get enterPasswordToContinue;
+
+  /// No description provided for @oldPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Current password'**
+  String get oldPassword;
+
+  /// No description provided for @pleaseFillAllFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill all fields'**
+  String get pleaseFillAllFields;
+
+  /// No description provided for @security.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get security;
+
+  /// No description provided for @twoFactorAuth.
+  ///
+  /// In en, this message translates to:
+  /// **'Two-Factor Authentication'**
+  String get twoFactorAuth;
+
+  /// No description provided for @extraSecurityLayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Add an extra layer of security'**
+  String get extraSecurityLayer;
+
+  /// No description provided for @resendVerificationEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend verification email'**
+  String get resendVerificationEmail;
+
+  /// No description provided for @didntReceiveEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Didn\'t receive the email?'**
+  String get didntReceiveEmail;
 }
 
 class _AppLocalizationsDelegate

@@ -251,10 +251,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterNewPasswordBelow => 'Enter your new password below.';
 
   @override
-  String get newPasswordHint => 'New Password';
+  String get newPasswordHint => 'New password';
 
   @override
-  String get confirmPasswordHint => 'Confirm Password';
+  String get confirmPasswordHint => 'Confirm password';
 
   @override
   String get resetPasswordBtn => 'Reset Password';
@@ -297,4 +297,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get nameRequiredError => 'Name should not be empty';
+
+  @override
+  String get changePassword => 'Change Password';
+
+  @override
+  String get enterPasswordToContinue =>
+      'Enter your current and new password to continue';
+
+  @override
+  String get oldPassword => 'Current password';
+
+  @override
+  String get pleaseFillAllFields => 'Please fill all fields';
+
+  @override
+  String get security => 'Security';
+
+  @override
+  String get twoFactorAuth => 'Two-Factor Authentication';
+
+  @override
+  String get extraSecurityLayer => 'Add an extra layer of security';
+
+  @override
+  String get resendVerificationEmail => 'Resend verification email';
+
+  @override
+  String get didntReceiveEmail => 'Didn\'t receive the email?';
 }

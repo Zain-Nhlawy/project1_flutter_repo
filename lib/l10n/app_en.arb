@@ -136,6 +136,18 @@
 "verifyBeforeLogin": "Please verify your email before logging in.",
 "backToLoginBtn": "Back to Login",
 "dateOfBirthHint": "Date of Birth",
-"nameRequiredError" : "Name should not be empty"
+"nameRequiredError" : "Name should not be empty",
+"changePassword": "Change Password",
+"enterPasswordToContinue": "Enter your current and new password to continue",
+"oldPassword": "Current password",
+"newPasswordHint": "New password",
+"confirmPasswordHint": "Confirm password",
+"pleaseFillAllFields": "Please fill all fields",
+"passwordsDoNotMatch": "Passwords do not match",
+"security": "Security",
+"twoFactorAuth": "Two-Factor Authentication",
+"extraSecurityLayer": "Add an extra layer of security",
+"resendVerificationEmail": "Resend verification email",
+"didntReceiveEmail": "Didn't receive the email?"
 
 }

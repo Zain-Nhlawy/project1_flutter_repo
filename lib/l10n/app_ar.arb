@@ -110,5 +110,17 @@
 "verifyBeforeLogin": "يرجى التحقق من بريدك الإلكتروني قبل تسجيل الدخول.",
 "backToLoginBtn": "العودة لتسجيل الدخول",
 "dateOfBirthHint": "تاريخ الميلاد",
-"nameRequiredError" : "الاسم لا يجب ان يكون فارغاً"
+"nameRequiredError" : "الاسم لا يجب ان يكون فارغاً",
+"changePassword": "تغيير كلمة المرور",
+"enterPasswordToContinue": "أدخل كلمة المرور الحالية والجديدة للمتابعة",
+"oldPassword": "كلمة المرور الحالية",
+"newPasswordHint": "كلمة المرور الجديدة",
+"confirmPasswordHint": "تأكيد كلمة المرور",
+"pleaseFillAllFields": "الرجاء تعبئة جميع الحقول",
+"passwordsDoNotMatch": "كلمتا المرور غير متطابقتين",
+"security": "الأمان",
+"twoFactorAuth": "المصادقة الثنائية",
+"extraSecurityLayer": "إضافة طبقة أمان إضافية",
+"resendVerificationEmail": "إعادة إرسال رابط التحقق",
+"didntReceiveEmail": "لم يصلك البريد الإلكتروني؟"
 }
