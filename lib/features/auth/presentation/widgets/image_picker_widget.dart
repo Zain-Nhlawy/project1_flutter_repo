@@ -1,10 +1,16 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:project1/config/theme/app_colors.dart';
 
 class ImagePickerWidget extends StatefulWidget {
-  const ImagePickerWidget({super.key});
+  final ValueChanged<File?> onImageSelected;
+
+  const ImagePickerWidget({
+    super.key,
+    required this.onImageSelected,
+  });
 
   @override
   State<ImagePickerWidget> createState() => _ImagePickerWidgetState();
@@ -19,11 +25,15 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
       source: ImageSource.gallery,
     );
 
-    if (pickedFile != null) {
-      setState(() {
-        _image = File(pickedFile.path);
-      });
-    }
+    if (pickedFile == null) return;
+
+    final image = File(pickedFile.path);
+
+    setState(() {
+      _image = image;
+    });
+
+    widget.onImageSelected(image);
   }
 
   @override

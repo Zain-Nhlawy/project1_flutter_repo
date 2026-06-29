@@ -18,6 +18,10 @@ import 'package:project1/features/auth/domain/use_case/reset_password_usecase.da
 import 'package:project1/features/auth/domain/use_case/verify_email_usecase.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
+import 'package:project1/features/auth/upload_photo/data/data_sources/upload_photo_remote_datasource.dart';
+import 'package:project1/features/auth/upload_photo/data/repository/upload_photo_repository_impl.dart';
+import 'package:project1/features/auth/upload_photo/domain/repository/upload_photo_repository.dart';
+import 'package:project1/features/auth/upload_photo/domain/use_case/upload_photo_usecase.dart';
 import 'package:project1/features/demo/data/data_sources/demo_remote_datasource.dart';
 import 'package:project1/features/demo/data/repository/demo_repository.dart';
 import 'package:project1/features/demo/data/repository/demo_repository_impl.dart';
@@ -28,6 +32,11 @@ import 'package:project1/features/department/domain/repository/department_reposi
 import 'package:project1/features/department/data/repository/department_repository_implement.dart';
 import 'package:project1/features/department/domain/use_case/get_department_use_case.dart';
 import 'package:project1/features/department/presentation/cubit/department_cubit.dart';
+import 'package:project1/features/profile/data/data_sources/profile_remote_datasource.dart';
+import 'package:project1/features/profile/data/repository/profile_repository_impl.dart';
+import 'package:project1/features/profile/domain/repository/profile_repository.dart';
+import 'package:project1/features/profile/domain/use_case/update_profile_image_usecase.dart';
+
 
 final getIt = GetIt.instance;
 
@@ -60,6 +69,13 @@ void setupDI() {
       getIt<AppSecureStorage>(),
     ),
   );
+  getIt.registerLazySingleton<UploadPhotoRemoteDataSource>(
+    () => UploadPhotoRemoteDataSource(getIt<DioClient>()),
+  );
+
+  getIt.registerLazySingleton<UploadPhotoRepository>(
+    () => UploadPhotoRepositoryImpl(getIt<UploadPhotoRemoteDataSource>()),
+  );
   getIt.registerLazySingleton<AuthTokenManager>(
     () => AuthTokenManager(getIt<AppSecureStorage>()),
   );
@@ -75,7 +91,7 @@ void setupDI() {
   getIt.registerLazySingleton(() => GoogleLoginUseCase(getIt<AuthRepository>()),);
   getIt.registerLazySingleton(() => ResendVerificationEmailUseCase(getIt<AuthRepository>()),);
   getIt.registerLazySingleton<GetMeUseCase>(() => GetMeUseCase(getIt<AuthRepository>()),);
-  getIt.registerFactory<UserCubit>(() => UserCubit(getIt<GetMeUseCase>()),);
+  getIt.registerLazySingleton<UploadPhotoUseCase>(() => UploadPhotoUseCase(getIt<UploadPhotoRepository>()),);
 
   //cubit
   getIt.registerFactory(
@@ -90,8 +106,34 @@ void setupDI() {
       googleLoginUseCase: getIt<GoogleLoginUseCase>(),   
       resendVerificationEmailUseCase: getIt<ResendVerificationEmailUseCase>(),  
       userCubit: getIt<UserCubit>(),
+      uploadPhotoUseCase: getIt<UploadPhotoUseCase>(),
       ),
   );
+
+
+
+
+  getIt.registerLazySingleton<ProfileRemoteDataSource>(
+  () => ProfileRemoteDataSource(getIt<DioClient>()),
+);
+
+getIt.registerLazySingleton<ProfileRepository>(
+  () => ProfileRepositoryImpl(getIt<ProfileRemoteDataSource>()),
+);
+
+getIt.registerLazySingleton(
+  () => UpdateProfileImageUseCase(getIt<ProfileRepository>()),
+);
+
+getIt.registerFactory(
+  () => UserCubit(
+    getMeUseCase: getIt<GetMeUseCase>(),
+    updateProfileImageUseCase: getIt<UpdateProfileImageUseCase>(),
+  ),
+);
+
+
+
   ////////////////////Auth+user////////////////////
   
 

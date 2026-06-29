@@ -6,12 +6,14 @@ class ProfileInfoCard extends StatelessWidget {
   final String name;
   final String email;
   final String imagePath;
+  final VoidCallback onImageTap;
 
   const ProfileInfoCard({
     super.key,
     required this.name,
     required this.email,
     required this.imagePath,
+    required this.onImageTap,
   });
 
   @override
@@ -45,50 +47,68 @@ class ProfileInfoCard extends StatelessWidget {
                   shape: BoxShape.circle,
                   gradient: AppColors.headerGradient,
                 ),
-                child: Center(
-                  child: Text(
-                    name.isNotEmpty ? name[0].toUpperCase() : '',
-                    style: AppTextStyles.h2.copyWith(
-                      color: AppColors.surface,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 28 * textScale,
-                    ),
-                  ),
+                child: ClipOval(
+                  child: imagePath.isNotEmpty
+                      ? Image.network(
+                          imagePath,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => _fallback(name),
+                        )
+                      : _fallback(name),
                 ),
               ),
-              Container(
-                padding: EdgeInsets.all(size.width * 0.015),
-                decoration: BoxDecoration(
-                  color: AppColors.primary,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.surface, width: 3),
-                ),
-                child: Icon(
-                  Icons.camera_alt_outlined,
-                  color: AppColors.surface,
-                  size: 14 * textScale,
+
+              GestureDetector(
+                onTap: onImageTap,
+                child: Container(
+                  padding: EdgeInsets.all(size.width * 0.015),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: AppColors.surface, width: 3),
+                  ),
+                  child: const Icon(
+                    Icons.camera_alt_outlined,
+                    color: AppColors.surface,
+                    size: 14,
+                  ),
                 ),
               ),
             ],
           ),
+
           SizedBox(height: size.height * 0.02),
+
           Text(
             name,
             style: AppTextStyles.h3.copyWith(
               color: AppColors.textPrimary,
               fontWeight: FontWeight.bold,
-              fontSize: 20 * textScale,
             ),
           ),
+
           SizedBox(height: size.height * 0.005),
+
           Text(
             email,
             style: AppTextStyles.bodyMedium.copyWith(
               color: AppColors.textSecondary,
-              fontSize: 14 * textScale,
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _fallback(String name) {
+    return Center(
+      child: Text(
+        name.isNotEmpty ? name[0].toUpperCase() : '',
+        style: const TextStyle(
+          fontSize: 28,
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }

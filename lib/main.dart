@@ -5,12 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:media_kit/media_kit.dart';
+
 import 'package:project1/config/theme/app_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/auth/domain/use_case/verify_email_usecase.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/pages/login_screen.dart';
 import 'package:project1/features/auth/presentation/pages/reset_password_screen.dart';
+import 'package:project1/features/integrations/drawio/presentation/pages/testpage.dart';
 import 'package:project1/features/profile/presentation/cubit/locale_cubit.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:project1/l10n/l10n.dart';
