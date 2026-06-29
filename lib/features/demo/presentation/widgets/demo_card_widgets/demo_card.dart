@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/features/demo/domain/entities/demo_entity.dart';
+import 'package:project1/features/department/presentation/pages/demo_main_page.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class DemoCard extends StatelessWidget {
-  final String title;
-  final String description;
-  final String author;
-  final int? usersCount;
+  final DemoEntity demo;
 
-  const DemoCard({
-    super.key,
-    required this.title,
-    required this.description,
-    required this.author,
-    this.usersCount,
-  });
+  const DemoCard({super.key, required this.demo});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +35,7 @@ class DemoCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            title,
+            demo.name,
             style: AppTextStyles.titleMedium.copyWith(
               color: AppColors.textPrimary,
               fontWeight: FontWeight.w600,
@@ -51,7 +44,7 @@ class DemoCard extends StatelessWidget {
           ),
           SizedBox(height: size.height * 0.01),
           Text(
-            description,
+            demo.description,
             style: AppTextStyles.bodyMedium.copyWith(
               color: AppColors.textSecondary,
               fontSize: 13 * textScale,
@@ -59,7 +52,7 @@ class DemoCard extends StatelessWidget {
           ),
           SizedBox(height: size.height * 0.015),
           Text(
-            localizations.byAuthor(author),
+            localizations.byAuthor(demo.ownerName),
             style: AppTextStyles.label.copyWith(
               color: AppColors.textSecondary.withOpacity(0.7),
               fontSize: 12 * textScale,
@@ -69,28 +62,30 @@ class DemoCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              if (usersCount != null)
-                Row(
-                  children: [
-                    Icon(
-                      Icons.people_outline,
+              Row(
+                children: [
+                  Icon(
+                    Icons.people_outline,
+                    color: AppColors.textSecondary,
+                    size: 16 * textScale,
+                  ),
+                  SizedBox(width: size.width * 0.015),
+                  Text(
+                    localizations.usersCountText(demo.membersCount),
+                    style: AppTextStyles.label.copyWith(
                       color: AppColors.textSecondary,
-                      size: 16 * textScale,
+                      fontSize: 12 * textScale,
                     ),
-                    SizedBox(width: size.width * 0.015),
-                    Text(
-                      localizations.usersCountText(usersCount!),
-                      style: AppTextStyles.label.copyWith(
-                        color: AppColors.textSecondary,
-                        fontSize: 12 * textScale,
-                      ),
-                    ),
-                  ],
-                )
-              else
-                const SizedBox.shrink(),
+                  ),
+                ],
+              ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DemoMainPage(demoId :demo.id!)),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   elevation: 0,

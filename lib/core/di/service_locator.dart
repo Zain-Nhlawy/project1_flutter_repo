@@ -23,6 +23,11 @@ import 'package:project1/features/demo/data/repository/demo_repository.dart';
 import 'package:project1/features/demo/data/repository/demo_repository_impl.dart';
 import 'package:project1/features/demo/domain/use%20case/get_demos_usecase.dart';
 import 'package:project1/features/demo/presentation/cubit/demo_cubit.dart';
+import 'package:project1/features/department/data/data_sources/department_data_source.dart';
+import 'package:project1/features/department/domain/repository/department_repository.dart';
+import 'package:project1/features/department/data/repository/department_repository_implement.dart';
+import 'package:project1/features/department/domain/use_case/get_department_use_case.dart';
+import 'package:project1/features/department/presentation/cubit/department_cubit.dart';
 
 final getIt = GetIt.instance;
 
@@ -112,4 +117,31 @@ getIt.registerFactory(
   ),
 );
   ////////////////////Demo////////////////////
+  
+
+///////////////////// department ////////////////
+
+  getIt.registerLazySingleton<DepartmentRemoteDataSource>(
+    () => DepartmentRemoteDataSourcImpl(
+      getIt<DioClient>(), 
+      dio: getIt<DioClient>().dio,
+    ),
+  );
+
+  getIt.registerLazySingleton<DepartmentRepository>(
+    () => DepartmentRepositoryImplement(
+      getIt<DioClient>(),
+      remoteDataSource: getIt<DepartmentRemoteDataSource>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<GetDepartmentUseCase>(
+    () => GetDepartmentUseCase(repository: getIt<DepartmentRepository>()),
+  );
+
+  getIt.registerFactory<DepartmentCubit>(
+    () => DepartmentCubit(getIt<GetDepartmentUseCase>()),
+  );
+
+  //////////////// department //////////////////////////
 }

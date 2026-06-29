@@ -11,6 +11,7 @@ import '../widgets/section_header.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
@@ -32,68 +33,74 @@ class HomePage extends StatelessWidget {
                   horizontal: size.width * 0.06,
                   vertical: size.height * 0.02,
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SectionHeader(title: localizations.myDemos),
-                    SizedBox(height: size.height * 0.015),
-                    BlocBuilder<DemoCubit, DemoState>(
-                      builder: (context, state) {
-                        if (state is GetDemosLoading) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
+                child: BlocBuilder<DemoCubit, DemoState>(
+                  builder: (context, state) {
+                    if (state is GetDemosLoading) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
 
-                        if (state is GetDemosError) {
-                          return Center(
-                            child: Text(localizations.somethingWentWrong),
-                          );
-                        }
+                    if (state is GetDemosError) {
+                      return Center(
+                        child: Text(localizations.somethingWentWrong),
+                      );
+                    }
 
-                        if (state is GetDemosLoaded) {
-                          final demosList = state.demos;
-                          if (demosList.isEmpty) {
-                            return Center(
-                              child: Text(localizations.noDemosAvailable),
-                            );
-                          }
+                    if (state is GetDemosLoaded) {
+                      final myDemos = state.demos.where((demo) => demo.isOwner == true).toList();
+                      final joinedDemos = state.demos.where((demo) => demo.isOwner == false).toList();
 
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: demosList.length < 2
-                                ? demosList.length
-                                : 2,
-                            itemBuilder: (context, index) {
-                              final item = demosList[index];
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SectionHeader(title: localizations.myDemos),
+                          SizedBox(height: size.height * 0.015),
+                          _buildDemosList(myDemos, localizations.noDemosAvailable),
 
-                              return DemoCard(
-                                title: item.name,
-                                description:
-                                    'Persil company for cleaning products , training chemical products and detergents',
-                                author: 'Zain',
-                              );
-                            },
-                          );
-                        }
+                          SizedBox(height: size.height * 0.03),
 
-                        return Center(
-                          child: Text(localizations.somethingWentWrong),
-                        );
-                      },
-                    ),
-                    SizedBox(height: size.height * 0.02),
-                    SectionHeader(title: localizations.demosImIn),
-                    SizedBox(height: size.height * 0.015),
-                    SizedBox(height: size.height * 0.12),
-                  ],
+
+                          SectionHeader(title: localizations.demosImIn),
+                          SizedBox(height: size.height * 0.015),
+                          _buildDemosList(joinedDemos, localizations.noDemosAvailable),
+
+                          SizedBox(height: size.height * 0.12),
+                        ],
+                      );
+                    }
+
+                    return Center(
+                      child: Text(localizations.somethingWentWrong),
+                    );
+                  },
                 ),
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildDemosList(List demosList, String emptyMessage) {
+    if (demosList.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20.0),
+          child: Text(emptyMessage),
+        ),
+      );
+    }
+
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: demosList.length < 2 ? demosList.length : 2,
+      itemBuilder: (context, index) {
+        final item = demosList[index];
+        return DemoCard(demo: item);
+      },
     );
   }
 }

@@ -11,7 +11,7 @@
     Future<void> fetchDemos() async {
       emit(GetDemosLoading());
 
-      final result = await getDemosUseCase.call();
+      final result = await getDemosUseCase.getDemos();
 
       result.fold(
         (error) => emit(GetDemosError(error)),

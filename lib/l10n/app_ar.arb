@@ -135,5 +135,19 @@
 "storagePermissionDenied": "ما عندك إذن تخزين، فعّله من الإعدادات",
 "settings": "الإعدادات",
 "xmlSaved": "تم حفظ XML بنجاح",
-"pngSaved": "تم حفظ PNG بنجاح"
+"pngSaved": "تم حفظ PNG بنجاح",
+
+  "@@locale": "ar",
+  "lincoCompanyDemo": "Linco Company Demo",
+  "byAhmadAhmad": "بواسطة أحمد أحمد",
+  "sections": "الأقسام",
+  "groups": "المجموعات",
+  "yourSections": "أقسامك",
+  "restrictedSections": "الأقسام المقيدة",
+  "myGroups": "مجموعاتي",
+  "frontendSection": "قسم الواجهات الأمامية",
+  "frontendSectionSubtitle": "القسم الرئيسي لتطوير صفحات الويب ولوحات التحكم",
+  "project1Team": "فريق المشروع 1",
+  "project1TeamSubtitle": "بناء المشروع 1 مع العديد من الأعضاء"
+
 }

@@ -131,7 +131,16 @@ class AddDemoScreen extends StatelessWidget {
                                   return;
                                 }
 
-                                final newDemo = DemoModel(name: state.demoName);
+                                final newDemo = DemoModel(
+                                  name: state.demoName,
+                                  description: state.demoDescription,
+                                  imagePath:
+                                      'assets/images/demo_placeholder.png',
+                                  ownerName: 'Owner Name',
+                                  isOwner: true,
+                                  plan: 'PRO',
+                                  membersCount: 1,
+                                );
 
                                 context.read<DemoCubit>().addDemo(newDemo);
                               }

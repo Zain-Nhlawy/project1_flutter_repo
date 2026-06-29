@@ -161,6 +161,20 @@
 "storagePermissionDenied": "No storage permission. Please enable it from settings.",
 "settings": "Settings",
 "xmlSaved": "XML saved successfully",
-"pngSaved": "PNG saved successfully"
+"pngSaved": "PNG saved successfully",
+
+  "@@locale": "en",
+  "lincoCompanyDemo": "Linco Company Demo",
+  "byAhmadAhmad": "By Ahmad Ahmad",
+  "sections": "Sections",
+  "groups": "Groups",
+  "yourSections": "Your Sections",
+  "restrictedSections": "Restricted Sections",
+  "myGroups": "My Groups",
+  "frontendSection": "Frontend Section",
+  "frontendSectionSubtitle": "the main section for developing web pages and dashboard",
+  "project1Team": "Project 1 Team",
+  "project1TeamSubtitle": "building project 1 with many members"
+
 
 }

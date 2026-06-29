@@ -6,7 +6,7 @@ class AddDemoState {
   final List<Map<String, dynamic>> availableFeatures;
   final List<int> selectedFeatureIndices;
   final String demoName;
-
+  final String demoDescription;
   AddDemoState({
     this.currentPage = 0,
     this.basePrice = 50.0,
@@ -35,6 +35,7 @@ class AddDemoState {
     ],
     this.selectedFeatureIndices = const [0],
     this.demoName = '',
+    this.demoDescription = '',
   });
 
   double get totalPrice {
@@ -49,6 +50,7 @@ class AddDemoState {
     int? currentPage,
     List<int>? selectedFeatureIndices,
     String? demoName,
+    String? demoDescription,
   }) {
     return AddDemoState(
       currentPage: currentPage ?? this.currentPage,
@@ -56,6 +58,7 @@ class AddDemoState {
       availableFeatures: availableFeatures,
       selectedFeatureIndices: selectedFeatureIndices ?? this.selectedFeatureIndices,
       demoName: demoName ?? this.demoName,
+      demoDescription: demoDescription ?? this.demoDescription,
     );
   }
 }

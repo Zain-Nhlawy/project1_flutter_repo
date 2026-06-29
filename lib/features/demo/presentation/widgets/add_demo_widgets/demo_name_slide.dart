@@ -55,6 +55,7 @@ class DemoNameSlide extends StatelessWidget {
               icon: Icons.description_outlined,
               maxLines: 3,
               onChanged: (value) {
+                 context.read<AddDemoCubit>().updateDemoDescription(value);
               },
             ),
           ],

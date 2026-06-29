@@ -365,4 +365,38 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get pngSaved => 'تم حفظ PNG بنجاح';
+
+  @override
+  String get lincoCompanyDemo => 'Linco Company Demo';
+
+  @override
+  String get byAhmadAhmad => 'بواسطة أحمد أحمد';
+
+  @override
+  String get sections => 'الأقسام';
+
+  @override
+  String get groups => 'المجموعات';
+
+  @override
+  String get yourSections => 'أقسامك';
+
+  @override
+  String get restrictedSections => 'الأقسام المقيدة';
+
+  @override
+  String get myGroups => 'مجموعاتي';
+
+  @override
+  String get frontendSection => 'قسم الواجهات الأمامية';
+
+  @override
+  String get frontendSectionSubtitle =>
+      'القسم الرئيسي لتطوير صفحات الويب ولوحات التحكم';
+
+  @override
+  String get project1Team => 'فريق المشروع 1';
+
+  @override
+  String get project1TeamSubtitle => 'بناء المشروع 1 مع العديد من الأعضاء';
 }

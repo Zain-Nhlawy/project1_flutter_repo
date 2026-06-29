@@ -787,6 +787,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'PNG saved successfully'**
   String get pngSaved;
+
+  /// No description provided for @lincoCompanyDemo.
+  ///
+  /// In en, this message translates to:
+  /// **'Linco Company Demo'**
+  String get lincoCompanyDemo;
+
+  /// No description provided for @byAhmadAhmad.
+  ///
+  /// In en, this message translates to:
+  /// **'By Ahmad Ahmad'**
+  String get byAhmadAhmad;
+
+  /// No description provided for @sections.
+  ///
+  /// In en, this message translates to:
+  /// **'Sections'**
+  String get sections;
+
+  /// No description provided for @groups.
+  ///
+  /// In en, this message translates to:
+  /// **'Groups'**
+  String get groups;
+
+  /// No description provided for @yourSections.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Sections'**
+  String get yourSections;
+
+  /// No description provided for @restrictedSections.
+  ///
+  /// In en, this message translates to:
+  /// **'Restricted Sections'**
+  String get restrictedSections;
+
+  /// No description provided for @myGroups.
+  ///
+  /// In en, this message translates to:
+  /// **'My Groups'**
+  String get myGroups;
+
+  /// No description provided for @frontendSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Frontend Section'**
+  String get frontendSection;
+
+  /// No description provided for @frontendSectionSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'the main section for developing web pages and dashboard'**
+  String get frontendSectionSubtitle;
+
+  /// No description provided for @project1Team.
+  ///
+  /// In en, this message translates to:
+  /// **'Project 1 Team'**
+  String get project1Team;
+
+  /// No description provided for @project1TeamSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'building project 1 with many members'**
+  String get project1TeamSubtitle;
 }
 
 class _AppLocalizationsDelegate
