@@ -49,6 +49,9 @@ class Api {
 
       case DioExceptionType.cancel:
         return "Request was cancelled.";
+        
+      case DioExceptionType.transformTimeout:
+          throw UnimplementedError();
 
       case DioExceptionType.unknown:
       default:

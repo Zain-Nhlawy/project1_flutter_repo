@@ -16,48 +16,50 @@ class DemoNameSlide extends StatelessWidget {
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: size.width * 0.06),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: size.height * 0.04),
-          Text(
-            localizations.startWithName,
-            style: AppTextStyles.h2.copyWith(
-              color: AppColors.textPrimary,
-              fontWeight: FontWeight.bold,
-              fontSize: 24 * textScale,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: size.height * 0.04),
+            Text(
+              localizations.startWithName,
+              style: AppTextStyles.h2.copyWith(
+                color: AppColors.textPrimary,
+                fontWeight: FontWeight.bold,
+                fontSize: 24 * textScale,
+              ),
             ),
-          ),
-          SizedBox(height: size.height * 0.01),
-          Text(
-            localizations.giveCatchyTitle,
-            style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.textSecondary,
-              fontSize: 14 * textScale,
+            SizedBox(height: size.height * 0.01),
+            Text(
+              localizations.giveCatchyTitle,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.textSecondary,
+                fontSize: 14 * textScale,
+              ),
             ),
-          ),
-          SizedBox(height: size.height * 0.05),
-          _buildInputField(
-            context: context,
-            label: localizations.labelDemoName,
-            hint: localizations.hintDemoName,
-            icon: Icons.title_rounded,
-            onChanged: (value) {
-              context.read<AddDemoCubit>().updateDemoName(value);
-            },
-          ),
-          SizedBox(height: size.height * 0.03),
-          _buildInputField(
-            context: context,
-            label: localizations.labelDescription,
-            hint: localizations.hintDescription,
-            icon: Icons.description_outlined,
-            maxLines: 3,
-            onChanged: (value) {
-              // إذا كان عندك متغير للوصف مستقبلاً، بتستدعيه هون بنفس الطريقة
-            },
-          ),
-        ],
+            SizedBox(height: size.height * 0.05),
+            _buildInputField(
+              context: context,
+              label: localizations.labelDemoName,
+              hint: localizations.hintDemoName,
+              icon: Icons.title_rounded,
+              onChanged: (value) {
+                context.read<AddDemoCubit>().updateDemoName(value);
+              },
+            ),
+            SizedBox(height: size.height * 0.03),
+            _buildInputField(
+              context: context,
+              label: localizations.labelDescription,
+              hint: localizations.hintDescription,
+              icon: Icons.description_outlined,
+              maxLines: 3,
+              onChanged: (value) {
+                 context.read<AddDemoCubit>().updateDemoDescription(value);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

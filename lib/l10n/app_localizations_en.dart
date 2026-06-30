@@ -149,7 +149,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintDemoName => 'e.g. Flutter Advanced Course';
 
   @override
-  String get labelDescription => 'Short Description (Optional)';
+  String get labelDescription => 'Short Description';
 
   @override
   String get hintDescription => 'What is this demo about?';
@@ -164,6 +164,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get selectAddons =>
       'Select optional add-ons to enhance your room. You can skip this if you don\'t need any.';
+
+  @override
+  String get descriptionRequiredError => 'Description is required';
 
   @override
   String get pleaseEnterEmail => 'Please enter your email address';
@@ -405,4 +408,38 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get twoFactorEnabledSuccessfully =>
       'Two-factor authentication has been enabled successfully.';
+
+  @override
+  String get lincoCompanyDemo => 'Linco Company Demo';
+
+  @override
+  String get byAhmadAhmad => 'By Ahmad Ahmad';
+
+  @override
+  String get sections => 'Sections';
+
+  @override
+  String get groups => 'Groups';
+
+  @override
+  String get yourSections => 'Your Sections';
+
+  @override
+  String get restrictedSections => 'Restricted Sections';
+
+  @override
+  String get myGroups => 'My Groups';
+
+  @override
+  String get frontendSection => 'Frontend Section';
+
+  @override
+  String get frontendSectionSubtitle =>
+      'the main section for developing web pages and dashboard';
+
+  @override
+  String get project1Team => 'Project 1 Team';
+
+  @override
+  String get project1TeamSubtitle => 'building project 1 with many members';
 }

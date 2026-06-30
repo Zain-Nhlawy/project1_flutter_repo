@@ -11,7 +11,7 @@
     Future<void> fetchDemos() async {
       emit(GetDemosLoading());
 
-      final result = await getDemosUseCase.call();
+      final result = await getDemosUseCase.getDemos();
 
       result.fold(
         (error) => emit(GetDemosError(error)),
@@ -19,14 +19,17 @@
       );
     }
 
-    Future<void> addDemo(DemoModel demo) async {
+Future<void> addDemo(DemoModel demo) async {
       emit(AddDemoLoading());
 
       final result = await getDemosUseCase.addDemo(demo);
 
       result.fold(
         (error) => emit(AddDemoError(error)),
-        (_) => emit(AddDemoSuccess()),
+        (_) {
+          emit(AddDemoSuccess());
+          fetchDemos(); 
+        },
       );
     }
   }

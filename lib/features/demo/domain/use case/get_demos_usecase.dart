@@ -9,7 +9,7 @@ class GetDemosUseCase {
 
   GetDemosUseCase(this.repository);
 
-  Future<Either<String, List<DemoEntity>>> call() async {
+  Future<Either<String, List<DemoEntity>>> getDemos() async {
     return await repository.getDemos();
   }
   Future<Either<String, void>> addDemo(DemoModel demo) async {

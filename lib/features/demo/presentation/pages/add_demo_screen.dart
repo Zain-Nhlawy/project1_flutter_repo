@@ -130,8 +130,28 @@ class AddDemoScreen extends StatelessWidget {
                                   );
                                   return;
                                 }
+                                if (state.demoDescription.trim().isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        localizations.descriptionRequiredError,
+                                      ),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                  return;
+                                }
 
-                                final newDemo = DemoModel(name: state.demoName);
+                                final newDemo = DemoModel(
+                                  name: state.demoName,
+                                  description: state.demoDescription,
+                                  imagePath:
+                                      'assets/images/demo_placeholder.png',
+                                  ownerName: 'Owner Name',
+                                  isOwner: true,
+                                  plan: 'PRO',
+                                  membersCount: 1,
+                                );
 
                                 context.read<DemoCubit>().addDemo(newDemo);
                               }

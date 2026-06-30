@@ -50,11 +50,12 @@
 "giveCatchyTitle": "امنح الغرفة الجديدة عنواناً جذاباً لتتمكن من التعرف عليها بسهولة لاحقاً.",
 "labelDemoName": "اسم الغرفة",
 "hintDemoName": "مثال: دورة فلاتر المتقدمة",
-"labelDescription": "وصف قصير (اختياري)",
+"labelDescription": "وصف قصير",
 "hintDescription": "عن ماذا تتحدث هذا الغرفة",
 "errorDemoNameRequired": "اسم الغرفة مطلوب، لا يمكن تركه فارغاً",
 "superchargeDemo": "طور الغرفة الخاصة بك",
 "selectAddons": "اختر إضافات اختيارية لتحسين غرفتك. يمكنك تخطي هذا إذا لم تكن بحاجة لأي منها.",
+"descriptionRequiredError" : " وصف الغرفة مطلوب ",
 
 
 
@@ -153,6 +154,18 @@
   "scanQrCodeDescription": "افتح تطبيق المصادقة على هاتفك وامسح رمز QR أدناه، ثم أدخل رمز التحقق المكون من 6 أرقام لإكمال عملية التفعيل.",
   "authenticationCode": "رمز التحقق",
   "enable": "تفعيل",
-  "twoFactorEnabledSuccessfully": "تم تفعيل المصادقة الثنائية بنجاح."
+  "twoFactorEnabledSuccessfully": "تم تفعيل المصادقة الثنائية بنجاح.",
+   "@@locale": "ar",
+  "lincoCompanyDemo": "Linco Company Demo",
+  "byAhmadAhmad": "بواسطة أحمد أحمد",
+  "sections": "الأقسام",
+  "groups": "المجموعات",
+  "yourSections": "أقسامك",
+  "restrictedSections": "الأقسام المقيدة",
+  "myGroups": "مجموعاتي",
+  "frontendSection": "قسم الواجهات الأمامية",
+  "frontendSectionSubtitle": "القسم الرئيسي لتطوير صفحات الويب ولوحات التحكم",
+  "project1Team": "فريق المشروع 1",
+  "project1TeamSubtitle": "بناء المشروع 1 مع العديد من الأعضاء"
 
 }

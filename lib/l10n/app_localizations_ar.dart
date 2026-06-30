@@ -149,7 +149,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get hintDemoName => 'مثال: دورة فلاتر المتقدمة';
 
   @override
-  String get labelDescription => 'وصف قصير (اختياري)';
+  String get labelDescription => 'وصف قصير';
 
   @override
   String get hintDescription => 'عن ماذا تتحدث هذا الغرفة';
@@ -163,6 +163,9 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get selectAddons =>
       'اختر إضافات اختيارية لتحسين غرفتك. يمكنك تخطي هذا إذا لم تكن بحاجة لأي منها.';
+
+  @override
+  String get descriptionRequiredError => ' وصف الغرفة مطلوب ';
 
   @override
   String get pleaseEnterEmail => 'يرجى إدخال عنوان بريدك الإلكتروني';
@@ -404,4 +407,38 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get twoFactorEnabledSuccessfully =>
       'تم تفعيل المصادقة الثنائية بنجاح.';
+
+  @override
+  String get lincoCompanyDemo => 'Linco Company Demo';
+
+  @override
+  String get byAhmadAhmad => 'بواسطة أحمد أحمد';
+
+  @override
+  String get sections => 'الأقسام';
+
+  @override
+  String get groups => 'المجموعات';
+
+  @override
+  String get yourSections => 'أقسامك';
+
+  @override
+  String get restrictedSections => 'الأقسام المقيدة';
+
+  @override
+  String get myGroups => 'مجموعاتي';
+
+  @override
+  String get frontendSection => 'قسم الواجهات الأمامية';
+
+  @override
+  String get frontendSectionSubtitle =>
+      'القسم الرئيسي لتطوير صفحات الويب ولوحات التحكم';
+
+  @override
+  String get project1Team => 'فريق المشروع 1';
+
+  @override
+  String get project1TeamSubtitle => 'بناء المشروع 1 مع العديد من الأعضاء';
 }

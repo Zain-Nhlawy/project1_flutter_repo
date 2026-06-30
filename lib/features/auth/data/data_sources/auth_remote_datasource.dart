@@ -50,8 +50,10 @@ class AuthRemoteDataSource {
       );
     }
     return LoginResponse(
-      user: UserModel.fromJson(data['user']),
-    );
+  user: UserModel.fromJson(data['user']),
+  accessToken: data['accessToken'],
+  refreshToken: data['refreshToken'],
+);
   }
 
   Future<Map<String, dynamic>> googleLogin(String idToken) async {
