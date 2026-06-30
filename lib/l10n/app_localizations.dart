@@ -365,7 +365,7 @@ abstract class AppLocalizations {
   /// No description provided for @labelDescription.
   ///
   /// In en, this message translates to:
-  /// **'Short Description (Optional)'**
+  /// **'Short Description'**
   String get labelDescription;
 
   /// No description provided for @hintDescription.
@@ -391,6 +391,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select optional add-ons to enhance your room. You can skip this if you don\'t need any.'**
   String get selectAddons;
+
+  /// No description provided for @descriptionRequiredError.
+  ///
+  /// In en, this message translates to:
+  /// **'Description is required'**
+  String get descriptionRequiredError;
 
   /// No description provided for @pleaseEnterEmail.
   ///

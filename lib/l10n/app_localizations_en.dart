@@ -149,7 +149,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintDemoName => 'e.g. Flutter Advanced Course';
 
   @override
-  String get labelDescription => 'Short Description (Optional)';
+  String get labelDescription => 'Short Description';
 
   @override
   String get hintDescription => 'What is this demo about?';
@@ -164,6 +164,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get selectAddons =>
       'Select optional add-ons to enhance your room. You can skip this if you don\'t need any.';
+
+  @override
+  String get descriptionRequiredError => 'Description is required';
 
   @override
   String get pleaseEnterEmail => 'Please enter your email address';

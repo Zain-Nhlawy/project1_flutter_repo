@@ -49,9 +49,33 @@ class DemoMainPage extends StatelessWidget {
                 ),
                 SizedBox(height: size.height * 0.03),
                 Expanded(
-                  child: isSectionsActive
-                      ? _buildSectionsContent(size, theme, l10n)
-                      : _buildGroupsContent(size, theme, l10n),
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 350),
+                    switchInCurve: Curves.easeIn,
+                    switchOutCurve: Curves.easeOut,
+                    transitionBuilder:
+                        (Widget child, Animation<double> animation) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: SlideTransition(
+                              position: Tween<Offset>(
+                                begin: const Offset(0.0, 0.05),
+                                end: Offset.zero,
+                              ).animate(animation),
+                              child: child,
+                            ),
+                          );
+                        },
+                    child: isSectionsActive
+                        ? SizedBox(
+                            key: const ValueKey('sections_tab'),
+                            child: _buildSectionsContent(size, theme, l10n),
+                          )
+                        : SizedBox(
+                            key: const ValueKey('groups_tab'),
+                            child: _buildGroupsContent(size, theme, l10n),
+                          ),
+                  ),
                 ),
               ],
             );

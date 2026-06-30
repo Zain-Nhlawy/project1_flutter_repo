@@ -8,8 +8,14 @@ import 'package:project1/features/demo/presentation/pages/add_demo_screen.dart';
 import 'package:project1/features/home/presentation/widgets/state_card.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
-class DashboardHeader extends StatelessWidget {
-  const DashboardHeader({super.key});
+class MainHeader extends StatelessWidget {
+  final int myDemosCount;
+  final int enrolledDemosCount;
+  const MainHeader({
+    super.key,
+    required this.myDemosCount,
+    required this.enrolledDemosCount,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +134,7 @@ class DashboardHeader extends StatelessWidget {
               Expanded(
                 child: StatCard(
                   icon: Icons.menu_book_rounded,
-                  count: "3",
+                  count: myDemosCount.toString(),
                   label: localizations.statMyDemos,
                 ),
               ),
@@ -136,7 +142,7 @@ class DashboardHeader extends StatelessWidget {
               Expanded(
                 child: StatCard(
                   icon: Icons.star_border_rounded,
-                  count: "2",
+                  count: enrolledDemosCount.toString(),
                   label: localizations.statEnrolled,
                 ),
               ),

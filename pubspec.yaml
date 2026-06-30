@@ -52,20 +52,15 @@ dependencies:
   open_filex: ^4.3.2
   permission_handler: ^11.3.0
   flutter_inappwebview: ^6.1.5
-
-
-
-
   flutter_localizations:
     sdk: flutter
   intl: ^0.20.2
   flutter_launcher_icons: ^0.13.1
   auto_size_text: ^3.0.0
-  dev_dependencies:
+
+dev_dependencies:
   flutter_test:
     sdk: flutter
-
-
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

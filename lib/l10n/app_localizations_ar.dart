@@ -149,7 +149,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get hintDemoName => 'مثال: دورة فلاتر المتقدمة';
 
   @override
-  String get labelDescription => 'وصف قصير (اختياري)';
+  String get labelDescription => 'وصف قصير';
 
   @override
   String get hintDescription => 'عن ماذا تتحدث هذا الغرفة';
@@ -163,6 +163,9 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get selectAddons =>
       'اختر إضافات اختيارية لتحسين غرفتك. يمكنك تخطي هذا إذا لم تكن بحاجة لأي منها.';
+
+  @override
+  String get descriptionRequiredError => ' وصف الغرفة مطلوب ';
 
   @override
   String get pleaseEnterEmail => 'يرجى إدخال عنوان بريدك الإلكتروني';

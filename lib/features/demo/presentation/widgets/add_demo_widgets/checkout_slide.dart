@@ -17,108 +17,112 @@ class CheckoutSlide extends StatelessWidget {
 
     return BlocBuilder<AddDemoCubit, AddDemoState>(
       builder: (context, state) {
-        return Padding(
-          padding: EdgeInsets.symmetric(horizontal: size.width * 0.06),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: size.height * 0.04),
-              Text(
-                localizations.orderSummary,
-                style: AppTextStyles.h2.copyWith(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24 * textScale,
+        return SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: size.width * 0.06),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: size.height * 0.04),
+                Text(
+                  localizations.orderSummary,
+                  style: AppTextStyles.h2.copyWith(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24 * textScale,
+                  ),
                 ),
-              ),
-              SizedBox(height: size.height * 0.01),
-              Text(
-                localizations.reviewDemoDetails,
-                style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.textSecondary,
-                  fontSize: 14 * textScale,
+                SizedBox(height: size.height * 0.01),
+                Text(
+                  localizations.reviewDemoDetails,
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.textSecondary,
+                    fontSize: 14 * textScale,
+                  ),
                 ),
-              ),
-              SizedBox(height: size.height * 0.04),
-              Container(
-                padding: EdgeInsets.all(size.width * 0.05),
-                decoration: BoxDecoration(
-                  color: AppColors.surface,
-                  borderRadius: BorderRadius.circular(24),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.textSecondary.withOpacity(0.08),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    _buildSummaryRow(
-                      context: context,
-                      title: localizations.baseDemoReservation,
-                      price: "\$${state.basePrice.toStringAsFixed(2)}",
-                      isBold: true,
-                    ),
-                    SizedBox(height: size.height * 0.02),
-                    const Divider(color: AppColors.border),
-                    SizedBox(height: size.height * 0.02),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        localizations.selectedFeatures,
-                        style: AppTextStyles.label.copyWith(
-                          color: AppColors.textSecondary,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12 * textScale,
-                        ),
+                SizedBox(height: size.height * 0.04),
+                Container(
+                  padding: EdgeInsets.all(size.width * 0.05),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.textSecondary.withOpacity(0.08),
+                        blurRadius: 20,
+                        offset: const Offset(0, 10),
                       ),
-                    ),
-                    SizedBox(height: size.height * 0.015),
-                    if (state.selectedFeatureIndices.isEmpty)
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      _buildSummaryRow(
+                        context: context,
+                        title: localizations.baseDemoReservation,
+                        price: "\$${state.basePrice.toStringAsFixed(2)}",
+                        isBold: true,
+                      ),
+                      SizedBox(height: size.height * 0.02),
+                      const Divider(color: AppColors.border),
+                      SizedBox(height: size.height * 0.02),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          localizations.noFeaturesSelected,
+                          localizations.selectedFeatures,
                           style: AppTextStyles.label.copyWith(
-                            color: AppColors.textSecondary.withOpacity(0.7),
+                            color: AppColors.textSecondary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12 * textScale,
                           ),
                         ),
-                      )
-                    else
-                      ...state.selectedFeatureIndices.map((index) {
-                        final feature = state.availableFeatures[index];
-                        return Padding(
-                          padding: EdgeInsets.only(bottom: size.height * 0.01),
-                          child: _buildSummaryRow(
-                            context: context,
-                            title: feature["title"],
-                            price: "\$${feature["price"].toStringAsFixed(2)}",
-                            isBold: false,
+                      ),
+                      SizedBox(height: size.height * 0.015),
+                      if (state.selectedFeatureIndices.isEmpty)
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            localizations.noFeaturesSelected,
+                            style: AppTextStyles.label.copyWith(
+                              color: AppColors.textSecondary.withOpacity(0.7),
+                            ),
                           ),
-                        );
-                      }),
-                    SizedBox(height: size.height * 0.02),
-                    Container(
-                      padding: EdgeInsets.all(size.width * 0.04),
-                      decoration: BoxDecoration(
-                        color: AppColors.primary.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(16),
+                        )
+                      else
+                        ...state.selectedFeatureIndices.map((index) {
+                          final feature = state.availableFeatures[index];
+                          return Padding(
+                            padding: EdgeInsets.only(
+                              bottom: size.height * 0.01,
+                            ),
+                            child: _buildSummaryRow(
+                              context: context,
+                              title: feature["title"],
+                              price: "\$${feature["price"].toStringAsFixed(2)}",
+                              isBold: false,
+                            ),
+                          );
+                        }),
+                      SizedBox(height: size.height * 0.02),
+                      Container(
+                        padding: EdgeInsets.all(size.width * 0.04),
+                        decoration: BoxDecoration(
+                          color: AppColors.primary.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: _buildSummaryRow(
+                          context: context,
+                          title: localizations.totalAmount,
+                          price: "\$${state.totalPrice.toStringAsFixed(2)}",
+                          isBold: true,
+                          titleColor: AppColors.primary,
+                          priceColor: AppColors.primary,
+                        ),
                       ),
-                      child: _buildSummaryRow(
-                        context: context,
-                        title: localizations.totalAmount,
-                        price: "\$${state.totalPrice.toStringAsFixed(2)}",
-                        isBold: true,
-                        titleColor: AppColors.primary,
-                        priceColor: AppColors.primary,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

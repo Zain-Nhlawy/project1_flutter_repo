@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/features/demo/domain/entities/demo_entity.dart';
+import 'package:project1/features/home/presentation/pages/demos_page.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class SectionHeader extends StatelessWidget {
   final String title;
+  final List<DemoEntity> demoList;
 
-  const SectionHeader({super.key, required this.title});
+  const SectionHeader({super.key, required this.title, required this.demoList});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,14 @@ class SectionHeader extends StatelessWidget {
           ),
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DemosPage(title: title, demos: demoList),
+              ),
+            );
+          },
           child: Text(
             localizations.seeAll,
             style: AppTextStyles.bodyMedium.copyWith(

@@ -73,11 +73,12 @@
 "giveCatchyTitle": "Give your new demo a catchy title so you can easily identify it later.",
 "labelDemoName": "Demo Name",
 "hintDemoName": "e.g. Flutter Advanced Course",
-"labelDescription": "Short Description (Optional)",
+"labelDescription": "Short Description",
 "hintDescription": "What is this demo about?",
 "errorDemoNameRequired": "Demo name is required, cannot be left empty",
 "superchargeDemo": "Supercharge your Demo",
 "selectAddons": "Select optional add-ons to enhance your room. You can skip this if you don't need any.",
+"descriptionRequiredError" : "Description is required",
 
 
 

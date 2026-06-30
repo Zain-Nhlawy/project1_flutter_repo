@@ -130,6 +130,17 @@ class AddDemoScreen extends StatelessWidget {
                                   );
                                   return;
                                 }
+                                if (state.demoDescription.trim().isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        localizations.descriptionRequiredError,
+                                      ),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                  return;
+                                }
 
                                 final newDemo = DemoModel(
                                   name: state.demoName,

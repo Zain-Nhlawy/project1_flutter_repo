@@ -11,6 +11,7 @@ class HeaderWidget extends StatelessWidget {
     final Size size = MediaQuery.sizeOf(context);
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
+    final textScale = MediaQuery.textScalerOf(context).scale(1);
 
     final double topPadding = MediaQuery.paddingOf(context).top;
 
@@ -36,30 +37,43 @@ class HeaderWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                padding: EdgeInsets.all(size.width * 0.015),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.surface.withOpacity(0.1),
-                  shape: BoxShape.circle,
+                  color: AppColors.surface.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  color: theme.colorScheme.surface,
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
+                  padding: EdgeInsets.symmetric(
+                    horizontal: size.width * 0.02,
+                    vertical: size.height * 0.012,
+                  ),
+                  constraints: const BoxConstraints(),
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: AppColors.surface,
+                    size: 20 * textScale,
+                  ),
                 ),
               ),
               Container(
-                padding: EdgeInsets.all(size.width * 0.015),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.surface.withOpacity(0.1),
-                  shape: BoxShape.circle,
+                  color: AppColors.surface.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: IconButton(
-                  icon: Icon(Icons.notifications_none),
-                  color: theme.colorScheme.surface,
-                  onPressed: () {
-                  },
+                  onPressed: () {},
+                  padding: EdgeInsets.symmetric(
+                    horizontal: size.width * 0.02,
+                    vertical: size.height * 0.012,
+                  ),
+                  constraints: const BoxConstraints(),
+                  icon: Icon(
+                    Icons.notifications_none_rounded,
+                    color: AppColors.surface,
+                    size: 20 * textScale,
+                  ),
                 ),
               ),
             ],
