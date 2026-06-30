@@ -16,7 +16,17 @@ class DemosPage extends StatelessWidget {
     final textScale = MediaQuery.textScalerOf(context).scale(1);
     final localizations = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: Text(title), centerTitle: true),
+      appBar: AppBar(
+        title: Text(
+          title,
+          style: AppTextStyles.h3.copyWith(
+            color: AppColors.textPrimary,
+            fontWeight: FontWeight.bold,
+            fontSize: 20 * textScale,
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: demos.isEmpty
           ? Center(
               child: Text(

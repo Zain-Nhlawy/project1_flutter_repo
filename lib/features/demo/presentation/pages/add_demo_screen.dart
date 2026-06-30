@@ -11,6 +11,7 @@ import '../cubit/add demo wizard/add_demo_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/add%20demo%20wizard/add_demo_state.dart';
 import 'package:project1/features/demo/presentation/widgets/add_demo_widgets/demo_name_slide.dart';
 import 'package:project1/features/demo/presentation/widgets/add_demo_widgets/features_slide.dart';
+import 'package:project1/features/demo/presentation/widgets/add_demo_widgets/plan_and_image_slide.dart';
 import 'package:project1/features/demo/presentation/widgets/add_demo_widgets/checkout_slide.dart';
 
 class AddDemoScreen extends StatelessWidget {
@@ -32,8 +33,7 @@ class AddDemoScreen extends StatelessWidget {
               showDialog(
                 context: context,
                 barrierDismissible: false,
-                builder: (_) =>
-                    const Center(child: CircularProgressIndicator()),
+                builder: (_) => const Center(child: CircularProgressIndicator()),
               );
             } else if (demoState is AddDemoSuccess) {
               Navigator.pop(context);
@@ -85,7 +85,7 @@ class AddDemoScreen extends StatelessWidget {
                             ),
                           const Spacer(),
                           StepProgressIndicator(
-                            totalSteps: 3,
+                            totalSteps: 4,
                             currentStep: state.currentPage,
                           ),
                           const Spacer(),
@@ -100,6 +100,7 @@ class AddDemoScreen extends StatelessWidget {
                         children: const [
                           DemoNameSlide(),
                           FeaturesSlide(),
+                          PlanAndImageSlide(),
                           CheckoutSlide(),
                         ],
                       ),
@@ -117,14 +118,12 @@ class AddDemoScreen extends StatelessWidget {
                         ],
                       ),
                       child: InkWell(
-                        onTap: state.currentPage == 2
+                        onTap: state.currentPage == 3
                             ? () {
                                 if (state.demoName.trim().isEmpty) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text(
-                                        localizations.nameRequiredError,
-                                      ),
+                                      content: Text(localizations.nameRequiredError),
                                       backgroundColor: Colors.red,
                                     ),
                                   );
@@ -133,9 +132,7 @@ class AddDemoScreen extends StatelessWidget {
                                 if (state.demoDescription.trim().isEmpty) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text(
-                                        localizations.descriptionRequiredError,
-                                      ),
+                                      content: Text(localizations.descriptionRequiredError),
                                       backgroundColor: Colors.red,
                                     ),
                                   );
@@ -145,11 +142,12 @@ class AddDemoScreen extends StatelessWidget {
                                 final newDemo = DemoModel(
                                   name: state.demoName,
                                   description: state.demoDescription,
-                                  imagePath:
-                                      'assets/images/demo_placeholder.png',
+                                  imagePath: state.demoImagePath.isNotEmpty
+                                      ? state.demoImagePath
+                                      : 'assets/images/demo_placeholder.png',
                                   ownerName: 'Owner Name',
                                   isOwner: true,
-                                  plan: 'PRO',
+                                  plan: state.selectedPlan,
                                   membersCount: 1,
                                 );
 
@@ -175,7 +173,7 @@ class AddDemoScreen extends StatelessWidget {
                           ),
                           child: Center(
                             child: Text(
-                              state.currentPage == 2
+                              state.currentPage == 3
                                   ? localizations.payAndCreate(
                                       state.totalPrice.toStringAsFixed(2),
                                     )

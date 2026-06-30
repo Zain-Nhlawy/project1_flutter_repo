@@ -168,6 +168,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get descriptionRequiredError => ' وصف الغرفة مطلوب ';
 
   @override
+  String get uploadDemoImage => 'رفع صورة الديمو';
+
+  @override
+  String get tapToUpload => 'اضغط لرفع الصورة';
+
+  @override
+  String get selectPlan => 'اختر الخطة';
+
+  @override
   String get pleaseEnterEmail => 'يرجى إدخال عنوان بريدك الإلكتروني';
 
   @override

@@ -398,6 +398,24 @@ abstract class AppLocalizations {
   /// **'Description is required'**
   String get descriptionRequiredError;
 
+  /// No description provided for @uploadDemoImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload Demo Image'**
+  String get uploadDemoImage;
+
+  /// No description provided for @tapToUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to upload image'**
+  String get tapToUpload;
+
+  /// No description provided for @selectPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a Plan'**
+  String get selectPlan;
+
   /// No description provided for @pleaseEnterEmail.
   ///
   /// In en, this message translates to:

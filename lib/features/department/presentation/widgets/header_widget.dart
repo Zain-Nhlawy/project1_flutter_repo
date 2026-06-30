@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/features/demo/domain/entities/demo_entity.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class HeaderWidget extends StatelessWidget {
-  const HeaderWidget({super.key});
+  final DemoEntity demo;
+  const HeaderWidget({super.key, required this.demo});
 
   @override
   Widget build(BuildContext context) {
@@ -88,10 +90,20 @@ class HeaderWidget extends StatelessWidget {
                   color: Colors.transparent,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
-                  Icons.account_circle,
-                  size: size.width * 0.13,
-                  color: theme.colorScheme.surface,
+                child: Image.asset(
+                  'assets/images/logo1.png',
+                  width: size.width * 0.2,
+                  height: size.width * 0.2,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    width: size.width * 0.2,
+                    height: size.width * 0.2,
+                    color: AppColors.textSecondary.withOpacity(0.1),
+                    child: const Icon(
+                      Icons.image_not_supported,
+                      color: Colors.grey,
+                    ),
+                  ),
                 ),
               ),
               SizedBox(width: size.width * 0.03),
@@ -100,7 +112,7 @@ class HeaderWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      l10n.lincoCompanyDemo,
+                      demo.name,
                       style: AppTextStyles.h3.copyWith(
                         color: theme.colorScheme.surface,
                       ),
@@ -108,7 +120,7 @@ class HeaderWidget extends StatelessWidget {
                     ),
                     SizedBox(height: size.height * 0.005),
                     Text(
-                      l10n.byAhmadAhmad,
+                      l10n.byAuthor(demo.ownerName),
                       style: AppTextStyles.bodyMedium.copyWith(
                         color: theme.colorScheme.surface.withOpacity(0.8),
                       ),
@@ -133,7 +145,7 @@ class HeaderWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  '14',
+                  demo.membersCount.toString(),
                   style: AppTextStyles.label.copyWith(
                     color: theme.colorScheme.surface,
                   ),

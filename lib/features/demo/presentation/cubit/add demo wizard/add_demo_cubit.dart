@@ -15,8 +15,16 @@ class AddDemoCubit extends Cubit<AddDemoState> {
     emit(state.copyWith(demoDescription: description));
   }
 
+  void updateImagePath(String path) {
+    emit(state.copyWith(demoImagePath: path));
+  }
+
+  void updatePlan(String plan) {
+    emit(state.copyWith(selectedPlan: plan));
+  }
+
   void nextPage() {
-    if (state.currentPage < 2) {
+    if (state.currentPage < 3) {
       final nextPage = state.currentPage + 1;
       emit(state.copyWith(currentPage: nextPage));
       pageController.animateToPage(

@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 
 class AddDemoState {
   final int currentPage;
-  final double basePrice;
   final List<Map<String, dynamic>> availableFeatures;
   final List<int> selectedFeatureIndices;
   final String demoName;
   final String demoDescription;
+  final String demoImagePath;
+  final String selectedPlan;
+
   AddDemoState({
     this.currentPage = 0,
-    this.basePrice = 50.0,
     this.availableFeatures = const [
       {
         "title": "API Tester",
@@ -36,10 +37,24 @@ class AddDemoState {
     this.selectedFeatureIndices = const [0],
     this.demoName = '',
     this.demoDescription = '',
+    this.demoImagePath = '',
+    this.selectedPlan = 'STARTER',
   });
 
+  double get planPrice {
+    switch (selectedPlan) {
+      case 'PRO':
+        return 100.0;
+      case 'ENTERPRISE':
+        return 200.0;
+      case 'STARTER':
+      default:
+        return 20.0;
+    }
+  }
+
   double get totalPrice {
-    double total = basePrice;
+    double total = planPrice;
     for (int index in selectedFeatureIndices) {
       total += availableFeatures[index]["price"];
     }
@@ -51,14 +66,17 @@ class AddDemoState {
     List<int>? selectedFeatureIndices,
     String? demoName,
     String? demoDescription,
+    String? demoImagePath,
+    String? selectedPlan,
   }) {
     return AddDemoState(
       currentPage: currentPage ?? this.currentPage,
-      basePrice: basePrice,
       availableFeatures: availableFeatures,
       selectedFeatureIndices: selectedFeatureIndices ?? this.selectedFeatureIndices,
       demoName: demoName ?? this.demoName,
       demoDescription: demoDescription ?? this.demoDescription,
+      demoImagePath: demoImagePath ?? this.demoImagePath,
+      selectedPlan: selectedPlan ?? this.selectedPlan,
     );
   }
 }

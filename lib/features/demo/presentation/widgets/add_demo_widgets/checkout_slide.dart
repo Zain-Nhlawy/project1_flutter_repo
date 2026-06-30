@@ -58,8 +58,9 @@ class CheckoutSlide extends StatelessWidget {
                     children: [
                       _buildSummaryRow(
                         context: context,
-                        title: localizations.baseDemoReservation,
-                        price: "\$${state.basePrice.toStringAsFixed(2)}",
+                        title:
+                            '${localizations.baseDemoReservation} (${state.selectedPlan})',
+                        price: "\$${state.planPrice.toStringAsFixed(2)}",
                         isBold: true,
                       ),
                       SizedBox(height: size.height * 0.02),
@@ -142,14 +143,17 @@ class CheckoutSlide extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          title,
-          style: AppTextStyles.bodyMedium.copyWith(
-            color: titleColor ?? AppColors.textPrimary,
-            fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
-            fontSize: 15 * textScale,
+        Expanded(
+          child: Text(
+            title,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: titleColor ?? AppColors.textPrimary,
+              fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+              fontSize: 15 * textScale,
+            ),
           ),
         ),
+        const SizedBox(width: 8),
         Text(
           price,
           style: AppTextStyles.titleMedium.copyWith(
