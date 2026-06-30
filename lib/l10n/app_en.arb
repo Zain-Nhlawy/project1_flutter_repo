@@ -161,6 +161,23 @@
 "storagePermissionDenied": "No storage permission. Please enable it from settings.",
 "settings": "Settings",
 "xmlSaved": "XML saved successfully",
-"pngSaved": "PNG saved successfully"
-
+"pngSaved": "PNG saved successfully",
+  "security": "Security",
+  "changePassword": "Change Password",
+  "enterPasswordToContinue": "Enter password to continue",
+  "twoFactorAuth": "Two-Factor Authentication",
+  "extraSecurityLayer": "Extra security layer for your account",
+  "enableTwoFactorAuth": "Enable Two-Factor Authentication",
+  "enableTwoFactorAuthMessage": "We will send a verification code to your email.",
+  "confirm": "Confirm",
+  "cancel": "Cancel",
+  "codeSentToEmail": "Verification code sent to your email",
+  "enterPasswordToEnable2FA": "Enter your password to enable two-factor authentication",
+  "password": "password",
+  "enableTwoFactorAuthentication": "Enable Two-Factor Authentication",
+  "scanQrCode": "Scan the QR Code",
+  "scanQrCodeDescription": "Open your authenticator app and scan the QR code below. Then enter the 6-digit verification code to complete the setup.",
+  "authenticationCode": "Authentication Code",
+  "enable": "Enable",
+  "twoFactorEnabledSuccessfully": "Two-factor authentication has been enabled successfully."
 }

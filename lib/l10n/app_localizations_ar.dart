@@ -303,8 +303,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get changePassword => 'تغيير كلمة المرور';
 
   @override
-  String get enterPasswordToContinue =>
-      'أدخل كلمة المرور الحالية والجديدة للمتابعة';
+  String get enterPasswordToContinue => 'أدخل كلمة المرور للمتابعة';
 
   @override
   String get oldPassword => 'كلمة المرور الحالية';
@@ -319,7 +318,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get twoFactorAuth => 'المصادقة الثنائية';
 
   @override
-  String get extraSecurityLayer => 'إضافة طبقة أمان إضافية';
+  String get extraSecurityLayer => 'طبقة أمان إضافية لحسابك';
 
   @override
   String get resendVerificationEmail => 'إعادة إرسال رابط التحقق';
@@ -365,4 +364,44 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get pngSaved => 'تم حفظ PNG بنجاح';
+
+  @override
+  String get enableTwoFactorAuth => 'تفعيل المصادقة الثنائية';
+
+  @override
+  String get enableTwoFactorAuthMessage =>
+      'سنقوم بإرسال رمز تحقق إلى بريدك الإلكتروني.';
+
+  @override
+  String get confirm => 'تأكيد';
+
+  @override
+  String get codeSentToEmail => 'تم إرسال رمز التحقق إلى بريدك الإلكتروني';
+
+  @override
+  String get enterPasswordToEnable2FA =>
+      'أدخل كلمة المرور لتفعيل المصادقة الثنائية';
+
+  @override
+  String get password => 'كلمة السر';
+
+  @override
+  String get enableTwoFactorAuthentication => 'تفعيل المصادقة الثنائية';
+
+  @override
+  String get scanQrCode => 'امسح رمز QR';
+
+  @override
+  String get scanQrCodeDescription =>
+      'افتح تطبيق المصادقة على هاتفك وامسح رمز QR أدناه، ثم أدخل رمز التحقق المكون من 6 أرقام لإكمال عملية التفعيل.';
+
+  @override
+  String get authenticationCode => 'رمز التحقق';
+
+  @override
+  String get enable => 'تفعيل';
+
+  @override
+  String get twoFactorEnabledSuccessfully =>
+      'تم تفعيل المصادقة الثنائية بنجاح.';
 }

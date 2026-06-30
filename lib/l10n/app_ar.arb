@@ -135,5 +135,24 @@
 "storagePermissionDenied": "ما عندك إذن تخزين، فعّله من الإعدادات",
 "settings": "الإعدادات",
 "xmlSaved": "تم حفظ XML بنجاح",
-"pngSaved": "تم حفظ PNG بنجاح"
+"pngSaved": "تم حفظ PNG بنجاح",
+"security": "الأمان",
+  "changePassword": "تغيير كلمة المرور",
+  "enterPasswordToContinue": "أدخل كلمة المرور للمتابعة",
+  "twoFactorAuth": "المصادقة الثنائية",
+  "extraSecurityLayer": "طبقة أمان إضافية لحسابك",
+  "enableTwoFactorAuth": "تفعيل المصادقة الثنائية",
+  "enableTwoFactorAuthMessage": "سنقوم بإرسال رمز تحقق إلى بريدك الإلكتروني.",
+  "confirm": "تأكيد",
+  "cancel": "إلغاء",
+  "codeSentToEmail": "تم إرسال رمز التحقق إلى بريدك الإلكتروني",
+  "enterPasswordToEnable2FA": "أدخل كلمة المرور لتفعيل المصادقة الثنائية",
+  "password": "كلمة السر",
+  "enableTwoFactorAuthentication": "تفعيل المصادقة الثنائية",
+  "scanQrCode": "امسح رمز QR",
+  "scanQrCodeDescription": "افتح تطبيق المصادقة على هاتفك وامسح رمز QR أدناه، ثم أدخل رمز التحقق المكون من 6 أرقام لإكمال عملية التفعيل.",
+  "authenticationCode": "رمز التحقق",
+  "enable": "تفعيل",
+  "twoFactorEnabledSuccessfully": "تم تفعيل المصادقة الثنائية بنجاح."
+
 }

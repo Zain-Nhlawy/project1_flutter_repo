@@ -665,7 +665,7 @@ abstract class AppLocalizations {
   /// No description provided for @enterPasswordToContinue.
   ///
   /// In en, this message translates to:
-  /// **'Enter your current and new password to continue'**
+  /// **'Enter password to continue'**
   String get enterPasswordToContinue;
 
   /// No description provided for @oldPassword.
@@ -695,7 +695,7 @@ abstract class AppLocalizations {
   /// No description provided for @extraSecurityLayer.
   ///
   /// In en, this message translates to:
-  /// **'Add an extra layer of security'**
+  /// **'Extra security layer for your account'**
   String get extraSecurityLayer;
 
   /// No description provided for @resendVerificationEmail.
@@ -787,6 +787,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'PNG saved successfully'**
   String get pngSaved;
+
+  /// No description provided for @enableTwoFactorAuth.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Two-Factor Authentication'**
+  String get enableTwoFactorAuth;
+
+  /// No description provided for @enableTwoFactorAuthMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We will send a verification code to your email.'**
+  String get enableTwoFactorAuthMessage;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// No description provided for @codeSentToEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification code sent to your email'**
+  String get codeSentToEmail;
+
+  /// No description provided for @enterPasswordToEnable2FA.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password to enable two-factor authentication'**
+  String get enterPasswordToEnable2FA;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'password'**
+  String get password;
+
+  /// No description provided for @enableTwoFactorAuthentication.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Two-Factor Authentication'**
+  String get enableTwoFactorAuthentication;
+
+  /// No description provided for @scanQrCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan the QR Code'**
+  String get scanQrCode;
+
+  /// No description provided for @scanQrCodeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Open your authenticator app and scan the QR code below. Then enter the 6-digit verification code to complete the setup.'**
+  String get scanQrCodeDescription;
+
+  /// No description provided for @authenticationCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Authentication Code'**
+  String get authenticationCode;
+
+  /// No description provided for @enable.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable'**
+  String get enable;
+
+  /// No description provided for @twoFactorEnabledSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Two-factor authentication has been enabled successfully.'**
+  String get twoFactorEnabledSuccessfully;
 }
 
 class _AppLocalizationsDelegate

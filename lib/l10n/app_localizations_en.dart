@@ -302,8 +302,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get changePassword => 'Change Password';
 
   @override
-  String get enterPasswordToContinue =>
-      'Enter your current and new password to continue';
+  String get enterPasswordToContinue => 'Enter password to continue';
 
   @override
   String get oldPassword => 'Current password';
@@ -318,7 +317,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get twoFactorAuth => 'Two-Factor Authentication';
 
   @override
-  String get extraSecurityLayer => 'Add an extra layer of security';
+  String get extraSecurityLayer => 'Extra security layer for your account';
 
   @override
   String get resendVerificationEmail => 'Resend verification email';
@@ -365,4 +364,45 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pngSaved => 'PNG saved successfully';
+
+  @override
+  String get enableTwoFactorAuth => 'Enable Two-Factor Authentication';
+
+  @override
+  String get enableTwoFactorAuthMessage =>
+      'We will send a verification code to your email.';
+
+  @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get codeSentToEmail => 'Verification code sent to your email';
+
+  @override
+  String get enterPasswordToEnable2FA =>
+      'Enter your password to enable two-factor authentication';
+
+  @override
+  String get password => 'password';
+
+  @override
+  String get enableTwoFactorAuthentication =>
+      'Enable Two-Factor Authentication';
+
+  @override
+  String get scanQrCode => 'Scan the QR Code';
+
+  @override
+  String get scanQrCodeDescription =>
+      'Open your authenticator app and scan the QR code below. Then enter the 6-digit verification code to complete the setup.';
+
+  @override
+  String get authenticationCode => 'Authentication Code';
+
+  @override
+  String get enable => 'Enable';
+
+  @override
+  String get twoFactorEnabledSuccessfully =>
+      'Two-factor authentication has been enabled successfully.';
 }

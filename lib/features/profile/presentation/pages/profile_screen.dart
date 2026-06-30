@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:media_kit_video/media_kit_video_controls/src/controls/methods/video_state.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
@@ -193,8 +192,17 @@ class ProfileScreen extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (_) =>
-                                        const SecuritySettingsScreen(),
+                                    builder: (_) => MultiBlocProvider(
+                                      providers: [
+                                        BlocProvider.value(
+                                          value: context.read<UserCubit>(),
+                                        ),
+                                        BlocProvider.value(
+                                          value: context.read<AuthCubit>(),
+                                        ),
+                                      ],
+                                      child: const SecuritySettingsScreen(),
+                                    ),
                                   ),
                                 );
                               },

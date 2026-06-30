@@ -3,11 +3,14 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/features/auth/domain/use_case/change_password_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/forgot_password_usecase.dart';
+import 'package:project1/features/auth/domain/use_case/generate2FA_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/login_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/logout_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/register_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/resend_verification_email_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/reset_password_usecase.dart';
+import 'package:project1/features/auth/domain/use_case/turnOn2FA_usecase.dart';
+import 'package:project1/features/auth/domain/use_case/verify2FA_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/verify_email_usecase.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:project1/features/auth/domain/use_case/google_login_usecase.dart';
@@ -28,6 +31,9 @@ class AuthCubit extends Cubit<AuthState> {
   final UserCubit userCubit;
   final UploadPhotoUseCase uploadPhotoUseCase;
   File? imageFile;
+  final Verify2FAUseCase verify2FAUseCase;
+  final Generate2FAUseCase generate2FAUseCase;
+  final TurnOn2FAUseCase turnOn2FAUseCase;
 
   AuthCubit({
     required this.registerUseCase,
@@ -41,6 +47,10 @@ class AuthCubit extends Cubit<AuthState> {
     required this.resendVerificationEmailUseCase,
     required this.userCubit,
     required this.uploadPhotoUseCase,
+    required this.verify2FAUseCase,
+    required this.generate2FAUseCase,
+    required this.turnOn2FAUseCase,
+
   }) : super(AuthInitial());
 
   Future<void> register(Map<String, dynamic> body) async {
@@ -65,14 +75,14 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> login(Map<String, dynamic> body) async {
   emit(AuthLoading());
   try {
-    final user = await loginUseCase(body);
-
-    if (!user.isEmailVerified) {
-      emit(AuthError("Please verify your email first"));
+    final res = await loginUseCase(body);
+    if (res.requires2FA) {
+      emit(TwoFactorRequired(res.twoFactorToken!));
       return;
     }
-    emit(LoginSuccess(user));
+    emit(LoginSuccess(res.user));
     await userCubit.getMe();
+
   } catch (e) {
     emit(AuthError(e.toString()));
   }
@@ -101,7 +111,6 @@ Future<void> loginWithGoogle() async {
     emit(AuthError(e.toString()));
   }
 }
-
 
   Future<void> logout() async {
     emit(AuthLoading());
@@ -175,6 +184,61 @@ Future<void> resendVerificationEmail(String email) async {
 
 void setImage(File file) {
   imageFile = file;
+}
+
+Future<void> verify2FA({
+  required String twoFactorToken,
+  required String tfaCode,
+}) async {
+  emit(AuthLoading());
+
+  try {
+    final user = await verify2FAUseCase(
+      twoFactorToken: twoFactorToken,
+      tfaCode: tfaCode,
+    );
+
+    emit(LoginSuccess(user));
+    await Future.delayed(Duration(milliseconds: 100));
+    await userCubit.getMe();
+
+  } catch (e) {
+    emit(AuthError(e.toString()));
+  }
+}
+
+Future<void> generate2FA({
+  required String email,
+  required String password,
+}) async {
+  emit(AuthLoading());
+
+  try {
+    final qrCode = await generate2FAUseCase(
+  email: email,
+  password: password,
+);
+
+emit(TwoFAGenerated(qrCode));
+  } catch (e) {
+    emit(AuthError(e.toString()));
+  }
+}
+
+Future<void> turnOn2FA({
+  required String tfaCode,
+}) async {
+  emit(AuthLoading());
+
+  try {
+    final message = await turnOn2FAUseCase(
+      tfaCode: tfaCode,
+    );
+
+    emit(TurnOn2FASuccess(message));
+  } catch (e) {
+    emit(AuthError(e.toString()));
+  }
 }
 
 }
