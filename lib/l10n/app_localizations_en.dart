@@ -169,6 +169,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get descriptionRequiredError => 'Description is required';
 
   @override
+  String get uploadDemoImage => 'Upload Demo Image';
+
+  @override
+  String get tapToUpload => 'Tap to upload image';
+
+  @override
+  String get selectPlan => 'Select a Plan';
+
+  @override
   String get pleaseEnterEmail => 'Please enter your email address';
 
   @override

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/features/demo/domain/entities/demo_entity.dart';
 import 'package:project1/features/department/presentation/cubit/department_cubit.dart';
 import 'package:project1/features/department/presentation/cubit/department_state.dart';
 import 'package:project1/features/department/presentation/cubit/main_page_switch_cubit.dart';
@@ -13,8 +14,8 @@ import '../widgets/item_card_widget.dart';
 final GetIt sl = GetIt.instance;
 
 class DemoMainPage extends StatelessWidget {
-  final String demoId;
-  const DemoMainPage({super.key, required this.demoId});
+  final DemoEntity demo;
+  const DemoMainPage({super.key, required this.demo});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,8 @@ class DemoMainPage extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => DemoMainPageSwitchCubit()),
         BlocProvider(
-          create: (context) => sl<DepartmentCubit>()..fetchDepartments(demoId),
+          create: (context) =>
+              sl<DepartmentCubit>()..fetchDepartments(demo.id!),
         ),
       ],
       child: Scaffold(
@@ -37,15 +39,27 @@ class DemoMainPage extends StatelessWidget {
 
             return Column(
               children: [
-                const HeaderWidget(),
+                HeaderWidget(demo: demo),
                 SizedBox(height: size.height * 0.03),
-                ToggleSwitchWidget(
-                  isSectionsActive: isSectionsActive,
-                  onToggle: (isSections) {
-                    context.read<DemoMainPageSwitchCubit>().toggleTab(
-                      isSections,
-                    );
-                  },
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: ToggleSwitchWidget(
+                    isSectionsActive: isSectionsActive,
+                    onToggle: (isSections) {
+                      context.read<DemoMainPageSwitchCubit>().toggleTab(
+                        isSections,
+                      );
+                    },
+                  ),
                 ),
                 SizedBox(height: size.height * 0.03),
                 Expanded(
@@ -160,27 +174,7 @@ class DemoMainPage extends StatelessWidget {
   ) {
     return ListView(
       padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-      children: [
-        // Text(
-        //   l10n.myGroups,
-        //   style: AppTextStyles.titleLarge.copyWith(
-        //     color: theme.colorScheme.onSurface,
-        //   ),
-        // ),
-        // SizedBox(height: size.height * 0.02),
-        // ItemCardWidget(
-        //   title: l10n.project1Team,
-        //   subtitle: l10n.project1TeamSubtitle,
-        //   count: '5',
-        //   icon: Icons.group,
-        // ),
-        // ItemCardWidget(
-        //   title: l10n.project1Team,
-        //   subtitle: l10n.project1TeamSubtitle,
-        //   count: '5',
-        //   icon: Icons.group,
-        // ),
-      ],
+      children: [],
     );
   }
 }

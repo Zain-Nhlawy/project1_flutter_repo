@@ -35,6 +35,7 @@ class DemoCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -54,7 +55,7 @@ class DemoCard extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: size.height * 0.04),
+              SizedBox(height: size.height * 0.02),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -73,6 +74,27 @@ class DemoCard extends StatelessWidget {
                   ),
                 ],
               ),
+              if (demo.isOwner) ...[
+                SizedBox(height: size.height * 0.015),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: size.width * 0.02,
+                    vertical: size.height * 0.004,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    demo.plan ,
+                    style: AppTextStyles.label.copyWith(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 10 * textScale,
+                    ),
+                  ),
+                ),
+              ],
             ],
           ),
           SizedBox(width: size.width * 0.04),
@@ -118,7 +140,7 @@ class DemoCard extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DemoMainPage(demoId: demo.id!),
+                          builder: (context) => DemoMainPage(demo: demo),
                         ),
                       );
                     },

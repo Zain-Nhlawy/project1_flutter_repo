@@ -79,6 +79,9 @@
 "superchargeDemo": "Supercharge your Demo",
 "selectAddons": "Select optional add-ons to enhance your room. You can skip this if you don't need any.",
 "descriptionRequiredError" : "Description is required",
+"uploadDemoImage": "Upload Demo Image",
+  "tapToUpload": "Tap to upload image",
+  "selectPlan": "Select a Plan",
 
 
 

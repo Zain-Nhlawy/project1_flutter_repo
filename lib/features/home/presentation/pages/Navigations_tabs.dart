@@ -8,7 +8,6 @@ import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/demo_cubit.dart';
 import 'package:project1/features/home/presentation/cubit/navigation_tabs_cubit.dart';
 import 'package:project1/features/home/presentation/cubit/navigation_tabs_state.dart';
-import 'package:project1/features/profile/presentation/cubit/locale_cubit.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class NavigationsTabs extends StatelessWidget {
@@ -76,7 +75,7 @@ class NavigationsTabs extends StatelessWidget {
           borderRadius: BorderRadius.circular(25),
           boxShadow: [
             BoxShadow(
-              color: AppColors.textSecondary.withOpacity(0.1),
+              color: AppColors.textSecondary.withOpacity(0.4),
               blurRadius: 20,
               offset: const Offset(0, 10),
             ),

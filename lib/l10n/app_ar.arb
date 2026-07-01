@@ -56,7 +56,9 @@
 "superchargeDemo": "طور الغرفة الخاصة بك",
 "selectAddons": "اختر إضافات اختيارية لتحسين غرفتك. يمكنك تخطي هذا إذا لم تكن بحاجة لأي منها.",
 "descriptionRequiredError" : " وصف الغرفة مطلوب ",
-
+"uploadDemoImage": "رفع صورة الديمو",
+  "tapToUpload": "اضغط لرفع الصورة",
+  "selectPlan": "اختر الخطة",
 
 
 
