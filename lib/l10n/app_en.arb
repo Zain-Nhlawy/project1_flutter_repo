@@ -192,5 +192,9 @@
   "frontendSection": "Frontend Section",
   "frontendSectionSubtitle": "the main section for developing web pages and dashboard",
   "project1Team": "Project 1 Team",
-  "project1TeamSubtitle": "building project 1 with many members"
+  "project1TeamSubtitle": "building project 1 with many members",
+"verify2FASubtitle": "Enter the 6-digit code from your authenticator app.",
+"verifyCode": "Verify Code",
+"verificationCode": "Verification Code",
+"invalidCode": "Invalid verification code"
 }

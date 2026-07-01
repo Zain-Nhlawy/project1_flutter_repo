@@ -931,6 +931,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'building project 1 with many members'**
   String get project1TeamSubtitle;
+
+  /// No description provided for @verify2FASubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-digit code from your authenticator app.'**
+  String get verify2FASubtitle;
+
+  /// No description provided for @verifyCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify Code'**
+  String get verifyCode;
+
+  /// No description provided for @verificationCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification Code'**
+  String get verificationCode;
+
+  /// No description provided for @invalidCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid verification code'**
+  String get invalidCode;
 }
 
 class _AppLocalizationsDelegate

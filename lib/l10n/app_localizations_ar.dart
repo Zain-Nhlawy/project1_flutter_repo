@@ -441,4 +441,17 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get project1TeamSubtitle => 'بناء المشروع 1 مع العديد من الأعضاء';
+
+  @override
+  String get verify2FASubtitle =>
+      'أدخل رمز التحقق المكوّن من 6 أرقام من تطبيق المصادقة.';
+
+  @override
+  String get verifyCode => 'تحقق';
+
+  @override
+  String get verificationCode => 'رمز التحقق';
+
+  @override
+  String get invalidCode => 'رمز التحقق غير صحيح';
 }

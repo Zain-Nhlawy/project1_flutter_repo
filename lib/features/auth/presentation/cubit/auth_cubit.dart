@@ -77,12 +77,11 @@ class AuthCubit extends Cubit<AuthState> {
   try {
     final res = await loginUseCase(body);
     if (res.requires2FA) {
-      emit(TwoFactorRequired(res.twoFactorToken!));
+      emit(LoginRequires2FA(res.twoFactorToken!));
       return;
     }
-    emit(LoginSuccess(res.user));
     await userCubit.getMe();
-
+    emit(LoginSuccess(res.user));
   } catch (e) {
     emit(AuthError(e.toString()));
   }

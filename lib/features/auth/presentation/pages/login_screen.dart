@@ -9,6 +9,7 @@ import 'package:project1/features/auth/presentation/pages/signup_screen.dart';
 import 'package:project1/features/auth/presentation/widgets/custom_text_field.dart';
 import 'package:project1/features/home/presentation/pages/navigations_tabs.dart';
 import 'package:project1/l10n/app_localizations.dart';
+import 'package:project1/features/auth/presentation/pages/verify_2fa_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -55,6 +56,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
+        if (state is LoginRequires2FA) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => Verify2FAScreen(
+                twoFactorToken: state.twoFactorToken,
+              ),
+            ),
+          );
+          return;
+        }
         if (state is LoginSuccess) {
           final messenger = ScaffoldMessenger.of(context);
           messenger.showSnackBar(

@@ -442,4 +442,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get project1TeamSubtitle => 'building project 1 with many members';
+
+  @override
+  String get verify2FASubtitle =>
+      'Enter the 6-digit code from your authenticator app.';
+
+  @override
+  String get verifyCode => 'Verify Code';
+
+  @override
+  String get verificationCode => 'Verification Code';
+
+  @override
+  String get invalidCode => 'Invalid verification code';
 }

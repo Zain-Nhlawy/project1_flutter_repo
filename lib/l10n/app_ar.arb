@@ -166,6 +166,10 @@
   "frontendSection": "قسم الواجهات الأمامية",
   "frontendSectionSubtitle": "القسم الرئيسي لتطوير صفحات الويب ولوحات التحكم",
   "project1Team": "فريق المشروع 1",
-  "project1TeamSubtitle": "بناء المشروع 1 مع العديد من الأعضاء"
+  "project1TeamSubtitle": "بناء المشروع 1 مع العديد من الأعضاء",
+"verify2FASubtitle": "أدخل رمز التحقق المكوّن من 6 أرقام من تطبيق المصادقة.",
+"verifyCode": "تحقق",
+"verificationCode": "رمز التحقق",
+"invalidCode": "رمز التحقق غير صحيح"
 
 }

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
@@ -23,21 +22,39 @@ class Enable2FAScreen extends StatefulWidget {
 class _Enable2FAScreenState extends State<Enable2FAScreen> {
   final TextEditingController codeController = TextEditingController();
 
+  bool isLoading = false;
+
   @override
   void dispose() {
     codeController.dispose();
     super.dispose();
   }
 
+  void _enable2FA() {
+    if (codeController.text.trim().isEmpty) return;
+
+    setState(() {
+      isLoading = true;
+    });
+
+    context.read<AuthCubit>().turnOn2FA(
+          tfaCode: codeController.text.trim(),
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     final local = AppLocalizations.of(context)!;
-
     final base64String = widget.qrCode.split(',').last;
+    final viewInsets = MediaQuery.of(context).viewInsets;
 
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is TurnOn2FASuccess) {
+          setState(() {
+            isLoading = false;
+          });
+
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(local.twoFactorEnabledSuccessfully),
@@ -48,6 +65,10 @@ class _Enable2FAScreenState extends State<Enable2FAScreen> {
         }
 
         if (state is AuthError) {
+          setState(() {
+            isLoading = false;
+          });
+
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message)),
           );
@@ -60,58 +81,68 @@ class _Enable2FAScreenState extends State<Enable2FAScreen> {
           foregroundColor: Colors.white,
           title: Text(local.enableTwoFactorAuthentication),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            children: [
-              Text(
-                local.scanQrCode,
-                style: AppTextStyles.titleLarge,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 10),
-              Text(
-                local.scanQrCodeDescription,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 24),
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
+        body: SingleChildScrollView(
+          padding: EdgeInsets.only(
+            left: 24,
+            right: 24,
+            top: 24,
+            bottom: 24 + viewInsets.bottom,
+          ),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height -
+                  AppBar().preferredSize.height -
+                  MediaQuery.of(context).padding.top,
+            ),
+            child: Column(
+              children: [
+                Text(
+                  local.scanQrCode,
+                  style: AppTextStyles.titleLarge,
+                  textAlign: TextAlign.center,
                 ),
-                child: Image.memory(
-                  base64Decode(base64String),
-                  width: 220,
-                  height: 220,
+                const SizedBox(height: 10),
+                Text(
+                  local.scanQrCodeDescription,
+                  textAlign: TextAlign.center,
                 ),
-              ),
-              const SizedBox(height: 30),
-              TextField(
-                controller: codeController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  labelText: local.authenticationCode,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
+                const SizedBox(height: 24),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Image.memory(
+                    base64Decode(base64String),
+                    width: 220,
+                    height: 220,
                   ),
                 ),
-              ),
-              const Spacer(),
-              SizedBox(
-                width: double.infinity,
-                height: 55,
-                child: ElevatedButton(
-                  onPressed: () {
-                    context.read<AuthCubit>().turnOn2FA(
-                          tfaCode: codeController.text.trim(),
-                        );
-                  },
-                  child: Text(local.enable),
+                const SizedBox(height: 30),
+                TextField(
+                  controller: codeController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: local.authenticationCode,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 30),
+                SizedBox(
+                  width: double.infinity,
+                  height: 55,
+                  child: ElevatedButton(
+                    onPressed: isLoading ? null : _enable2FA,
+                    child: isLoading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : Text(local.enable),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
