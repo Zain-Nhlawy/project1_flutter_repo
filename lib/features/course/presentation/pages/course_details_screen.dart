@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:project1/features/courses/presentation/widgets/course_header.dart';
-import 'package:project1/features/courses/presentation/widgets/course_tabs.dart';
-import 'package:project1/features/courses/presentation/widgets/course_tag.dart';
+import 'package:project1/features/course/presentation/widgets/course_header.dart';
+import 'package:project1/features/course/presentation/widgets/course_tabs.dart';
+import 'package:project1/features/course/presentation/widgets/course_tag.dart';
 
 class CourseDetailsScreen extends StatelessWidget {
   const CourseDetailsScreen({super.key});

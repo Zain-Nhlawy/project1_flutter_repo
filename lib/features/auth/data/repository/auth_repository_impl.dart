@@ -43,18 +43,17 @@ class AuthRepositoryImpl implements AuthRepository {
     return res;
   }
 
-  @override
-Future<UserEntity> googleLogin(String idToken) async {
-  final data = await remote.googleLogin(idToken);
-
-  final userModel = UserModel.fromJson(data['user']);
-
-  if (data['accessToken'] != null && data['refreshToken'] != null) {
-    await storage.write(StorageKeys.token, data['accessToken']);
-    await storage.write(StorageKeys.refreshToken, data['refreshToken']);
+ @override
+Future<LoginResponse> googleLogin(String idToken) async {
+  final res = await remote.googleLogin(idToken);
+ print("GOOGLE LOGIN RESPONSE: ${res.accessToken}");
+    print("GOOGLE LOGIN REFRESH: ${res.refreshToken}");
+  if (res.accessToken != null && res.refreshToken != null) {
+    await storage.write(StorageKeys.token, res.accessToken!);
+    await storage.write(StorageKeys.refreshToken, res.refreshToken!);
   }
 
-  return userModel.toEntity();
+  return res;
 }
 
   @override
@@ -92,17 +91,15 @@ Future<UserEntity> googleLogin(String idToken) async {
   }
 
   @override
-  Future<UserEntity> verify2FA({
-    required String twoFactorToken,
-    required String tfaCode,
-  }) async {
-    final userModel = await remote.verify2FA(
-      twoFactorToken: twoFactorToken,
-      tfaCode: tfaCode,
-    );
-
-    return userModel.toEntity();
-  }
+Future<LoginResponse> verify2FA({
+  required String twoFactorToken,
+  required String tfaCode,
+}) async {
+  return await remote.verify2FA(
+    twoFactorToken: twoFactorToken,
+    tfaCode: tfaCode,
+  );
+}
 
   @override
   Future<String> generate2FA({

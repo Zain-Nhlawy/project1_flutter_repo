@@ -1,4 +1,4 @@
-import 'package:project1/features/auth/domain/entities/user_entity.dart';
+import 'package:project1/features/auth/data/models/login_response_model.dart';
 import 'package:project1/features/auth/domain/repository/auth_repository.dart';
 
 class Verify2FAUseCase {
@@ -6,7 +6,7 @@ class Verify2FAUseCase {
 
   Verify2FAUseCase(this.repository);
 
-  Future<UserEntity> call({
+  Future<LoginResponse> call({
     required String twoFactorToken,
     required String tfaCode,
   }) {

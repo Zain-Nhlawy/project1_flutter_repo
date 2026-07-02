@@ -14,9 +14,9 @@ Future<LoginResponse> login(Map<String, dynamic> body);
   required String oldPassword,
   required String newPassword,  
 });
-  Future<UserEntity> googleLogin(String idToken);
+Future<LoginResponse> googleLogin(String idToken);
   Future<void> logout();
-  Future<UserEntity> verify2FA({
+  Future<LoginResponse> verify2FA({
   required String twoFactorToken,
   required String tfaCode,
 });
