@@ -82,7 +82,12 @@ class _Enable2FAPasswordDialogState
               _passwordController.text.trim(),
             );
           },
-          child: Text(local.confirm),
+          child: Text(
+            local.confirm,
+            style: const TextStyle(
+              color: AppColors.surface,
+            ),
+          ),
         ),
       ],
     );
