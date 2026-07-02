@@ -83,7 +83,15 @@
   "tapToUpload": "Tap to upload image",
   "selectPlan": "Select a Plan",
 
-
+"upgradePlan": "Upgrade Plan",
+  "daysLeftText": "{days} days left in free trial",
+  "@daysLeftText": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
 
 
 

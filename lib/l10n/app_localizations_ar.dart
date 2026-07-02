@@ -177,6 +177,14 @@ class AppLocalizationsAr extends AppLocalizations {
   String get selectPlan => 'اختر الخطة';
 
   @override
+  String get upgradePlan => 'ترقية الخطة';
+
+  @override
+  String daysLeftText(int days) {
+    return 'متبقي $days أيام مجانية';
+  }
+
+  @override
   String get pleaseEnterEmail => 'يرجى إدخال عنوان بريدك الإلكتروني';
 
   @override

@@ -27,32 +27,32 @@ class PlanAndImageSlide extends StatelessWidget {
     final textScale = MediaQuery.textScalerOf(context).scale(1);
     final localizations = AppLocalizations.of(context)!;
 
-    final plans = [
-      {
-        "id": "STARTER",
-        "title": "Starter",
-        "members": "Up to 20 members",
-        "sections": "5 sections",
-        "price": "\$20/mo",
-        "icon": Icons.rocket_launch_outlined,
-      },
-      {
-        "id": "PRO",
-        "title": "Pro",
-        "members": "Up to 100 members",
-        "sections": "Unlimited sections",
-        "price": "\$100/mo",
-        "icon": Icons.star_border_rounded,
-      },
-      {
-        "id": "ENTERPRISE",
-        "title": "Enterprise",
-        "members": "Unlimited members",
-        "sections": "Unlimited sections",
-        "price": "\$200/mo",
-        "icon": Icons.business_center_outlined,
-      },
-    ];
+    final plans = [];
+    //   {
+    //     "id": "STARTER",
+    //     "title": "Starter",
+    //     "members": "Up to 20 members",
+    //     "sections": "5 sections",
+    //     "price": "\$20/mo",
+    //     "icon": Icons.rocket_launch_outlined,
+    //   },
+    //   {
+    //     "id": "PRO",
+    //     "title": "Pro",
+    //     "members": "Up to 100 members",
+    //     "sections": "Unlimited sections",
+    //     "price": "\$100/mo",
+    //     "icon": Icons.star_border_rounded,
+    //   },
+    //   {
+    //     "id": "ENTERPRISE",
+    //     "title": "Enterprise",
+    //     "members": "Unlimited members",
+    //     "sections": "Unlimited sections",
+    //     "price": "\$200/mo",
+    //     "icon": Icons.business_center_outlined,
+    //   },
+    // ];
 
     return BlocBuilder<AddDemoCubit, AddDemoState>(
       builder: (context, state) {
@@ -114,13 +114,13 @@ class PlanAndImageSlide extends StatelessWidget {
                 ),
               ),
               SizedBox(height: size.height * 0.04),
-              Text(
-                localizations.selectPlan,
-                style: AppTextStyles.titleLarge.copyWith(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              // Text(
+              //   localizations.selectPlan,
+              //   style: AppTextStyles.titleLarge.copyWith(
+              //     color: AppColors.textPrimary,
+              //     fontWeight: FontWeight.bold,
+              //   ),
+              // ),
               SizedBox(height: size.height * 0.02),
               ...plans.map((plan) {
                 final isSelected = state.selectedPlan == plan["id"];

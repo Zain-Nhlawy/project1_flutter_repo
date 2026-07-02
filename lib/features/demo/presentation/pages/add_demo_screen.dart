@@ -33,7 +33,8 @@ class AddDemoScreen extends StatelessWidget {
               showDialog(
                 context: context,
                 barrierDismissible: false,
-                builder: (_) => const Center(child: CircularProgressIndicator()),
+                builder: (_) =>
+                    const Center(child: CircularProgressIndicator()),
               );
             } else if (demoState is AddDemoSuccess) {
               Navigator.pop(context);
@@ -123,7 +124,9 @@ class AddDemoScreen extends StatelessWidget {
                                 if (state.demoName.trim().isEmpty) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text(localizations.nameRequiredError),
+                                      content: Text(
+                                        localizations.nameRequiredError,
+                                      ),
                                       backgroundColor: Colors.red,
                                     ),
                                   );
@@ -132,7 +135,9 @@ class AddDemoScreen extends StatelessWidget {
                                 if (state.demoDescription.trim().isEmpty) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text(localizations.descriptionRequiredError),
+                                      content: Text(
+                                        localizations.descriptionRequiredError,
+                                      ),
                                       backgroundColor: Colors.red,
                                     ),
                                   );
@@ -147,8 +152,9 @@ class AddDemoScreen extends StatelessWidget {
                                       : 'assets/images/demo_placeholder.png',
                                   ownerName: 'Owner Name',
                                   isOwner: true,
-                                  plan: state.selectedPlan,
+                          
                                   membersCount: 1,
+                                  createdAt: DateTime.now(),
                                 );
 
                                 context.read<DemoCubit>().addDemo(newDemo);

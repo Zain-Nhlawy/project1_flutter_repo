@@ -8,8 +8,9 @@ class DemoModel extends DemoEntity {
     required super.imagePath,
     required super.ownerName,
     required super.isOwner,
-    required super.plan,
+     super.plan,
     required super.membersCount,
+    super.createdAt,
   });
 
   factory DemoModel.fromJson(Map<String, dynamic> json) {
@@ -20,8 +21,11 @@ class DemoModel extends DemoEntity {
       imagePath: json['imagePath'] as String?,
       ownerName: json['ownerName'] as String, 
       isOwner: json['isOwner'] as bool,
-      plan: json['plan'] as String,
+      plan: json['plan'] as String?,
       membersCount: json['membersCount'] as int,
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'] as String)
+          : null,
     );
   }
 

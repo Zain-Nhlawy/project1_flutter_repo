@@ -416,6 +416,18 @@ abstract class AppLocalizations {
   /// **'Select a Plan'**
   String get selectPlan;
 
+  /// No description provided for @upgradePlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade Plan'**
+  String get upgradePlan;
+
+  /// No description provided for @daysLeftText.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days left in free trial'**
+  String daysLeftText(int days);
+
   /// No description provided for @pleaseEnterEmail.
   ///
   /// In en, this message translates to:

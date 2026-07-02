@@ -17,6 +17,10 @@ class HeaderWidget extends StatelessWidget {
 
     final double topPadding = MediaQuery.paddingOf(context).top;
 
+    final createdAt = demo.createdAt ?? DateTime.now();
+    final daysPassed = DateTime.now().difference(createdAt).inDays;
+    final int daysLeft = (14 - daysPassed) > 0 ? (14 - daysPassed) : 0;
+
     return Container(
       width: size.width,
       padding: EdgeInsets.only(
@@ -37,6 +41,7 @@ class HeaderWidget extends StatelessWidget {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 decoration: BoxDecoration(
@@ -59,24 +64,68 @@ class HeaderWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
-                decoration: BoxDecoration(
-                  color: AppColors.surface.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: IconButton(
-                  onPressed: () {},
-                  padding: EdgeInsets.symmetric(
-                    horizontal: size.width * 0.02,
-                    vertical: size.height * 0.012,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (demo.isOwner) ...[
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          l10n.daysLeftText(daysLeft),
+                          style: AppTextStyles.label.copyWith(
+                            color: Colors.orangeAccent,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 11 * textScale,
+                          ),
+                        ),
+                        SizedBox(height: size.height * 0.008),
+                        InkWell(
+                          onTap: () {},
+                          borderRadius: BorderRadius.circular(12),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: size.width * 0.03,
+                              vertical: size.height * 0.006,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.surface,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              l10n.upgradePlan,
+                              style: AppTextStyles.label.copyWith(
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 11 * textScale,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(width: size.width * 0.03),
+                  ],
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.surface.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: IconButton(
+                      onPressed: () {},
+                      padding: EdgeInsets.symmetric(
+                        horizontal: size.width * 0.02,
+                        vertical: size.height * 0.012,
+                      ),
+                      constraints: const BoxConstraints(),
+                      icon: Icon(
+                        Icons.notifications_none_rounded,
+                        color: AppColors.surface,
+                        size: 20 * textScale,
+                      ),
+                    ),
                   ),
-                  constraints: const BoxConstraints(),
-                  icon: Icon(
-                    Icons.notifications_none_rounded,
-                    color: AppColors.surface,
-                    size: 20 * textScale,
-                  ),
-                ),
+                ],
               ),
             ],
           ),
