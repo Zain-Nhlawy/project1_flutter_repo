@@ -91,21 +91,21 @@ final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
 Future<void> loginWithGoogle() async {
   emit(AuthLoading());
   await GoogleSignIn.instance.initialize(
-  serverClientId: "813919457973-59rpuvstsvj6d9el5nlu06q1kr5dps7i.apps.googleusercontent.com",
-);
+    serverClientId: "813919457973-59rpuvstsvj6d9el5nlu06q1kr5dps7i.apps.googleusercontent.com",
+  );
   try {
     final GoogleSignInAccount googleUser =
         await _googleSignIn.authenticate();
     final GoogleSignInAuthentication googleAuth =
-        googleUser.authentication;
+        await googleUser.authentication;
     final String? idToken = googleAuth.idToken;
     if (idToken == null) {
       emit(const AuthError('Google id token not found'));
       return;
     }
-    final user = await googleLoginUseCase(idToken);
-    emit(LoginSuccess(user));
+    await googleLoginUseCase(idToken);
     await userCubit.getMe();
+    emit(LoginSuccess(null)); 
   } catch (e) {
     emit(AuthError(e.toString()));
   }
@@ -190,17 +190,13 @@ Future<void> verify2FA({
   required String tfaCode,
 }) async {
   emit(AuthLoading());
-
   try {
-    final user = await verify2FAUseCase(
+    final res = await verify2FAUseCase(
       twoFactorToken: twoFactorToken,
       tfaCode: tfaCode,
     );
-
-    emit(LoginSuccess(user));
-    await Future.delayed(Duration(milliseconds: 100));
     await userCubit.getMe();
-
+    emit(LoginSuccess(res.user));
   } catch (e) {
     emit(AuthError(e.toString()));
   }

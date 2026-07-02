@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project1/features/courses/presentation/widgets/lesson_connector.dart';
+import 'package:project1/features/course/presentation/widgets/lesson_connector.dart';
 import 'lesson_tile.dart';
 
 class CourseTabs extends StatelessWidget {

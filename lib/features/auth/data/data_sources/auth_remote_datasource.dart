@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:project1/core/network/dio_client.dart';
 import 'package:project1/features/auth/data/models/login_response_model.dart';
 import 'package:project1/features/auth/data/models/user_model.dart';
@@ -56,19 +57,21 @@ class AuthRemoteDataSource {
 );
   }
 
-  Future<Map<String, dynamic>> googleLogin(String idToken) async {
+  Future<LoginResponse> googleLogin(String idToken) async {
   final res = await dioClient.dio.post(
     '/authentication/google/mobile',
     data: {'idToken': idToken},
+    options: Options(extra: {'noAuth': true}),
   );
-
   final data = res.data?['data'];
-
   if (data == null) {
     throw Exception('Invalid google login response');
   }
-
-  return data;
+  return LoginResponse(
+    user: UserModel.fromJson(data['user']),
+    accessToken: data['accessToken'],
+    refreshToken: data['refreshToken'],
+  );
 }
 
   Future<UserModel> getMe() async {
@@ -131,27 +134,30 @@ class AuthRemoteDataSource {
     return data;
   }
 
-  Future<UserModel> verify2FA({
-    required String twoFactorToken,
-    required String tfaCode,
-  }) async {
-    final res = await dioClient.dio.post(
-      '/authentication/sign-in/2fa',
-      data: {
-        "twoFactorToken": twoFactorToken,
-        "tfaCode": tfaCode,
-      },
-    );
+  Future<LoginResponse> verify2FA({
+  required String twoFactorToken,
+  required String tfaCode,
+}) async {
+  final res = await dioClient.dio.post(
+    '/authentication/sign-in/2fa',
+    data: {
+      "twoFactorToken": twoFactorToken,
+      "tfaCode": tfaCode,
+    },
+  );
 
-    final data = res.data?['data'];
+  final data = res.data?['data'];
 
-    if (data == null) {
-      throw Exception('Invalid 2FA response');
-    }
-
-    return UserModel.fromJson(data['user']);
+  if (data == null) {
+    throw Exception('Invalid 2FA response');
   }
 
+  return LoginResponse(
+    user: UserModel.fromJson(data['user']),
+    accessToken: data['accessToken'],
+    refreshToken: data['refreshToken'],
+  );
+}
   Future<String> generate2FA({
     required String email,
     required String password,

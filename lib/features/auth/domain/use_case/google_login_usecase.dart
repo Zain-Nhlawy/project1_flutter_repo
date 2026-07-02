@@ -1,4 +1,4 @@
-import 'package:project1/features/auth/domain/entities/user_entity.dart';
+import 'package:project1/features/auth/data/models/login_response_model.dart';
 import 'package:project1/features/auth/domain/repository/auth_repository.dart';
 
 class GoogleLoginUseCase {
@@ -6,7 +6,7 @@ class GoogleLoginUseCase {
 
   GoogleLoginUseCase(this.repository);
 
-  Future<UserEntity> call(String idToken) {
+  Future<LoginResponse> call(String idToken) {
     return repository.googleLogin(idToken);
   }
 }
