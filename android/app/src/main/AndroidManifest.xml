@@ -29,15 +29,34 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
 
-            <intent-filter>
+
+
+        <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                
-                <data 
-                    android:scheme="linco" 
+
+                <data
+                    android:scheme="linco"
                     android:host="verify" />
-            </intent-filter>
+        </intent-filter>
+
+        <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="lincolms.me"
+                    android:pathPrefix="/verify-email" />
+
+                <data
+                    android:scheme="https"
+                    android:host="lincolms.me"
+                    android:pathPrefix="/reset-password" />
+        </intent-filter>
 
         </activity>
         
