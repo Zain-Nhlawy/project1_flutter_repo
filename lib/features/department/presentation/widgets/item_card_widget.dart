@@ -30,7 +30,7 @@ class ItemCardWidget extends StatelessWidget {
         : theme.colorScheme.onSurface;
 
     return Container(
-      margin: EdgeInsets.only(bottom: size.height * 0.02),
+      margin: EdgeInsets.only(bottom: size.height * 0.04),
       padding: EdgeInsets.all(size.width * 0.04),
       decoration: BoxDecoration(
         gradient: cardColor,
