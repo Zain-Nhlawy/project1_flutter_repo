@@ -18,6 +18,7 @@ class AuthRemoteDataSource {
   }
 
   Future<String> verifyEmail(String token) async {
+    print('VERIFY TOKEN = $token');
     final res = await dioClient.dio.get(
       '/authentication/verify-email',
       queryParameters: {'token': token},
