@@ -46,8 +46,6 @@ class AuthRepositoryImpl implements AuthRepository {
  @override
 Future<LoginResponse> googleLogin(String idToken) async {
   final res = await remote.googleLogin(idToken);
- print("GOOGLE LOGIN RESPONSE: ${res.accessToken}");
-    print("GOOGLE LOGIN REFRESH: ${res.refreshToken}");
   if (res.accessToken != null && res.refreshToken != null) {
     await storage.write(StorageKeys.token, res.accessToken!);
     await storage.write(StorageKeys.refreshToken, res.refreshToken!);
@@ -95,10 +93,15 @@ Future<LoginResponse> verify2FA({
   required String twoFactorToken,
   required String tfaCode,
 }) async {
-  return await remote.verify2FA(
+  final res = await remote.verify2FA(
     twoFactorToken: twoFactorToken,
     tfaCode: tfaCode,
   );
+  if (res.accessToken != null && res.refreshToken != null) {
+    await storage.write(StorageKeys.token, res.accessToken!);
+    await storage.write(StorageKeys.refreshToken, res.refreshToken!);
+  }
+  return res;
 }
 
   @override
