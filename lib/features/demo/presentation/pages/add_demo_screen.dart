@@ -12,7 +12,7 @@ import 'package:project1/features/demo/presentation/cubit/add%20demo%20wizard/ad
 import 'package:project1/features/demo/presentation/widgets/add_demo_widgets/demo_name_slide.dart';
 import 'package:project1/features/demo/presentation/widgets/add_demo_widgets/features_slide.dart';
 import 'package:project1/features/demo/presentation/widgets/add_demo_widgets/plan_and_image_slide.dart';
-import 'package:project1/features/demo/presentation/widgets/add_demo_widgets/checkout_slide.dart';
+import 'package:project1/features/demo/presentation/widgets/add_demo_widgets/summary_slide.dart';
 
 class AddDemoScreen extends StatelessWidget {
   const AddDemoScreen({super.key});
@@ -86,7 +86,7 @@ class AddDemoScreen extends StatelessWidget {
                             ),
                           const Spacer(),
                           StepProgressIndicator(
-                            totalSteps: 4,
+                            totalSteps: 3,
                             currentStep: state.currentPage,
                           ),
                           const Spacer(),
@@ -100,9 +100,9 @@ class AddDemoScreen extends StatelessWidget {
                         physics: const NeverScrollableScrollPhysics(),
                         children: const [
                           DemoNameSlide(),
-                          FeaturesSlide(),
+                          // FeaturesSlide(),
                           PlanAndImageSlide(),
-                          CheckoutSlide(),
+                          SummarySlide(),
                         ],
                       ),
                     ),
@@ -119,7 +119,7 @@ class AddDemoScreen extends StatelessWidget {
                         ],
                       ),
                       child: InkWell(
-                        onTap: state.currentPage == 3
+                        onTap: state.currentPage == 2
                             ? () {
                                 if (state.demoName.trim().isEmpty) {
                                   ScaffoldMessenger.of(context).showSnackBar(
@@ -152,7 +152,7 @@ class AddDemoScreen extends StatelessWidget {
                                       : 'assets/images/demo_placeholder.png',
                                   ownerName: 'Owner Name',
                                   isOwner: true,
-                          
+                                  plan: state.selectedPlan,
                                   membersCount: 1,
                                   createdAt: DateTime.now(),
                                 );
@@ -179,10 +179,8 @@ class AddDemoScreen extends StatelessWidget {
                           ),
                           child: Center(
                             child: Text(
-                              state.currentPage == 3
-                                  ? localizations.payAndCreate(
-                                      state.totalPrice.toStringAsFixed(2),
-                                    )
+                              state.currentPage == 2
+                                  ? localizations.createDemo
                                   : localizations.continueBtn,
                               style: AppTextStyles.titleMedium.copyWith(
                                 color: AppColors.surface,

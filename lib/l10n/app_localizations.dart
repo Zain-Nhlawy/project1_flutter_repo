@@ -428,6 +428,42 @@ abstract class AppLocalizations {
   /// **'{days} days left in free trial'**
   String daysLeftText(int days);
 
+  /// No description provided for @createDemo.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Demo'**
+  String get createDemo;
+
+  /// No description provided for @demoSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo Summary'**
+  String get demoSummary;
+
+  /// No description provided for @demoNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo Name'**
+  String get demoNameLabel;
+
+  /// No description provided for @demoDescriptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get demoDescriptionLabel;
+
+  /// No description provided for @selectedPlanLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected Plan'**
+  String get selectedPlanLabel;
+
+  /// No description provided for @freeTrialLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Includes 14-Day Free Trial'**
+  String get freeTrialLabel;
+
   /// No description provided for @pleaseEnterEmail.
   ///
   /// In en, this message translates to:

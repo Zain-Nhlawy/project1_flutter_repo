@@ -68,7 +68,12 @@
       }
     }
   },
-
+"createDemo": "إنشاء الديمو",
+  "demoSummary": "ملخص الديمو",
+  "demoNameLabel": "اسم الديمو",
+  "demoDescriptionLabel": "الوصف",
+  "selectedPlanLabel": "الخطة المحددة",
+  "freeTrialLabel": "يتضمن تجربة مجانية لمدة 14 يوماً",
 
 
 

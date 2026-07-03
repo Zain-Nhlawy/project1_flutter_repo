@@ -185,6 +185,24 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get createDemo => 'إنشاء الديمو';
+
+  @override
+  String get demoSummary => 'ملخص الديمو';
+
+  @override
+  String get demoNameLabel => 'اسم الديمو';
+
+  @override
+  String get demoDescriptionLabel => 'الوصف';
+
+  @override
+  String get selectedPlanLabel => 'الخطة المحددة';
+
+  @override
+  String get freeTrialLabel => 'يتضمن تجربة مجانية لمدة 14 يوماً';
+
+  @override
   String get pleaseEnterEmail => 'يرجى إدخال عنوان بريدك الإلكتروني';
 
   @override
