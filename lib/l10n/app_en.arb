@@ -83,8 +83,21 @@
   "tapToUpload": "Tap to upload image",
   "selectPlan": "Select a Plan",
 
-
-
+"upgradePlan": "Upgrade Plan",
+  "daysLeftText": "{days} days left in free trial",
+  "@daysLeftText": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+"createDemo": "Create Demo",
+  "demoSummary": "Demo Summary",
+  "demoNameLabel": "Demo Name",
+  "demoDescriptionLabel": "Description",
+  "selectedPlanLabel": "Selected Plan",
+  "freeTrialLabel": "Includes 14-Day Free Trial",
 
 
 

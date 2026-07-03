@@ -15,21 +15,18 @@ class AddDemoState {
       {
         "title": "API Tester",
         "description": "Built-in tool to test endpoints directly inside the demo room.",
-        "price": 15.0,
         "icon": Icons.api_rounded,
         "color": Colors.purple,
       },
       {
         "title": "Custom Drawer",
         "description": "Add a fully customizable side drawer for quick navigation.",
-        "price": 8.0,
         "icon": Icons.view_sidebar_rounded,
         "color": Colors.blue,
       },
       {
         "title": "Advanced Analytics",
         "description": "Track user interactions and get detailed reports.",
-        "price": 25.0,
         "icon": Icons.analytics_rounded,
         "color": Colors.teal,
       },
@@ -40,26 +37,6 @@ class AddDemoState {
     this.demoImagePath = '',
     this.selectedPlan = 'STARTER',
   });
-
-  double get planPrice {
-    switch (selectedPlan) {
-      case 'PRO':
-        return 100.0;
-      case 'ENTERPRISE':
-        return 200.0;
-      case 'STARTER':
-      default:
-        return 20.0;
-    }
-  }
-
-  double get totalPrice {
-    double total = planPrice;
-    for (int index in selectedFeatureIndices) {
-      total += availableFeatures[index]["price"];
-    }
-    return total;
-  }
 
   AddDemoState copyWith({
     int? currentPage,

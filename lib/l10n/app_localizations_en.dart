@@ -178,6 +178,32 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectPlan => 'Select a Plan';
 
   @override
+  String get upgradePlan => 'Upgrade Plan';
+
+  @override
+  String daysLeftText(int days) {
+    return '$days days left in free trial';
+  }
+
+  @override
+  String get createDemo => 'Create Demo';
+
+  @override
+  String get demoSummary => 'Demo Summary';
+
+  @override
+  String get demoNameLabel => 'Demo Name';
+
+  @override
+  String get demoDescriptionLabel => 'Description';
+
+  @override
+  String get selectedPlanLabel => 'Selected Plan';
+
+  @override
+  String get freeTrialLabel => 'Includes 14-Day Free Trial';
+
+  @override
   String get pleaseEnterEmail => 'Please enter your email address';
 
   @override

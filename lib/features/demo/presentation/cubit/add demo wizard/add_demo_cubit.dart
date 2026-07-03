@@ -24,7 +24,7 @@ class AddDemoCubit extends Cubit<AddDemoState> {
   }
 
   void nextPage() {
-    if (state.currentPage < 3) {
+    if (state.currentPage < 2) {
       final nextPage = state.currentPage + 1;
       emit(state.copyWith(currentPage: nextPage));
       pageController.animateToPage(

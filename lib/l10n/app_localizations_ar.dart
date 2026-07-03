@@ -177,6 +177,32 @@ class AppLocalizationsAr extends AppLocalizations {
   String get selectPlan => 'اختر الخطة';
 
   @override
+  String get upgradePlan => 'ترقية الخطة';
+
+  @override
+  String daysLeftText(int days) {
+    return 'متبقي $days أيام مجانية';
+  }
+
+  @override
+  String get createDemo => 'إنشاء الديمو';
+
+  @override
+  String get demoSummary => 'ملخص الديمو';
+
+  @override
+  String get demoNameLabel => 'اسم الديمو';
+
+  @override
+  String get demoDescriptionLabel => 'الوصف';
+
+  @override
+  String get selectedPlanLabel => 'الخطة المحددة';
+
+  @override
+  String get freeTrialLabel => 'يتضمن تجربة مجانية لمدة 14 يوماً';
+
+  @override
   String get pleaseEnterEmail => 'يرجى إدخال عنوان بريدك الإلكتروني';
 
   @override

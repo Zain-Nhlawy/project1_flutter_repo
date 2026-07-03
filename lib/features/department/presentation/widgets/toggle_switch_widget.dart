@@ -41,7 +41,7 @@ class ToggleSwitchWidget extends StatelessWidget {
                 child: Text(
                   l10n.sections,
                   style: AppTextStyles.bodyLarge.copyWith(
-                    color: isSectionsActive ? theme.colorScheme.primary : theme.colorScheme.surface,
+                    color: isSectionsActive ? theme.colorScheme.secondary : theme.colorScheme.surface,
                   ),
                 ),
               ),

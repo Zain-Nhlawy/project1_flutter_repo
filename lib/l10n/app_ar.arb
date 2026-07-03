@@ -59,8 +59,21 @@
 "uploadDemoImage": "رفع صورة الديمو",
   "tapToUpload": "اضغط لرفع الصورة",
   "selectPlan": "اختر الخطة",
-
-
+"upgradePlan": "ترقية الخطة",
+  "daysLeftText": "متبقي {days} أيام مجانية",
+  "@daysLeftText": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+"createDemo": "إنشاء الديمو",
+  "demoSummary": "ملخص الديمو",
+  "demoNameLabel": "اسم الديمو",
+  "demoDescriptionLabel": "الوصف",
+  "selectedPlanLabel": "الخطة المحددة",
+  "freeTrialLabel": "يتضمن تجربة مجانية لمدة 14 يوماً",
 
 
 

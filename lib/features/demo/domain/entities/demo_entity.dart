@@ -5,9 +5,10 @@ class DemoEntity {
   final String? imagePath;
   final String ownerName;
   final bool isOwner;
-  final String plan;
+  final String? plan;
   final int membersCount;
-
+  final DateTime? createdAt;
+  
   DemoEntity({
     this.id,
     required this.name,
@@ -15,7 +16,8 @@ class DemoEntity {
     this.imagePath,
     required this.ownerName,
     required this.isOwner,
-    required this.plan,
+     this.plan,
     required this.membersCount,
+    this.createdAt,
   });
 }
