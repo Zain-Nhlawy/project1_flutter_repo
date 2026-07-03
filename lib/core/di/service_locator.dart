@@ -18,6 +18,7 @@ import 'package:project1/features/auth/domain/use_case/login_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/logout_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/resend_verification_email_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/reset_password_usecase.dart';
+import 'package:project1/features/auth/domain/use_case/turnOff2FA_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/turnOn2FA_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/verify2FA_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/verify_email_usecase.dart';
@@ -129,6 +130,7 @@ void setupDI() {
   getIt.registerLazySingleton(() => Verify2FAUseCase(getIt<AuthRepository>()));
   getIt.registerLazySingleton(() => Generate2FAUseCase(getIt<AuthRepository>()));
   getIt.registerLazySingleton(() => TurnOn2FAUseCase(getIt<AuthRepository>()));
+  getIt.registerLazySingleton(() => TurnOff2FAUseCase(getIt<AuthRepository>()),);
 
 
   //cubit
@@ -154,6 +156,7 @@ void setupDI() {
       verify2FAUseCase: getIt<Verify2FAUseCase>(),
       generate2FAUseCase: getIt<Generate2FAUseCase>(),
       turnOn2FAUseCase: getIt<TurnOn2FAUseCase>(),
+      turnOff2FAUseCase: getIt<TurnOff2FAUseCase>(),
     ),
   );
 

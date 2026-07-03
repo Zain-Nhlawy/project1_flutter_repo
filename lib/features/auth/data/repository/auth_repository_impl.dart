@@ -121,4 +121,8 @@ Future<LoginResponse> verify2FA({
   }) {
     return remote.turnOn2FA(tfaCode: tfaCode);
   }
+  @override
+Future<String> turnOff2FA() {
+  return remote.turnOff2FA();
+}
 }

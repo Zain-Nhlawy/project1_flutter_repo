@@ -192,4 +192,12 @@ class AuthRemoteDataSource {
 
     return res.data['message'] ?? 'Success';
   }
+
+  Future<String> turnOff2FA() async {
+  final res = await dioClient.dio.post(
+    '/authentication/2fa/turn-off',
+  );
+
+  return res.data['message'] ?? 'Success';
+}
 }

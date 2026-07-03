@@ -7,6 +7,7 @@ class UserEntity {
   final String imagePath;
   final String role;
   final bool isEmailVerified;
+  final bool isTwoFactorEnabled;
 
   const UserEntity({
     required this.id,
@@ -17,5 +18,6 @@ class UserEntity {
     required this.imagePath,
     required this.role,
     required this.isEmailVerified,
+    required this.isTwoFactorEnabled,
   });
 }

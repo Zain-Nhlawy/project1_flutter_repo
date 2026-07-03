@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
@@ -51,13 +52,15 @@ class _Enable2FAScreenState extends State<Enable2FAScreen> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is TurnOn2FASuccess) {
+          if (!mounted) return;
+
           setState(() {
             isLoading = false;
           });
 
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(local.twoFactorEnabledSuccessfully),
+              content: Text(state.message),
             ),
           );
 
@@ -65,12 +68,16 @@ class _Enable2FAScreenState extends State<Enable2FAScreen> {
         }
 
         if (state is AuthError) {
+          if (!mounted) return;
+
           setState(() {
             isLoading = false;
           });
 
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
+            SnackBar(
+              content: Text(state.message),
+            ),
           );
         }
       },
@@ -137,7 +144,9 @@ class _Enable2FAScreenState extends State<Enable2FAScreen> {
                   child: ElevatedButton(
                     onPressed: isLoading ? null : _enable2FA,
                     child: isLoading
-                        ? const CircularProgressIndicator(color: Colors.white)
+                        ? const CircularProgressIndicator(
+                            color: Colors.white,
+                          )
                         : Text(local.enable),
                   ),
                 ),

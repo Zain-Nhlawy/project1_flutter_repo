@@ -80,3 +80,9 @@ class LoginRequires2FA extends AuthState {
 
   LoginRequires2FA(this.twoFactorToken);
 }
+
+class TurnOff2FASuccess extends AuthState {
+  final String message;
+
+  const TurnOff2FASuccess(this.message);
+}

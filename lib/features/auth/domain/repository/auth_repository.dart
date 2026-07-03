@@ -27,4 +27,5 @@ Future<String> generate2FA({
 Future<String> turnOn2FA({
   required String tfaCode,
 });
+Future<String> turnOff2FA();
 }

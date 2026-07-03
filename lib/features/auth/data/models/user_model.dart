@@ -10,6 +10,7 @@ class UserModel extends UserEntity {
     required super.imagePath,
     required super.role,
     required super.isEmailVerified,
+    required super.isTwoFactorEnabled,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -22,6 +23,7 @@ class UserModel extends UserEntity {
       imagePath: json['imagePath'] ?? '',
       role: json['role'] ?? '',
       isEmailVerified: json['isEmailVerified'] ?? false,
+      isTwoFactorEnabled: json['isTwoFactorEnabled'] ?? false,
     );
   }
 
@@ -35,6 +37,7 @@ class UserModel extends UserEntity {
       imagePath: imagePath,
       role: role,
       isEmailVerified: isEmailVerified,
+      isTwoFactorEnabled: isTwoFactorEnabled,
     );
   }
 }

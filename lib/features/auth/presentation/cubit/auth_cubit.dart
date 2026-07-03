@@ -9,6 +9,7 @@ import 'package:project1/features/auth/domain/use_case/logout_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/register_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/resend_verification_email_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/reset_password_usecase.dart';
+import 'package:project1/features/auth/domain/use_case/turnOff2FA_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/turnOn2FA_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/verify2FA_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/verify_email_usecase.dart';
@@ -34,6 +35,7 @@ class AuthCubit extends Cubit<AuthState> {
   final Verify2FAUseCase verify2FAUseCase;
   final Generate2FAUseCase generate2FAUseCase;
   final TurnOn2FAUseCase turnOn2FAUseCase;
+  final TurnOff2FAUseCase turnOff2FAUseCase;
 
   AuthCubit({
     required this.registerUseCase,
@@ -50,6 +52,7 @@ class AuthCubit extends Cubit<AuthState> {
     required this.verify2FAUseCase,
     required this.generate2FAUseCase,
     required this.turnOn2FAUseCase,
+    required this.turnOff2FAUseCase,
 
   }) : super(AuthInitial());
 
@@ -231,6 +234,18 @@ Future<void> turnOn2FA({
     );
 
     emit(TurnOn2FASuccess(message));
+  } catch (e) {
+    emit(AuthError(e.toString()));
+  }
+}
+
+Future<void> turnOff2FA() async {
+  emit(AuthLoading());
+
+  try {
+    final message = await turnOff2FAUseCase();
+
+    emit(TurnOff2FASuccess(message));
   } catch (e) {
     emit(AuthError(e.toString()));
   }
