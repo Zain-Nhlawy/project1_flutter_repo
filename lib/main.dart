@@ -11,6 +11,7 @@ import 'package:project1/features/auth/domain/use_case/verify_email_usecase.dart
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/pages/login_screen.dart';
 import 'package:project1/features/auth/presentation/pages/reset_password_screen.dart';
+import 'package:project1/features/course/presentation/pages/create_course_screen.dart';
 import 'package:project1/features/profile/presentation/cubit/locale_cubit.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:project1/l10n/l10n.dart';
@@ -134,7 +135,7 @@ class _MyAppState extends State<MyApp> {
           home: widget.initialResetToken != null &&
                   widget.initialResetToken!.isNotEmpty
               ? ResetPasswordScreen(token: widget.initialResetToken!)
-              : const LoginScreen(),
+              : const CreateCourseScreen(),
         );
       },
     );

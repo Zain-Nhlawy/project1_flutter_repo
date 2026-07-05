@@ -185,6 +185,15 @@
 "verify2FASubtitle": "أدخل رمز التحقق المكوّن من 6 أرقام من تطبيق المصادقة.",
 "verifyCode": "تحقق",
 "verificationCode": "رمز التحقق",
-"invalidCode": "رمز التحقق غير صحيح"
-
+"invalidCode": "رمز التحقق غير صحيح",
+"createCourse": "إنشاء كورس",
+  "courseTitle": "عنوان الكورس",
+  "courseDescription": "وصف الكورس",
+  "price": "السعر",
+  "public": "عام",
+  "private": "خاص",
+  "tags": "التاغات",
+  "add": "إضافة",
+  "uploadImage": "رفع صورة",
+  "fillAllFieldsWarning": "يرجى تعبئة جميع الحقول المطلوبة"
 }

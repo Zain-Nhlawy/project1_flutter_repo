@@ -212,5 +212,15 @@
 "verify2FASubtitle": "Enter the 6-digit code from your authenticator app.",
 "verifyCode": "Verify Code",
 "verificationCode": "Verification Code",
-"invalidCode": "Invalid verification code"
+"invalidCode": "Invalid verification code",
+"createCourse": "Create Course",
+  "courseTitle": "Course Title",
+  "courseDescription": "Course Description",
+  "price": "Price",
+  "public": "Public",
+  "private": "Private",
+  "tags": "Tags",
+  "add": "Add",
+  "uploadImage": "Upload Image",
+  "fillAllFieldsWarning": "Please fill in all required fields"
 }

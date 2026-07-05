@@ -490,4 +490,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get invalidCode => 'Invalid verification code';
+
+  @override
+  String get createCourse => 'Create Course';
+
+  @override
+  String get courseTitle => 'Course Title';
+
+  @override
+  String get courseDescription => 'Course Description';
+
+  @override
+  String get price => 'Price';
+
+  @override
+  String get public => 'Public';
+
+  @override
+  String get private => 'Private';
+
+  @override
+  String get tags => 'Tags';
+
+  @override
+  String get add => 'Add';
+
+  @override
+  String get uploadImage => 'Upload Image';
+
+  @override
+  String get fillAllFieldsWarning => 'Please fill in all required fields';
 }

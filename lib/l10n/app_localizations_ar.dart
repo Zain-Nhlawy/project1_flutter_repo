@@ -489,4 +489,34 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get invalidCode => 'رمز التحقق غير صحيح';
+
+  @override
+  String get createCourse => 'إنشاء كورس';
+
+  @override
+  String get courseTitle => 'عنوان الكورس';
+
+  @override
+  String get courseDescription => 'وصف الكورس';
+
+  @override
+  String get price => 'السعر';
+
+  @override
+  String get public => 'عام';
+
+  @override
+  String get private => 'خاص';
+
+  @override
+  String get tags => 'التاغات';
+
+  @override
+  String get add => 'إضافة';
+
+  @override
+  String get uploadImage => 'رفع صورة';
+
+  @override
+  String get fillAllFieldsWarning => 'يرجى تعبئة جميع الحقول المطلوبة';
 }
