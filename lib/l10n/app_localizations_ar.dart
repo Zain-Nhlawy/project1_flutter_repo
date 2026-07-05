@@ -519,4 +519,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get fillAllFieldsWarning => 'يرجى تعبئة جميع الحقول المطلوبة';
+
+  @override
+  String get myOngoingCourses => 'كورساتي قيد الإنشاء';
+
+  @override
+  String get lessons => 'الدروس';
+
+  @override
+  String get duration => 'المدة';
 }

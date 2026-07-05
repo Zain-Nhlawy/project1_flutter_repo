@@ -1081,6 +1081,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please fill in all required fields'**
   String get fillAllFieldsWarning;
+
+  /// No description provided for @myOngoingCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'My Ongoing Course Creations'**
+  String get myOngoingCourses;
+
+  /// No description provided for @lessons.
+  ///
+  /// In en, this message translates to:
+  /// **'Lessons'**
+  String get lessons;
+
+  /// No description provided for @duration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get duration;
 }
 
 class _AppLocalizationsDelegate

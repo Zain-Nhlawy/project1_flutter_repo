@@ -222,5 +222,8 @@
   "tags": "Tags",
   "add": "Add",
   "uploadImage": "Upload Image",
-  "fillAllFieldsWarning": "Please fill in all required fields"
+  "fillAllFieldsWarning": "Please fill in all required fields",
+  "myOngoingCourses": "My Ongoing Course Creations",
+  "lessons": "Lessons",
+  "duration": "Duration"
 }

@@ -195,5 +195,8 @@
   "tags": "التاغات",
   "add": "إضافة",
   "uploadImage": "رفع صورة",
-  "fillAllFieldsWarning": "يرجى تعبئة جميع الحقول المطلوبة"
+  "fillAllFieldsWarning": "يرجى تعبئة جميع الحقول المطلوبة",
+  "myOngoingCourses": "كورساتي قيد الإنشاء",
+  "lessons": "الدروس",
+  "duration": "المدة"
 }

@@ -520,4 +520,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get fillAllFieldsWarning => 'Please fill in all required fields';
+
+  @override
+  String get myOngoingCourses => 'My Ongoing Course Creations';
+
+  @override
+  String get lessons => 'Lessons';
+
+  @override
+  String get duration => 'Duration';
 }
