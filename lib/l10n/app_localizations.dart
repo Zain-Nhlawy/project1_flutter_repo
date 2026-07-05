@@ -1082,6 +1082,12 @@ abstract class AppLocalizations {
   /// **'Please fill in all required fields'**
   String get fillAllFieldsWarning;
 
+  /// No description provided for @ongoingCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Ongoing courses'**
+  String get ongoingCourses;
+
   /// No description provided for @lessons.
   ///
   /// In en, this message translates to:

@@ -196,7 +196,7 @@
   "add": "إضافة",
   "uploadImage": "رفع صورة",
   "fillAllFieldsWarning": "يرجى تعبئة جميع الحقول المطلوبة",
-  "createCourse": "أنشئ كورس",
+  "ongoingCourses": "كورسات قيد الإنشاء",
   "lessons": "الدروس",
   "duration": "المدة",
   "courseManagement": "إدارة الكورس",

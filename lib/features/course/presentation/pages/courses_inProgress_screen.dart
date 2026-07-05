@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/features/course/presentation/pages/course_management_screen.dart';
+import 'package:project1/features/course/presentation/pages/create_course_screen.dart';
 import 'package:project1/features/course/presentation/widgets/course_card.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
@@ -45,7 +46,7 @@ class CoursesInProgressScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          localizations.createCourse,
+          localizations.ongoingCourses,
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -59,7 +60,14 @@ class CoursesInProgressScreen extends StatelessWidget {
       ),
 
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const CreateCourseScreen(),
+            ),
+          );
+        },
         backgroundColor: AppColors.primary,
         icon: const Icon(Icons.add_rounded, color: Colors.white),
         label: const Text(
@@ -86,7 +94,7 @@ class CoursesInProgressScreen extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 160),
           children: [
             Text(
-              localizations.createCourse,
+              localizations.ongoingCourses,
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.w700,

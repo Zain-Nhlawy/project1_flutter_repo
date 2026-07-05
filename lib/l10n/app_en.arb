@@ -223,7 +223,7 @@
   "add": "Add",
   "uploadImage": "Upload Image",
   "fillAllFieldsWarning": "Please fill in all required fields",
-  "createCourse": "Create Course",
+  "ongoingCourses": "Ongoing courses",
   "lessons": "Lessons",
   "duration": "Duration",
   "courseManagement": "Course Management",
