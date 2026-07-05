@@ -198,5 +198,14 @@
   "fillAllFieldsWarning": "يرجى تعبئة جميع الحقول المطلوبة",
   "myOngoingCourses": "كورساتي قيد الإنشاء",
   "lessons": "الدروس",
-  "duration": "المدة"
+  "duration": "المدة",
+  "courseManagement": "إدارة الكورس",
+"courseTitle": "عنوان الكورس",
+"company": "الشركة",
+"lessons": "الدروس",
+"duration": "المدة",
+"manageFaq": "إدارة الأسئلة الشائعة",
+"manageSections": "إدارة الأقسام",
+"saveChanges": "حفظ التعديلات",
+"editCourse": "تعديل الكورس"
 }

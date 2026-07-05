@@ -225,5 +225,14 @@
   "fillAllFieldsWarning": "Please fill in all required fields",
   "myOngoingCourses": "My Ongoing Course Creations",
   "lessons": "Lessons",
-  "duration": "Duration"
+  "duration": "Duration",
+  "courseManagement": "Course Management",
+"courseTitle": "Course Title",
+"company": "Company",
+"lessons": "Lessons",
+"duration": "Duration",
+"manageFaq": "Manage FAQ",
+"manageSections": "Manage Sections",
+"saveChanges": "Save Changes",
+"editCourse": "Edit Course"
 }

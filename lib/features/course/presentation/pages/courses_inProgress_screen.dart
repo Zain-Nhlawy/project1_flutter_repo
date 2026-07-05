@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/features/course/presentation/pages/course_management_screen.dart';
 import 'package:project1/features/course/presentation/widgets/course_card.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
@@ -58,7 +59,20 @@ class CoursesInProgressScreen extends StatelessWidget {
             imageUrl: c["image"] as String,
             totalLessons: c["lessons"] as int,
             duration: c["duration"] as String,
-            onTap: () {},
+            onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => CourseManagementScreen(
+                  title: c["title"] as String,
+                  company: c["company"] as String,
+                  image: c["image"] as String,
+                  lessons: c["lessons"] as int,
+                  duration: c["duration"] as String,
+                ),
+              ),
+            );
+          },
           );
         },
       ),

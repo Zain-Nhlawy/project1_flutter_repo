@@ -529,4 +529,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get duration => 'Duration';
+
+  @override
+  String get courseManagement => 'Course Management';
+
+  @override
+  String get company => 'Company';
+
+  @override
+  String get manageFaq => 'Manage FAQ';
+
+  @override
+  String get manageSections => 'Manage Sections';
+
+  @override
+  String get saveChanges => 'Save Changes';
+
+  @override
+  String get editCourse => 'Edit Course';
 }

@@ -1099,6 +1099,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Duration'**
   String get duration;
+
+  /// No description provided for @courseManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Course Management'**
+  String get courseManagement;
+
+  /// No description provided for @company.
+  ///
+  /// In en, this message translates to:
+  /// **'Company'**
+  String get company;
+
+  /// No description provided for @manageFaq.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage FAQ'**
+  String get manageFaq;
+
+  /// No description provided for @manageSections.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Sections'**
+  String get manageSections;
+
+  /// No description provided for @saveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get saveChanges;
+
+  /// No description provided for @editCourse.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Course'**
+  String get editCourse;
 }
 
 class _AppLocalizationsDelegate

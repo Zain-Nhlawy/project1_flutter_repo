@@ -528,4 +528,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get duration => 'المدة';
+
+  @override
+  String get courseManagement => 'إدارة الكورس';
+
+  @override
+  String get company => 'الشركة';
+
+  @override
+  String get manageFaq => 'إدارة الأسئلة الشائعة';
+
+  @override
+  String get manageSections => 'إدارة الأقسام';
+
+  @override
+  String get saveChanges => 'حفظ التعديلات';
+
+  @override
+  String get editCourse => 'تعديل الكورس';
 }
