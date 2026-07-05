@@ -1082,12 +1082,6 @@ abstract class AppLocalizations {
   /// **'Please fill in all required fields'**
   String get fillAllFieldsWarning;
 
-  /// No description provided for @myOngoingCourses.
-  ///
-  /// In en, this message translates to:
-  /// **'My Ongoing Course Creations'**
-  String get myOngoingCourses;
-
   /// No description provided for @lessons.
   ///
   /// In en, this message translates to:
@@ -1135,6 +1129,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Edit Course'**
   String get editCourse;
+
+  /// No description provided for @manageCoursesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your courses, update their details, and continue building them.'**
+  String get manageCoursesDescription;
+
+  /// No description provided for @coursesInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Courses in Progress'**
+  String get coursesInProgress;
 }
 
 class _AppLocalizationsDelegate

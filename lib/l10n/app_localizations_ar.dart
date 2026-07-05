@@ -491,7 +491,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get invalidCode => 'رمز التحقق غير صحيح';
 
   @override
-  String get createCourse => 'إنشاء كورس';
+  String get createCourse => 'أنشئ كورس';
 
   @override
   String get courseTitle => 'عنوان الكورس';
@@ -521,9 +521,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get fillAllFieldsWarning => 'يرجى تعبئة جميع الحقول المطلوبة';
 
   @override
-  String get myOngoingCourses => 'كورساتي قيد الإنشاء';
-
-  @override
   String get lessons => 'الدروس';
 
   @override
@@ -546,4 +543,11 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get editCourse => 'تعديل الكورس';
+
+  @override
+  String get manageCoursesDescription =>
+      'قم بإدارة دوراتك، تحديث تفاصيلها، ومتابعة إنشائها.';
+
+  @override
+  String get coursesInProgress => 'دورات قيد الإنشاء';
 }

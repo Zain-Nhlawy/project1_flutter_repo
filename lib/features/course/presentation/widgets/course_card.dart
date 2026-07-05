@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/features/course/presentation/widgets/custom_button.dart';
 
 class CourseCard extends StatelessWidget {
   final String title;
   final String companyName;
   final String imageUrl;
-  final int totalLessons;
-  final String duration;
+  final String price;
+  final String description;
+  final List<String> tags;
   final VoidCallback? onTap;
 
   const CourseCard({
@@ -14,93 +16,193 @@ class CourseCard extends StatelessWidget {
     required this.title,
     required this.companyName,
     required this.imageUrl,
-    required this.totalLessons,
-    required this.duration,
+    required this.price,
+    required this.description,
+    this.tags = const [],
     this.onTap,
   });
 
+  static const List<Color> _tagColors = [
+    Color(0xFFE3F2FD),
+    Color(0xFFE8F5E9),
+    Color(0xFFFFF3E0),
+    Color(0xFFF3E5F5),
+    Color(0xFFFFEBEE),
+    Color(0xFFE0F7FA),
+    Color(0xFFFFFDE7),
+    Color(0xFFEDE7F6),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 14),
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.circular(18),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
-        child: Row(
+    final displayDescription = description.length > 80
+        ? "${description.substring(0, 80)}..."
+        : description;
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(.05),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(18),
-                bottomLeft: Radius.circular(18),
-              ),
-              child: Image.asset(
-                imageUrl,
-                width: 110,
-                height: 110,
-                fit: BoxFit.cover,
-              ),
-            ),
-
-            const SizedBox(width: 12),
-
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(20)),
+              child: SizedBox(
+                height: 170,
+                width: double.infinity,
+                child: Stack(
+                  fit: StackFit.expand,
                   children: [
-
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textPrimary,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                    Image.asset(
+                      imageUrl,
+                      fit: BoxFit.cover,
                     ),
-
-                    const SizedBox(height: 6),
-
-                    Text(
-                      companyName,
-                      style: const TextStyle(
-                        fontSize: 13,
-                        color: AppColors.textSecondary,
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.transparent,
+                            Colors.black.withOpacity(.25),
+                          ],
+                        ),
                       ),
                     ),
-
-                    const SizedBox(height: 10),
-
-                    Row(
-                      children: [
-                        const Icon(Icons.menu_book, size: 16, color: AppColors.primary),
-                        const SizedBox(width: 4),
-                        Text("$totalLessons lessons",
-                            style: const TextStyle(fontSize: 12)),
-
-                        const SizedBox(width: 12),
-
-                        const Icon(Icons.timer, size: 16, color: AppColors.primary),
-                        const SizedBox(width: 4),
-                        Text(duration,
-                            style: const TextStyle(fontSize: 12)),
-                      ],
+                    Positioned(
+                      top: 12,
+                      right: 12,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 7,
+                        ),
+                        decoration: BoxDecoration(
+                          gradient: AppColors.buttonGradient,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          price,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withOpacity(.08),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.business_rounded,
+                          size: 15,
+                          color: AppColors.primary,
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          companyName,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    displayDescription,
+                    style: TextStyle(
+                      fontSize: 13,
+                      height: 1.5,
+                      color: AppColors.textPrimary.withOpacity(.75),
+                    ),
+                  ),
+                  if (tags.isNotEmpty) ...[
+                    const SizedBox(height: 14),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: List.generate(
+                        tags.length,
+                        (index) => Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: _tagColors[index % _tagColors.length],
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            tags[index],
+                            style: const TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                  const SizedBox(height: 18),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: SizedBox(
+                      width: 110,
+                      child: CustomButton(
+                        text: "Manage",
+                        height: 38,
+                        onPressed: onTap,
+                        gradient: AppColors.buttonGradient,
+                        expand: false,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

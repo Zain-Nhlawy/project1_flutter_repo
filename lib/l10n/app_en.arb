@@ -223,7 +223,7 @@
   "add": "Add",
   "uploadImage": "Upload Image",
   "fillAllFieldsWarning": "Please fill in all required fields",
-  "myOngoingCourses": "My Ongoing Course Creations",
+  "createCourse": "Create Course",
   "lessons": "Lessons",
   "duration": "Duration",
   "courseManagement": "Course Management",
@@ -234,5 +234,7 @@
 "manageFaq": "Manage FAQ",
 "manageSections": "Manage Sections",
 "saveChanges": "Save Changes",
-"editCourse": "Edit Course"
+"editCourse": "Edit Course",
+"manageCoursesDescription": "Manage your courses, update their details, and continue building them.",
+"coursesInProgress": "Courses in Progress"
 }

@@ -7,6 +7,7 @@ class CustomButton extends StatelessWidget {
   final Color textColor;
   final Gradient? gradient;
   final bool expand;
+  final double height;
 
   const CustomButton({
     super.key,
@@ -16,6 +17,7 @@ class CustomButton extends StatelessWidget {
     this.textColor = Colors.white,
     this.gradient,
     this.expand = true,
+    this.height = 52,
   });
 
   @override
@@ -23,7 +25,7 @@ class CustomButton extends StatelessWidget {
     final bool disabled = onPressed == null;
 
     final button = Container(
-      height: 52,
+      height: height,
       decoration: BoxDecoration(
         gradient: disabled ? null : gradient,
         color: disabled ? Colors.grey.shade300 : (gradient == null ? color : null),

@@ -196,7 +196,7 @@
   "add": "إضافة",
   "uploadImage": "رفع صورة",
   "fillAllFieldsWarning": "يرجى تعبئة جميع الحقول المطلوبة",
-  "myOngoingCourses": "كورساتي قيد الإنشاء",
+  "createCourse": "أنشئ كورس",
   "lessons": "الدروس",
   "duration": "المدة",
   "courseManagement": "إدارة الكورس",
@@ -207,5 +207,7 @@
 "manageFaq": "إدارة الأسئلة الشائعة",
 "manageSections": "إدارة الأقسام",
 "saveChanges": "حفظ التعديلات",
-"editCourse": "تعديل الكورس"
+"editCourse": "تعديل الكورس",
+"manageCoursesDescription": "قم بإدارة دوراتك، تحديث تفاصيلها، ومتابعة إنشائها.",
+"coursesInProgress": "دورات قيد الإنشاء"
 }

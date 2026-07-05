@@ -522,9 +522,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fillAllFieldsWarning => 'Please fill in all required fields';
 
   @override
-  String get myOngoingCourses => 'My Ongoing Course Creations';
-
-  @override
   String get lessons => 'Lessons';
 
   @override
@@ -547,4 +544,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get editCourse => 'Edit Course';
+
+  @override
+  String get manageCoursesDescription =>
+      'Manage your courses, update their details, and continue building them.';
+
+  @override
+  String get coursesInProgress => 'Courses in Progress';
 }
