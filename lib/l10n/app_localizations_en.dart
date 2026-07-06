@@ -588,4 +588,53 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get deleteSectionConfirmation =>
       'Are you sure you want to delete this section? This action cannot be undone.';
+
+  @override
+  String get createLesson => 'Create Lesson';
+
+  @override
+  String get lessonVideo => 'Lesson Video';
+
+  @override
+  String get uploadLessonVideo => 'Upload Lesson Video';
+
+  @override
+  String get lessonTitle => 'Lesson Title';
+
+  @override
+  String get enterLessonTitle => 'Enter lesson title';
+
+  @override
+  String get lessonDescription => 'Lesson Description';
+
+  @override
+  String get enterLessonDescription => 'Enter lesson description';
+
+  @override
+  String get lessonAttachments => 'Lesson Attachments';
+
+  @override
+  String get addAttachment => 'Add Attachment';
+
+  @override
+  String get attachmentName => 'Attachment name';
+
+  @override
+  String get editAttachment => 'Edit Attachment';
+
+  @override
+  String get deleteAttachment => 'Delete Attachment';
+
+  @override
+  String get deleteAttachmentConfirmation =>
+      'Are you sure you want to delete this attachment?';
+
+  @override
+  String get noAttachments => 'No attachments yet';
+
+  @override
+  String get saveLesson => 'Save Lesson';
+
+  @override
+  String get delete => 'Delete';
 }

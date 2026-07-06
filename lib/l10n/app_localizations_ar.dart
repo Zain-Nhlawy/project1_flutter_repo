@@ -587,4 +587,52 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get deleteSectionConfirmation =>
       'هل أنت متأكد من حذف هذا القسم؟ لا يمكن التراجع عن هذا الإجراء.';
+
+  @override
+  String get createLesson => 'إضافة درس';
+
+  @override
+  String get lessonVideo => 'فيديو الدرس';
+
+  @override
+  String get uploadLessonVideo => 'رفع فيديو الدرس';
+
+  @override
+  String get lessonTitle => 'عنوان الدرس';
+
+  @override
+  String get enterLessonTitle => 'أدخل عنوان الدرس';
+
+  @override
+  String get lessonDescription => 'وصف الدرس';
+
+  @override
+  String get enterLessonDescription => 'أدخل وصف الدرس';
+
+  @override
+  String get lessonAttachments => 'ملحقات الدرس';
+
+  @override
+  String get addAttachment => 'إضافة ملحق';
+
+  @override
+  String get attachmentName => 'اسم الملحق';
+
+  @override
+  String get editAttachment => 'تعديل الملحق';
+
+  @override
+  String get deleteAttachment => 'حذف الملحق';
+
+  @override
+  String get deleteAttachmentConfirmation => 'هل أنت متأكد من حذف هذا الملحق؟';
+
+  @override
+  String get noAttachments => 'لا توجد ملحقات بعد';
+
+  @override
+  String get saveLesson => 'حفظ الدرس';
+
+  @override
+  String get delete => 'حذف';
 }

@@ -222,5 +222,21 @@
 "cancel": "إلغاء",
 "save": "حفظ",
 "deleteSection": "حذف القسم",
-"deleteSectionConfirmation": "هل أنت متأكد من حذف هذا القسم؟ لا يمكن التراجع عن هذا الإجراء."
+"deleteSectionConfirmation": "هل أنت متأكد من حذف هذا القسم؟ لا يمكن التراجع عن هذا الإجراء.",
+"createLesson": "إضافة درس",
+"lessonVideo": "فيديو الدرس",
+"uploadLessonVideo": "رفع فيديو الدرس",
+"lessonTitle": "عنوان الدرس",
+"enterLessonTitle": "أدخل عنوان الدرس",
+"lessonDescription": "وصف الدرس",
+"enterLessonDescription": "أدخل وصف الدرس",
+"lessonAttachments": "ملحقات الدرس",
+"addAttachment": "إضافة ملحق",
+"attachmentName": "اسم الملحق",
+"editAttachment": "تعديل الملحق",
+"deleteAttachment": "حذف الملحق",
+"deleteAttachmentConfirmation": "هل أنت متأكد من حذف هذا الملحق؟",
+"noAttachments": "لا توجد ملحقات بعد",
+"saveLesson": "حفظ الدرس",
+"delete": "حذف"
 }

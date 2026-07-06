@@ -1213,6 +1213,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Are you sure you want to delete this section? This action cannot be undone.'**
   String get deleteSectionConfirmation;
+
+  /// No description provided for @createLesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Lesson'**
+  String get createLesson;
+
+  /// No description provided for @lessonVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson Video'**
+  String get lessonVideo;
+
+  /// No description provided for @uploadLessonVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload Lesson Video'**
+  String get uploadLessonVideo;
+
+  /// No description provided for @lessonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson Title'**
+  String get lessonTitle;
+
+  /// No description provided for @enterLessonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter lesson title'**
+  String get enterLessonTitle;
+
+  /// No description provided for @lessonDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson Description'**
+  String get lessonDescription;
+
+  /// No description provided for @enterLessonDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter lesson description'**
+  String get enterLessonDescription;
+
+  /// No description provided for @lessonAttachments.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson Attachments'**
+  String get lessonAttachments;
+
+  /// No description provided for @addAttachment.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Attachment'**
+  String get addAttachment;
+
+  /// No description provided for @attachmentName.
+  ///
+  /// In en, this message translates to:
+  /// **'Attachment name'**
+  String get attachmentName;
+
+  /// No description provided for @editAttachment.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Attachment'**
+  String get editAttachment;
+
+  /// No description provided for @deleteAttachment.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Attachment'**
+  String get deleteAttachment;
+
+  /// No description provided for @deleteAttachmentConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this attachment?'**
+  String get deleteAttachmentConfirmation;
+
+  /// No description provided for @noAttachments.
+  ///
+  /// In en, this message translates to:
+  /// **'No attachments yet'**
+  String get noAttachments;
+
+  /// No description provided for @saveLesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Lesson'**
+  String get saveLesson;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
 }
 
 class _AppLocalizationsDelegate
