@@ -554,4 +554,38 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get coursesInProgress => 'Courses in Progress';
+
+  @override
+  String get addSection => 'Add Section';
+
+  @override
+  String get noSectionsYet => 'No sections yet';
+
+  @override
+  String get addLesson => 'Add Lesson';
+
+  @override
+  String get noLessonsYet => 'No lessons yet';
+
+  @override
+  String get questionsBank => 'Questions Bank';
+
+  @override
+  String get quiz => 'Quiz';
+
+  @override
+  String get renameSection => 'Rename Section';
+
+  @override
+  String get sectionName => 'Section name';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get deleteSection => 'Delete Section';
+
+  @override
+  String get deleteSectionConfirmation =>
+      'Are you sure you want to delete this section? This action cannot be undone.';
 }

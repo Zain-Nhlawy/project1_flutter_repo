@@ -553,4 +553,38 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get coursesInProgress => 'دورات قيد الإنشاء';
+
+  @override
+  String get addSection => 'إضافة قسم';
+
+  @override
+  String get noSectionsYet => 'لا يوجد أقسام بعد';
+
+  @override
+  String get addLesson => 'إضافة درس';
+
+  @override
+  String get noLessonsYet => 'لا يوجد دروس بعد';
+
+  @override
+  String get questionsBank => 'بنك الأسئلة';
+
+  @override
+  String get quiz => 'الكويز';
+
+  @override
+  String get renameSection => 'إعادة تسمية القسم';
+
+  @override
+  String get sectionName => 'اسم القسم';
+
+  @override
+  String get save => 'حفظ';
+
+  @override
+  String get deleteSection => 'حذف القسم';
+
+  @override
+  String get deleteSectionConfirmation =>
+      'هل أنت متأكد من حذف هذا القسم؟ لا يمكن التراجع عن هذا الإجراء.';
 }

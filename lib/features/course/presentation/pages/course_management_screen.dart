@@ -7,6 +7,7 @@ import 'package:project1/features/course/presentation/widgets/custom_text_field.
 import 'package:project1/features/course/presentation/widgets/management_action_tile.dart';
 import 'package:project1/features/course/presentation/widgets/tags_input.dart';
 import 'package:project1/features/course/presentation/widgets/visibility_dropdown.dart';
+import 'package:project1/features/section/presentation/pages/section_management_screen.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class CourseManagementScreen extends StatefulWidget {
@@ -256,7 +257,7 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => PlaceholderScreen(title: localizations.manageSections),
+                          builder: (_) => SectionManagementScreen(courseTitle: widget.title),
                         ),
                       );
                     },

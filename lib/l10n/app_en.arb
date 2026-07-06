@@ -236,5 +236,18 @@
 "saveChanges": "Save Changes",
 "editCourse": "Edit Course",
 "manageCoursesDescription": "Manage your courses, update their details, and continue building them.",
-"coursesInProgress": "Courses in Progress"
+"coursesInProgress": "Courses in Progress",
+"sections": "Sections",
+"addSection": "Add Section",
+"noSectionsYet": "No sections yet",
+"addLesson": "Add Lesson",
+"noLessonsYet": "No lessons yet",
+"questionsBank": "Questions Bank",
+"quiz": "Quiz",
+"renameSection": "Rename Section",
+"sectionName": "Section name",
+"cancel": "Cancel",
+"save": "Save",
+"deleteSection": "Delete Section",
+"deleteSectionConfirmation": "Are you sure you want to delete this section? This action cannot be undone."
 }

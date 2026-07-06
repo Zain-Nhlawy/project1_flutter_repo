@@ -209,5 +209,18 @@
 "saveChanges": "حفظ التعديلات",
 "editCourse": "تعديل الكورس",
 "manageCoursesDescription": "قم بإدارة دوراتك، تحديث تفاصيلها، ومتابعة إنشائها.",
-"coursesInProgress": "دورات قيد الإنشاء"
+"coursesInProgress": "دورات قيد الإنشاء",
+"sections": "الأقسام",
+"addSection": "إضافة قسم",
+"noSectionsYet": "لا يوجد أقسام بعد",
+"addLesson": "إضافة درس",
+"noLessonsYet": "لا يوجد دروس بعد",
+"questionsBank": "بنك الأسئلة",
+"quiz": "الكويز",
+"renameSection": "إعادة تسمية القسم",
+"sectionName": "اسم القسم",
+"cancel": "إلغاء",
+"save": "حفظ",
+"deleteSection": "حذف القسم",
+"deleteSectionConfirmation": "هل أنت متأكد من حذف هذا القسم؟ لا يمكن التراجع عن هذا الإجراء."
 }

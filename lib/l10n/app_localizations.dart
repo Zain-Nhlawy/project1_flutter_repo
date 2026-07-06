@@ -1147,6 +1147,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Courses in Progress'**
   String get coursesInProgress;
+
+  /// No description provided for @addSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Section'**
+  String get addSection;
+
+  /// No description provided for @noSectionsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No sections yet'**
+  String get noSectionsYet;
+
+  /// No description provided for @addLesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Lesson'**
+  String get addLesson;
+
+  /// No description provided for @noLessonsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No lessons yet'**
+  String get noLessonsYet;
+
+  /// No description provided for @questionsBank.
+  ///
+  /// In en, this message translates to:
+  /// **'Questions Bank'**
+  String get questionsBank;
+
+  /// No description provided for @quiz.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz'**
+  String get quiz;
+
+  /// No description provided for @renameSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename Section'**
+  String get renameSection;
+
+  /// No description provided for @sectionName.
+  ///
+  /// In en, this message translates to:
+  /// **'Section name'**
+  String get sectionName;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @deleteSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Section'**
+  String get deleteSection;
+
+  /// No description provided for @deleteSectionConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this section? This action cannot be undone.'**
+  String get deleteSectionConfirmation;
 }
 
 class _AppLocalizationsDelegate
