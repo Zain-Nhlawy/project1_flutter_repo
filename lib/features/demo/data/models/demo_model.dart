@@ -8,7 +8,7 @@ class DemoModel extends DemoEntity {
     required super.imagePath,
     required super.ownerName,
     required super.isOwner,
-     super.plan,
+    super.plan,
     required super.membersCount,
     super.createdAt,
   });
