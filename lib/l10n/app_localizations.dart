@@ -1075,6 +1075,288 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Invalid verification code'**
   String get invalidCode;
+
+  /// No description provided for @createCourse.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Course'**
+  String get createCourse;
+
+  /// No description provided for @courseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Course Title'**
+  String get courseTitle;
+
+  /// No description provided for @courseDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Course Description'**
+  String get courseDescription;
+
+  /// No description provided for @price.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get price;
+
+  /// No description provided for @public.
+  ///
+  /// In en, this message translates to:
+  /// **'Public'**
+  String get public;
+
+  /// No description provided for @private.
+  ///
+  /// In en, this message translates to:
+  /// **'Private'**
+  String get private;
+
+  /// No description provided for @tags.
+  ///
+  /// In en, this message translates to:
+  /// **'Tags'**
+  String get tags;
+
+  /// No description provided for @add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get add;
+
+  /// No description provided for @uploadImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload Image'**
+  String get uploadImage;
+
+  /// No description provided for @fillAllFieldsWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill in all required fields'**
+  String get fillAllFieldsWarning;
+
+  /// No description provided for @ongoingCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Ongoing courses'**
+  String get ongoingCourses;
+
+  /// No description provided for @lessons.
+  ///
+  /// In en, this message translates to:
+  /// **'Lessons'**
+  String get lessons;
+
+  /// No description provided for @duration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get duration;
+
+  /// No description provided for @courseManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Course Management'**
+  String get courseManagement;
+
+  /// No description provided for @company.
+  ///
+  /// In en, this message translates to:
+  /// **'Company'**
+  String get company;
+
+  /// No description provided for @manageFaq.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage FAQ'**
+  String get manageFaq;
+
+  /// No description provided for @manageSections.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Sections'**
+  String get manageSections;
+
+  /// No description provided for @saveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get saveChanges;
+
+  /// No description provided for @editCourse.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Course'**
+  String get editCourse;
+
+  /// No description provided for @manageCoursesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your courses, update their details, and continue building them.'**
+  String get manageCoursesDescription;
+
+  /// No description provided for @coursesInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Courses in Progress'**
+  String get coursesInProgress;
+
+  /// No description provided for @noSectionsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No sections yet'**
+  String get noSectionsYet;
+
+  /// No description provided for @addLesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Lesson'**
+  String get addLesson;
+
+  /// No description provided for @noLessonsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No lessons yet'**
+  String get noLessonsYet;
+
+  /// No description provided for @questionsBank.
+  ///
+  /// In en, this message translates to:
+  /// **'Questions Bank'**
+  String get questionsBank;
+
+  /// No description provided for @quiz.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz'**
+  String get quiz;
+
+  /// No description provided for @renameSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename Section'**
+  String get renameSection;
+
+  /// No description provided for @sectionName.
+  ///
+  /// In en, this message translates to:
+  /// **'Section name'**
+  String get sectionName;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @deleteSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Section'**
+  String get deleteSection;
+
+  /// No description provided for @deleteSectionConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this section? This action cannot be undone.'**
+  String get deleteSectionConfirmation;
+
+  /// No description provided for @createLesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Lesson'**
+  String get createLesson;
+
+  /// No description provided for @lessonVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson Video'**
+  String get lessonVideo;
+
+  /// No description provided for @uploadLessonVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload Lesson Video'**
+  String get uploadLessonVideo;
+
+  /// No description provided for @lessonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson Title'**
+  String get lessonTitle;
+
+  /// No description provided for @enterLessonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter lesson title'**
+  String get enterLessonTitle;
+
+  /// No description provided for @lessonDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson Description'**
+  String get lessonDescription;
+
+  /// No description provided for @enterLessonDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter lesson description'**
+  String get enterLessonDescription;
+
+  /// No description provided for @lessonAttachments.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson Attachments'**
+  String get lessonAttachments;
+
+  /// No description provided for @addAttachment.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Attachment'**
+  String get addAttachment;
+
+  /// No description provided for @attachmentName.
+  ///
+  /// In en, this message translates to:
+  /// **'Attachment name'**
+  String get attachmentName;
+
+  /// No description provided for @editAttachment.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Attachment'**
+  String get editAttachment;
+
+  /// No description provided for @deleteAttachment.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Attachment'**
+  String get deleteAttachment;
+
+  /// No description provided for @deleteAttachmentConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this attachment?'**
+  String get deleteAttachmentConfirmation;
+
+  /// No description provided for @noAttachments.
+  ///
+  /// In en, this message translates to:
+  /// **'No attachments yet'**
+  String get noAttachments;
+
+  /// No description provided for @saveLesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Lesson'**
+  String get saveLesson;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
 }
 
 class _AppLocalizationsDelegate

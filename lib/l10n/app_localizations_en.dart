@@ -519,4 +519,148 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get invalidCode => 'Invalid verification code';
+
+  @override
+  String get createCourse => 'Create Course';
+
+  @override
+  String get courseTitle => 'Course Title';
+
+  @override
+  String get courseDescription => 'Course Description';
+
+  @override
+  String get price => 'Price';
+
+  @override
+  String get public => 'Public';
+
+  @override
+  String get private => 'Private';
+
+  @override
+  String get tags => 'Tags';
+
+  @override
+  String get add => 'Add';
+
+  @override
+  String get uploadImage => 'Upload Image';
+
+  @override
+  String get fillAllFieldsWarning => 'Please fill in all required fields';
+
+  @override
+  String get ongoingCourses => 'Ongoing courses';
+
+  @override
+  String get lessons => 'Lessons';
+
+  @override
+  String get duration => 'Duration';
+
+  @override
+  String get courseManagement => 'Course Management';
+
+  @override
+  String get company => 'Company';
+
+  @override
+  String get manageFaq => 'Manage FAQ';
+
+  @override
+  String get manageSections => 'Manage Sections';
+
+  @override
+  String get saveChanges => 'Save Changes';
+
+  @override
+  String get editCourse => 'Edit Course';
+
+  @override
+  String get manageCoursesDescription =>
+      'Manage your courses, update their details, and continue building them.';
+
+  @override
+  String get coursesInProgress => 'Courses in Progress';
+
+  @override
+  String get noSectionsYet => 'No sections yet';
+
+  @override
+  String get addLesson => 'Add Lesson';
+
+  @override
+  String get noLessonsYet => 'No lessons yet';
+
+  @override
+  String get questionsBank => 'Questions Bank';
+
+  @override
+  String get quiz => 'Quiz';
+
+  @override
+  String get renameSection => 'Rename Section';
+
+  @override
+  String get sectionName => 'Section name';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get deleteSection => 'Delete Section';
+
+  @override
+  String get deleteSectionConfirmation =>
+      'Are you sure you want to delete this section? This action cannot be undone.';
+
+  @override
+  String get createLesson => 'Create Lesson';
+
+  @override
+  String get lessonVideo => 'Lesson Video';
+
+  @override
+  String get uploadLessonVideo => 'Upload Lesson Video';
+
+  @override
+  String get lessonTitle => 'Lesson Title';
+
+  @override
+  String get enterLessonTitle => 'Enter lesson title';
+
+  @override
+  String get lessonDescription => 'Lesson Description';
+
+  @override
+  String get enterLessonDescription => 'Enter lesson description';
+
+  @override
+  String get lessonAttachments => 'Lesson Attachments';
+
+  @override
+  String get addAttachment => 'Add Attachment';
+
+  @override
+  String get attachmentName => 'Attachment name';
+
+  @override
+  String get editAttachment => 'Edit Attachment';
+
+  @override
+  String get deleteAttachment => 'Delete Attachment';
+
+  @override
+  String get deleteAttachmentConfirmation =>
+      'Are you sure you want to delete this attachment?';
+
+  @override
+  String get noAttachments => 'No attachments yet';
+
+  @override
+  String get saveLesson => 'Save Lesson';
+
+  @override
+  String get delete => 'Delete';
 }

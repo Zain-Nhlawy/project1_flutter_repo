@@ -518,4 +518,147 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get invalidCode => 'رمز التحقق غير صحيح';
+
+  @override
+  String get createCourse => 'إنشاء كورس';
+
+  @override
+  String get courseTitle => 'عنوان الكورس';
+
+  @override
+  String get courseDescription => 'وصف الكورس';
+
+  @override
+  String get price => 'السعر';
+
+  @override
+  String get public => 'عام';
+
+  @override
+  String get private => 'خاص';
+
+  @override
+  String get tags => 'التاغات';
+
+  @override
+  String get add => 'إضافة';
+
+  @override
+  String get uploadImage => 'رفع صورة';
+
+  @override
+  String get fillAllFieldsWarning => 'يرجى تعبئة جميع الحقول المطلوبة';
+
+  @override
+  String get ongoingCourses => 'كورسات قيد الإنشاء';
+
+  @override
+  String get lessons => 'الدروس';
+
+  @override
+  String get duration => 'المدة';
+
+  @override
+  String get courseManagement => 'إدارة الكورس';
+
+  @override
+  String get company => 'الشركة';
+
+  @override
+  String get manageFaq => 'إدارة الأسئلة الشائعة';
+
+  @override
+  String get manageSections => 'إدارة الأقسام';
+
+  @override
+  String get saveChanges => 'حفظ التعديلات';
+
+  @override
+  String get editCourse => 'تعديل الكورس';
+
+  @override
+  String get manageCoursesDescription =>
+      'قم بإدارة دوراتك، تحديث تفاصيلها، ومتابعة إنشائها.';
+
+  @override
+  String get coursesInProgress => 'دورات قيد الإنشاء';
+
+  @override
+  String get noSectionsYet => 'لا يوجد أقسام بعد';
+
+  @override
+  String get addLesson => 'إضافة درس';
+
+  @override
+  String get noLessonsYet => 'لا يوجد دروس بعد';
+
+  @override
+  String get questionsBank => 'بنك الأسئلة';
+
+  @override
+  String get quiz => 'الكويز';
+
+  @override
+  String get renameSection => 'إعادة تسمية القسم';
+
+  @override
+  String get sectionName => 'اسم القسم';
+
+  @override
+  String get save => 'حفظ';
+
+  @override
+  String get deleteSection => 'حذف القسم';
+
+  @override
+  String get deleteSectionConfirmation =>
+      'هل أنت متأكد من حذف هذا القسم؟ لا يمكن التراجع عن هذا الإجراء.';
+
+  @override
+  String get createLesson => 'إضافة درس';
+
+  @override
+  String get lessonVideo => 'فيديو الدرس';
+
+  @override
+  String get uploadLessonVideo => 'رفع فيديو الدرس';
+
+  @override
+  String get lessonTitle => 'عنوان الدرس';
+
+  @override
+  String get enterLessonTitle => 'أدخل عنوان الدرس';
+
+  @override
+  String get lessonDescription => 'وصف الدرس';
+
+  @override
+  String get enterLessonDescription => 'أدخل وصف الدرس';
+
+  @override
+  String get lessonAttachments => 'ملحقات الدرس';
+
+  @override
+  String get addAttachment => 'إضافة ملحق';
+
+  @override
+  String get attachmentName => 'اسم الملحق';
+
+  @override
+  String get editAttachment => 'تعديل الملحق';
+
+  @override
+  String get deleteAttachment => 'حذف الملحق';
+
+  @override
+  String get deleteAttachmentConfirmation => 'هل أنت متأكد من حذف هذا الملحق؟';
+
+  @override
+  String get noAttachments => 'لا توجد ملحقات بعد';
+
+  @override
+  String get saveLesson => 'حفظ الدرس';
+
+  @override
+  String get delete => 'حذف';
 }

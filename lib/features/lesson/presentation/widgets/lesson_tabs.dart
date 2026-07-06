@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'attachment_tile.dart';
-import 'qa_card.dart';
+import 'package:project1/features/Q&A/presentation/widgets/qa_card.dart';
+import 'package:project1/features/attachment/presentation/widgets/attachment_tile.dart';
 
 class LessonTabs extends StatelessWidget {
   const LessonTabs({super.key});

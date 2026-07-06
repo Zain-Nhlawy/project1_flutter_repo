@@ -16,7 +16,7 @@ class DemoEntity {
     this.imagePath,
     required this.ownerName,
     required this.isOwner,
-     this.plan,
+    this.plan,
     required this.membersCount,
     this.createdAt,
   });

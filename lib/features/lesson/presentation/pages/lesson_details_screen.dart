@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:project1/features/course/presentation/widgets/course_tag.dart';
 import '../widgets/lesson_tabs.dart';
 import '../widgets/lesson_video_header.dart';
-import '../widgets/course_tag.dart';
 
 class LessonDetailsScreen extends StatelessWidget {
   const LessonDetailsScreen({super.key});

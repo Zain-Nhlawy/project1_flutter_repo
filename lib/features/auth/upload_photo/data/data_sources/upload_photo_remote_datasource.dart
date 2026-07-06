@@ -7,42 +7,54 @@ class UploadPhotoRemoteDataSource {
 
   UploadPhotoRemoteDataSource(this.dioClient);
 
+  String _getContentType(File file) {
+    final ext = file.path.split('.').last.toLowerCase();
+
+    switch (ext) {
+      case 'png':
+        return 'image/png';
+      case 'jpg':
+      case 'jpeg':
+        return 'image/jpeg';
+      case 'webp':
+        return 'image/webp';
+      default:
+        return 'application/octet-stream';
+    }
+  }
+
   Future<String> uploadPhoto(File file) async {
-  final res = await dioClient.dio.post(
-    '/users/upload-url',
-    data: {
-      "fileName": file.path.split('/').last,
-      "contentType": "image/jpeg",
-      "isPublic": true,
-      "folder": "users",
-    },
-    options: Options(
-      extra: {'noAuth': true},
-    ),
-  );
+    final contentType = _getContentType(file);
 
-  final data = res.data['data'];
-
-  final uploadUrl = data['uploadUrl'];
-  final fields = Map<String, dynamic>.from(data['fields']);
-  final cdnUrl = data['cdnUrl'];
-
-  final formData = FormData.fromMap({
-    ...fields,
-    "file": await MultipartFile.fromFile(file.path),
-  });
-
-  await Dio().post(
-    uploadUrl,
-    data: formData,
-    options: Options(
-      contentType: 'multipart/form-data',
-      headers: {
-        'Accept': '*/*',
+    final res = await dioClient.dio.post(
+      '/users/upload-url',
+      data: {
+        "fileName": file.path.split('/').last,
+        "contentType": contentType,
+        "isPublic": true,
+        "folder": "users",
       },
-    ),
-  );
+      options: Options(
+        extra: {'noAuth': true},
+      ),
+    );
 
-  return cdnUrl;
-}
+    final data = res.data['data'];
+
+    final uploadUrl = data['uploadUrl'];
+    final cdnUrl = data['cdnUrl'];
+
+    await Dio().put(
+      uploadUrl,
+      data: await file.readAsBytes(),
+      options: Options(
+        headers: {
+          'x-ms-blob-type': 'BlockBlob',
+          'Content-Type': contentType,
+        },
+      ),
+    );
+
+    return cdnUrl;
+  }
 }

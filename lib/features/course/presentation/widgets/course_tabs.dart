@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project1/features/course/presentation/widgets/lesson_connector.dart';
-import 'lesson_tile.dart';
+import 'package:project1/features/lesson/presentation/widgets/lesson_connector.dart';
+import 'package:project1/features/lesson/presentation/widgets/lesson_tile.dart';
 
 class CourseTabs extends StatelessWidget {
   const CourseTabs({super.key});
