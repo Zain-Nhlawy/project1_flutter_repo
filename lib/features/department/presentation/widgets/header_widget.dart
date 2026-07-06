@@ -1,7 +1,10 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/features/demo/domain/entities/demo_entity.dart';
+import 'package:project1/features/demo/presentation/pages/payment_pages/upgrade_plan.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class HeaderWidget extends StatelessWidget {
@@ -20,6 +23,10 @@ class HeaderWidget extends StatelessWidget {
     final createdAt = demo.createdAt ?? DateTime.now();
     final daysPassed = DateTime.now().difference(createdAt).inDays;
     final int daysLeft = (14 - daysPassed) > 0 ? (14 - daysPassed) : 0;
+
+    // إضافة الفحص لمعرفة إذا كانت الخطة مجانية
+    final currentPlan = demo.plan?.toLowerCase() ?? 'starter';
+    final isFreePlan = currentPlan == 'starter' || currentPlan == 'free';
 
     return Container(
       width: size.width,
@@ -41,121 +48,54 @@ class HeaderWidget extends StatelessWidget {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: AppColors.surface.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  padding: EdgeInsets.symmetric(
-                    horizontal: size.width * 0.02,
-                    vertical: size.height * 0.012,
-                  ),
-                  constraints: const BoxConstraints(),
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: AppColors.surface,
-                    size: 20 * textScale,
-                  ),
-                ),
+              _GhostIconButton(
+                icon: Icons.arrow_back_rounded,
+                textScale: textScale,
+                onTap: () => Navigator.of(context).pop(),
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (demo.isOwner) ...[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          l10n.daysLeftText(daysLeft),
-                          style: AppTextStyles.label.copyWith(
-                            color: Colors.orangeAccent,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 11 * textScale,
-                          ),
-                        ),
-                        SizedBox(height: size.height * 0.008),
-                        InkWell(
-                          onTap: () {},
-                          borderRadius: BorderRadius.circular(12),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: size.width * 0.03,
-                              vertical: size.height * 0.006,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.surface,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Text(
-                              l10n.upgradePlan,
-                              style: AppTextStyles.label.copyWith(
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 11 * textScale,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(width: size.width * 0.03),
-                  ],
-                  Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.surface.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: IconButton(
-                      onPressed: () {},
-                      padding: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.02,
-                        vertical: size.height * 0.012,
-                      ),
-                      constraints: const BoxConstraints(),
-                      icon: Icon(
-                        Icons.notifications_none_rounded,
-                        color: AppColors.surface,
-                        size: 20 * textScale,
-                      ),
-                    ),
-                  ),
-                ],
+              _GhostIconButton(
+                icon: Icons.notifications_none_rounded,
+                textScale: textScale,
+                onTap: () {},
               ),
             ],
           ),
-          SizedBox(height: size.height * 0.03),
+          SizedBox(height: size.height * 0.025),
           Row(
             children: [
               Container(
                 width: size.width * 0.15,
                 height: size.width * 0.15,
-                decoration: const BoxDecoration(
-                  color: Colors.transparent,
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
+                  border: Border.all(
+                    color: AppColors.surface.withOpacity(0.35),
+                    width: 2,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.12),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
                 ),
-                child: Image.asset(
-                  'assets/images/logo1.png',
-                  width: size.width * 0.2,
-                  height: size.width * 0.2,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    width: size.width * 0.2,
-                    height: size.width * 0.2,
-                    color: AppColors.textSecondary.withOpacity(0.1),
-                    child: const Icon(
-                      Icons.image_not_supported,
-                      color: Colors.grey,
+                child: ClipOval(
+                  child: Image.asset(
+                    'assets/images/logo1.png',
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      color: AppColors.surface.withOpacity(0.15),
+                      child: Icon(
+                        Icons.image_not_supported_rounded,
+                        color: AppColors.surface.withOpacity(0.7),
+                      ),
                     ),
                   ),
                 ),
               ),
-              SizedBox(width: size.width * 0.03),
+              SizedBox(width: size.width * 0.035),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,47 +104,170 @@ class HeaderWidget extends StatelessWidget {
                       demo.name,
                       style: AppTextStyles.h3.copyWith(
                         color: theme.colorScheme.surface,
+                        fontWeight: FontWeight.bold,
                       ),
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(height: size.height * 0.005),
+                    SizedBox(height: size.height * 0.004),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.person_rounded,
+                          size: 13 * textScale,
+                          color: theme.colorScheme.surface.withOpacity(0.75),
+                        ),
+                        SizedBox(width: size.width * 0.01),
+                        Flexible(
+                          child: Text(
+                            l10n.byAuthor(demo.ownerName),
+                            style: AppTextStyles.bodyMedium.copyWith(
+                              color: theme.colorScheme.surface.withOpacity(0.8),
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: size.width * 0.02),
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: size.width * 0.028,
+                  vertical: size.height * 0.007,
+                ),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surface.withOpacity(0.18),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.people_alt_rounded,
+                      color: theme.colorScheme.surface,
+                      size: 14 * textScale,
+                    ),
+                    SizedBox(width: size.width * 0.012),
                     Text(
-                      l10n.byAuthor(demo.ownerName),
-                      style: AppTextStyles.bodyMedium.copyWith(
-                        color: theme.colorScheme.surface.withOpacity(0.8),
+                      demo.membersCount.toString(),
+                      style: AppTextStyles.label.copyWith(
+                        color: theme.colorScheme.surface,
+                        fontWeight: FontWeight.w600,
                       ),
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
               ),
             ],
           ),
-          SizedBox(height: size.height * 0.03),
-          Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: size.width * 0.03,
-              vertical: size.height * 0.005,
-            ),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.surface.withOpacity(0.2),
+          // هنا أضفنا شرط isFreePlan حتى لا يظهر زر الترقية وعدد الأيام إذا لم تكن الخطة مجانية
+          if (demo.isOwner && isFreePlan) ...[
+            SizedBox(height: size.height * 0.02),
+            ClipRRect(
               borderRadius: BorderRadius.circular(16),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  demo.membersCount.toString(),
-                  style: AppTextStyles.label.copyWith(
-                    color: theme.colorScheme.surface,
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: size.width * 0.035,
+                    vertical: size.height * 0.012,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: AppColors.surface.withOpacity(0.25),
+                      width: 1,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.access_time_rounded,
+                        color: Colors.orangeAccent,
+                        size: 15 * textScale,
+                      ),
+                      SizedBox(width: size.width * 0.02),
+                      Expanded(
+                        child: Text(
+                          l10n.daysLeftText(daysLeft),
+                          style: AppTextStyles.label.copyWith(
+                            color: Colors.orangeAccent,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 11 * textScale,
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  UpgradePlanScreen(demoId: demo.id!),
+                            ),
+                          );
+                        },
+                        borderRadius: BorderRadius.circular(12),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: size.width * 0.03,
+                            vertical: size.height * 0.007,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.surface,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            l10n.upgradePlan,
+                            style: AppTextStyles.label.copyWith(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 11 * textScale,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(width: size.width * 0.01),
-                Icon(Icons.people, color: theme.colorScheme.surface, size: 14),
-              ],
+              ),
             ),
-          ),
+          ],
         ],
+      ),
+    );
+  }
+}
+
+class _GhostIconButton extends StatelessWidget {
+  final IconData icon;
+  final double textScale;
+  final VoidCallback onTap;
+
+  const _GhostIconButton({
+    required this.icon,
+    required this.textScale,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: AppColors.surface.withOpacity(0.18),
+      borderRadius: BorderRadius.circular(14),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(14),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Icon(icon, color: AppColors.surface, size: 20 * textScale),
+        ),
       ),
     );
   }

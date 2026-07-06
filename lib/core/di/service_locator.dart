@@ -28,10 +28,14 @@ import 'package:project1/features/auth/upload_photo/data/data_sources/upload_pho
 import 'package:project1/features/auth/upload_photo/data/repository/upload_photo_repository_impl.dart';
 import 'package:project1/features/auth/upload_photo/domain/repository/upload_photo_repository.dart';
 import 'package:project1/features/auth/upload_photo/domain/use_case/upload_photo_usecase.dart';
+import 'package:project1/features/demo/data/data_sources/demo_payment_data_source.dart';
 import 'package:project1/features/demo/data/data_sources/demo_remote_datasource.dart';
 import 'package:project1/features/demo/data/repository/demo_repository.dart';
 import 'package:project1/features/demo/data/repository/demo_repository_impl.dart';
-import 'package:project1/features/demo/domain/use%20case/get_demos_usecase.dart';
+import 'package:project1/features/demo/data/repository/payment%20repo/demo_payment_repository_impl.dart';
+import 'package:project1/features/demo/domain/repository/demo_payment_repository.dart';
+import 'package:project1/features/demo/domain/use%20case/demo_payment_usecase.dart';
+import 'package:project1/features/demo/domain/use%20case/demos_usecase.dart';
 import 'package:project1/features/demo/presentation/cubit/demo_cubit.dart';
 import 'package:project1/features/department/data/data_sources/department_data_source.dart';
 import 'package:project1/features/department/domain/repository/department_repository.dart';
@@ -43,47 +47,38 @@ import 'package:project1/features/profile/data/repository/profile_repository_imp
 import 'package:project1/features/profile/domain/repository/profile_repository.dart';
 import 'package:project1/features/profile/domain/use_case/update_profile_image_usecase.dart';
 
-
 final getIt = GetIt.instance;
 
 final String baseUrl = dotenv.env['BASE_URL'] ?? '';
 
 void setupDI() {
-
   ////////////////////////storage////////////////////////
-  getIt.registerLazySingleton<AppSecureStorage>(
-    () => AppSecureStorage(),
-  );
+  getIt.registerLazySingleton<AppSecureStorage>(() => AppSecureStorage());
   ////////////////////////storage////////////////////////
-
-
 
   ////////////////////////Dio+refresh////////////////////////
   getIt.registerLazySingleton<DioClient>(
     () => DioClient(
       storage: getIt<AppSecureStorage>(),
       refreshToken: () async {
-  final storage = getIt<AppSecureStorage>();
-  final refresh = await storage.read(StorageKeys.refreshToken);
-  if (refresh == null) return null;
-  final dio = Dio(BaseOptions(
-    baseUrl: baseUrl,
-    headers: {
-      'Accept': 'application/json',
-    },
-  ));
-  final res = await dio.post(
-    '/authentication/refresh-tokens',
-    data: {"refreshToken": refresh},
-  );
-  return res.data['data'];
-},
+        final storage = getIt<AppSecureStorage>();
+        final refresh = await storage.read(StorageKeys.refreshToken);
+        if (refresh == null) return null;
+        final dio = Dio(
+          BaseOptions(
+            baseUrl: baseUrl,
+            headers: {'Accept': 'application/json'},
+          ),
+        );
+        final res = await dio.post(
+          '/authentication/refresh-tokens',
+          data: {"refreshToken": refresh},
+        );
+        return res.data['data'];
+      },
     ),
   );
   ////////////////////////Dio+refresh////////////////////////
-
-
-
 
   ////////////////////////auth+user////////////////////////
 
@@ -99,7 +94,7 @@ void setupDI() {
       getIt<AppSecureStorage>(),
     ),
   );
-  
+
   //remote
   getIt.registerLazySingleton<UploadPhotoRemoteDataSource>(
     () => UploadPhotoRemoteDataSource(getIt<DioClient>()),
@@ -114,24 +109,40 @@ void setupDI() {
   //   () => AuthTokenManager(getIt<AppSecureStorage>()),
   // );
 
-
   //usecase
   getIt.registerLazySingleton(() => RegisterUseCase(getIt<AuthRepository>()));
   getIt.registerLazySingleton(() => LoginUseCase(getIt<AuthRepository>()));
   getIt.registerLazySingleton(() => LogoutUseCase(getIt<AuthRepository>()));
-  getIt.registerLazySingleton(() => VerifyEmailUseCase(getIt<AuthRepository>()));
-  getIt.registerLazySingleton(() => ForgotPasswordUseCase(getIt<AuthRepository>()));
-  getIt.registerLazySingleton(() => ResetPasswordUseCase(getIt<AuthRepository>()));
-  getIt.registerLazySingleton(() => ChangePasswordUseCase(getIt<AuthRepository>()));
-  getIt.registerLazySingleton(() => GoogleLoginUseCase(getIt<AuthRepository>()));
-  getIt.registerLazySingleton(() => ResendVerificationEmailUseCase(getIt<AuthRepository>()));
-  getIt.registerLazySingleton<GetMeUseCase>(() => GetMeUseCase(getIt<AuthRepository>()));
-  getIt.registerLazySingleton<UploadPhotoUseCase>(() => UploadPhotoUseCase(getIt<UploadPhotoRepository>()));
+  getIt.registerLazySingleton(
+    () => VerifyEmailUseCase(getIt<AuthRepository>()),
+  );
+  getIt.registerLazySingleton(
+    () => ForgotPasswordUseCase(getIt<AuthRepository>()),
+  );
+  getIt.registerLazySingleton(
+    () => ResetPasswordUseCase(getIt<AuthRepository>()),
+  );
+  getIt.registerLazySingleton(
+    () => ChangePasswordUseCase(getIt<AuthRepository>()),
+  );
+  getIt.registerLazySingleton(
+    () => GoogleLoginUseCase(getIt<AuthRepository>()),
+  );
+  getIt.registerLazySingleton(
+    () => ResendVerificationEmailUseCase(getIt<AuthRepository>()),
+  );
+  getIt.registerLazySingleton<GetMeUseCase>(
+    () => GetMeUseCase(getIt<AuthRepository>()),
+  );
+  getIt.registerLazySingleton<UploadPhotoUseCase>(
+    () => UploadPhotoUseCase(getIt<UploadPhotoRepository>()),
+  );
   getIt.registerLazySingleton(() => Verify2FAUseCase(getIt<AuthRepository>()));
-  getIt.registerLazySingleton(() => Generate2FAUseCase(getIt<AuthRepository>()));
+  getIt.registerLazySingleton(
+    () => Generate2FAUseCase(getIt<AuthRepository>()),
+  );
   getIt.registerLazySingleton(() => TurnOn2FAUseCase(getIt<AuthRepository>()));
-  getIt.registerLazySingleton(() => TurnOff2FAUseCase(getIt<AuthRepository>()),);
-
+  getIt.registerLazySingleton(() => TurnOff2FAUseCase(getIt<AuthRepository>()));
 
   //cubit
   getIt.registerFactory(
@@ -176,9 +187,6 @@ void setupDI() {
   );
   ////////////////////////auth+user////////////////////////
 
-
-
-
   ////////////////////////Demo////////////////////////
 
   //datasource
@@ -197,25 +205,36 @@ void setupDI() {
     ),
   );
 
-  //usecase
+  getIt.registerLazySingleton<DemoPaymentDataSource>(
+    () => DemoPaymentDataSourceImpl(
+      getIt<DioClient>(),
+      dio: getIt<DioClient>().dio,
+    ),
+  );
+
   getIt.registerLazySingleton<GetDemosUseCase>(
     () => GetDemosUseCase(getIt<DemoRepository>()),
   );
   getIt.registerFactory(
-    () => DemoCubit(
-      getDemosUseCase: getIt<GetDemosUseCase>(),
+    () => DemoCubit(getDemosUseCase: getIt<GetDemosUseCase>()),
+  );
+
+  getIt.registerLazySingleton<DemoPaymentRepository>(
+    () => DemoPaymentRepositoryImpl(
+      demoPaymentDataSource: getIt<DemoPaymentDataSource>(),
     ),
+  );
+
+  getIt.registerLazySingleton(
+    () => DemoPaymentUseCase(getIt<DemoPaymentRepository>()),
   );
   ////////////////////////Demo////////////////////////
 
-
-  
-
-///////////////////// department ////////////////
+  ///////////////////// department ////////////////
 
   getIt.registerLazySingleton<DepartmentRemoteDataSource>(
     () => DepartmentRemoteDataSourcImpl(
-      getIt<DioClient>(), 
+      getIt<DioClient>(),
       dio: getIt<DioClient>().dio,
     ),
   );
@@ -236,5 +255,4 @@ void setupDI() {
   );
 
   //////////////// department //////////////////////////
-
 }

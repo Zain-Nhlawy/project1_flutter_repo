@@ -1,6 +1,6 @@
   import 'package:flutter_bloc/flutter_bloc.dart';
   import 'package:project1/features/demo/data/models/demo_model.dart';
-  import 'package:project1/features/demo/domain/use%20case/get_demos_usecase.dart';
+  import 'package:project1/features/demo/domain/use%20case/demos_usecase.dart';
   import 'demo_state.dart';
 
   class DemoCubit extends Cubit<DemoState> {

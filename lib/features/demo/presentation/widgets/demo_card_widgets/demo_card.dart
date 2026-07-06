@@ -19,43 +19,60 @@ class DemoCard extends StatelessWidget {
     final createdAt = demo.createdAt ?? DateTime.now();
     final daysPassed = DateTime.now().difference(createdAt).inDays;
     final daysLeft = 14 - daysPassed;
-    final isRestricted = daysLeft <= 0;
+    final isRestricted = daysLeft <= 0 && (demo.plan?.toLowerCase() == 'free');
 
     return Container(
       width: double.infinity,
       margin: EdgeInsets.only(bottom: size.height * 0.02),
-      padding: EdgeInsets.all(size.width * 0.045),
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(22),
+        border: isRestricted
+            ? Border.all(color: Colors.red.withOpacity(0.25), width: 1)
+            : null,
         boxShadow: [
           BoxShadow(
-            color: AppColors.textSecondary.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: AppColors.textSecondary.withOpacity(0.06),
+            blurRadius: 14,
+            offset: const Offset(0, 6),
           ),
         ],
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          DemoSidePanel(
-            demo: demo,
-            size: size,
-            textScale: textScale,
-            localizations: localizations,
-            isRestricted: isRestricted,
-            daysLeft: daysLeft,
-          ),
-          SizedBox(width: size.width * 0.04),
-          DemoMainContent(
-            demo: demo,
-            size: size,
-            textScale: textScale,
-            localizations: localizations,
-            isRestricted: isRestricted,
-          ),
-        ],
+      clipBehavior: Clip.antiAlias,
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (isRestricted)
+              Container(width: 4, color: Colors.red.withOpacity(0.6)),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.all(size.width * 0.045),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    DemoSidePanel(
+                      demo: demo,
+                      size: size,
+                      textScale: textScale,
+                      localizations: localizations,
+                      isRestricted: isRestricted,
+                      daysLeft: daysLeft,
+                    ),
+                    SizedBox(width: size.width * 0.04),
+                    DemoMainContent(
+                      demo: demo,
+                      size: size,
+                      textScale: textScale,
+                      localizations: localizations,
+                      isRestricted: isRestricted,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

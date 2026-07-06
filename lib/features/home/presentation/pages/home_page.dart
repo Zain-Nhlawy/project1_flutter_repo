@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:project1/features/demo/domain/entities/demo_entity.dart';
 import 'package:project1/features/demo/presentation/cubit/demo_state.dart';
 import 'package:project1/l10n/app_localizations.dart';
-import 'package:project1/features/demo/domain/use%20case/get_demos_usecase.dart';
+import 'package:project1/features/demo/domain/use%20case/demos_usecase.dart';
 import 'package:project1/features/demo/presentation/cubit/demo_cubit.dart';
 import 'package:project1/features/demo/presentation/widgets/demo_card_widgets/demo_card.dart';
 import 'package:project1/features/home/presentation/widgets/main_header.dart';

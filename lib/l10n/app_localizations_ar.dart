@@ -203,6 +203,35 @@ class AppLocalizationsAr extends AppLocalizations {
   String get freeTrialLabel => 'يتضمن تجربة مجانية لمدة 14 يوماً';
 
   @override
+  String get continueToPayment => 'المتابعة للدفع';
+
+  @override
+  String get paymentSuccessful => 'تم الدفع بنجاح!';
+
+  @override
+  String get paymentSuccessMessage =>
+      'تمت معالجة الدفع الخاص بك بنجاح. الديمو جاهز الآن للاستخدام.';
+
+  @override
+  String get backToHome => 'العودة للرئيسية';
+
+  @override
+  String get processingPayment => 'جاري تأكيد الدفع ...';
+
+  @override
+  String get limitReachedMessage => 'تم تجاوز الحد';
+
+  @override
+  String get limitReachedSnackBar =>
+      'تم تجاوز حد الخطة , يرجى الترقية للحصول على المزيد ';
+
+  @override
+  String get addSection => 'اضافة';
+
+  @override
+  String get noSectionFound => 'لا يوجد اقسام متاحة';
+
+  @override
   String get pleaseEnterEmail => 'يرجى إدخال عنوان بريدك الإلكتروني';
 
   @override
