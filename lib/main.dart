@@ -136,7 +136,7 @@ class _MyAppState extends State<MyApp> {
           home: widget.initialResetToken != null &&
                   widget.initialResetToken!.isNotEmpty
               ? ResetPasswordScreen(token: widget.initialResetToken!)
-              : const CoursesInProgressScreen(),
+              : const LoginScreen(),
         );
       },
     );

@@ -5,12 +5,17 @@ import 'package:project1/features/course/presentation/pages/PlaceholderScreen.da
 import 'package:project1/features/course/presentation/widgets/course_image_picker.dart';
 import 'package:project1/features/course/presentation/widgets/custom_text_field.dart';
 import 'package:project1/features/course/presentation/widgets/management_action_tile.dart';
-import 'package:project1/features/course/presentation/widgets/tags_input.dart';
+import 'package:project1/features/course/presentation/widgets/tags_selector.dart';
 import 'package:project1/features/course/presentation/widgets/visibility_dropdown.dart';
 import 'package:project1/features/section/presentation/pages/section_management_screen.dart';
 import 'package:project1/l10n/app_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
+import 'package:project1/features/course/presentation/cubit/course_state.dart';
 
 class CourseManagementScreen extends StatefulWidget {
+  final String demoId;
   final String title;
   final String company;
   final String image;
@@ -19,6 +24,7 @@ class CourseManagementScreen extends StatefulWidget {
 
   const CourseManagementScreen({
     super.key,
+    required this.demoId,
     required this.title,
     required this.company,
     required this.image,
@@ -34,20 +40,38 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
   late TextEditingController titleController;
   late TextEditingController descriptionController;
   late TextEditingController priceController;
-  final tagController = TextEditingController();
 
   String visibility = 'public';
-  List<String> tags = [];
   File? selectedImage;
 
   bool isEditing = false;
 
+  Set<String> selectedTagIds = {};
+
   @override
-  void initState() {
-    super.initState();
-    titleController = TextEditingController(text: widget.title);
-    descriptionController = TextEditingController();
-    priceController = TextEditingController();
+void initState() {
+  super.initState();
+
+  titleController =
+      TextEditingController(text: widget.title);
+
+  descriptionController =
+      TextEditingController();
+
+  priceController =
+      TextEditingController();
+}
+
+  
+
+  void toggleTag(String tagId) {
+    setState(() {
+      if (selectedTagIds.contains(tagId)) {
+        selectedTagIds.remove(tagId);
+      } else {
+        selectedTagIds.add(tagId);
+      }
+    });
   }
 
   @override
@@ -55,20 +79,7 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
     titleController.dispose();
     descriptionController.dispose();
     priceController.dispose();
-    tagController.dispose();
     super.dispose();
-  }
-
-  void addTag(String tag) {
-    final cleaned = tag.trim();
-    if (cleaned.isEmpty) return;
-    if (tags.contains(cleaned)) return;
-    setState(() => tags.add(cleaned));
-    tagController.clear();
-  }
-
-  void removeTag(String tag) {
-    setState(() => tags.remove(tag));
   }
 
   Future<void> pickImage() async {
@@ -98,7 +109,7 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
         );
         return;
       }
-      // TODO: 
+      // TODO
       setState(() => isEditing = false);
     } else {
       setState(() => isEditing = true);
@@ -109,7 +120,12 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
 
-    return Scaffold(
+    return BlocProvider(
+  create: (_) =>
+      getIt<CourseCubit>()
+        ..fetchTags(),
+
+  child: Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         leading: IconButton(
@@ -129,7 +145,6 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             CourseImagePicker(
               selectedImage: selectedImage,
               initialImageUrl: widget.image,
@@ -192,15 +207,55 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
 
             const SizedBox(height: 18),
 
-            TagsInput(
-              controller: tagController,
-              tags: tags,
-              hintText: localizations.tags,
-              addLabel: localizations.add,
-              onSubmitted: addTag,
-              onRemove: removeTag,
-              enabled: isEditing,
+            Text(
+              localizations.tags,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+                color: AppColors.textPrimary,
+              ),
             ),
+            const SizedBox(height: 10),
+
+            BlocBuilder<CourseCubit, CourseState>(
+  builder: (context, state) {
+
+    if(state is CourseTagsLoading){
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+
+    if(state is CourseTagsLoaded){
+
+      return TagsSelector(
+        availableTags: state.tags,
+        selectedTagIds: selectedTagIds,
+        onToggle: toggleTag,
+        enabled: isEditing,
+        isLoading: false,
+      );
+
+    }
+
+
+    if(state is CourseTagsError){
+
+      return Text(
+        state.message,
+        style: const TextStyle(
+          color: Colors.red,
+        ),
+      );
+
+    }
+
+
+    return const SizedBox();
+
+  },
+),
 
             const SizedBox(height: 16),
 
@@ -300,6 +355,7 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
             const SizedBox(height: 35),
           ],
         ),
+      ),
       ),
     );
   }

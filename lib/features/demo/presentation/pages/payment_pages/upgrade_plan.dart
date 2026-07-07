@@ -7,8 +7,6 @@ import 'package:project1/features/demo/domain/use%20case/demo_payment_usecase.da
 import 'package:project1/features/demo/presentation/cubit/payment%20for%20demo/demo_payment_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/payment%20for%20demo/demo_payment_state.dart';
 import 'package:project1/features/demo/presentation/pages/payment_pages/payment_webview.dart';
-import 'package:project1/features/department/presentation/pages/demo_main_page.dart'
-    as di;
 import 'package:project1/l10n/app_localizations.dart';
 
 class UpgradePlanScreen extends StatefulWidget {

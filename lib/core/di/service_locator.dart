@@ -28,6 +28,11 @@ import 'package:project1/features/auth/upload_photo/data/data_sources/upload_pho
 import 'package:project1/features/auth/upload_photo/data/repository/upload_photo_repository_impl.dart';
 import 'package:project1/features/auth/upload_photo/domain/repository/upload_photo_repository.dart';
 import 'package:project1/features/auth/upload_photo/domain/use_case/upload_photo_usecase.dart';
+import 'package:project1/features/course/data/data_sources/course_remote_datasource.dart';
+import 'package:project1/features/course/data/repository/course_repository_impl.dart';
+import 'package:project1/features/course/domain/repository/course_repository.dart';
+import 'package:project1/features/course/domain/use_case/get_tags_usecase.dart';
+import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
 import 'package:project1/features/demo/data/data_sources/demo_payment_data_source.dart';
 import 'package:project1/features/demo/data/data_sources/demo_remote_datasource.dart';
 import 'package:project1/features/demo/data/repository/demo_repository.dart';
@@ -255,4 +260,43 @@ void setupDI() {
   );
 
   //////////////// department //////////////////////////
+  
+
+
+
+
+
+  //////////////////////// Course ////////////////////////
+
+// datasource
+getIt.registerLazySingleton<CourseRemoteDataSource>(
+  () => CourseRemoteDataSource(
+    getIt<DioClient>(),
+  ),
+);
+
+// repository
+getIt.registerLazySingleton<CourseRepository>(
+  () => CourseRepositoryImpl(
+    getIt<CourseRemoteDataSource>(),
+  ),
+);
+
+
+// usecase
+getIt.registerLazySingleton<GetTagsUseCase>(
+  () => GetTagsUseCase(
+    getIt<CourseRepository>(),
+  ),
+);
+
+
+// cubit
+getIt.registerFactory<CourseCubit>(
+  () => CourseCubit(
+    getTagsUseCase: getIt<GetTagsUseCase>(),
+  ),
+);
+
+//////////////////////// Course ////////////////////////
 }

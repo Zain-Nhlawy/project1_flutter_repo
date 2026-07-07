@@ -34,19 +34,15 @@ class CourseDetailsScreen extends StatelessWidget {
                     children: const [
                       CourseTag(
                         text: "Intermediate",
-                        icon: Icons.trending_up,
                       ),
                       CourseTag(
                         text: "Machine Learning",
-                        icon: Icons.psychology,
                       ),
                       CourseTag(
                         text: "Programming",
-                        icon: Icons.code,
                       ),
                       CourseTag(
                         text: "Data Structures",
-                        icon: Icons.account_tree,
                       ),
                     ],
                   ),

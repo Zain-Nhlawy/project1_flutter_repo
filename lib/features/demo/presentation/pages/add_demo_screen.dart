@@ -10,7 +10,6 @@ import '../cubit/demo_state.dart';
 import '../cubit/add demo wizard/add_demo_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/add%20demo%20wizard/add_demo_state.dart';
 import 'package:project1/features/demo/presentation/widgets/add_demo_widgets/demo_name_slide.dart';
-import 'package:project1/features/demo/presentation/widgets/add_demo_widgets/features_slide.dart';
 import 'package:project1/features/demo/presentation/widgets/add_demo_widgets/plan_and_image_slide.dart';
 import 'package:project1/features/demo/presentation/widgets/add_demo_widgets/summary_slide.dart';
 

@@ -6,7 +6,9 @@ import 'package:project1/features/course/presentation/widgets/course_card.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class CoursesInProgressScreen extends StatelessWidget {
-  const CoursesInProgressScreen({super.key});
+  final String demoId; 
+
+  const CoursesInProgressScreen({super.key, required this.demoId});
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +66,9 @@ class CoursesInProgressScreen extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => const CreateCourseScreen(),
+              builder: (_) => CreateCourseScreen(
+                demoId: demoId,
+              ),
             ),
           );
         },
@@ -150,6 +154,7 @@ class CoursesInProgressScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (_) => CourseManagementScreen(
+                        demoId: demoId,
                         title: c["title"] as String,
                         company: c["company"] as String,
                         image: c["image"] as String,

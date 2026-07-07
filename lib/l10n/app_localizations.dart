@@ -509,7 +509,7 @@ abstract class AppLocalizations {
   /// No description provided for @addSection.
   ///
   /// In en, this message translates to:
-  /// **'Add'**
+  /// **'Add Section'**
   String get addSection;
 
   /// No description provided for @noSectionFound.
@@ -1369,6 +1369,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Edit Lesson'**
   String get editLesson;
+
+  /// No description provided for @noTagsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No tags available'**
+  String get noTagsAvailable;
 }
 
 class _AppLocalizationsDelegate

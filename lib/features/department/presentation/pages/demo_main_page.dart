@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/features/course/presentation/pages/courses_inProgress_screen.dart';
 import 'package:project1/features/demo/domain/entities/demo_entity.dart';
 import 'package:project1/features/department/presentation/cubit/department_cubit.dart';
 import 'package:project1/features/department/presentation/cubit/department_state.dart';
@@ -30,6 +31,30 @@ class DemoMainPage extends StatelessWidget {
         ),
       ],
       child: Scaffold(
+        floatingActionButton: FloatingActionButton.extended(
+  backgroundColor: Colors.orangeAccent,
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => CoursesInProgressScreen(
+          demoId: demo.id!,
+        ),
+      ),
+    );
+  },
+  icon: const Icon(
+    Icons.play_circle_outline,
+    color: Colors.white,
+  ),
+  label: const Text(
+    "Courses",
+    style: TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+),
         backgroundColor: theme.scaffoldBackgroundColor,
         body: BlocBuilder<DemoMainPageSwitchCubit, DemoTab>(
           builder: (context, currentTab) {

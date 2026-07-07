@@ -276,5 +276,6 @@
 "saveLesson": "Save Lesson",
 "delete": "Delete",
 "lessonManagement": "Lesson Management",
-"editLesson": "Edit Lesson"
+"editLesson": "Edit Lesson",
+"noTagsAvailable": "No tags available"
 }

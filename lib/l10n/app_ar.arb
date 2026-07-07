@@ -248,5 +248,6 @@
 "saveLesson": "حفظ الدرس",
 "delete": "حذف",
 "lessonManagement": "إدارة الدرس",
-"editLesson": "تعديل الدرس"
+"editLesson": "تعديل الدرس",
+"noTagsAvailable": "لا توجد تاغات متاحة"
 }
