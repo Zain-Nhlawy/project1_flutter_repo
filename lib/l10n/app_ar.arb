@@ -238,5 +238,7 @@
 "deleteAttachmentConfirmation": "هل أنت متأكد من حذف هذا الملحق؟",
 "noAttachments": "لا توجد ملحقات بعد",
 "saveLesson": "حفظ الدرس",
-"delete": "حذف"
+"delete": "حذف",
+"lessonManagement": "إدارة الدرس",
+"editLesson": "تعديل الدرس"
 }

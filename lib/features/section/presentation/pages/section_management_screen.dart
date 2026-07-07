@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/features/lesson/presentation/pages/create_lesson_screen.dart';
+import 'package:project1/features/lesson/presentation/pages/lesson_management_screen.dart';
 import 'package:project1/features/section/domain/entities/section_entity.dart';
 import 'package:project1/features/section/presentation/widgets/section_card.dart';
 import 'package:project1/l10n/app_localizations.dart';
@@ -47,8 +48,18 @@ class _SectionManagementScreenState extends State<SectionManagementScreen> {
 }
 
   void editLesson(SectionEntity section, LessonEntity lesson) {
-    // TODO
-  }
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => LessonManagementScreen(
+        lessonTitle: lesson.title,
+        lessonDescription: '', 
+        videoUrl: null,       
+        initialAttachments: const [], 
+      ),
+    ),
+  );
+}
 
   void manageQuestionsBank(SectionEntity section) {
     // TODO

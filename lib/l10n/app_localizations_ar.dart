@@ -635,4 +635,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get delete => 'حذف';
+
+  @override
+  String get lessonManagement => 'إدارة الدرس';
+
+  @override
+  String get editLesson => 'تعديل الدرس';
 }

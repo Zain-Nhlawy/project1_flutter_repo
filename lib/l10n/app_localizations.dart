@@ -1309,6 +1309,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete'**
   String get delete;
+
+  /// No description provided for @lessonManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson Management'**
+  String get lessonManagement;
+
+  /// No description provided for @editLesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Lesson'**
+  String get editLesson;
 }
 
 class _AppLocalizationsDelegate
