@@ -1,5 +1,3 @@
-import 'dart:ui' show FontWeight;
-
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
@@ -15,6 +13,7 @@ class DemoSidePanel extends StatelessWidget {
   final int daysLeft;
 
   const DemoSidePanel({
+    super.key,
     required this.demo,
     required this.size,
     required this.textScale,
@@ -25,58 +24,67 @@ class DemoSidePanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentPlan = demo.plan?.toLowerCase() ?? 'starter';
+    final isFreePlan = currentPlan == 'free';
+    final avatarSize = size.width * 0.18;
+
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Image.asset(
-            'assets/images/logo1.png',
-            width: size.width * 0.2,
-            height: size.width * 0.2,
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) => Container(
-              width: size.width * 0.2,
-              height: size.width * 0.2,
-              color: AppColors.textSecondary.withOpacity(0.1),
-              child: const Icon(Icons.image_not_supported, color: Colors.grey),
+        Container(
+          width: avatarSize,
+          height: avatarSize,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(
+              color: AppColors.primary.withOpacity(0.12),
+              width: 1.5,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.textSecondary.withOpacity(0.08),
+                blurRadius: 8,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16.5),
+            child: Image.asset(
+              'assets/images/logo1.png',
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => Container(
+                color: AppColors.textSecondary.withOpacity(0.08),
+                child: Icon(
+                  Icons.image_not_supported_rounded,
+                  color: AppColors.textSecondary.withOpacity(0.4),
+                  size: avatarSize * 0.4,
+                ),
+              ),
             ),
           ),
         ),
-        SizedBox(height: size.height * 0.02),
-        // Row(
-        //   mainAxisSize: MainAxisSize.min,
-        //   children: [
-        //     Icon(
-        //       Icons.people_outline,
-        //       color: AppColors.textSecondary,
-        //       size: 16 * textScale,
-        //     ),
-        //     SizedBox(width: size.width * 0.015),
-        //     Text(
-        //       localizations.usersCountText(demo.membersCount),
-        //       style: AppTextStyles.label.copyWith(
-        //         color: AppColors.textSecondary,
-        //         fontSize: 12 * textScale,
-        //       ),
-        //     ),
-        //   ],
-        // ),
         if (demo.isOwner) ...[
-          SizedBox(height: size.height * 0.015),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: size.width * 0.02,
-                  vertical: size.height * 0.004,
+          SizedBox(height: size.height * 0.01),
+          Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: size.width * 0.02,
+              vertical: size.height * 0.005,
+            ),
+            decoration: BoxDecoration(
+              color: AppColors.primary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.workspace_premium_rounded,
+                  color: AppColors.primary,
+                  size: 11 * textScale,
                 ),
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
+                SizedBox(width: size.width * 0.008),
+                Text(
                   demo.plan ?? 'Starter',
                   style: AppTextStyles.label.copyWith(
                     color: AppColors.primary,
@@ -84,46 +92,38 @@ class DemoSidePanel extends StatelessWidget {
                     fontSize: 10 * textScale,
                   ),
                 ),
+              ],
+            ),
+          ),
+          if (!isRestricted && isFreePlan) ...[
+            SizedBox(height: size.height * 0.006),
+            Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: size.width * 0.018,
+                vertical: size.height * 0.004,
               ),
-              if (isRestricted) ...[
-                SizedBox(width: size.width * 0.02),
-                InkWell(
-                  onTap: () {},
-                  borderRadius: BorderRadius.circular(8),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: size.width * 0.02,
-                      vertical: size.height * 0.004,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.red.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: Colors.red.withOpacity(0.5),
-                        width: 1,
-                      ),
-                    ),
-                    child: Text(
-                      localizations.upgradePlan,
-                      style: AppTextStyles.label.copyWith(
-                        color: Colors.red,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 10 * textScale,
-                      ),
+              decoration: BoxDecoration(
+                color: Colors.orange.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.access_time_rounded,
+                    color: Colors.orange.shade700,
+                    size: 10 * textScale,
+                  ),
+                  SizedBox(width: size.width * 0.006),
+                  Text(
+                    localizations.daysLeftText(daysLeft),
+                    style: AppTextStyles.label.copyWith(
+                      color: Colors.orange.shade700,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 9 * textScale,
                     ),
                   ),
-                ),
-              ],
-            ],
-          ),
-          if (!isRestricted) ...[
-            SizedBox(height: size.height * 0.008),
-            Text(
-              localizations.daysLeftText(daysLeft),
-              style: AppTextStyles.label.copyWith(
-                color: Colors.orange,
-                fontWeight: FontWeight.w600,
-                fontSize: 10 * textScale,
+                ],
               ),
             ),
           ],

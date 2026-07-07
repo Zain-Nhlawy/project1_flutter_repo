@@ -10,7 +10,7 @@ class GetDemosLoaded extends DemoState {
   final List<DemoEntity> demos;
 
   GetDemosLoaded(this.demos);
-}
+} 
 
 class GetDemosError extends DemoState {
   final String message;

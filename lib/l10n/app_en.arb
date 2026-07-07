@@ -98,6 +98,15 @@
   "demoDescriptionLabel": "Description",
   "selectedPlanLabel": "Selected Plan",
   "freeTrialLabel": "Includes 14-Day Free Trial",
+  "continueToPayment": "Continue to Payment",
+"paymentSuccessful": "Payment Successful!",
+  "paymentSuccessMessage": "Your payment has been processed successfully. Your demo is now ready to use.",
+  "backToHome": "Back to Home",
+    "processingPayment":"processing payment",
+"limitReachedMessage":"Limit Reached",
+"limitReachedSnackBar":"This plan limit has been reached , please upgrade the plan",
+"addSection":"Add",
+"noSectionFound":"No section found",
 
 
 

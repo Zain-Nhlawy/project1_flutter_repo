@@ -204,6 +204,35 @@ class AppLocalizationsEn extends AppLocalizations {
   String get freeTrialLabel => 'Includes 14-Day Free Trial';
 
   @override
+  String get continueToPayment => 'Continue to Payment';
+
+  @override
+  String get paymentSuccessful => 'Payment Successful!';
+
+  @override
+  String get paymentSuccessMessage =>
+      'Your payment has been processed successfully. Your demo is now ready to use.';
+
+  @override
+  String get backToHome => 'Back to Home';
+
+  @override
+  String get processingPayment => 'processing payment';
+
+  @override
+  String get limitReachedMessage => 'Limit Reached';
+
+  @override
+  String get limitReachedSnackBar =>
+      'This plan limit has been reached , please upgrade the plan';
+
+  @override
+  String get addSection => 'Add';
+
+  @override
+  String get noSectionFound => 'No section found';
+
+  @override
   String get pleaseEnterEmail => 'Please enter your email address';
 
   @override
@@ -554,9 +583,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get coursesInProgress => 'Courses in Progress';
-
-  @override
-  String get addSection => 'Add Section';
 
   @override
   String get noSectionsYet => 'No sections yet';

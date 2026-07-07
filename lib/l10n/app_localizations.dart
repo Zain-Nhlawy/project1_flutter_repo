@@ -464,6 +464,60 @@ abstract class AppLocalizations {
   /// **'Includes 14-Day Free Trial'**
   String get freeTrialLabel;
 
+  /// No description provided for @continueToPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to Payment'**
+  String get continueToPayment;
+
+  /// No description provided for @paymentSuccessful.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Successful!'**
+  String get paymentSuccessful;
+
+  /// No description provided for @paymentSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your payment has been processed successfully. Your demo is now ready to use.'**
+  String get paymentSuccessMessage;
+
+  /// No description provided for @backToHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Home'**
+  String get backToHome;
+
+  /// No description provided for @processingPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'processing payment'**
+  String get processingPayment;
+
+  /// No description provided for @limitReachedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Limit Reached'**
+  String get limitReachedMessage;
+
+  /// No description provided for @limitReachedSnackBar.
+  ///
+  /// In en, this message translates to:
+  /// **'This plan limit has been reached , please upgrade the plan'**
+  String get limitReachedSnackBar;
+
+  /// No description provided for @addSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get addSection;
+
+  /// No description provided for @noSectionFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No section found'**
+  String get noSectionFound;
+
   /// No description provided for @pleaseEnterEmail.
   ///
   /// In en, this message translates to:
@@ -1147,12 +1201,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Courses in Progress'**
   String get coursesInProgress;
-
-  /// No description provided for @addSection.
-  ///
-  /// In en, this message translates to:
-  /// **'Add Section'**
-  String get addSection;
 
   /// No description provided for @noSectionsYet.
   ///

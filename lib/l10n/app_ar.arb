@@ -74,7 +74,15 @@
   "demoDescriptionLabel": "الوصف",
   "selectedPlanLabel": "الخطة المحددة",
   "freeTrialLabel": "يتضمن تجربة مجانية لمدة 14 يوماً",
-
+  "continueToPayment": "المتابعة للدفع",
+  "paymentSuccessful": "تم الدفع بنجاح!",
+  "paymentSuccessMessage": "تمت معالجة الدفع الخاص بك بنجاح. الديمو جاهز الآن للاستخدام.",
+  "backToHome": "العودة للرئيسية",
+  "processingPayment":"جاري تأكيد الدفع ...",
+"limitReachedMessage":"تم تجاوز الحد",
+"limitReachedSnackBar":"تم تجاوز حد الخطة , يرجى الترقية للحصول على المزيد ",
+"addSection":"اضافة",
+"noSectionFound":"لا يوجد اقسام متاحة",
 
 
 

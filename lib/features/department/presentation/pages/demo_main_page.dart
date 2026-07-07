@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/demo/domain/entities/demo_entity.dart';
 import 'package:project1/features/department/presentation/cubit/department_cubit.dart';
 import 'package:project1/features/department/presentation/cubit/department_state.dart';
@@ -10,8 +10,6 @@ import 'package:project1/l10n/app_localizations.dart';
 import '../widgets/header_widget.dart';
 import '../widgets/toggle_switch_widget.dart';
 import '../widgets/item_card_widget.dart';
-
-final GetIt sl = GetIt.instance;
 
 class DemoMainPage extends StatelessWidget {
   final DemoEntity demo;
@@ -28,7 +26,7 @@ class DemoMainPage extends StatelessWidget {
         BlocProvider(create: (context) => DemoMainPageSwitchCubit()),
         BlocProvider(
           create: (context) =>
-              sl<DepartmentCubit>()..fetchDepartments(demo.id!),
+              getIt<DepartmentCubit>()..fetchDepartments(demo.id!),
         ),
       ],
       child: Scaffold(
@@ -83,7 +81,12 @@ class DemoMainPage extends StatelessWidget {
                     child: isSectionsActive
                         ? SizedBox(
                             key: const ValueKey('sections_tab'),
-                            child: _buildSectionsContent(size, theme, l10n),
+                            child: _buildSectionsContent(
+                              size,
+                              theme,
+                              l10n,
+                              demo,
+                            ),
                           )
                         : SizedBox(
                             key: const ValueKey('groups_tab'),
@@ -103,6 +106,7 @@ class DemoMainPage extends StatelessWidget {
     Size size,
     ThemeData theme,
     AppLocalizations l10n,
+    DemoEntity demo,
   ) {
     return BlocBuilder<DepartmentCubit, DepartmentState>(
       builder: (context, state) {
@@ -124,40 +128,103 @@ class DemoMainPage extends StatelessWidget {
         if (state is DepartmentLoaded) {
           final departments = state.departments;
 
-          if (departments.isEmpty) {
-            return Center(
-              child: Text(
-                'No sections found',
-                style: AppTextStyles.bodyLarge.copyWith(
-                  color: theme.colorScheme.onSurface,
-                ),
-              ),
-            );
-          }
+          final currentPlan = demo.plan?.toLowerCase() ?? 'starter';
+          final isFreePlan = currentPlan == 'starter' || currentPlan == 'free';
+
+          final isLimitReached = isFreePlan && departments.length >= 0;
 
           return ListView(
             padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
             children: [
-              Text(
-                l10n.yourSections,
-                style: AppTextStyles.titleLarge.copyWith(
-                  color: theme.colorScheme.onSurface,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    l10n.yourSections,
+                    style: AppTextStyles.titleLarge.copyWith(
+                      color: theme.colorScheme.onSurface,
+                    ),
+                  ),
+                  if (demo.isOwner)
+                    InkWell(
+                      onTap: isLimitReached
+                          ? () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(l10n.limitReachedSnackBar),
+                                  backgroundColor: theme.colorScheme.error,
+                                ),
+                              );
+                            }
+                          : () {},
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: size.width * 0.03,
+                          vertical: size.height * 0.008,
+                        ),
+                        decoration: BoxDecoration(
+                          color: isLimitReached
+                              ? Colors.grey.withOpacity(0.1)
+                              : theme.colorScheme.primary.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              isLimitReached ? Icons.lock_outline : Icons.add,
+                              color: isLimitReached
+                                  ? Colors.grey
+                                  : theme.colorScheme.primary,
+                              size: 18,
+                            ),
+                            SizedBox(width: size.width * 0.01),
+                            Text(
+                              isLimitReached
+                                  ? l10n.limitReachedMessage
+                                  : l10n.addSection,
+                              style: AppTextStyles.label.copyWith(
+                                color: isLimitReached
+                                    ? Colors.grey
+                                    : theme.colorScheme.primary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                ],
               ),
               SizedBox(height: size.height * 0.02),
-              ...departments.map(
-                (department) => ItemCardWidget(
-                  departmentEntity: department,
-                  icon: Icons.layers,
+
+              if (departments.isEmpty)
+                Padding(
+                  padding: EdgeInsets.only(top: size.height * 0.1),
+                  child: Center(
+                    child: Text(
+                      l10n.noSectionFound,
+                      style: AppTextStyles.bodyLarge.copyWith(
+                        color: theme.colorScheme.onSurface.withOpacity(0.6),
+                      ),
+                    ),
+                  ),
+                )
+              else
+                ...departments.map(
+                  (department) => ItemCardWidget(
+                    departmentEntity: department,
+                    icon: Icons.layers,
+                  ),
                 ),
-              ),
             ],
           );
         }
 
         return Center(
           child: Text(
-            'Something went wrong',
+            l10n.somethingWentWrong,
             style: AppTextStyles.bodyLarge.copyWith(
               color: theme.colorScheme.error,
             ),
