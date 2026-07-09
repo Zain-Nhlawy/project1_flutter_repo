@@ -672,4 +672,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noTagsAvailable => 'No tags available';
+
+  @override
+  String get noCoursesFound => 'No courses found';
+
+  @override
+  String get free => 'Free';
 }

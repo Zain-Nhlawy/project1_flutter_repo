@@ -670,4 +670,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get noTagsAvailable => 'لا توجد تاغات متاحة';
+
+  @override
+  String get noCoursesFound => 'لا يوجد كورسات';
+
+  @override
+  String get free => 'مجاني';
 }

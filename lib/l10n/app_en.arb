@@ -277,5 +277,7 @@
 "delete": "Delete",
 "lessonManagement": "Lesson Management",
 "editLesson": "Edit Lesson",
-"noTagsAvailable": "No tags available"
+"noTagsAvailable": "No tags available",
+"noCoursesFound": "No courses found",
+"free": "Free"
 }

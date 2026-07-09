@@ -1,43 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/features/course/presentation/widgets/custom_button.dart';
+import 'package:project1/l10n/app_localizations.dart';
 
 class CourseCard extends StatelessWidget {
+  final String id;
   final String title;
   final String companyName;
   final String imageUrl;
-  final String price;
+  final double? price;
   final String description;
   final List<String> tags;
+  final String? visibility;
   final VoidCallback? onTap;
 
   const CourseCard({
     super.key,
+    required this.id,
     required this.title,
     required this.companyName,
     required this.imageUrl,
     required this.price,
     required this.description,
     this.tags = const [],
+    this.visibility,
     this.onTap,
   });
 
-  static const List<Color> _tagColors = [
-    Color(0xFFE3F2FD),
-    Color(0xFFE8F5E9),
-    Color(0xFFFFF3E0),
-    Color(0xFFF3E5F5),
-    Color(0xFFFFEBEE),
-    Color(0xFFE0F7FA),
-    Color(0xFFFFFDE7),
-    Color(0xFFEDE7F6),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     final displayDescription = description.length > 80
         ? "${description.substring(0, 80)}..."
         : description;
+
+    final bool isFree = price == null || price == 0;
+    final String displayPrice = isFree ? localizations.free : '\$${price!.toStringAsFixed(2)}';
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
@@ -59,18 +57,36 @@ class CourseCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(20)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(20),
+              ),
               child: SizedBox(
                 height: 170,
                 width: double.infinity,
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
-                    Image.asset(
-                      imageUrl,
-                      fit: BoxFit.cover,
-                    ),
+                    imageUrl.isNotEmpty
+                        ? Image.network(
+                            imageUrl,
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, __, ___) {
+                              return const Center(
+                                child: Icon(
+                                  Icons.image_not_supported_outlined,
+                                  size: 50,
+                                  color: AppColors.textSecondary,
+                                ),
+                              );
+                            },
+                          )
+                        : const Center(
+                            child: Icon(
+                              Icons.image_outlined,
+                              size: 50,
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
                     Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
@@ -92,11 +108,15 @@ class CourseCard extends StatelessWidget {
                           vertical: 7,
                         ),
                         decoration: BoxDecoration(
-                          gradient: AppColors.buttonGradient,
+                          gradient: isFree
+                              ? LinearGradient(
+                                  colors: [Colors.green.shade500, Colors.green.shade700],
+                                )
+                              : AppColors.buttonGradient,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
-                          price,
+                          displayPrice,
                           style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -105,6 +125,41 @@ class CourseCard extends StatelessWidget {
                         ),
                       ),
                     ),
+                    if (visibility != null)
+                      Positioned(
+                        top: 12,
+                        left: 12,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(.9),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                visibility == "PUBLIC"
+                                    ? Icons.public
+                                    : Icons.lock_outline,
+                                size: 14,
+                                color: AppColors.primary,
+                              ),
+                              const SizedBox(width: 5),
+                              Text(
+                                visibility!,
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ),
@@ -166,26 +221,29 @@ class CourseCard extends StatelessWidget {
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
-                      children: List.generate(
-                        tags.length,
-                        (index) => Container(
+                      children: tags.map((tag) {
+                        return Container(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 5,
+                            horizontal: 12,
+                            vertical: 6,
                           ),
                           decoration: BoxDecoration(
-                            color: _tagColors[index % _tagColors.length],
+                            border: Border.all(
+                              color: AppColors.primary,
+                              width: 1,
+                            ),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
-                            tags[index],
+                            tag,
                             style: const TextStyle(
-                              fontSize: 10,
+                              fontSize: 11,
                               fontWeight: FontWeight.w600,
+                              color: AppColors.primary,
                             ),
                           ),
-                        ),
-                      ),
+                        );
+                      }).toList(),
                     ),
                   ],
                   const SizedBox(height: 18),

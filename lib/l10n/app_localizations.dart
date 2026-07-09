@@ -1375,6 +1375,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No tags available'**
   String get noTagsAvailable;
+
+  /// No description provided for @noCoursesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No courses found'**
+  String get noCoursesFound;
+
+  /// No description provided for @free.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get free;
 }
 
 class _AppLocalizationsDelegate

@@ -8,25 +8,35 @@ class CourseEntity {
   final double? price;
   final String imagePath;
 
+  final String? demoId;
+
+  final List<String> tagIds;
+  final List<String> tags;
+
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  final DemoEntity demo;
+  final DemoEntity? demo;
 
+  final int sectionsCount;
   final int totalLessons;
-  final String duration;
+  final int totalDuration;
 
   CourseEntity({
     required this.id,
     required this.title,
     required this.description,
     required this.visibility,
-    required this.price,
+    this.price,
     required this.imagePath,
+    this.demoId,
+    this.tagIds = const [],
+    this.tags = const [],
+    this.demo,
     required this.createdAt,
     required this.updatedAt,
-    required this.demo,
-    required this.totalLessons,
-    required this.duration,
+    this.sectionsCount = 0,
+    this.totalLessons = 0,
+    this.totalDuration = 0,
   });
 }

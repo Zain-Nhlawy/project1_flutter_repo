@@ -249,5 +249,7 @@
 "delete": "حذف",
 "lessonManagement": "إدارة الدرس",
 "editLesson": "تعديل الدرس",
-"noTagsAvailable": "لا توجد تاغات متاحة"
+"noTagsAvailable": "لا توجد تاغات متاحة",
+"noCoursesFound": "لا يوجد كورسات",
+"free": "مجاني"
 }

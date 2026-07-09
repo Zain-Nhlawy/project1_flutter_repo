@@ -8,16 +8,16 @@ class DemoEntity {
   final String? plan;
   final int membersCount;
   final DateTime? createdAt;
-  
+
   DemoEntity({
     this.id,
-    required this.name,
-    required this.description,
+    this.name = '',
+    this.description = '',
     this.imagePath,
-    required this.ownerName,
-    required this.isOwner,
+    this.ownerName = '',
+    this.isOwner = false,
     this.plan,
-    required this.membersCount,
+    this.membersCount = 0,
     this.createdAt,
   });
 }
