@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/features/course/presentation/widgets/course_tags_section.dart';
 import 'package:project1/features/course/upload_photo/presentation/cubit/upload_photo_course_cubit.dart';
 import 'package:project1/features/course/domain/entities/course_entity.dart';
 import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
@@ -10,7 +11,6 @@ import 'package:project1/features/course/presentation/cubit/course_state.dart';
 import 'package:project1/features/course/presentation/widgets/course_image_picker.dart';
 import 'package:project1/features/course/presentation/widgets/custom_button.dart';
 import 'package:project1/features/course/presentation/widgets/custom_text_field.dart';
-import 'package:project1/features/course/presentation/widgets/tags_selector.dart';
 import 'package:project1/features/course/presentation/widgets/visibility_dropdown.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
@@ -139,7 +139,7 @@ Widget build(BuildContext context) {
             backgroundColor: Colors.green,
           ),
         );
-        Navigator.pop(context);
+        Navigator.pop(context, true);
       }
 
       if (state is CourseCreateError) {
@@ -206,27 +206,11 @@ Widget build(BuildContext context) {
             ),
 
             const SizedBox(height: 16),
-            Text(localizations.tags, style: const TextStyle(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 10),
 
-            BlocBuilder<CourseCubit, CourseState>(
-              builder: (context, state) {
-                if (state is CourseTagsLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (state is CourseTagsLoaded) {
-                  return TagsSelector(
-                    availableTags: state.tags,
-                    selectedTagIds: selectedTagIds,
-                    onToggle: toggleTag,
-                    isLoading: false,
-                  );
-                }
-                if (state is CourseTagsError) {
-                  return Text(state.message, style: const TextStyle(color: Colors.red));
-                }
-                return const SizedBox();
-              },
+            CourseTagsSection(
+              selectedTagIds: selectedTagIds,
+              onToggle: toggleTag,
+              enabled: true,
             ),
 
             const SizedBox(height: 24),

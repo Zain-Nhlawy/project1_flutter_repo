@@ -676,4 +676,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get free => 'مجاني';
+
+  @override
+  String get deleteCourseTitle => 'حذف الكورس';
+
+  @override
+  String get deleteCourseConfirmation => 'هل أنت متأكد من حذف هذا الكورس؟';
+
+  @override
+  String get failedToUploadImage => 'فشل رفع الصورة';
 }

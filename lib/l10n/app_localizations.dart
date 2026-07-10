@@ -1387,6 +1387,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Free'**
   String get free;
+
+  /// No description provided for @deleteCourseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Course'**
+  String get deleteCourseTitle;
+
+  /// No description provided for @deleteCourseConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this course?'**
+  String get deleteCourseConfirmation;
+
+  /// No description provided for @failedToUploadImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to upload image'**
+  String get failedToUploadImage;
 }
 
 class _AppLocalizationsDelegate

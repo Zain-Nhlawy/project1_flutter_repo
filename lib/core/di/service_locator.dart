@@ -31,8 +31,10 @@ import 'package:project1/features/course/data/data_sources/course_remote_datasou
 import 'package:project1/features/course/data/repository/course_repository_impl.dart';
 import 'package:project1/features/course/domain/repository/course_repository.dart';
 import 'package:project1/features/course/domain/use_case/create_course_usecase.dart';
+import 'package:project1/features/course/domain/use_case/delete_course_usecase.dart';
 import 'package:project1/features/course/domain/use_case/get_demo_courses_usecase.dart';
 import 'package:project1/features/course/domain/use_case/get_tags_usecase.dart';
+import 'package:project1/features/course/domain/use_case/update_course_usecase.dart';
 import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
 import 'package:project1/features/course/upload_photo/data/data_sources/upload_photo_course_remote_datasource.dart';
 import 'package:project1/features/course/upload_photo/data/repository/upload_photo_course_repositpry_impl.dart';
@@ -328,6 +330,14 @@ getIt.registerLazySingleton<GetDemoCoursesUseCase>(
     getIt<CourseRepository>(),
   ),
 );
+getIt.registerLazySingleton<UpdateCourseUseCase>(
+  () => UpdateCourseUseCase(
+    getIt<CourseRepository>(),
+  ),
+);
+getIt.registerLazySingleton(
+  () => DeleteCourseUseCase(getIt()),
+);
 
 
 // cubit
@@ -341,6 +351,8 @@ getIt.registerFactory<CourseCubit>(
     getTagsUseCase: getIt<GetTagsUseCase>(),
     createCourseUseCase: getIt<CreateCourseUseCase>(),
     getDemoCoursesUseCase: getIt<GetDemoCoursesUseCase>(),
+    updateCourseUseCase: getIt<UpdateCourseUseCase>(),
+    deleteCourseUseCase: getIt(),
   ),
 );
 

@@ -50,3 +50,27 @@ class CourseError extends CourseState {
 
   CourseError(this.message);
 }
+
+class CourseUpdating extends CourseState {}
+
+class CourseUpdated extends CourseState {
+  final CourseEntity course;
+
+  CourseUpdated(this.course);
+}
+
+class CourseUpdateError extends CourseState {
+  final String message;
+
+  CourseUpdateError(this.message);
+}
+
+class CourseDeleting extends CourseState {}
+
+class CourseDeleted extends CourseState {}
+
+class CourseDeleteError extends CourseState {
+  final String message;
+
+  CourseDeleteError(this.message);
+}

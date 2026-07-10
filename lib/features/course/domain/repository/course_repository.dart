@@ -5,4 +5,9 @@ abstract class CourseRepository {
   Future<List<TagEntity>> getTags();
   Future<CourseEntity> createCourse(CourseEntity course);
   Future<List<CourseEntity>> getDemoCourses(String demoId);
+  Future<CourseEntity> updateCourse(
+  String courseId,
+  CourseEntity course,
+);
+Future<void> deleteCourse(String courseId);
 }

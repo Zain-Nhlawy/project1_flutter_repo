@@ -15,29 +15,61 @@ class CourseRepositoryImpl implements CourseRepository {
   }
 
   @override
-Future<CourseEntity> createCourse(CourseEntity course) async {
+  Future<CourseEntity> createCourse(CourseEntity course) async {
 
-  final model = CourseModel(
-  id: course.id,
-  title: course.title,
-  description: course.description,
-  visibility: course.visibility,
-  price: course.price,
-  imagePath: course.imagePath,
-  demoId: course.demoId,
-  tagIds: course.tagIds,
-  demo: course.demo,
-  createdAt: course.createdAt,
-  updatedAt: course.updatedAt,
-  sectionsCount: course.sectionsCount,
-  totalLessons: course.totalLessons,
-  totalDuration: course.totalDuration,
-);
-  return await remoteDataSource.createCourse(model);
-}
+    final model = CourseModel(
+    id: course.id,
+    title: course.title,
+    description: course.description,
+    visibility: course.visibility,
+    price: course.price,
+    imagePath: course.imagePath,
+    demoId: course.demoId,
+    tagIds: course.tagIds,
+    demo: course.demo,
+    createdAt: course.createdAt,
+    updatedAt: course.updatedAt,
+    sectionsCount: course.sectionsCount,
+    totalLessons: course.totalLessons,
+    totalDuration: course.totalDuration,
+  );
+    return await remoteDataSource.createCourse(model);
+  }
 
-@override
-Future<List<CourseEntity>> getDemoCourses(String demoId) async {
-  return await remoteDataSource.getDemoCourses(demoId);
-}
+    @override
+    Future<List<CourseEntity>> getDemoCourses(String demoId) async {
+      return await remoteDataSource.getDemoCourses(demoId);
+    }
+
+    @override
+  Future<CourseEntity> updateCourse(
+    String courseId,
+    CourseEntity course,
+  ) async {
+    final model = CourseModel(
+      id: course.id,
+      title: course.title,
+      description: course.description,
+      visibility: course.visibility,
+      price: course.price,
+      imagePath: course.imagePath,
+      demoId: course.demoId,
+      tagIds: course.tagIds,
+      demo: course.demo,
+      createdAt: course.createdAt,
+      updatedAt: course.updatedAt,
+      sectionsCount: course.sectionsCount,
+      totalLessons: course.totalLessons,
+      totalDuration: course.totalDuration,
+    );
+    return await remoteDataSource.updateCourse(
+      courseId: courseId,
+      course: model,
+    );
+  }
+
+  @override
+  Future<void> deleteCourse(String courseId) async {
+    await remoteDataSource.deleteCourse(courseId);
+  }
 }

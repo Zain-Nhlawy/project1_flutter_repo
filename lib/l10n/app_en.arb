@@ -279,5 +279,8 @@
 "editLesson": "Edit Lesson",
 "noTagsAvailable": "No tags available",
 "noCoursesFound": "No courses found",
-"free": "Free"
+"free": "Free",
+"deleteCourseTitle": "Delete Course",
+"deleteCourseConfirmation": "Are you sure you want to delete this course?",
+"failedToUploadImage": "Failed to upload image"
 }

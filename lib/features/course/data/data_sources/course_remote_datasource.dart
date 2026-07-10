@@ -23,26 +23,50 @@ class CourseRemoteDataSource {
   );
 
   return CourseModel.fromJson(res.data['data']);
-}
+  } 
 
 
-Future<List<CourseModel>> getDemoCourses(String demoId) async {
-  final res = await dioClient.dio.get(
-    '/demos/$demoId/assets/cursor',
-  );
-  final List<dynamic>? data = res.data?['data'];
-  if (data == null) {
-    throw Exception('Failed to load demo courses');
+  Future<List<CourseModel>> getDemoCourses(String demoId) async {
+    final res = await dioClient.dio.get(
+      '/demos/$demoId/assets/cursor',
+    );
+    final List<dynamic>? data = res.data?['data'];
+    if (data == null) {
+      throw Exception('Failed to load demo courses');
+    }
+    return data
+        .map((asset) {
+          final courseJson = asset['course'];
+          if (courseJson == null) {
+            return null;
+          }
+          return CourseModel.fromJson(courseJson);
+        })
+        .whereType<CourseModel>()
+        .toList();
   }
-  return data
-      .map((asset) {
-        final courseJson = asset['course'];
-        if (courseJson == null) {
-          return null;
-        }
-        return CourseModel.fromJson(courseJson);
-      })
-      .whereType<CourseModel>()
-      .toList();
-}
+
+  Future<CourseModel> updateCourse({
+    required String courseId,
+    required CourseModel course,
+  }) async {
+    final res = await dioClient.dio.patch(
+      '/courses/$courseId',
+      data: {
+        "title": course.title,
+        "description": course.description,
+        "imagePath": course.imagePath,
+        "visibility": course.visibility,
+        "price": course.price,
+        "tagIds": course.tagIds,
+      },
+    );
+    return CourseModel.fromJson(res.data['data']);
+  }
+
+  Future<void> deleteCourse(String courseId) async {
+    await dioClient.dio.delete(
+      '/courses/$courseId',
+    );
+  }
 }

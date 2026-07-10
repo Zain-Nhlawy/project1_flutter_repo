@@ -251,5 +251,8 @@
 "editLesson": "تعديل الدرس",
 "noTagsAvailable": "لا توجد تاغات متاحة",
 "noCoursesFound": "لا يوجد كورسات",
-"free": "مجاني"
+"free": "مجاني",
+"deleteCourseTitle": "حذف الكورس",
+"deleteCourseConfirmation": "هل أنت متأكد من حذف هذا الكورس؟",
+"failedToUploadImage": "فشل رفع الصورة"
 }
