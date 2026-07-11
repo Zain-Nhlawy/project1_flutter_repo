@@ -232,6 +232,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get noSectionFound => 'لا يوجد اقسام متاحة';
 
   @override
+  String get usersTitle => 'المستخدمون';
+
+  @override
+  String get usersEmptyTitle => 'لا يوجد مستخدمون بعد';
+
+  @override
+  String get usersEmptySubtitle => 'سيظهر المستخدمون هنا بمجرد إضافتهم.';
+
+  @override
+  String get usersErrorGeneric => 'حدث خطأ أثناء تحميل المستخدمين.';
+
+  @override
   String get pleaseEnterEmail => 'يرجى إدخال عنوان بريدك الإلكتروني';
 
   @override
