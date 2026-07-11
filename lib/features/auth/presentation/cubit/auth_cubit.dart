@@ -1,6 +1,7 @@
 import 'dart:io';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:project1/core/errors/failures.dart';
 import 'package:project1/features/auth/domain/use_case/change_password_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/forgot_password_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/generate2FA_usecase.dart';
@@ -13,7 +14,6 @@ import 'package:project1/features/auth/domain/use_case/turnOff2FA_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/turnOn2FA_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/verify2FA_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/verify_email_usecase.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:project1/features/auth/domain/use_case/google_login_usecase.dart';
 import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:project1/features/auth/upload_photo/domain/use_case/upload_photo_usecase.dart';
@@ -31,11 +31,12 @@ class AuthCubit extends Cubit<AuthState> {
   final ResendVerificationEmailUseCase resendVerificationEmailUseCase;
   final UserCubit userCubit;
   final UploadPhotoUseCase uploadPhotoUseCase;
-  File? imageFile;
   final Verify2FAUseCase verify2FAUseCase;
   final Generate2FAUseCase generate2FAUseCase;
   final TurnOn2FAUseCase turnOn2FAUseCase;
   final TurnOff2FAUseCase turnOff2FAUseCase;
+
+  File? imageFile;
 
   AuthCubit({
     required this.registerUseCase,
@@ -53,202 +54,210 @@ class AuthCubit extends Cubit<AuthState> {
     required this.generate2FAUseCase,
     required this.turnOn2FAUseCase,
     required this.turnOff2FAUseCase,
-
   }) : super(AuthInitial());
+
+
+  void _emitFailure(Failure failure) {
+  emit(
+    AuthError(
+      failure.errors ?? [failure.message],
+    ),
+  );
+}
 
   Future<void> register(Map<String, dynamic> body) async {
   emit(AuthLoading());
-  try {
-    String imageUrl = "";
-    if (imageFile != null) {
-      imageUrl = await uploadPhotoUseCase(imageFile!);
-    }
-    final updatedBody = {
-      ...body,
-      "imagePath": imageUrl,
-    };
-    final res = await registerUseCase(updatedBody);
 
-    emit(RegisterSuccess(res));
-  } catch (e) {
-    emit(AuthError(e.toString()));
+  String imageUrl = "";
+
+  if (imageFile != null) {
+    final uploadResult = await uploadPhotoUseCase(imageFile!);
+
+    final shouldStop = uploadResult.fold(
+      (failure) {
+        _emitFailure(failure);
+        return true;
+      },
+      (url) {
+        imageUrl = url;
+        return false;
+      },
+    );
+
+    if (shouldStop) return;
   }
-}
 
-  Future<void> login(Map<String, dynamic> body) async {
-  emit(AuthLoading());
-  try {
-    final res = await loginUseCase(body);
-    if (res.requires2FA) {
-      emit(LoginRequires2FA(res.twoFactorToken!));
-      return;
-    }
-    await userCubit.getMe();
-    emit(LoginSuccess(res.user));
-  } catch (e) {
-    emit(AuthError(e.toString()));
-  }
-}
+  final updatedBody = {
+    ...body,
+    "imagePath": imageUrl,
+  };
 
-final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
-Future<void> loginWithGoogle() async {
-  emit(AuthLoading());
-  await GoogleSignIn.instance.initialize(
-    serverClientId: "813919457973-59rpuvstsvj6d9el5nlu06q1kr5dps7i.apps.googleusercontent.com",
+  final result = await registerUseCase(updatedBody);
+
+  result.fold(
+    (failure) => _emitFailure(failure),
+    (message) => emit(RegisterSuccess(message)),
   );
-  try {
-    final GoogleSignInAccount googleUser =
-        await _googleSignIn.authenticate();
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
-    final String? idToken = googleAuth.idToken;
-    if (idToken == null) {
-      emit(const AuthError('Google id token not found'));
+}
+
+Future<void> login(Map<String,dynamic> body) async{
+  emit(AuthLoading());
+  final result=await loginUseCase(body);
+  result.fold(
+    (failure)=>_emitFailure(failure),
+    (res)async{
+      if(res.requires2FA){
+        emit(LoginRequires2FA(res.twoFactorToken!));
+        return;
+      }
+      await userCubit.getMe();
+      emit(LoginSuccess(res.user));
+    },
+  );
+}
+
+Future<void> loginWithGoogle() async{
+  emit(AuthLoading());
+  try{
+    await GoogleSignIn.instance.initialize(
+      serverClientId:"813919457973-59rpuvstsvj6d9el5nlu06q1kr5dps7i.apps.googleusercontent.com",
+    );
+    final GoogleSignInAccount googleUser=await GoogleSignIn.instance.authenticate();
+    final GoogleSignInAuthentication googleAuth=await googleUser.authentication;
+    final idToken=googleAuth.idToken;
+    if(idToken==null){
+      emit(const AuthError(["Google id token not found"]));
       return;
     }
-    await googleLoginUseCase(idToken);
-    await userCubit.getMe();
-    emit(LoginSuccess(null)); 
-  } catch (e) {
-    emit(AuthError(e.toString()));
+    final result=await googleLoginUseCase(idToken);
+    result.fold(
+      (failure)=>_emitFailure(failure),
+      (res)async{
+        await userCubit.getMe();
+        emit(LoginSuccess(res.user));
+      },
+    );
+  }catch(e){
+    emit(AuthError([e.toString()]));
   }
 }
 
-  Future<void> logout() async {
-    emit(AuthLoading());
-    try {
-      await logoutUseCase();
-      emit(AuthInitial());
-    } catch (e) {
-      emit(AuthError(e.toString()));
-    }
-  }
-
-  Future<void> verifyEmail(String token) async {
+Future<void> logout() async{
   emit(AuthLoading());
-
-  try {
-    final message = await verifyEmailUseCase(token);
-    emit(VerifyEmailSuccess(message));
-  } catch (e) {
-    emit(AuthError(e.toString()));
-  }
+  final result=await logoutUseCase();
+  result.fold(
+    (failure)=>_emitFailure(failure),
+    (_)=>emit(AuthInitial()),
+  );
 }
 
-Future<void> forgotPassword(Map<String, dynamic> body) async {
-    emit(AuthLoading());
-    try {
-      final message = await forgotPasswordUseCase(body);
-      emit(ForgotPasswordSuccess(message));
-    } catch (e) {
-      emit(AuthError(e.toString()));
-    }
-  }
+Future<void> verifyEmail(String token) async{
+  emit(AuthLoading());
+  final result=await verifyEmailUseCase(token);
+  result.fold(
+    (failure)=>_emitFailure(failure),
+    (message)=>emit(VerifyEmailSuccess(message)),
+  );
+}
 
-  Future<void> resetPassword(Map<String, dynamic> body) async {
-    emit(AuthLoading());
-    try {
-      final message = await resetPasswordUseCase(body);
-      emit(ResetPasswordSuccess(message));
-    } catch (e) {
-      emit(AuthError(e.toString()));
-    }
-  }
+Future<void> forgotPassword(Map<String,dynamic> body) async{
+  emit(AuthLoading());
+  final result=await forgotPasswordUseCase(body);
+  result.fold(
+    (failure)=>_emitFailure(failure),
+    (message)=>emit(ForgotPasswordSuccess(message)),
+  );
+}
 
-  Future<void> changePassword({
+Future<void> resetPassword(Map<String,dynamic> body) async{
+  emit(AuthLoading());
+  final result=await resetPasswordUseCase(body);
+  result.fold(
+    (failure)=>_emitFailure(failure),
+    (message)=>emit(ResetPasswordSuccess(message)),
+  );
+}
+
+Future<void> changePassword({
   required String oldPassword,
   required String newPassword,
-}) async {
+}) async{
   emit(AuthLoading());
-  try {
-    final message = await changePasswordUseCase(
-      oldPassword: oldPassword,
-      newPassword: newPassword,
-    );
-    emit(AuthChangePasswordSuccess(message));
-  } catch (e) {
-    emit(AuthError(e.toString()));
-  }
+  final result=await changePasswordUseCase(
+    oldPassword:oldPassword,
+    newPassword:newPassword,
+  );
+  result.fold(
+    (failure)=>_emitFailure(failure),
+    (message)=>emit(AuthChangePasswordSuccess(message)),
+  );
 }
 
-Future<void> resendVerificationEmail(String email) async {
+Future<void> resendVerificationEmail(String email) async{
   emit(AuthLoading());
-
-  try {
-    final message =
-        await resendVerificationEmailUseCase(email);
-
-    emit(ResendVerificationEmailSuccess(message));
-  } catch (e) {
-    emit(AuthError(e.toString()));
-  }
+  final result=await resendVerificationEmailUseCase(email);
+  result.fold(
+    (failure)=>_emitFailure(failure),
+    (message)=>emit(ResendVerificationEmailSuccess(message)),
+  );
 }
 
-void setImage(File file) {
-  imageFile = file;
+void setImage(File file){
+  imageFile=file;
 }
 
 Future<void> verify2FA({
   required String twoFactorToken,
   required String tfaCode,
-}) async {
+}) async{
   emit(AuthLoading());
-  try {
-    final res = await verify2FAUseCase(
-      twoFactorToken: twoFactorToken,
-      tfaCode: tfaCode,
-    );
-    await userCubit.getMe();
-    emit(LoginSuccess(res.user));
-  } catch (e) {
-    emit(AuthError(e.toString()));
-  }
+  final result=await verify2FAUseCase(
+    twoFactorToken:twoFactorToken,
+    tfaCode:tfaCode,
+  );
+  result.fold(
+    (failure)=>_emitFailure(failure),
+    (res)async{
+      await userCubit.getMe();
+      emit(LoginSuccess(res.user));
+    },
+  );
 }
 
 Future<void> generate2FA({
   required String email,
   required String password,
-}) async {
+}) async{
   emit(AuthLoading());
-
-  try {
-    final qrCode = await generate2FAUseCase(
-  email: email,
-  password: password,
-);
-
-emit(TwoFAGenerated(qrCode));
-  } catch (e) {
-    emit(AuthError(e.toString()));
-  }
+  final result=await generate2FAUseCase(
+    email:email,
+    password:password,
+  );
+  result.fold(
+    (failure)=>_emitFailure(failure),
+    (qrCode)=>emit(TwoFAGenerated(qrCode)),
+  );
 }
 
 Future<void> turnOn2FA({
   required String tfaCode,
-}) async {
+}) async{
   emit(AuthLoading());
-
-  try {
-    final message = await turnOn2FAUseCase(
-      tfaCode: tfaCode,
-    );
-
-    emit(TurnOn2FASuccess(message));
-  } catch (e) {
-    emit(AuthError(e.toString()));
-  }
+  final result=await turnOn2FAUseCase(
+    tfaCode:tfaCode,
+  );
+  result.fold(
+    (failure)=>_emitFailure(failure),
+    (message)=>emit(TurnOn2FASuccess(message)),
+  );
 }
 
-Future<void> turnOff2FA() async {
+Future<void> turnOff2FA() async{
   emit(AuthLoading());
-
-  try {
-    final message = await turnOff2FAUseCase();
-
-    emit(TurnOff2FASuccess(message));
-  } catch (e) {
-    emit(AuthError(e.toString()));
-  }
+  final result=await turnOff2FAUseCase();
+  result.fold(
+    (failure)=>_emitFailure(failure),
+    (message)=>emit(TurnOff2FASuccess(message)),
+  );
 }
-
 }

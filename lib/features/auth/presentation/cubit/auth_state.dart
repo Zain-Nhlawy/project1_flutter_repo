@@ -59,9 +59,9 @@ class AuthChangePasswordSuccess extends AuthState {
 }
 
 class AuthError extends AuthState {
-  final String message;
+  final List<String> errors;
 
-  const AuthError(this.message);
+  const AuthError(this.errors);
 }
 
 class TwoFAGenerated extends AuthState {

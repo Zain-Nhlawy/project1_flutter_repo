@@ -65,14 +65,16 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
             SnackBar(content: Text(msg)),
           );
         }
+        if (state is AuthError && state.errors.isNotEmpty) {
+          final messenger = ScaffoldMessenger.of(context);
 
-        if (state is AuthError) {
-          setState(() {
-            isLoading = false;
-          });
+          messenger.clearSnackBars();
 
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
+          messenger.showSnackBar(
+            SnackBar(
+              content: Text(state.errors.first),
+              backgroundColor: AppColors.error,
+            ),
           );
         }
       },

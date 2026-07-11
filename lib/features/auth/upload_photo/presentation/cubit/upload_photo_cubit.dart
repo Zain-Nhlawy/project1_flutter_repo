@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project1/core/errors/failures.dart';
 import 'package:project1/features/auth/upload_photo/domain/use_case/upload_photo_usecase.dart';
 import 'upload_photo_state.dart';
 
@@ -12,15 +13,25 @@ class UploadPhotoCubit extends Cubit<UploadPhotoState> {
   Future<String?> uploadPhoto(File file) async {
     emit(UploadPhotoLoading());
 
-    try {
-      final url = await uploadPhotoUseCase(file);
+    final result = await uploadPhotoUseCase(file);
 
-      emit(UploadPhotoSuccess(url));
+    return result.fold(
+      (failure) {
+        _emitFailure(failure);
+        return null;
+      },
+      (url) {
+        emit(UploadPhotoSuccess(url));
+        return url;
+      },
+    );
+  }
 
-      return url;
-    } catch (e) {
-      emit(UploadPhotoError(e.toString()));
-      return null;
-    }
+  void _emitFailure(Failure failure) {
+    emit(
+      UploadPhotoError(
+        failure.errors ?? [failure.message],
+      ),
+    );
   }
 }

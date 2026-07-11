@@ -10,12 +10,13 @@ class DioClient extends Api {
   Future<void>? _refreshFuture;
 
   DioClient({required this.storage, required this.refreshToken}) : super() {
-    dio.options.validateStatus = (status) => status != null && status < 500;
     dio.interceptors.clear();
 
     Future<void> doRefresh() async {
+      print('🟢 Starting refresh...');
   try {
     final storedRefresh = await storage.read(StorageKeys.refreshToken);
+    print('🟢 Refresh response: $storedRefresh');
     if (storedRefresh == null || storedRefresh.isEmpty) return;
 
     final data = await refreshToken();
@@ -26,6 +27,7 @@ class DioClient extends Api {
       if (newRefresh != null) await storage.write(StorageKeys.refreshToken, newRefresh);
     }
   } catch (e) {
+    print('🔴 Refresh failed: $e');
     await storage.delete(StorageKeys.token);
     await storage.delete(StorageKeys.refreshToken);
     rethrow;
@@ -88,37 +90,67 @@ class DioClient extends Api {
         },
         onError: (DioException error, handler) async {
           print('🔴 ERROR: ${error.requestOptions.path} -> status=${error.response?.statusCode}');
+
           final is401 = error.response?.statusCode == 401;
           final retried = error.requestOptions.extra['retried'] == true;
           final noAuth = error.requestOptions.extra['noAuth'] == true;
-          print('🔴 [${error.requestOptions.path}] is401=$is401, retried=$retried, noAuth=$noAuth');
-          if (!is401 || retried || noAuth) return handler.next(error);
+
+          final responseData = error.response?.data;
+
+          String? errorType;
+          if (responseData is Map<String, dynamic>) {
+            errorType = responseData['error']?.toString();
+          }
+
+          final isTokenAuthError = errorType == 'UnauthorizedException';
+
+          print(
+            '🔴 [${error.requestOptions.path}] '
+            'is401=$is401, '
+            'errorType=$errorType, '
+            'isTokenAuthError=$isTokenAuthError, '
+            'retried=$retried, '
+            'noAuth=$noAuth',
+          );
+
+          if (!is401 || !isTokenAuthError || retried || noAuth) {
+            return handler.next(error);
+          }
 
           try {
             print('🔁 [${error.requestOptions.path}] Attempting refresh + retry...');
+
             await handleRefresh();
+
             final newToken = await storage.read(StorageKeys.token);
-            if (newToken == null) {
-              print('🔴 [${error.requestOptions.path}] No new token after refresh, giving up');
+
+            if (newToken == null || newToken.isEmpty) {
+              print('🔴 No new token after refresh');
               return handler.next(error);
             }
 
             final request = error.requestOptions;
-            print('🔁 [${request.path}] Retrying with new token...');
-            final response = await dio.fetch(request.copyWith(
-              headers: {...request.headers, 'Authorization': 'Bearer $newToken'},
-              extra: {...request.extra, 'retried': true},
-            ));
-            print('✅ [${request.path}] Retry succeeded');
+
+            final response = await dio.fetch(
+              request.copyWith(
+                headers: {
+                  ...request.headers,
+                  'Authorization': 'Bearer $newToken',
+                },
+                extra: {
+                  ...request.extra,
+                  'retried': true,
+                },
+              ),
+            );
+
             return handler.resolve(response);
           } catch (e) {
-            print('❌ [${error.requestOptions.path}] Retry failed: $e');
+            print('❌ Retry failed: $e');
             return handler.next(error);
           }
-        },
+        }
       ),
     );
-
-    dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true, error: true));
   }
 }

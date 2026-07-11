@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import 'package:project1/core/errors/failures.dart';
 import 'package:project1/features/auth/domain/repository/auth_repository.dart';
 
 class Generate2FAUseCase {
@@ -5,7 +7,7 @@ class Generate2FAUseCase {
 
   Generate2FAUseCase(this.repository);
 
-  Future<String> call({
+  Future<Either<Failure, String>> call({
     required String email,
     required String password,
   }) {

@@ -72,14 +72,20 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             ),
           );
           Navigator.pop(context);
-        } else if (state is AuthError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: AppColors.error,
-            ),
-          );
-        }
+        } else if (state is AuthError && state.errors.isNotEmpty) {
+            final messenger = ScaffoldMessenger.of(context);
+
+            messenger.clearSnackBars();
+
+            messenger.showSnackBar(
+              SnackBar(
+                content: Text(state.errors.first),
+                backgroundColor: AppColors.error,
+              ),
+            );
+          }
+
+
       },
       child: Scaffold(
         backgroundColor: AppColors.background,

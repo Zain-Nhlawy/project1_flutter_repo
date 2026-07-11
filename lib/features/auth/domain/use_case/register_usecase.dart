@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import 'package:project1/core/errors/failures.dart';
 import 'package:project1/features/auth/domain/repository/auth_repository.dart';
 
 class RegisterUseCase {
@@ -5,7 +7,7 @@ class RegisterUseCase {
 
   RegisterUseCase(this.repository);
 
-  Future<String> call(Map<String, dynamic> body) {
+  Future<Either<Failure, String>> call(Map<String, dynamic> body) {
     return repository.register(body);
   }
 }

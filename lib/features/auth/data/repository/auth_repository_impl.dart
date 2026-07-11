@@ -1,3 +1,6 @@
+import 'package:dartz/dartz.dart';
+import 'package:project1/core/errors/exceptions.dart';
+import 'package:project1/core/errors/failures.dart';
 import 'package:project1/core/storage/secure_storage.dart';
 import 'package:project1/core/storage/storage_keys.dart';
 import 'package:project1/features/auth/data/data_sources/auth_remote_datasource.dart';
@@ -11,117 +14,147 @@ class AuthRepositoryImpl implements AuthRepository {
 
   AuthRepositoryImpl(this.remote, this.storage);
 
-  @override
-  Future<String> register(Map<String, dynamic> body) {
-    return remote.register(body);
-  }
-
-  @override
-  Future<String> verifyEmail(String token) {
-    return remote.verifyEmail(token);
-  }
-
-  @override
-  Future<String> resendVerificationEmail(String email) {
-    return remote.resendVerificationEmail(email);
-  }
-
-  @override
-  Future<LoginResponse> login(Map<String, dynamic> body) async {
-    final res = await remote.login(body);
-
-    if (res.requires2FA) {
-      return res;
+  Future<Either<Failure, T>> _handle<T>(Future<T> Function() call) async {
+    try {
+      return Right(await call());
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    } on Exception catch (e) {
+      return Left(UnknownFailure(e.toString()));
     }
+  }
 
+  Future<void> _saveTokens(LoginResponse res) async {
     if (res.accessToken != null && res.refreshToken != null) {
       await storage.write(StorageKeys.token, res.accessToken!);
       await storage.write(StorageKeys.refreshToken, res.refreshToken!);
     }
-
-    return res;
-  }
-
- @override
-Future<LoginResponse> googleLogin(String idToken) async {
-  final res = await remote.googleLogin(idToken);
-  if (res.accessToken != null && res.refreshToken != null) {
-    await storage.write(StorageKeys.token, res.accessToken!);
-    await storage.write(StorageKeys.refreshToken, res.refreshToken!);
-  }
-
-  return res;
-}
-
-  @override
-  Future<UserEntity> getMe() async {
-    final userModel = await remote.getMe();
-    return userModel.toEntity();
   }
 
   @override
-  Future<String> forgotPassword(Map<String, dynamic> body) {
-    return remote.forgotPassword(body);
+  Future<Either<Failure, String>> register(Map<String, dynamic> body) {
+    return _handle(() => remote.register(body));
   }
 
   @override
-  Future<String> resetPassword(Map<String, dynamic> body) {
-    return remote.resetPassword(body);
+  Future<Either<Failure, String>> verifyEmail(String token) {
+    return _handle(() => remote.verifyEmail(token));
   }
 
   @override
-  Future<String> changePassword({
-    required String oldPassword,
-    required String newPassword,
-  }) {
-    return remote.changePassword({
-      "oldPassword": oldPassword,
-      "newPassword": newPassword,
+  Future<Either<Failure, String>> resendVerificationEmail(String email) {
+    return _handle(() => remote.resendVerificationEmail(email));
+  }
+
+  @override
+  Future<Either<Failure, LoginResponse>> login(
+    Map<String, dynamic> body,
+  ) async {
+    return _handle(() async {
+      final res = await remote.login(body);
+
+      if (!res.requires2FA) {
+        await _saveTokens(res);
+      }
+
+      return res;
     });
   }
 
   @override
-  Future<void> logout() async {
-    await remote.logout();
-    await storage.delete(StorageKeys.token);
-    await storage.delete(StorageKeys.refreshToken);
+  Future<Either<Failure, LoginResponse>> googleLogin(
+    String idToken,
+  ) async {
+    return _handle(() async {
+      final res = await remote.googleLogin(idToken);
+      await _saveTokens(res);
+      return res;
+    });
   }
 
   @override
-Future<LoginResponse> verify2FA({
-  required String twoFactorToken,
-  required String tfaCode,
-}) async {
-  final res = await remote.verify2FA(
-    twoFactorToken: twoFactorToken,
-    tfaCode: tfaCode,
-  );
-  if (res.accessToken != null && res.refreshToken != null) {
-    await storage.write(StorageKeys.token, res.accessToken!);
-    await storage.write(StorageKeys.refreshToken, res.refreshToken!);
+  Future<Either<Failure, UserEntity>> getMe() {
+    return _handle(() async {
+      final userModel = await remote.getMe();
+      return userModel.toEntity();
+    });
   }
-  return res;
-}
 
   @override
-  Future<String> generate2FA({
-    required String email,
-    required String password,
+  Future<Either<Failure, String>> forgotPassword(
+    Map<String, dynamic> body,
+  ) {
+    return _handle(() => remote.forgotPassword(body));
+  }
+
+  @override
+  Future<Either<Failure, String>> resetPassword(
+    Map<String, dynamic> body,
+  ) {
+    return _handle(() => remote.resetPassword(body));
+  }
+
+  @override
+  Future<Either<Failure, String>> changePassword({
+    required String oldPassword,
+    required String newPassword,
   }) {
-    return remote.generate2FA(
-      email: email,
-      password: password,
+    return _handle(
+      () => remote.changePassword({
+        "oldPassword": oldPassword,
+        "newPassword": newPassword,
+      }),
     );
   }
 
   @override
-  Future<String> turnOn2FA({
+  Future<Either<Failure, void>> logout() {
+    return _handle(() async {
+      await remote.logout();
+      await storage.delete(StorageKeys.token);
+      await storage.delete(StorageKeys.refreshToken);
+    });
+  }
+
+  @override
+  Future<Either<Failure, LoginResponse>> verify2FA({
+    required String twoFactorToken,
     required String tfaCode,
   }) {
-    return remote.turnOn2FA(tfaCode: tfaCode);
+    return _handle(() async {
+      final res = await remote.verify2FA(
+        twoFactorToken: twoFactorToken,
+        tfaCode: tfaCode,
+      );
+
+      await _saveTokens(res);
+
+      return res;
+    });
   }
+
   @override
-Future<String> turnOff2FA() {
-  return remote.turnOff2FA();
-}
+  Future<Either<Failure, String>> generate2FA({
+    required String email,
+    required String password,
+  }) {
+    return _handle(
+      () => remote.generate2FA(
+        email: email,
+        password: password,
+      ),
+    );
+  }
+
+  @override
+  Future<Either<Failure, String>> turnOn2FA({
+    required String tfaCode,
+  }) {
+    return _handle(() => remote.turnOn2FA(tfaCode: tfaCode));
+  }
+
+  @override
+  Future<Either<Failure, String>> turnOff2FA() {
+    return _handle(() => remote.turnOff2FA());
+  }
 }

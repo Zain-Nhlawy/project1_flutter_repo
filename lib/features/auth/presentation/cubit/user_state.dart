@@ -19,7 +19,7 @@ class UserLoaded extends UserState {
 }
 
 class UserError extends UserState {
-  final String message;
+  final List<String> errors;
 
-  const UserError(this.message);
+  const UserError(this.errors);
 }
