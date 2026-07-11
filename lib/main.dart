@@ -51,9 +51,7 @@ void main() async {
         BlocProvider<AuthCubit>(create: (_) => getIt<AuthCubit>()),
         BlocProvider<LocaleCubit>(create: (_) => LocaleCubit()),
       ],
-      child: MyApp(
-        initialResetToken: initialResetToken,
-      ),
+      child: MyApp(initialResetToken: initialResetToken),
     ),
   );
 }
@@ -61,10 +59,7 @@ void main() async {
 class MyApp extends StatefulWidget {
   final String? initialResetToken;
 
-  const MyApp({
-    super.key,
-    this.initialResetToken,
-  });
+  const MyApp({super.key, this.initialResetToken});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -100,9 +95,7 @@ class _MyAppState extends State<MyApp> {
           } catch (_) {}
 
           navigatorKey.currentState?.pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: (_) => const LoginScreen(),
-            ),
+            MaterialPageRoute(builder: (_) => const LoginScreen()),
             (route) => false,
           );
         }
@@ -133,10 +126,11 @@ class _MyAppState extends State<MyApp> {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          home: widget.initialResetToken != null &&
+          home:
+              widget.initialResetToken != null &&
                   widget.initialResetToken!.isNotEmpty
               ? ResetPasswordScreen(token: widget.initialResetToken!)
-              : const CoursesInProgressScreen(),
+              : const LoginScreen(),
         );
       },
     );

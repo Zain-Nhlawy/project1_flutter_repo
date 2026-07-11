@@ -509,7 +509,7 @@ abstract class AppLocalizations {
   /// No description provided for @addSection.
   ///
   /// In en, this message translates to:
-  /// **'Add'**
+  /// **'Add Section'**
   String get addSection;
 
   /// No description provided for @noSectionFound.

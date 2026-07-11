@@ -227,7 +227,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'This plan limit has been reached , please upgrade the plan';
 
   @override
-  String get addSection => 'Add';
+  String get addSection => 'Add Section';
 
   @override
   String get noSectionFound => 'No section found';

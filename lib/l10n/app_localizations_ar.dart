@@ -226,7 +226,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'تم تجاوز حد الخطة , يرجى الترقية للحصول على المزيد ';
 
   @override
-  String get addSection => 'اضافة';
+  String get addSection => 'إضافة قسم';
 
   @override
   String get noSectionFound => 'لا يوجد اقسام متاحة';
