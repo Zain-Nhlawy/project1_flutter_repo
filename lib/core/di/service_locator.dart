@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:project1/core/network/dio_client.dart';
 import 'package:project1/core/storage/secure_storage.dart';
 import 'package:project1/core/storage/storage_keys.dart';
-import 'package:project1/features/auth/auth_token_manager.dart';
 import 'package:project1/features/auth/data/data_sources/auth_remote_datasource.dart';
 import 'package:project1/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:project1/features/auth/domain/repository/auth_repository.dart';
@@ -28,20 +27,34 @@ import 'package:project1/features/auth/upload_photo/data/data_sources/upload_pho
 import 'package:project1/features/auth/upload_photo/data/repository/upload_photo_repository_impl.dart';
 import 'package:project1/features/auth/upload_photo/domain/repository/upload_photo_repository.dart';
 import 'package:project1/features/auth/upload_photo/domain/use_case/upload_photo_usecase.dart';
-import 'package:project1/features/demo/data/data_sources/demo_payment_data_source.dart';
-import 'package:project1/features/demo/data/data_sources/demo_remote_datasource.dart';
+import 'package:project1/features/course/data/data_sources/course_remote_datasource.dart';
+import 'package:project1/features/course/data/repository/course_repository_impl.dart';
+import 'package:project1/features/course/domain/repository/course_repository.dart';
+import 'package:project1/features/course/domain/use_case/create_course_usecase.dart';
+import 'package:project1/features/course/domain/use_case/delete_course_usecase.dart';
+import 'package:project1/features/course/domain/use_case/get_demo_courses_usecase.dart';
+import 'package:project1/features/course/domain/use_case/get_tags_usecase.dart';
+import 'package:project1/features/course/domain/use_case/update_course_usecase.dart';
+import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
+import 'package:project1/features/course/upload_photo/data/data_sources/upload_photo_course_remote_datasource.dart';
+import 'package:project1/features/course/upload_photo/data/repository/upload_photo_course_repositpry_impl.dart';
+import 'package:project1/features/course/upload_photo/domain/repository/upload_photo_course_repository.dart';
+import 'package:project1/features/course/upload_photo/domain/use_case/upload_photo_course_usecase.dart';
+import 'package:project1/features/course/upload_photo/presentation/cubit/upload_photo_course_cubit.dart';
+import 'package:project1/features/demo/data/data_sources/data_payment_data_source.dart';
+import 'package:project1/features/demo/data/data_sources/demo_remote_data_source.dart';
 import 'package:project1/features/demo/data/repository/demo_repository.dart';
 import 'package:project1/features/demo/data/repository/demo_repository_impl.dart';
 import 'package:project1/features/demo/data/repository/payment%20repo/demo_payment_repository_impl.dart';
 import 'package:project1/features/demo/domain/repository/demo_payment_repository.dart';
 import 'package:project1/features/demo/domain/use%20case/demo_payment_usecase.dart';
 import 'package:project1/features/demo/domain/use%20case/demos_usecase.dart';
-import 'package:project1/features/demo/presentation/cubit/demo_cubit.dart';
+import 'package:project1/features/demo/presentation/cubit/demo%20cubit/demo_cubit.dart';
+import 'package:project1/features/demo/presentation/cubit/department%20cubit/department_cubit.dart';
 import 'package:project1/features/department/data/data_sources/department_data_source.dart';
 import 'package:project1/features/department/domain/repository/department_repository.dart';
 import 'package:project1/features/department/data/repository/department_repository_implement.dart';
 import 'package:project1/features/department/domain/use_case/get_department_use_case.dart';
-import 'package:project1/features/department/presentation/cubit/department_cubit.dart';
 import 'package:project1/features/profile/data/data_sources/profile_remote_datasource.dart';
 import 'package:project1/features/profile/data/repository/profile_repository_impl.dart';
 import 'package:project1/features/profile/domain/repository/profile_repository.dart';
@@ -255,4 +268,58 @@ void setupDI() {
   );
 
   //////////////// department //////////////////////////
+
+  //////////////////////// Course ////////////////////////
+
+  // datasource
+  getIt.registerLazySingleton<CourseRemoteDataSource>(
+    () => CourseRemoteDataSource(getIt<DioClient>()),
+  );
+  getIt.registerLazySingleton<UploadPhotoCourseRemoteDataSource>(
+    () => UploadPhotoCourseRemoteDataSource(getIt<DioClient>()),
+  );
+
+  // repository
+  getIt.registerLazySingleton<CourseRepository>(
+    () => CourseRepositoryImpl(getIt<CourseRemoteDataSource>()),
+  );
+  getIt.registerLazySingleton<UploadPhotoCourseRepository>(
+    () => UploadPhotoCourseRepositoryImpl(
+      getIt<UploadPhotoCourseRemoteDataSource>(),
+    ),
+  );
+
+  // usecases
+  getIt.registerLazySingleton<UploadPhotoCourseUseCase>(
+    () => UploadPhotoCourseUseCase(getIt<UploadPhotoCourseRepository>()),
+  );
+  getIt.registerLazySingleton<GetTagsUseCase>(
+    () => GetTagsUseCase(getIt<CourseRepository>()),
+  );
+  getIt.registerLazySingleton<CreateCourseUseCase>(
+    () => CreateCourseUseCase(getIt<CourseRepository>()),
+  );
+  getIt.registerLazySingleton<GetDemoCoursesUseCase>(
+    () => GetDemoCoursesUseCase(getIt<CourseRepository>()),
+  );
+  getIt.registerLazySingleton<UpdateCourseUseCase>(
+    () => UpdateCourseUseCase(getIt<CourseRepository>()),
+  );
+  getIt.registerLazySingleton(() => DeleteCourseUseCase(getIt()));
+
+  // cubit
+  getIt.registerFactory<UploadPhotoCourseCubit>(
+    () => UploadPhotoCourseCubit(getIt<UploadPhotoCourseUseCase>()),
+  );
+  getIt.registerFactory<CourseCubit>(
+    () => CourseCubit(
+      getTagsUseCase: getIt<GetTagsUseCase>(),
+      createCourseUseCase: getIt<CreateCourseUseCase>(),
+      getDemoCoursesUseCase: getIt<GetDemoCoursesUseCase>(),
+      updateCourseUseCase: getIt<UpdateCourseUseCase>(),
+      deleteCourseUseCase: getIt(),
+    ),
+  );
+
+  //////////////////////// Course ////////////////////////
 }

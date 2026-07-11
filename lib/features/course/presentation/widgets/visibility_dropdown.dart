@@ -22,8 +22,13 @@ class VisibilityDropdown extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14),
       decoration: BoxDecoration(
-        color: enabled ? AppColors.surface : AppColors.surface.withOpacity(0.5),
-        border: Border.all(color: AppColors.border, width: 1.2),
+        color: enabled
+            ? AppColors.surface
+            : AppColors.surface.withOpacity(0.5),
+        border: Border.all(
+          color: AppColors.border,
+          width: 1.2,
+        ),
         borderRadius: BorderRadius.circular(15),
         boxShadow: enabled
             ? [
@@ -41,24 +46,38 @@ class VisibilityDropdown extends StatelessWidget {
           isExpanded: true,
           icon: Icon(
             Icons.keyboard_arrow_down_rounded,
-            color: enabled ? AppColors.primary : AppColors.textSecondary,
+            color: enabled
+                ? AppColors.primary
+                : AppColors.textSecondary,
           ),
           items: [
             DropdownMenuItem(
-              value: 'public',
+              value: 'PUBLIC',
               child: Row(
                 children: [
-                  Icon(Icons.public, size: 18, color: enabled ? AppColors.primary : AppColors.textSecondary),
+                  Icon(
+                    Icons.public,
+                    size: 18,
+                    color: enabled
+                        ? AppColors.primary
+                        : AppColors.textSecondary,
+                  ),
                   const SizedBox(width: 8),
                   Text(publicLabel),
                 ],
               ),
             ),
             DropdownMenuItem(
-              value: 'private',
+              value: 'PRIVATE',
               child: Row(
                 children: [
-                  Icon(Icons.lock_outline, size: 18, color: enabled ? AppColors.primary : AppColors.textSecondary),
+                  Icon(
+                    Icons.lock_outline,
+                    size: 18,
+                    color: enabled
+                        ? AppColors.primary
+                        : AppColors.textSecondary,
+                  ),
                   const SizedBox(width: 8),
                   Text(privateLabel),
                 ],
@@ -67,7 +86,9 @@ class VisibilityDropdown extends StatelessWidget {
           ],
           onChanged: enabled
               ? (v) {
-                  if (v != null) onChanged(v);
+                  if (v != null) {
+                    onChanged(v);
+                  }
                 }
               : null,
         ),

@@ -8,6 +8,7 @@ class LessonAttachmentsSection extends StatelessWidget {
   final VoidCallback onAdd;
   final Function(LessonAttachment) onEdit;
   final Function(LessonAttachment) onDelete;
+  final bool enabled;
 
   const LessonAttachmentsSection({
     super.key,
@@ -15,6 +16,7 @@ class LessonAttachmentsSection extends StatelessWidget {
     required this.onAdd,
     required this.onEdit,
     required this.onDelete,
+    this.enabled = true,
   });
 
   @override
@@ -35,11 +37,12 @@ class LessonAttachmentsSection extends StatelessWidget {
                 ),
               ),
             ),
-            FilledButton.icon(
-              onPressed: onAdd,
-              icon: const Icon(Icons.add),
-              label: Text(l.addAttachment),
-            )
+            if (enabled)
+              FilledButton.icon(
+                onPressed: onAdd,
+                icon: const Icon(Icons.add),
+                label: Text(l.addAttachment),
+              )
           ],
         ),
 
@@ -51,11 +54,21 @@ class LessonAttachmentsSection extends StatelessWidget {
             style: const TextStyle(color: Colors.grey),
           ),
 
-        ...attachments.map(
-          (e) => LessonAttachmentCard(
-            attachment: e,
-            onEdit: () => onEdit(e),
-            onDelete: () => onDelete(e),
+        IgnorePointer(
+          ignoring: !enabled,
+          child: Opacity(
+            opacity: enabled ? 1 : 0.6,
+            child: Column(
+              children: attachments
+                  .map(
+                    (e) => LessonAttachmentCard(
+                      attachment: e,
+                      onEdit: () => onEdit(e),
+                      onDelete: () => onDelete(e),
+                    ),
+                  )
+                  .toList(),
+            ),
           ),
         ),
       ],

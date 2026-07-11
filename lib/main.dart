@@ -25,6 +25,7 @@ void main() async {
 
   await dotenv.load();
   setupDI();
+  print("DI DONE");
 
   String? initialResetToken;
 
@@ -48,7 +49,12 @@ void main() async {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider<AuthCubit>(create: (_) => getIt<AuthCubit>()),
+        BlocProvider<AuthCubit>(
+  create: (_) {
+    print("creating auth cubit");
+    return getIt<AuthCubit>();
+  },
+),
         BlocProvider<LocaleCubit>(create: (_) => LocaleCubit()),
       ],
       child: MyApp(initialResetToken: initialResetToken),

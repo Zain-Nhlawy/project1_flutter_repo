@@ -246,5 +246,13 @@
 "deleteAttachmentConfirmation": "هل أنت متأكد من حذف هذا الملحق؟",
 "noAttachments": "لا توجد ملحقات بعد",
 "saveLesson": "حفظ الدرس",
-"delete": "حذف"
+"delete": "حذف",
+"lessonManagement": "إدارة الدرس",
+"editLesson": "تعديل الدرس",
+"noTagsAvailable": "لا توجد تاغات متاحة",
+"noCoursesFound": "لا يوجد كورسات",
+"free": "مجاني",
+"deleteCourseTitle": "حذف الكورس",
+"deleteCourseConfirmation": "هل أنت متأكد من حذف هذا الكورس؟",
+"failedToUploadImage": "فشل رفع الصورة"
 }

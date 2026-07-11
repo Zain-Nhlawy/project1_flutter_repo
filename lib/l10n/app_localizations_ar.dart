@@ -661,4 +661,28 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get delete => 'حذف';
+
+  @override
+  String get lessonManagement => 'إدارة الدرس';
+
+  @override
+  String get editLesson => 'تعديل الدرس';
+
+  @override
+  String get noTagsAvailable => 'لا توجد تاغات متاحة';
+
+  @override
+  String get noCoursesFound => 'لا يوجد كورسات';
+
+  @override
+  String get free => 'مجاني';
+
+  @override
+  String get deleteCourseTitle => 'حذف الكورس';
+
+  @override
+  String get deleteCourseConfirmation => 'هل أنت متأكد من حذف هذا الكورس؟';
+
+  @override
+  String get failedToUploadImage => 'فشل رفع الصورة';
 }

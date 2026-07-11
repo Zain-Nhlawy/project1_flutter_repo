@@ -36,19 +36,15 @@ class LessonDetailsScreen extends StatelessWidget {
                     children: const [
                       CourseTag(
                         text: "45 min",
-                        icon: Icons.timer_outlined,
                       ),
                       CourseTag(
                         text: "Lesson 3",
-                        icon: Icons.play_lesson_outlined,
                       ),
                       CourseTag(
                         text: "12.5K Views",
-                        icon: Icons.visibility_outlined,
                       ),
                       CourseTag(
                         text: "Completed",
-                        icon: Icons.check_circle_outline,
                       ),
                     ],
                   ),

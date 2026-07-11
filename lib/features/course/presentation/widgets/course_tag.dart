@@ -2,46 +2,48 @@ import 'package:flutter/material.dart';
 
 class CourseTag extends StatelessWidget {
   final String text;
-  final IconData icon;
+  final bool selected;
+  final VoidCallback? onTap;
 
   const CourseTag({
     super.key,
     required this.text,
-    required this.icon,
+    this.selected = false,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 12,
-        vertical: 8,
-      ),
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(30),
-        border: Border.all(
-          color: Theme.of(context).primaryColor.withOpacity(0.15),
+    final primaryColor = Theme.of(context).primaryColor;
+
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(30),
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 8,
         ),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            size: 16,
-            color: Theme.of(context).primaryColor,
+        decoration: BoxDecoration(
+          color: selected ? primaryColor : primaryColor.withOpacity(0.08),
+          borderRadius: BorderRadius.circular(30),
+          border: Border.all(
+            color: selected ? primaryColor : primaryColor.withOpacity(0.15),
           ),
-          const SizedBox(width: 6),
-          Text(
-            text,
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontWeight: FontWeight.w600,
-              fontSize: 13,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              text,
+              style: TextStyle(
+                color: selected ? Colors.white : primaryColor,
+                fontWeight: FontWeight.w600,
+                fontSize: 13,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

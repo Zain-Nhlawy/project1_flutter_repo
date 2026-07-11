@@ -2,7 +2,6 @@ import 'package:project1/core/storage/secure_storage.dart';
 import 'package:project1/core/storage/storage_keys.dart';
 import 'package:project1/features/auth/data/data_sources/auth_remote_datasource.dart';
 import 'package:project1/features/auth/data/models/login_response_model.dart';
-import 'package:project1/features/auth/data/models/user_model.dart';
 import 'package:project1/features/auth/domain/entities/user_entity.dart';
 import 'package:project1/features/auth/domain/repository/auth_repository.dart';
 

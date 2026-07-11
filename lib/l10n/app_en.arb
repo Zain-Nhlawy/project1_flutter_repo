@@ -274,5 +274,13 @@
 "deleteAttachmentConfirmation": "Are you sure you want to delete this attachment?",
 "noAttachments": "No attachments yet",
 "saveLesson": "Save Lesson",
-"delete": "Delete"
+"delete": "Delete",
+"lessonManagement": "Lesson Management",
+"editLesson": "Edit Lesson",
+"noTagsAvailable": "No tags available",
+"noCoursesFound": "No courses found",
+"free": "Free",
+"deleteCourseTitle": "Delete Course",
+"deleteCourseConfirmation": "Are you sure you want to delete this course?",
+"failedToUploadImage": "Failed to upload image"
 }

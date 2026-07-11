@@ -1357,6 +1357,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete'**
   String get delete;
+
+  /// No description provided for @lessonManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson Management'**
+  String get lessonManagement;
+
+  /// No description provided for @editLesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Lesson'**
+  String get editLesson;
+
+  /// No description provided for @noTagsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No tags available'**
+  String get noTagsAvailable;
+
+  /// No description provided for @noCoursesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No courses found'**
+  String get noCoursesFound;
+
+  /// No description provided for @free.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get free;
+
+  /// No description provided for @deleteCourseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Course'**
+  String get deleteCourseTitle;
+
+  /// No description provided for @deleteCourseConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this course?'**
+  String get deleteCourseConfirmation;
+
+  /// No description provided for @failedToUploadImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to upload image'**
+  String get failedToUploadImage;
 }
 
 class _AppLocalizationsDelegate

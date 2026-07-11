@@ -1,94 +1,157 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/features/course/presentation/widgets/course_tags_section.dart';
+import 'package:project1/features/course/upload_photo/presentation/cubit/upload_photo_course_cubit.dart';
+import 'package:project1/features/course/domain/entities/course_entity.dart';
+import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
+import 'package:project1/features/course/presentation/cubit/course_state.dart';
 import 'package:project1/features/course/presentation/widgets/course_image_picker.dart';
 import 'package:project1/features/course/presentation/widgets/custom_button.dart';
 import 'package:project1/features/course/presentation/widgets/custom_text_field.dart';
-import 'package:project1/features/course/presentation/widgets/tags_input.dart';
 import 'package:project1/features/course/presentation/widgets/visibility_dropdown.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
+
 class CreateCourseScreen extends StatefulWidget {
-  const CreateCourseScreen({super.key});
+  final String demoId;
+
+  const CreateCourseScreen({
+    super.key,
+    required this.demoId,
+  });
 
   @override
   State<CreateCourseScreen> createState() => _CreateCourseScreenState();
 }
 
+
 class _CreateCourseScreenState extends State<CreateCourseScreen> {
+
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _priceController = TextEditingController();
-  final _tagController = TextEditingController();
 
-  String visibility = 'public';
-  List<String> tags = [];
+  String visibility = 'PUBLIC';
   File? selectedImage;
 
-  void addTag(String tag) {
-    final cleaned = tag.trim();
-    if (cleaned.isEmpty) return;
-    if (tags.contains(cleaned)) return;
+  final Set<String> selectedTagIds = {};
 
+
+  void toggleTag(String id) {
     setState(() {
-      tags.add(cleaned);
-    });
-
-    _tagController.clear();
-  }
-
-  void removeTag(String tag) {
-    setState(() {
-      tags.remove(tag);
+      selectedTagIds.contains(id)
+          ? selectedTagIds.remove(id)
+          : selectedTagIds.add(id);
     });
   }
 
-  Future<void> pickImage() async {
-    //TO DO
-    // final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
-    // if (picked != null) setState(() => selectedImage = File(picked.path));
+
+  bool get isValid =>
+      _titleController.text.isNotEmpty &&
+      _descriptionController.text.isNotEmpty &&
+      _priceController.text.isNotEmpty;
+
+  Future<void> handleCreateCourse() async {
+  if (!isValid) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Please fill all fields"),
+        backgroundColor: Colors.red,
+      ),
+    );
+    return;
   }
 
-  bool get isValid {
-    return _titleController.text.isNotEmpty &&
-        _descriptionController.text.isNotEmpty &&
-        _priceController.text.isNotEmpty;
-  }
+  String imagePath = '';
 
-  void handleCreateCourse() {
-    if (!isValid) {
-      final localizations = AppLocalizations.of(context)!;
+  if (selectedImage != null) {
+    final uploadedUrl = await context
+        .read<UploadPhotoCourseCubit>()
+        .uploadPhoto(selectedImage!);
+
+    if (uploadedUrl == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(localizations.fillAllFieldsWarning),
-          backgroundColor: Colors.red.shade400,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          margin: const EdgeInsets.all(12),
+        const SnackBar(
+          content: Text("Failed to upload image"),
+          backgroundColor: Colors.red,
         ),
       );
       return;
     }
 
-    // TODO: submit
+    imagePath = uploadedUrl;
   }
+
+  final course = CourseEntity(
+    id: '',
+    title: _titleController.text.trim(),
+    description: _descriptionController.text.trim(),
+    visibility: visibility,
+    price: double.tryParse(_priceController.text),
+    imagePath: imagePath,
+    demoId: widget.demoId,
+    tagIds: selectedTagIds.toList(),
+    demo: null,
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+    sectionsCount: 0,
+    totalLessons: 0,
+    totalDuration: 0,
+  );
+  context.read<CourseCubit>().createCourse(course);
+}
+
+  Future<void> pickImage() async {
+  final picker = ImagePicker();
+  final XFile? image = await picker.pickImage(
+    source: ImageSource.gallery,
+    imageQuality: 80,
+  );
+  if (image == null) return;
+  setState(() {
+    selectedImage = File(image.path);
+  });
+}
+
 
   @override
   void dispose() {
     _titleController.dispose();
     _descriptionController.dispose();
     _priceController.dispose();
-    _tagController.dispose();
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
 
-    return Scaffold(
+  @override
+Widget build(BuildContext context) {
+  final localizations = AppLocalizations.of(context)!;
+
+  return BlocListener<CourseCubit, CourseState>(
+    listener: (context, state) {
+      if (state is CourseCreated) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Course created successfully"),
+            backgroundColor: Colors.green,
+          ),
+        );
+        Navigator.pop(context, true);
+      }
+
+      if (state is CourseCreateError) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(state.message),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    },
+    child: Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         leading: IconButton(
@@ -97,60 +160,43 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
         ),
         title: Text(
           localizations.createCourse,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: AppColors.primaryGradient,
-          ),
+          decoration: const BoxDecoration(gradient: AppColors.primaryGradient),
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 65),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             CourseImagePicker(
+              key: ValueKey(selectedImage?.path),
               selectedImage: selectedImage,
               onTap: pickImage,
-              onRemove: () => setState(() => selectedImage = null),
+              onRemove: () {
+                setState(() {
+                  selectedImage = null;
+                });
+              },
               uploadLabel: localizations.uploadImage,
             ),
+            const SizedBox(height: 16),
 
-            const SizedBox(height: 20),
+            CustomTextField(controller: _titleController, hintText: localizations.courseTitle, icon: Icons.title_outlined),
+            const SizedBox(height: 12),
 
-            CustomTextField(
-              controller: _titleController,
-              hintText: localizations.courseTitle,
-              icon: Icons.title_outlined,
-              onSubmitted: (_) => setState(() {}),
-            ),
-
-            const SizedBox(height: 14),
-
-            CustomTextField(
-              controller: _descriptionController,
-              hintText: localizations.courseDescription,
-              icon: Icons.description_outlined,
-              maxLines: 4,
-              onSubmitted: (_) => setState(() {}),
-            ),
-
-            const SizedBox(height: 14),
+            CustomTextField(controller: _descriptionController, hintText: localizations.courseDescription, icon: Icons.description_outlined, maxLines: 4),
+            const SizedBox(height: 12),
 
             CustomTextField(
               controller: _priceController,
               hintText: localizations.price,
-              icon: Icons.attach_money_rounded,
+              icon: Icons.attach_money,
               keyboardType: TextInputType.number,
-              onSubmitted: (_) => setState(() {}),
             ),
-
-            const SizedBox(height: 16),
+            const SizedBox(height: 14),
 
             VisibilityDropdown(
               value: visibility,
@@ -159,36 +205,36 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
               privateLabel: localizations.private,
             ),
 
-            const SizedBox(height: 18),
+            const SizedBox(height: 16),
 
-            TagsInput(
-              controller: _tagController,
-              tags: tags,
-              hintText: localizations.tags,
-              addLabel: localizations.add,
-              onSubmitted: addTag,
-              onRemove: removeTag,
+            CourseTagsSection(
+              selectedTagIds: selectedTagIds,
+              onToggle: toggleTag,
+              enabled: true,
             ),
 
-            const SizedBox(height: 28),
+            const SizedBox(height: 24),
 
-            Center(
-              child: SizedBox(
-                height: 52,
-                child: CustomButton(
-                  text: localizations.createCourse,
-                  gradient: AppColors.buttonGradient,
-                  expand: true,
-                  onPressed: handleCreateCourse,
-                ),
-              ),
+            BlocBuilder<CourseCubit, CourseState>(
+              builder: (context, state) {
+                final loading = state is CourseCreating;
+
+                return SizedBox(
+                  height: 52,
+                  width: double.infinity,
+                  child: CustomButton(
+                    text: loading ? "Creating..." : localizations.createCourse,
+                    gradient: AppColors.buttonGradient,
+                    expand: true,
+                    onPressed: loading ? null : handleCreateCourse,
+                  ),
+                );
+              },
             ),
-
-            const SizedBox(height: 35),
-
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

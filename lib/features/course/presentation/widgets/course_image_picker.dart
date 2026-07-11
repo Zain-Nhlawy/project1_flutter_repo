@@ -40,6 +40,7 @@ class CourseImagePicker extends StatelessWidget {
     final hasImage = image != null;
 
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: enabled ? onTap : null,
       child: Container(
         height: 190,

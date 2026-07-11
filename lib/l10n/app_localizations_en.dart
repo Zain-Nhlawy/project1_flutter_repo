@@ -663,4 +663,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get delete => 'Delete';
+
+  @override
+  String get lessonManagement => 'Lesson Management';
+
+  @override
+  String get editLesson => 'Edit Lesson';
+
+  @override
+  String get noTagsAvailable => 'No tags available';
+
+  @override
+  String get noCoursesFound => 'No courses found';
+
+  @override
+  String get free => 'Free';
+
+  @override
+  String get deleteCourseTitle => 'Delete Course';
+
+  @override
+  String get deleteCourseConfirmation =>
+      'Are you sure you want to delete this course?';
+
+  @override
+  String get failedToUploadImage => 'Failed to upload image';
 }
