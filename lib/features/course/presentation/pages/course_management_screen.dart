@@ -86,7 +86,7 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
     priceController.dispose();
     super.dispose();
   }
-  
+
   Future<void> pickImage() async {
     final picker = ImagePicker();
     final XFile? image = await picker.pickImage(
@@ -264,7 +264,10 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
                 secondValue: '${widget.duration}',
               ),
               const SizedBox(height: 24),
-              CourseManagementActionsRow(courseTitle: widget.title),
+              CourseManagementActionsRow(
+                courseId: widget.courseId,
+                courseTitle: widget.title,
+              ),
               const SizedBox(height: 24),
               CourseEditSaveButton(
                 isEditing: isEditing,

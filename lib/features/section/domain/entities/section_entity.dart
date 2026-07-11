@@ -1,32 +1,35 @@
-class LessonEntity {
-  final String id;
-  final String title;
-
-  const LessonEntity({
-    required this.id,
-    required this.title,
-  });
-}
-
 class SectionEntity {
   final String id;
+  final String courseId;
   final String title;
-  final List<LessonEntity> lessons;
+  final int order;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   const SectionEntity({
     required this.id,
+    required this.courseId,
     required this.title,
-    this.lessons = const [],
+    required this.order,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
   SectionEntity copyWith({
+    String? id,
+    String? courseId,
     String? title,
-    List<LessonEntity>? lessons,
+    int? order,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) {
     return SectionEntity(
-      id: id,
+      id: id ?? this.id,
+      courseId: courseId ?? this.courseId,
       title: title ?? this.title,
-      lessons: lessons ?? this.lessons,
+      order: order ?? this.order,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 }
