@@ -24,7 +24,6 @@ class HeaderWidget extends StatelessWidget {
     final daysPassed = DateTime.now().difference(createdAt).inDays;
     final int daysLeft = (14 - daysPassed) > 0 ? (14 - daysPassed) : 0;
 
-    // إضافة الفحص لمعرفة إذا كانت الخطة مجانية
     final currentPlan = demo.plan?.toLowerCase() ?? 'starter';
     final isFreePlan = currentPlan == 'starter' || currentPlan == 'free';
 
@@ -164,7 +163,6 @@ class HeaderWidget extends StatelessWidget {
               ),
             ],
           ),
-          // هنا أضفنا شرط isFreePlan حتى لا يظهر زر الترقية وعدد الأيام إذا لم تكن الخطة مجانية
           if (demo.isOwner && isFreePlan) ...[
             SizedBox(height: size.height * 0.02),
             ClipRRect(

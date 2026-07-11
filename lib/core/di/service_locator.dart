@@ -41,20 +41,20 @@ import 'package:project1/features/course/upload_photo/data/repository/upload_pho
 import 'package:project1/features/course/upload_photo/domain/repository/upload_photo_course_repository.dart';
 import 'package:project1/features/course/upload_photo/domain/use_case/upload_photo_course_usecase.dart';
 import 'package:project1/features/course/upload_photo/presentation/cubit/upload_photo_course_cubit.dart';
-import 'package:project1/features/demo/data/data_sources/demo_payment_data_source.dart';
-import 'package:project1/features/demo/data/data_sources/demo_remote_datasource.dart';
+import 'package:project1/features/demo/data/data_sources/data_payment_data_source.dart';
+import 'package:project1/features/demo/data/data_sources/demo_remote_data_source.dart';
 import 'package:project1/features/demo/data/repository/demo_repository.dart';
 import 'package:project1/features/demo/data/repository/demo_repository_impl.dart';
 import 'package:project1/features/demo/data/repository/payment%20repo/demo_payment_repository_impl.dart';
 import 'package:project1/features/demo/domain/repository/demo_payment_repository.dart';
 import 'package:project1/features/demo/domain/use%20case/demo_payment_usecase.dart';
 import 'package:project1/features/demo/domain/use%20case/demos_usecase.dart';
-import 'package:project1/features/demo/presentation/cubit/demo_cubit.dart';
+import 'package:project1/features/demo/presentation/cubit/demo%20cubit/demo_cubit.dart';
+import 'package:project1/features/demo/presentation/cubit/department%20cubit/department_cubit.dart';
 import 'package:project1/features/department/data/data_sources/department_data_source.dart';
 import 'package:project1/features/department/domain/repository/department_repository.dart';
 import 'package:project1/features/department/data/repository/department_repository_implement.dart';
 import 'package:project1/features/department/domain/use_case/get_department_use_case.dart';
-import 'package:project1/features/department/presentation/cubit/department_cubit.dart';
 import 'package:project1/features/profile/data/data_sources/profile_remote_datasource.dart';
 import 'package:project1/features/profile/data/repository/profile_repository_impl.dart';
 import 'package:project1/features/profile/domain/repository/profile_repository.dart';
@@ -74,13 +74,9 @@ final getIt = GetIt.instance;
 final String baseUrl = dotenv.env['BASE_URL'] ?? '';
 
 void setupDI() {
-
-
   ////////////////////////storage////////////////////////
   getIt.registerLazySingleton<AppSecureStorage>(() => AppSecureStorage());
   ////////////////////////storage////////////////////////
-
-
 
   ////////////////////////Dio+refresh////////////////////////
   getIt.registerLazySingleton<DioClient>(
@@ -105,8 +101,6 @@ void setupDI() {
     ),
   );
   ////////////////////////Dio+refresh////////////////////////
-
-
 
   ////////////////////////auth+user////////////////////////
 
@@ -215,8 +209,6 @@ void setupDI() {
   );
   ////////////////////////auth+user////////////////////////
 
-
-
   ////////////////////////Demo////////////////////////
 
   //datasource
@@ -260,8 +252,6 @@ void setupDI() {
   );
   ////////////////////////Demo////////////////////////
 
-
-
   ///////////////////// department ////////////////
 
   getIt.registerLazySingleton<DepartmentRemoteDataSource>(
@@ -287,67 +277,44 @@ void setupDI() {
   );
 
   //////////////// department //////////////////////////
-  
 
+  //////////////////////// Course ////////////////////////
 
- //////////////////////// Course ////////////////////////
+  // datasource
+  getIt.registerLazySingleton<CourseRemoteDataSource>(
+    () => CourseRemoteDataSource(getIt<DioClient>()),
+  );
+  getIt.registerLazySingleton<UploadPhotoCourseRemoteDataSource>(
+    () => UploadPhotoCourseRemoteDataSource(getIt<DioClient>()),
+  );
 
-// datasource
-getIt.registerLazySingleton<CourseRemoteDataSource>(
-  () => CourseRemoteDataSource(
-    getIt<DioClient>(),
-  ),
-);
-getIt.registerLazySingleton<UploadPhotoCourseRemoteDataSource>(
-  () => UploadPhotoCourseRemoteDataSource(
-    getIt<DioClient>(),
-  ),
-);
+  // repository
+  getIt.registerLazySingleton<CourseRepository>(
+    () => CourseRepositoryImpl(getIt<CourseRemoteDataSource>()),
+  );
+  getIt.registerLazySingleton<UploadPhotoCourseRepository>(
+    () => UploadPhotoCourseRepositoryImpl(
+      getIt<UploadPhotoCourseRemoteDataSource>(),
+    ),
+  );
 
-
-// repository
-getIt.registerLazySingleton<CourseRepository>(
-  () => CourseRepositoryImpl(
-    getIt<CourseRemoteDataSource>(),
-  ),
-);
-getIt.registerLazySingleton<UploadPhotoCourseRepository>(
-  () => UploadPhotoCourseRepositoryImpl(
-    getIt<UploadPhotoCourseRemoteDataSource>(),
-  ),
-);
-
-
-// usecases
-getIt.registerLazySingleton<UploadPhotoCourseUseCase>(
-  () => UploadPhotoCourseUseCase(
-    getIt<UploadPhotoCourseRepository>(),
-  ),
-);
-getIt.registerLazySingleton<GetTagsUseCase>(
-  () => GetTagsUseCase(
-    getIt<CourseRepository>(),
-  ),
-);
-getIt.registerLazySingleton<CreateCourseUseCase>(
-  () => CreateCourseUseCase(
-    getIt<CourseRepository>(),
-  ),
-);
-getIt.registerLazySingleton<GetDemoCoursesUseCase>(
-  () => GetDemoCoursesUseCase(
-    getIt<CourseRepository>(),
-  ),
-);
-getIt.registerLazySingleton<UpdateCourseUseCase>(
-  () => UpdateCourseUseCase(
-    getIt<CourseRepository>(),
-  ),
-);
-getIt.registerLazySingleton(
-  () => DeleteCourseUseCase(getIt()),
-);
-
+  // usecases
+  getIt.registerLazySingleton<UploadPhotoCourseUseCase>(
+    () => UploadPhotoCourseUseCase(getIt<UploadPhotoCourseRepository>()),
+  );
+  getIt.registerLazySingleton<GetTagsUseCase>(
+    () => GetTagsUseCase(getIt<CourseRepository>()),
+  );
+  getIt.registerLazySingleton<CreateCourseUseCase>(
+    () => CreateCourseUseCase(getIt<CourseRepository>()),
+  );
+  getIt.registerLazySingleton<GetDemoCoursesUseCase>(
+    () => GetDemoCoursesUseCase(getIt<CourseRepository>()),
+  );
+  getIt.registerLazySingleton<UpdateCourseUseCase>(
+    () => UpdateCourseUseCase(getIt<CourseRepository>()),
+  );
+  getIt.registerLazySingleton(() => DeleteCourseUseCase(getIt()));
 
 // cubit
 getIt.registerFactory<UploadPhotoCourseCubit>(

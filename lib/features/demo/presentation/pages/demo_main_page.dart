@@ -4,13 +4,14 @@ import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/course/presentation/pages/courses_inProgress_screen.dart';
 import 'package:project1/features/demo/domain/entities/demo_entity.dart';
-import 'package:project1/features/department/presentation/cubit/department_cubit.dart';
-import 'package:project1/features/department/presentation/cubit/department_state.dart';
-import 'package:project1/features/department/presentation/cubit/main_page_switch_cubit.dart';
+import 'package:project1/features/demo/presentation/cubit/department%20cubit/department_cubit.dart';
+import 'package:project1/features/demo/presentation/cubit/department_state.dart';
+import 'package:project1/features/demo/presentation/cubit/main_page_switch_cubit.dart';
+import 'package:project1/features/demo/presentation/widgets/demo_main_page_widget/header_widget.dart';
+import 'package:project1/features/demo/presentation/widgets/demo_main_page_widget/item_card_widget.dart';
+import 'package:project1/features/demo/presentation/widgets/demo_main_page_widget/main_action_sheet.dart';
+import 'package:project1/features/demo/presentation/widgets/demo_main_page_widget/toggle_switch_widget.dart';
 import 'package:project1/l10n/app_localizations.dart';
-import '../widgets/header_widget.dart';
-import '../widgets/toggle_switch_widget.dart';
-import '../widgets/item_card_widget.dart';
 
 class DemoMainPage extends StatelessWidget {
   final DemoEntity demo;
@@ -31,30 +32,29 @@ class DemoMainPage extends StatelessWidget {
         ),
       ],
       child: Scaffold(
-        floatingActionButton: FloatingActionButton.extended(
-  backgroundColor: Colors.orangeAccent,
-  onPressed: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => CoursesInProgressScreen(
-          demoId: demo.id!,
-        ),
-      ),
-    );
-  },
-  icon: const Icon(
-    Icons.play_circle_outline,
-    color: Colors.white,
-  ),
-  label: const Text(
-    "Courses",
-    style: TextStyle(
-      color: Colors.white,
-      fontWeight: FontWeight.bold,
-    ),
-  ),
-),
+        floatingActionButton: demo.isOwner == true
+            ? FloatingActionButton.extended(
+                backgroundColor: theme.colorScheme.tertiary,
+                elevation: 6,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(32),
+                ),
+                onPressed: () {
+                  showModalBottomSheet(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(24),
+                      ),
+                    ),
+                    context: context,
+                    builder: (BuildContext context) {
+                      return MainActionsSheet(demoId: demo.id!);
+                    },
+                  );
+                },
+                label: const Icon(Icons.adjust_outlined, color: Colors.white),
+              )
+            : null,
         backgroundColor: theme.scaffoldBackgroundColor,
         body: BlocBuilder<DemoMainPageSwitchCubit, DemoTab>(
           builder: (context, currentTab) {

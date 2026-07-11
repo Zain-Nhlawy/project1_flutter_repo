@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-  
+
 enum DemoTab { sections, groups }
 
 class DemoMainPageSwitchCubit extends Cubit<DemoTab> {
