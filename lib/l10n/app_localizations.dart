@@ -518,6 +518,30 @@ abstract class AppLocalizations {
   /// **'No section found'**
   String get noSectionFound;
 
+  /// No description provided for @usersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Users'**
+  String get usersTitle;
+
+  /// No description provided for @usersEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No users yet'**
+  String get usersEmptyTitle;
+
+  /// No description provided for @usersEmptySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Users will show up here once added.'**
+  String get usersEmptySubtitle;
+
+  /// No description provided for @usersErrorGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong while loading users.'**
+  String get usersErrorGeneric;
+
   /// No description provided for @pleaseEnterEmail.
   ///
   /// In en, this message translates to:

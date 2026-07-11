@@ -83,6 +83,10 @@
 "limitReachedSnackBar":"تم تجاوز حد الخطة , يرجى الترقية للحصول على المزيد ",
 "addSection":"اضافة",
 "noSectionFound":"لا يوجد اقسام متاحة",
+  "usersTitle": "المستخدمون",
+  "usersEmptyTitle": "لا يوجد مستخدمون بعد",
+  "usersEmptySubtitle": "سيظهر المستخدمون هنا بمجرد إضافتهم.",
+  "usersErrorGeneric": "حدث خطأ أثناء تحميل المستخدمين.",
 
 
 

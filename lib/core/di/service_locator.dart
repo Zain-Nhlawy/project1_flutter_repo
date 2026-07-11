@@ -43,13 +43,18 @@ import 'package:project1/features/course/upload_photo/domain/use_case/upload_pho
 import 'package:project1/features/course/upload_photo/presentation/cubit/upload_photo_course_cubit.dart';
 import 'package:project1/features/demo/data/data_sources/data_payment_data_source.dart';
 import 'package:project1/features/demo/data/data_sources/demo_remote_data_source.dart';
+import 'package:project1/features/demo/data/data_sources/demo_users_remote_data_source.dart';
 import 'package:project1/features/demo/data/repository/demo_repository.dart';
 import 'package:project1/features/demo/data/repository/demo_repository_impl.dart';
+import 'package:project1/features/demo/data/repository/demo_user_repository_impl.dart';
 import 'package:project1/features/demo/data/repository/payment%20repo/demo_payment_repository_impl.dart';
 import 'package:project1/features/demo/domain/repository/demo_payment_repository.dart';
+import 'package:project1/features/demo/domain/repository/demo_users_repository.dart';
 import 'package:project1/features/demo/domain/use%20case/demo_payment_usecase.dart';
+import 'package:project1/features/demo/domain/use%20case/demo_users_usecase.dart';
 import 'package:project1/features/demo/domain/use%20case/demos_usecase.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20cubit/demo_cubit.dart';
+import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/department%20cubit/department_cubit.dart';
 import 'package:project1/features/department/data/data_sources/department_data_source.dart';
 import 'package:project1/features/department/domain/repository/department_repository.dart';
@@ -238,6 +243,24 @@ void setupDI() {
     ),
   );
 
+  getIt.registerLazySingleton<DemoUsersRemoteDataSource>(
+  () => DemoUsersRemoteDataSourceImpl(dio: getIt<DioClient>().dio),
+);
+
+getIt.registerLazySingleton<DemoUsersRepository>(
+  () => DemoUserRepositoryImpl(
+    remoteDataSource: getIt<DemoUsersRemoteDataSource>(),
+  ),
+);
+
+getIt.registerLazySingleton<DemoUsersUsecase>(
+  () => DemoUsersUsecase(repository: getIt<DemoUsersRepository>()),
+);
+
+getIt.registerFactory<DemoUserCubit>(
+  () => DemoUserCubit(getUsersUseCase: getIt<DemoUsersUsecase>()),
+);
+
   getIt.registerLazySingleton(
     () => DemoPaymentUseCase(getIt<DemoPaymentRepository>()),
   );
@@ -266,6 +289,9 @@ void setupDI() {
   getIt.registerFactory<DepartmentCubit>(
     () => DepartmentCubit(getIt<GetDepartmentUseCase>()),
   );
+
+
+
 
   //////////////// department //////////////////////////
 

@@ -107,6 +107,10 @@
 "limitReachedSnackBar":"This plan limit has been reached , please upgrade the plan",
 "addSection":"Add",
 "noSectionFound":"No section found",
+  "usersTitle": "Users",
+  "usersEmptyTitle": "No users yet",
+  "usersEmptySubtitle": "Users will show up here once added.",
+  "usersErrorGeneric": "Something went wrong while loading users.",
 
 
 

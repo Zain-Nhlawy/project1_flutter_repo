@@ -5,7 +5,7 @@ import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/course/presentation/pages/courses_inProgress_screen.dart';
 import 'package:project1/features/demo/domain/entities/demo_entity.dart';
 import 'package:project1/features/demo/presentation/cubit/department%20cubit/department_cubit.dart';
-import 'package:project1/features/demo/presentation/cubit/department_state.dart';
+import 'package:project1/features/demo/presentation/cubit/department%20cubit/department_state.dart';
 import 'package:project1/features/demo/presentation/cubit/main_page_switch_cubit.dart';
 import 'package:project1/features/demo/presentation/widgets/demo_main_page_widget/header_widget.dart';
 import 'package:project1/features/demo/presentation/widgets/demo_main_page_widget/item_card_widget.dart';

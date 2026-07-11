@@ -233,6 +233,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noSectionFound => 'No section found';
 
   @override
+  String get usersTitle => 'Users';
+
+  @override
+  String get usersEmptyTitle => 'No users yet';
+
+  @override
+  String get usersEmptySubtitle => 'Users will show up here once added.';
+
+  @override
+  String get usersErrorGeneric => 'Something went wrong while loading users.';
+
+  @override
   String get pleaseEnterEmail => 'Please enter your email address';
 
   @override
