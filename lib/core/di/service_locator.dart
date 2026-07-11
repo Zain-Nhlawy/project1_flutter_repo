@@ -64,6 +64,15 @@ import 'package:project1/features/profile/data/data_sources/profile_remote_datas
 import 'package:project1/features/profile/data/repository/profile_repository_impl.dart';
 import 'package:project1/features/profile/domain/repository/profile_repository.dart';
 import 'package:project1/features/profile/domain/use_case/update_profile_image_usecase.dart';
+import 'package:project1/features/section/data/data_sources/section_remote_datasource.dart';
+import 'package:project1/features/section/data/repository/section_repository_impl.dart';
+import 'package:project1/features/section/domain/repository/section_repository.dart';
+import 'package:project1/features/section/domain/use_case/create_section_usecase.dart';
+import 'package:project1/features/section/domain/use_case/delete_section_usecase.dart';
+import 'package:project1/features/section/domain/use_case/get_section_usecase.dart';
+import 'package:project1/features/section/domain/use_case/get_sections_usecase.dart';
+import 'package:project1/features/section/domain/use_case/update_section_usecase.dart';
+import 'package:project1/features/section/presentation/cubit/section_cubit.dart';
 
 final getIt = GetIt.instance;
 
@@ -333,19 +342,84 @@ getIt.registerFactory<DemoUserCubit>(
   );
   getIt.registerLazySingleton(() => DeleteCourseUseCase(getIt()));
 
-  // cubit
-  getIt.registerFactory<UploadPhotoCourseCubit>(
-    () => UploadPhotoCourseCubit(getIt<UploadPhotoCourseUseCase>()),
-  );
-  getIt.registerFactory<CourseCubit>(
-    () => CourseCubit(
-      getTagsUseCase: getIt<GetTagsUseCase>(),
-      createCourseUseCase: getIt<CreateCourseUseCase>(),
-      getDemoCoursesUseCase: getIt<GetDemoCoursesUseCase>(),
-      updateCourseUseCase: getIt<UpdateCourseUseCase>(),
-      deleteCourseUseCase: getIt(),
-    ),
-  );
+// cubit
+getIt.registerFactory<UploadPhotoCourseCubit>(
+  () => UploadPhotoCourseCubit(
+    getIt<UploadPhotoCourseUseCase>(),
+  ),
+);
+getIt.registerFactory<CourseCubit>(
+  () => CourseCubit(
+    getTagsUseCase: getIt<GetTagsUseCase>(),
+    createCourseUseCase: getIt<CreateCourseUseCase>(),
+    getDemoCoursesUseCase: getIt<GetDemoCoursesUseCase>(),
+    updateCourseUseCase: getIt<UpdateCourseUseCase>(),
+    deleteCourseUseCase: getIt(),
+  ),
+);
 
-  //////////////////////// Course ////////////////////////
+
+//////////////////////// Course ////////////////////////
+
+
+
+//////////////////////// Section ////////////////////////
+
+// datasource
+getIt.registerLazySingleton<SectionRemoteDataSource>(
+  () => SectionRemoteDataSource(
+    getIt<DioClient>(),
+  ),
+);
+
+// repository
+getIt.registerLazySingleton<SectionRepository>(
+  () => SectionRepositoryImpl(
+    getIt<SectionRemoteDataSource>(),
+  ),
+);
+
+// usecases
+getIt.registerLazySingleton<CreateSectionUseCase>(
+  () => CreateSectionUseCase(
+    getIt<SectionRepository>(),
+  ),
+);
+
+getIt.registerLazySingleton<GetSectionUseCase>(
+  () => GetSectionUseCase(
+    getIt<SectionRepository>(),
+  ),
+);
+
+getIt.registerLazySingleton<UpdateSectionUseCase>(
+  () => UpdateSectionUseCase(
+    getIt<SectionRepository>(),
+  ),
+);
+
+getIt.registerLazySingleton<DeleteSectionUseCase>(
+  () => DeleteSectionUseCase(
+    getIt<SectionRepository>(),
+  ),
+);
+
+getIt.registerLazySingleton<GetSectionsUseCase>(
+  () => GetSectionsUseCase(
+    getIt<SectionRepository>(),
+  ),
+);
+
+// cubit
+getIt.registerFactory<SectionCubit>(
+  () => SectionCubit(
+    createSectionUseCase: getIt<CreateSectionUseCase>(),
+    getSectionUseCase: getIt<GetSectionUseCase>(),
+    updateSectionUseCase: getIt<UpdateSectionUseCase>(),
+    deleteSectionUseCase: getIt<DeleteSectionUseCase>(),
+    getSectionsUseCase: getIt(),
+  ),
+);
+
+//////////////////////// Section ////////////////////////
 }

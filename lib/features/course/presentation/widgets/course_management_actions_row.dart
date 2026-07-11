@@ -5,10 +5,12 @@ import 'package:project1/features/section/presentation/pages/section_management_
 import 'package:project1/l10n/app_localizations.dart';
 
 class CourseManagementActionsRow extends StatelessWidget {
+  final String courseId;
   final String courseTitle;
 
   const CourseManagementActionsRow({
     super.key,
+    required this.courseId,
     required this.courseTitle,
   });
 
@@ -26,7 +28,9 @@ class CourseManagementActionsRow extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => PlaceholderScreen(title: localizations.manageFaq),
+                  builder: (_) => PlaceholderScreen(
+                    title: localizations.manageFaq,
+                  ),
                 ),
               );
             },
@@ -41,7 +45,10 @@ class CourseManagementActionsRow extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => SectionManagementScreen(courseTitle: courseTitle),
+                  builder: (_) => SectionManagementScreen(
+                    courseId: courseId,
+                    courseTitle: courseTitle,
+                  ),
                 ),
               );
             },
