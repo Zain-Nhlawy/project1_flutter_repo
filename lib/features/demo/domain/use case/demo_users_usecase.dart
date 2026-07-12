@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:project1/core/shared/entities/user_entity.dart';
+import 'package:project1/features/demo/shared/entities/user_entity.dart';
 import 'package:project1/features/demo/domain/repository/demo_users_repository.dart';
 
 class DemoUsersUsecase {

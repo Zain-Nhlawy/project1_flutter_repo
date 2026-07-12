@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:project1/core/shared/models/user_model.dart';
+import 'package:project1/features/demo/shared/models/user_model.dart';
 
 
 abstract class DemoUsersRemoteDataSource {

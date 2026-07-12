@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project1/core/shared/entities/user_entity.dart';
+import 'package:project1/features/demo/shared/entities/user_entity.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_state.dart';
 import 'package:project1/features/demo/presentation/widgets/demo_users_card.dart';
