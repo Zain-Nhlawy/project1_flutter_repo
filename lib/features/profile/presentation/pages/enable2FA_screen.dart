@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
@@ -23,8 +22,6 @@ class Enable2FAScreen extends StatefulWidget {
 class _Enable2FAScreenState extends State<Enable2FAScreen> {
   final TextEditingController codeController = TextEditingController();
 
-  bool isLoading = false;
-
   @override
   void dispose() {
     codeController.dispose();
@@ -33,10 +30,6 @@ class _Enable2FAScreenState extends State<Enable2FAScreen> {
 
   void _enable2FA() {
     if (codeController.text.trim().isEmpty) return;
-
-    setState(() {
-      isLoading = true;
-    });
 
     context.read<AuthCubit>().turnOn2FA(
           tfaCode: codeController.text.trim(),
@@ -52,12 +45,6 @@ class _Enable2FAScreenState extends State<Enable2FAScreen> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is TurnOn2FASuccess) {
-          if (!mounted) return;
-
-          setState(() {
-            isLoading = false;
-          });
-
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.message),
@@ -67,18 +54,18 @@ class _Enable2FAScreenState extends State<Enable2FAScreen> {
           Navigator.pop(context, true);
         }
 
-      if (state is AuthError && state.errors.isNotEmpty) {
-        final messenger = ScaffoldMessenger.of(context);
+        if (state is AuthError && state.errors.isNotEmpty) {
+          final messenger = ScaffoldMessenger.of(context);
 
-        messenger.clearSnackBars();
+          messenger.clearSnackBars();
 
-        messenger.showSnackBar(
-          SnackBar(
-            content: Text(state.errors.first),
-            backgroundColor: AppColors.error,
-          ),
-        );
-      }
+          messenger.showSnackBar(
+            SnackBar(
+              content: Text(state.errors.first),
+              backgroundColor: AppColors.error,
+            ),
+          );
+        }
       },
       child: Scaffold(
         backgroundColor: AppColors.background,
@@ -137,17 +124,23 @@ class _Enable2FAScreenState extends State<Enable2FAScreen> {
                   ),
                 ),
                 const SizedBox(height: 30),
-                SizedBox(
-                  width: double.infinity,
-                  height: 55,
-                  child: ElevatedButton(
-                    onPressed: isLoading ? null : _enable2FA,
-                    child: isLoading
-                        ? const CircularProgressIndicator(
-                            color: Colors.white,
-                          )
-                        : Text(local.enable),
-                  ),
+                BlocBuilder<AuthCubit, AuthState>(
+                  builder: (context, state) {
+                    final loading = state is AuthLoading;
+
+                    return SizedBox(
+                      width: double.infinity,
+                      height: 55,
+                      child: ElevatedButton(
+                        onPressed: loading ? null : _enable2FA,
+                        child: loading
+                            ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : Text(local.enable),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),

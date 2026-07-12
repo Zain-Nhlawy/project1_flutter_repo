@@ -18,6 +18,12 @@ Failure mapExceptionToFailure(Exception exception) {
     case NotFoundException():
       return NotFoundFailure(exception.message);
 
+    case BadRequestException():
+      return BadRequestFailure(
+        exception.message,
+        errors: exception.errors,
+    );
+
     default:
       return const UnknownFailure();
   }

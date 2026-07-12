@@ -258,5 +258,9 @@
 "free": "مجاني",
 "deleteCourseTitle": "حذف الكورس",
 "deleteCourseConfirmation": "هل أنت متأكد من حذف هذا الكورس؟",
-"failedToUploadImage": "فشل رفع الصورة"
+"failedToUploadImage": "فشل رفع الصورة",
+"demoCourses": "كورسات الديمو",
+  "demoCoursesDescription": "الكورسات المتاحة في الديمو الخاص بك",
+  "availableCourses": "كورسات متاحة",
+  "courses": "الكورسات"
 }

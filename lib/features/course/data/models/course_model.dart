@@ -18,10 +18,13 @@ class CourseModel extends CourseEntity {
     super.sectionsCount = 0,
     super.totalLessons = 0,
     super.totalDuration = 0,
+    super.isPublished = false,
+
   }) : super(
           createdAt: createdAt ?? DateTime.now(),
           updatedAt: updatedAt ?? DateTime.now(),
         );
+
 
   factory CourseModel.fromJson(Map<String, dynamic> json) {
     return CourseModel(
@@ -43,6 +46,7 @@ class CourseModel extends CourseEntity {
       demo: json['demo'] != null
           ? DemoModel.fromJson(json['demo'])
           : null,
+      isPublished: json['isPublished'] ?? false,
       createdAt: DateTime.tryParse(
             json['createdAt'] ?? '',
           ) ??
@@ -52,13 +56,15 @@ class CourseModel extends CourseEntity {
           ) ??
           DateTime.now(),
       sectionsCount:
-          json['sectionsCount'] as int? ?? 0,
+          json['sectionsCount'] ?? 0,
       totalLessons:
-          json['lessonCount'] as int? ?? 0,
+          json['lessonCount'] ?? 0,
       totalDuration:
-          json['totalDuration'] as int? ?? 0,
+          json['totalDuration'] ?? 0,
     );
   }
+
+
 
   @override
   Map<String, dynamic> toJson() {
@@ -70,6 +76,7 @@ class CourseModel extends CourseEntity {
       "demoId": demoId,
       "price": price,
       "tagIds": tagIds,
+      "isPublished": isPublished,
     };
   }
 }

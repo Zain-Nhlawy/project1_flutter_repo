@@ -1,86 +1,62 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project1/core/errors/failures.dart';
 import 'package:project1/features/course/domain/entities/course_entity.dart';
 import 'package:project1/features/course/domain/use_case/delete_course_usecase.dart';
-import 'package:project1/features/course/domain/use_case/get_tags_usecase.dart';
 import 'package:project1/features/course/domain/use_case/create_course_usecase.dart';
 import 'package:project1/features/course/domain/use_case/get_demo_courses_usecase.dart';
 import 'package:project1/features/course/domain/use_case/update_course_usecase.dart';
 import 'package:project1/features/course/presentation/cubit/course_state.dart';
 
 class CourseCubit extends Cubit<CourseState> {
-  final GetTagsUseCase getTagsUseCase;
   final CreateCourseUseCase createCourseUseCase;
   final GetDemoCoursesUseCase getDemoCoursesUseCase;
   final UpdateCourseUseCase updateCourseUseCase;
   final DeleteCourseUseCase deleteCourseUseCase;
 
   CourseCubit({
-    required this.getTagsUseCase,
     required this.createCourseUseCase,
     required this.getDemoCoursesUseCase,
     required this.updateCourseUseCase,
     required this.deleteCourseUseCase,
-  }) : super(CourseInitial());
+  }) : super(const CourseInitial());
 
-  Future<void> fetchTags() async {
-    emit(CourseTagsLoading());
-    try {
-      final tags = await getTagsUseCase();
-      emit(CourseTagsLoaded(tags));
-    } catch (e) {
-      emit(CourseTagsError(e.toString()));
-    }
+  List<String> _errorsOf(Failure failure) {
+    return failure.errors ?? [failure.message];
   }
 
   Future<void> createCourse(CourseEntity course) async {
-    emit(CourseCreating());
-    try {
-      final createdCourse = await createCourseUseCase(course);
-      emit(CourseCreated(createdCourse));
-    } catch (e) {
-      emit(CourseCreateError(e.toString()));
-    }
+    emit(const CourseCreating());
+    final result = await createCourseUseCase(course);
+    result.fold(
+      (failure) => emit(CourseCreateError(_errorsOf(failure))),
+      (createdCourse) => emit(CourseCreated(createdCourse)),
+    );
   }
 
   Future<void> getDemoCourses(String demoId) async {
-    emit(CourseLoading());
-    try {
-      final courses = await getDemoCoursesUseCase(demoId);
-      emit(CourseLoaded(courses));
-    } catch (e) {
-      emit(CourseError(e.toString()));
-    }
+    emit(const CourseLoading());
+    final result = await getDemoCoursesUseCase(demoId);
+    result.fold(
+      (failure) => emit(CourseError(_errorsOf(failure))),
+      (courses) => emit(CourseLoaded(courses)),
+    );
   }
 
-  Future<void> updateCourse(
-    String courseId,
-    CourseEntity course,
-  ) async {
-    emit(CourseUpdating());
-    try {
-      final updated =
-          await updateCourseUseCase(courseId, course);
-
-      emit(CourseUpdated(updated));
-    } catch (e) {
-      emit(CourseUpdateError(e.toString()));
-    }
+  Future<void> updateCourse(String courseId, CourseEntity course) async {
+    emit(const CourseUpdating());
+    final result = await updateCourseUseCase(courseId, course);
+    result.fold(
+      (failure) => emit(CourseUpdateError(_errorsOf(failure))),
+      (updated) => emit(CourseUpdated(updated)),
+    );
   }
 
   Future<void> deleteCourse(String courseId) async {
-    emit(CourseDeleting());
-
-    try {
-      await deleteCourseUseCase(courseId);
-
-      emit(CourseDeleted());
-
-    } catch (e) {
-      emit(
-        CourseDeleteError(
-          e.toString(),
-        ),
-      );
-    }
+    emit(const CourseDeleting());
+    final result = await deleteCourseUseCase(courseId);
+    result.fold(
+      (failure) => emit(CourseDeleteError(_errorsOf(failure))),
+      (_) => emit(const CourseDeleted()),
+    );
   }
 }

@@ -697,4 +697,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get failedToUploadImage => 'فشل رفع الصورة';
+
+  @override
+  String get demoCourses => 'كورسات الديمو';
+
+  @override
+  String get demoCoursesDescription => 'الكورسات المتاحة في الديمو الخاص بك';
+
+  @override
+  String get availableCourses => 'كورسات متاحة';
+
+  @override
+  String get courses => 'الكورسات';
 }

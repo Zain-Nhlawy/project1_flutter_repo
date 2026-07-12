@@ -700,4 +700,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get failedToUploadImage => 'Failed to upload image';
+
+  @override
+  String get demoCourses => 'Demo Courses';
+
+  @override
+  String get demoCoursesDescription => 'Courses available in your demo';
+
+  @override
+  String get availableCourses => 'Available Courses';
+
+  @override
+  String get courses => 'Courses';
 }

@@ -53,6 +53,14 @@ class NotFoundException extends AppException {
   ]);
 }
 
+///Bad Request
+class BadRequestException extends AppException {
+  const BadRequestException(
+    super.message, {
+    super.errors,
+  });
+}
+
 
 /// Unknown
 class UnknownException extends AppException {

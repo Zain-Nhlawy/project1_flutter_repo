@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import 'package:project1/core/errors/failures.dart';
 import 'package:project1/features/course/domain/entities/course_entity.dart';
 import 'package:project1/features/course/domain/repository/course_repository.dart';
 
@@ -6,7 +8,7 @@ class CreateCourseUseCase {
 
   CreateCourseUseCase(this.repository);
 
-  Future<CourseEntity> call(CourseEntity course) async {
-    return await repository.createCourse(course);
+  Future<Either<Failure, CourseEntity>> call(CourseEntity course) {
+    return repository.createCourse(course);
   }
 }

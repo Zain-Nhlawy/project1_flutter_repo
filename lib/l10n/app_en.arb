@@ -286,5 +286,9 @@
 "free": "Free",
 "deleteCourseTitle": "Delete Course",
 "deleteCourseConfirmation": "Are you sure you want to delete this course?",
-"failedToUploadImage": "Failed to upload image"
+"failedToUploadImage": "Failed to upload image",
+  "demoCourses": "Demo Courses",
+  "demoCoursesDescription": "Courses available in your demo",
+  "availableCourses": "Available Courses",
+  "courses": "Courses"
 }

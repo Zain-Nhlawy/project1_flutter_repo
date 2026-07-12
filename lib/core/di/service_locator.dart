@@ -36,6 +36,7 @@ import 'package:project1/features/course/domain/use_case/get_demo_courses_usecas
 import 'package:project1/features/course/domain/use_case/get_tags_usecase.dart';
 import 'package:project1/features/course/domain/use_case/update_course_usecase.dart';
 import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
+import 'package:project1/features/course/presentation/cubit/tags_cubit.dart';
 import 'package:project1/features/course/upload_photo/data/data_sources/upload_photo_course_remote_datasource.dart';
 import 'package:project1/features/course/upload_photo/data/repository/upload_photo_course_repositpry_impl.dart';
 import 'package:project1/features/course/upload_photo/domain/repository/upload_photo_course_repository.dart';
@@ -348,9 +349,12 @@ getIt.registerFactory<UploadPhotoCourseCubit>(
     getIt<UploadPhotoCourseUseCase>(),
   ),
 );
+
+getIt.registerFactory<TagsCubit>(
+  () => TagsCubit(getTagsUseCase: getIt<GetTagsUseCase>()),
+);
 getIt.registerFactory<CourseCubit>(
   () => CourseCubit(
-    getTagsUseCase: getIt<GetTagsUseCase>(),
     createCourseUseCase: getIt<CreateCourseUseCase>(),
     getDemoCoursesUseCase: getIt<GetDemoCoursesUseCase>(),
     updateCourseUseCase: getIt<UpdateCourseUseCase>(),

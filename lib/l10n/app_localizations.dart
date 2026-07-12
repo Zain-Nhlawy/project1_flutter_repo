@@ -1429,6 +1429,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to upload image'**
   String get failedToUploadImage;
+
+  /// No description provided for @demoCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo Courses'**
+  String get demoCourses;
+
+  /// No description provided for @demoCoursesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Courses available in your demo'**
+  String get demoCoursesDescription;
+
+  /// No description provided for @availableCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Available Courses'**
+  String get availableCourses;
+
+  /// No description provided for @courses.
+  ///
+  /// In en, this message translates to:
+  /// **'Courses'**
+  String get courses;
 }
 
 class _AppLocalizationsDelegate

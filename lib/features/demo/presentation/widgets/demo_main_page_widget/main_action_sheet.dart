@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/core/di/service_locator.dart';
-import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
-import 'package:project1/features/auth/presentation/cubit/user_state.dart';
-import 'package:project1/features/course/presentation/pages/courses_inProgress_screen.dart';
+import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
+import 'package:project1/features/course/presentation/pages/courses_selection_screen.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_cubit.dart';
-import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_state.dart' hide UserState;
 import 'package:project1/features/demo/presentation/pages/demo_users_page.dart';
 
 class MainActionsSheet extends StatelessWidget {
@@ -31,7 +29,9 @@ class MainActionsSheet extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => CoursesInProgressScreen(demoId: demoId),
+                    builder: (_) => CoursesSelectionScreen(
+                      demoId: demoId,
+                    ),
                   ),
                 );
               },

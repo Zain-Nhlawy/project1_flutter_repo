@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:project1/core/errors/exceptions.dart';
+import 'package:project1/core/errors/error_mapper.dart';
 import 'package:project1/core/errors/failures.dart';
 import 'package:project1/core/storage/secure_storage.dart';
 import 'package:project1/core/storage/storage_keys.dart';
@@ -15,14 +15,12 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this.remote, this.storage);
 
   Future<Either<Failure, T>> _handle<T>(Future<T> Function() call) async {
-    try {
-      return Right(await call());
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
-    } on Exception catch (e) {
-      return Left(UnknownFailure(e.toString()));
-    }
+  try {
+    return Right(await call());
+  } on Exception catch (e) {
+    return Left(mapExceptionToFailure(e));
   }
+}
 
   Future<void> _saveTokens(LoginResponse res) async {
     if (res.accessToken != null && res.refreshToken != null) {
