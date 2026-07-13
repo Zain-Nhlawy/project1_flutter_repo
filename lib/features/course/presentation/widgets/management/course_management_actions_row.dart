@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project1/features/course/presentation/pages/PlaceholderScreen.dart';
-import 'package:project1/features/course/presentation/widgets/management_action_tile.dart';
+import 'package:project1/features/course/presentation/widgets/management/management_action_tile.dart';
 import 'package:project1/features/section/presentation/pages/section_management_screen.dart';
 import 'package:project1/l10n/app_localizations.dart';
 

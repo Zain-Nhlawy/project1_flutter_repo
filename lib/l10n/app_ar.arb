@@ -279,5 +279,14 @@
 "demoCourses": "كورسات الديمو",
   "demoCoursesDescription": "الكورسات المتاحة في الديمو الخاص بك",
   "availableCourses": "كورسات متاحة",
-  "courses": "الكورسات"
+  "courses": "الكورسات",
+  "publish":"نشر",
+"publishCourse":"نشر الكورس",
+"publishCourseConfirmation":"هل أنت متأكد من نشر هذا الكورس؟ بعد النشر لن تتمكن من تعديله.",
+"seeMore": "عرض المزيد",
+  "producedBy": "تم إعداده بواسطة",
+  "aboutThisCourse": "عن هذا الكورس",
+  "courseContent": "محتوى الكورس",
+  "courseDetails": "تفاصيل الكورس"
+
 }

@@ -61,6 +61,7 @@ class CourseModel extends CourseEntity {
           json['lessonCount'] ?? 0,
       totalDuration:
           json['totalDuration'] ?? 0,
+
     );
   }
 

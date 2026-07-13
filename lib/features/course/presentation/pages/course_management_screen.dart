@@ -6,14 +6,15 @@ import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/features/course/domain/entities/course_entity.dart';
 import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
 import 'package:project1/features/course/presentation/cubit/course_state.dart';
-import 'package:project1/features/course/presentation/widgets/course_delete_button.dart';
-import 'package:project1/features/course/presentation/widgets/course_edit_save_button.dart';
-import 'package:project1/features/course/presentation/widgets/course_image_picker.dart';
-import 'package:project1/features/course/presentation/widgets/course_management_actions_row.dart';
-import 'package:project1/features/course/presentation/widgets/course_stats_card.dart';
+import 'package:project1/features/course/presentation/widgets/management/course_delete_button.dart';
+import 'package:project1/features/course/presentation/widgets/management/course_edit_save_button.dart';
+import 'package:project1/features/course/presentation/widgets/management/course_image_picker.dart';
+import 'package:project1/features/course/presentation/widgets/management/course_management_actions_row.dart';
+import 'package:project1/features/course/presentation/widgets/management/course_publish_button.dart';
+import 'package:project1/features/course/presentation/widgets/management/course_stats_card.dart';
 import 'package:project1/features/course/presentation/widgets/course_tags_section.dart';
 import 'package:project1/features/course/presentation/widgets/custom_text_field.dart';
-import 'package:project1/features/course/presentation/widgets/visibility_dropdown.dart';
+import 'package:project1/features/course/presentation/widgets/management/visibility_dropdown.dart';
 import 'package:project1/features/course/upload_photo/presentation/cubit/upload_photo_course_cubit.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
@@ -100,9 +101,11 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
       });
     }
   }
+
   bool get isValid {
     return titleController.text.isNotEmpty && descriptionController.text.isNotEmpty;
   }
+
   void toggleEditOrSave() async {
     final localizations = AppLocalizations.of(context)!;
     if (isEditing && !isValid) {
@@ -152,6 +155,7 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
     );
     context.read<CourseCubit>().updateCourse(widget.courseId, course);
   }
+
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
@@ -161,23 +165,32 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
           Navigator.pop(context, true);
         }
         if (state is CourseUpdateError) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(state.errors.isNotEmpty ? state.errors.first : ''),
-      backgroundColor: Colors.red,
-    ),
-  );
-}
-if (state is CourseDeleteError) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(state.errors.isNotEmpty ? state.errors.first : ''),
-      backgroundColor: Colors.red,
-    ),
-  );
-}
-
-
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.errors.isNotEmpty ? state.errors.first : ''),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+        if (state is CourseDeleteError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.errors.isNotEmpty ? state.errors.first : ''),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+        if (state is CoursePublished) {
+          Navigator.pop(context, true);
+        }
+        if (state is CoursePublishError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.errors.isNotEmpty ? state.errors.first : ''),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
       },
       child: Scaffold(
         backgroundColor: AppColors.background,
@@ -277,6 +290,8 @@ if (state is CourseDeleteError) {
               ),
               const SizedBox(height: 14),
               CourseDeleteButton(courseId: widget.courseId),
+              const SizedBox(height: 14),
+              CoursePublishButton(courseId: widget.courseId),
               const SizedBox(height: 35),
             ],
           ),

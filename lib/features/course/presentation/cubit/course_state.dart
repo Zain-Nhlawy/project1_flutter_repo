@@ -77,3 +77,47 @@ class CourseDeleteError extends CourseState {
   final List<String> errors;
   const CourseDeleteError(this.errors);
 }
+
+class CoursePublishing extends CourseState {
+  const CoursePublishing();
+}
+
+class CoursePublished extends CourseState {
+  final CourseEntity course;
+
+  const CoursePublished(this.course);
+}
+
+class CoursePublishError extends CourseState {
+  final List<String> errors;
+
+  const CoursePublishError(this.errors);
+}
+
+class CourseDetailsLoading extends CourseState {
+  const CourseDetailsLoading();
+}
+
+class CourseDetailsLoaded extends CourseState {
+  final CourseEntity course;
+  const CourseDetailsLoaded(this.course);
+}
+
+class CourseDetailsError extends CourseState {
+  final List<String> errors;
+  const CourseDetailsError(this.errors);
+}
+
+class CourseAssetLoading extends CourseState {
+  const CourseAssetLoading();
+}
+
+class CourseAssetLoaded extends CourseState {
+  final CourseEntity course;
+  const CourseAssetLoaded(this.course);
+}
+
+class CourseAssetError extends CourseState {
+  final List<String> errors;
+  const CourseAssetError(this.errors);
+}

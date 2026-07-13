@@ -736,4 +736,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get courses => 'Courses';
+
+  @override
+  String get publish => 'Publish';
+
+  @override
+  String get publishCourse => 'Publish Course';
+
+  @override
+  String get publishCourseConfirmation =>
+      'Are you sure you want to publish this course? After publishing, it can no longer be edited.';
+
+  @override
+  String get seeMore => 'See More';
+
+  @override
+  String get producedBy => 'Produced by';
+
+  @override
+  String get aboutThisCourse => 'About this course';
+
+  @override
+  String get courseContent => 'Course Content';
+
+  @override
+  String get courseDetails => 'Course Details';
 }

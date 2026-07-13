@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
 import 'package:project1/features/course/presentation/cubit/course_state.dart';
+import 'package:project1/features/course/presentation/pages/course_details_screen.dart';
 import 'package:project1/features/course/presentation/widgets/course_card.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
@@ -77,18 +79,29 @@ class DemoCoursesScreen extends StatelessWidget {
               ),
               const SizedBox(height:20),
               ...demoCourses.map(
-                (course){
-
+                (course) {
                   return CourseCard(
-                    id:course.id,
-                    title:course.title,
-                    companyName:course.demo?.name ?? '',
-                    imageUrl:course.imagePath,
-                    price:course.price,
-                    description:course.description,
-                    tags:course.tags,
-                    visibility:course.visibility,
-                    onTap:(){
+                    id: course.id,
+                    title: course.title,
+                    companyName: course.demo?.name ?? '',
+                    imageUrl: course.imagePath,
+                    price: course.price,
+                    description: course.description,
+                    tags: course.tags,
+                    visibility: course.visibility,
+                    isPublished: course.isPublished,
+                    onSeeMore: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => BlocProvider(
+                            create: (_) => getIt<CourseCubit>(),
+                            child: CourseDetailsScreen(
+                              courseId: course.id,
+                            ),
+                          ),
+                        ),
+                      );
                     },
                   );
                 },

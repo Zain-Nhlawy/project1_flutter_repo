@@ -3,21 +3,30 @@ import 'package:project1/core/errors/failures.dart';
 import 'package:project1/features/course/domain/entities/course_entity.dart';
 import 'package:project1/features/course/domain/use_case/delete_course_usecase.dart';
 import 'package:project1/features/course/domain/use_case/create_course_usecase.dart';
+import 'package:project1/features/course/domain/use_case/get_course_usecase.dart';
+import 'package:project1/features/course/domain/use_case/get_demo_course_usecase.dart';
 import 'package:project1/features/course/domain/use_case/get_demo_courses_usecase.dart';
+import 'package:project1/features/course/domain/use_case/publish_course_usecase.dart';
 import 'package:project1/features/course/domain/use_case/update_course_usecase.dart';
 import 'package:project1/features/course/presentation/cubit/course_state.dart';
 
 class CourseCubit extends Cubit<CourseState> {
   final CreateCourseUseCase createCourseUseCase;
+  final GetCourseUseCase getCourseUseCase;
   final GetDemoCoursesUseCase getDemoCoursesUseCase;
+  final GetDemoCourseUseCase getDemoCourseUseCase;
   final UpdateCourseUseCase updateCourseUseCase;
   final DeleteCourseUseCase deleteCourseUseCase;
+  final PublishCourseUseCase publishCourseUseCase;
 
   CourseCubit({
     required this.createCourseUseCase,
+    required this.getCourseUseCase,
     required this.getDemoCoursesUseCase,
+    required this.getDemoCourseUseCase,
     required this.updateCourseUseCase,
     required this.deleteCourseUseCase,
+    required this.publishCourseUseCase,
   }) : super(const CourseInitial());
 
   List<String> _errorsOf(Failure failure) {
@@ -33,12 +42,34 @@ class CourseCubit extends Cubit<CourseState> {
     );
   }
 
+  
+Future<void> getCourse(String courseId) async {
+  emit(const CourseDetailsLoading());
+  final result = await getCourseUseCase(courseId);
+  result.fold(
+    (failure) => emit(CourseDetailsError(_errorsOf(failure))),
+    (course) => emit(CourseDetailsLoaded(course)),
+  );
+}
+
   Future<void> getDemoCourses(String demoId) async {
     emit(const CourseLoading());
     final result = await getDemoCoursesUseCase(demoId);
     result.fold(
       (failure) => emit(CourseError(_errorsOf(failure))),
       (courses) => emit(CourseLoaded(courses)),
+    );
+  }
+
+  Future<void> getDemoCourse({
+    required String demoId,
+    required String assetId,
+  }) async {
+    emit(const CourseAssetLoading());
+    final result = await getDemoCourseUseCase(demoId: demoId, assetId: assetId);
+    result.fold(
+      (failure) => emit(CourseAssetError(_errorsOf(failure))),
+      (course) => emit(CourseAssetLoaded(course)),
     );
   }
 
@@ -59,4 +90,25 @@ class CourseCubit extends Cubit<CourseState> {
       (_) => emit(const CourseDeleted()),
     );
   }
+
+  Future<void> publishCourse(
+  String courseId,
+) async {
+  emit(const CoursePublishing());
+
+  final result = await publishCourseUseCase(
+    courseId,
+  );
+
+  result.fold(
+    (failure) => emit(
+      CoursePublishError(
+        _errorsOf(failure),
+      ),
+    ),
+    (course) => emit(
+      CoursePublished(course),
+    ),
+  );
+}
 }

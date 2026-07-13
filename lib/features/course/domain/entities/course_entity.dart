@@ -47,5 +47,6 @@ class CourseEntity {
     this.totalDuration = 0,
 
     this.isPublished = false,
+
   });
 }

@@ -1,9 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:project1/features/lesson/presentation/widgets/lesson_connector.dart';
-import 'package:project1/features/lesson/presentation/widgets/lesson_tile.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project1/features/section/presentation/cubit/section_cubit.dart';
+import 'package:project1/features/section/presentation/cubit/section_state.dart';
 
-class CourseTabs extends StatelessWidget {
-  const CourseTabs({super.key});
+class CourseTabs extends StatefulWidget {
+  final String courseId;
+
+  const CourseTabs({
+    super.key,
+    required this.courseId,
+  });
+
+  @override
+  State<CourseTabs> createState() => _CourseTabsState();
+}
+
+class _CourseTabsState extends State<CourseTabs> {
+  @override
+  void initState() {
+    super.initState();
+
+    context.read<SectionCubit>().getSections(
+      courseId: widget.courseId,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +41,7 @@ class CourseTabs extends StatelessWidget {
               Tab(text: "FAQ"),
             ],
           ),
+
           Expanded(
             child: TabBarView(
               children: [
@@ -28,64 +49,86 @@ class CourseTabs extends StatelessWidget {
                   data: Theme.of(context).copyWith(
                     dividerColor: Colors.transparent,
                   ),
-                  child: ListView(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    children: [
-                      Column(
-                        children: [
-                          ExpansionTile(
-                            title: const Text(
-                              "Phase 1: Foundations",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            children: List.generate(
-                              3,
-                              (i) => LessonConnector(
-                                num: i + 1,
-                                isLast: i == 2,
-                                showTopLine: false,
-                                child: LessonTile(num: i + 1),
-                              ),
+                  child: BlocBuilder<SectionCubit, SectionState>(
+                    builder: (context, state) {
+                      if (state.isLoading) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+
+                      if (state.errors != null &&
+                          state.errors!.isNotEmpty) {
+                        return Center(
+                          child: Text(
+                            state.errors!.first,
+                            style: const TextStyle(
+                              color: Colors.red,
                             ),
                           ),
-                          Divider(
-                            height: 1,
-                            thickness: 1,
-                            color: Colors.grey.shade300,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          ExpansionTile(
-                            title: const Text(
-                              "Phase 2: Foundations",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                        );
+                      }
+
+                      if (state.sections.isEmpty) {
+                        return const Center(
+                          child: Text("No sections available"),
+                        );
+                      }
+
+                      return ListView(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 10,
+                        ),
+                        children: state.sections.map((section) {
+                          return Column(
+                            children: [
+                              ExpansionTile(
+                                title: Text(
+                                  section.title,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+
+                                // SectionEntity
+                                // لا تحتوي lessons
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 12,
+                                    ),
+                                    child: Text(
+                                      "No lessons loaded yet",
+                                    ),
+                                  ),
+
+                                  // عند ربط LessonCubit
+                                  /*
+                                  LessonConnector(
+                                    num: 1,
+                                    isLast: true,
+                                    showTopLine: false,
+                                    child: LessonTile(
+                                      num: 1,
+                                    ),
+                                  ),
+                                  */
+                                ],
                               ),
-                            ),
-                            children: List.generate(
-                              3,
-                              (i) => LessonConnector(
-                                num: i + 1,
-                                isLast: i == 2,
-                                showTopLine: false,
-                                child: LessonTile(num: i + 1),
+
+                              Divider(
+                                height: 1,
+                                thickness: 1,
+                                color: Colors.grey.shade300,
                               ),
-                            ),
-                          ),
-                          Divider(
-                            height: 1,
-                            thickness: 1,
-                            color: Colors.grey.shade300,
-                          ),
-                        ],
-                      ),
-                    ],
+                            ],
+                          );
+                        }).toList(),
+                      );
+                    },
                   ),
                 ),
+
                 ListView(
                   padding: const EdgeInsets.all(16),
                   children: [
@@ -96,6 +139,7 @@ class CourseTabs extends StatelessWidget {
                       primary: primary,
                     ),
                     const SizedBox(height: 12),
+
                     _FaqItem(
                       question: "Do I need prior programming experience?",
                       answer:
@@ -103,6 +147,7 @@ class CourseTabs extends StatelessWidget {
                       primary: primary,
                     ),
                     const SizedBox(height: 12),
+
                     _FaqItem(
                       question: "Will I receive a certificate?",
                       answer:
@@ -110,6 +155,7 @@ class CourseTabs extends StatelessWidget {
                       primary: primary,
                     ),
                     const SizedBox(height: 12),
+
                     _FaqItem(
                       question: "Can I access the course on mobile?",
                       answer:
@@ -117,6 +163,7 @@ class CourseTabs extends StatelessWidget {
                       primary: primary,
                     ),
                     const SizedBox(height: 12),
+
                     _FaqItem(
                       question: "How long do I have access to the course?",
                       answer:
@@ -133,6 +180,7 @@ class CourseTabs extends StatelessWidget {
     );
   }
 }
+
 
 class _FaqItem extends StatelessWidget {
   final String question;
@@ -162,10 +210,12 @@ class _FaqItem extends StatelessWidget {
           ),
         ],
       ),
+
       child: Theme(
         data: Theme.of(context).copyWith(
           dividerColor: Colors.transparent,
         ),
+
         child: ExpansionTile(
           tilePadding: const EdgeInsets.symmetric(
             horizontal: 18,
@@ -179,6 +229,7 @@ class _FaqItem extends StatelessWidget {
           ),
           iconColor: primary,
           collapsedIconColor: primary,
+
           title: Text(
             question,
             style: TextStyle(
@@ -187,6 +238,7 @@ class _FaqItem extends StatelessWidget {
               fontSize: 15,
             ),
           ),
+
           children: [
             Text(
               answer,
