@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
-import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
-import 'package:project1/features/course/presentation/cubit/course_state.dart';
+import 'package:project1/features/course/presentation/cubit/tags_cubit.dart';
+import 'package:project1/features/course/presentation/cubit/tags_state.dart';
 import 'package:project1/features/course/presentation/widgets/tags_selector.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
@@ -35,18 +35,13 @@ class CourseTagsSection extends StatelessWidget {
         ),
         const SizedBox(height: 10),
 
-        BlocBuilder<CourseCubit, CourseState>(
-          buildWhen: (previous, current) {
-            return current is CourseTagsLoading ||
-                current is CourseTagsLoaded ||
-                current is CourseTagsError;
-          },
+        BlocBuilder<TagsCubit, TagsState>(
           builder: (context, state) {
-            if (state is CourseTagsLoading) {
+            if (state is TagsLoading) {
               return const Center(child: CircularProgressIndicator());
             }
 
-            if (state is CourseTagsLoaded) {
+            if (state is TagsLoaded) {
               return TagsSelector(
                 availableTags: state.tags,
                 selectedTagIds: selectedTagIds,
@@ -56,9 +51,9 @@ class CourseTagsSection extends StatelessWidget {
               );
             }
 
-            if (state is CourseTagsError) {
+            if (state is TagsError) {
               return Text(
-                state.message,
+                state.errors.isNotEmpty ? state.errors.first : '',
                 style: const TextStyle(color: Colors.red),
               );
             }

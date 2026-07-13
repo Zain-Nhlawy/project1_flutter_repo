@@ -83,10 +83,27 @@
 "limitReachedSnackBar":"تم تجاوز حد الخطة , يرجى الترقية للحصول على المزيد ",
 "addSection":"اضافة",
 "noSectionFound":"لا يوجد اقسام متاحة",
-  "usersTitle": "المستخدمون",
+  "demoMembers": "اعضاء الغرفة",
   "usersEmptyTitle": "لا يوجد مستخدمون بعد",
   "usersEmptySubtitle": "سيظهر المستخدمون هنا بمجرد إضافتهم.",
   "usersErrorGeneric": "حدث خطأ أثناء تحميل المستخدمين.",
+
+  
+  "viewPersonalInfo": "عرض المعلومات الشخصية",
+  "changePermissions": "تغيير الصلاحيات",
+  "removeFromRoom": "حذف العضو من الغرفة",
+  
+  "userNameHint": "اسم المستخدم"
+,
+
+  "searchUser": "ابحث عن مستخدم",
+  "startTyping": "ابدأ بالكتابة للبحث...",
+  "noUsersFound": "لا يوجد مستخدمون",
+  
+  "sendInvitation": "إرسال دعوة",
+
+
+
 
 
 
@@ -258,5 +275,9 @@
 "free": "مجاني",
 "deleteCourseTitle": "حذف الكورس",
 "deleteCourseConfirmation": "هل أنت متأكد من حذف هذا الكورس؟",
-"failedToUploadImage": "فشل رفع الصورة"
+"failedToUploadImage": "فشل رفع الصورة",
+"demoCourses": "كورسات الديمو",
+  "demoCoursesDescription": "الكورسات المتاحة في الديمو الخاص بك",
+  "availableCourses": "كورسات متاحة",
+  "courses": "الكورسات"
 }

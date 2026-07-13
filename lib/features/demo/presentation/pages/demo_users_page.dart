@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/features/demo/domain/use%20case/demo_users_usecase.dart';
+import 'package:project1/features/demo/presentation/cubit/search%20for%20users/serach_user_cubit.dart';
+import 'package:project1/features/demo/presentation/widgets/demo%20member%20card/search_user_dialog.dart';
 import 'package:project1/features/demo/shared/entities/user_entity.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_state.dart';
-import 'package:project1/features/demo/presentation/widgets/demo_users_card.dart';
+import 'package:project1/features/demo/presentation/widgets/demo%20member%20card/demo_users_card.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class DemoUsersScreen extends StatelessWidget {
@@ -14,12 +18,32 @@ class DemoUsersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(36)),
+        ),
         centerTitle: true,
-        title: Text(l10n.usersTitle),
+        title: Text(l10n.demoMembers),
         scrolledUnderElevation: 0,
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Theme.of(context).colorScheme.tertiary,
+        elevation: 6,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (dialogContext) {
+              return BlocProvider(
+                create: (_) => SearchUserCubit(getIt<DemoUsersUsecase>()),
+                child: const SearchUserDialog(),
+              );
+            },
+          );
+        },
+        label: const Icon(Icons.person_add_alt_1_rounded, color: Colors.white),
       ),
       body: BlocBuilder<DemoUserCubit, DemoUsersState>(
         builder: (context, state) {
@@ -41,10 +65,7 @@ class DemoUsersScreen extends StatelessWidget {
               separatorBuilder: (_, __) => const SizedBox(height: 10),
               itemBuilder: (context, index) {
                 final user = state.users[index];
-                return UserCard(
-                  user: user,
-                  onTap: onUserTap == null ? null : () => onUserTap!(user),
-                );
+                return UserCard(user: user);
               },
             );
           }

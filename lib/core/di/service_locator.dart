@@ -36,6 +36,7 @@ import 'package:project1/features/course/domain/use_case/get_demo_courses_usecas
 import 'package:project1/features/course/domain/use_case/get_tags_usecase.dart';
 import 'package:project1/features/course/domain/use_case/update_course_usecase.dart';
 import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
+import 'package:project1/features/course/presentation/cubit/tags_cubit.dart';
 import 'package:project1/features/course/upload_photo/data/data_sources/upload_photo_course_remote_datasource.dart';
 import 'package:project1/features/course/upload_photo/data/repository/upload_photo_course_repositpry_impl.dart';
 import 'package:project1/features/course/upload_photo/domain/repository/upload_photo_course_repository.dart';
@@ -56,6 +57,7 @@ import 'package:project1/features/demo/domain/use%20case/demos_usecase.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20cubit/demo_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/department%20cubit/department_cubit.dart';
+import 'package:project1/features/demo/presentation/cubit/search%20for%20users/serach_user_cubit.dart';
 import 'package:project1/features/department/data/data_sources/department_data_source.dart';
 import 'package:project1/features/department/domain/repository/department_repository.dart';
 import 'package:project1/features/department/data/repository/department_repository_implement.dart';
@@ -273,6 +275,8 @@ getIt.registerFactory<DemoUserCubit>(
   getIt.registerLazySingleton(
     () => DemoPaymentUseCase(getIt<DemoPaymentRepository>()),
   );
+
+
   ////////////////////////Demo////////////////////////
 
   ///////////////////// department ////////////////
@@ -348,9 +352,12 @@ getIt.registerFactory<UploadPhotoCourseCubit>(
     getIt<UploadPhotoCourseUseCase>(),
   ),
 );
+
+getIt.registerFactory<TagsCubit>(
+  () => TagsCubit(getTagsUseCase: getIt<GetTagsUseCase>()),
+);
 getIt.registerFactory<CourseCubit>(
   () => CourseCubit(
-    getTagsUseCase: getIt<GetTagsUseCase>(),
     createCourseUseCase: getIt<CreateCourseUseCase>(),
     getDemoCoursesUseCase: getIt<GetDemoCoursesUseCase>(),
     updateCourseUseCase: getIt<UpdateCourseUseCase>(),

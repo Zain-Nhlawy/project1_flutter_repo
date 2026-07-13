@@ -17,6 +17,9 @@ class DemosPage extends StatelessWidget {
     final localizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(36)),
+        ),
         title: Text(
           title,
           style: AppTextStyles.h3.copyWith(

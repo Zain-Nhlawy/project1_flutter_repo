@@ -16,5 +16,15 @@ class DemoUserRepositoryImpl implements DemoUsersRepository {
       return Left('Failed to load demo users: $e');
     }
   }
+
+  @override
+  Future<Either<String, List<MembersEntity>>> searchDemoUsers(String query) async {
+    try {
+      final users = await remoteDataSource.searchDemoUsers(query);
+      return Right(users);
+    } catch (e) {
+      return Left('Failed to search demo users: $e');
+    }
+  }
   
 }

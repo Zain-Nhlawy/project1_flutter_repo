@@ -10,5 +10,7 @@ class DemoUsersUsecase {
     return await repository.getDemoUsers(demoId);
   }
 
-
+Future<Either<String, List<MembersEntity>>> search(String query) async {
+    return await repository.searchDemoUsers(query);
+  }
 }

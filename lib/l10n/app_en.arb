@@ -107,10 +107,24 @@
 "limitReachedSnackBar":"This plan limit has been reached , please upgrade the plan",
 "addSection":"Add",
 "noSectionFound":"No section found",
-  "usersTitle": "Users",
+  "demoMembers": "Demo Members",
   "usersEmptyTitle": "No users yet",
   "usersEmptySubtitle": "Users will show up here once added.",
   "usersErrorGeneric": "Something went wrong while loading users.",
+  
+  "viewPersonalInfo": "View personal info",
+  "changePermissions": "Change permissions",
+  "removeFromRoom": "Remove from room",
+
+  "userNameHint": "User name",
+  
+  "searchUser": "Search user",
+  "startTyping": "Start typing to search...",
+  "noUsersFound": "No users found",
+  
+  "sendInvitation": "Send invite"
+,
+
 
 
 
@@ -286,5 +300,9 @@
 "free": "Free",
 "deleteCourseTitle": "Delete Course",
 "deleteCourseConfirmation": "Are you sure you want to delete this course?",
-"failedToUploadImage": "Failed to upload image"
+"failedToUploadImage": "Failed to upload image",
+  "demoCourses": "Demo Courses",
+  "demoCoursesDescription": "Courses available in your demo",
+  "availableCourses": "Available Courses",
+  "courses": "Courses"
 }

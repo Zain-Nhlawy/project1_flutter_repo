@@ -232,7 +232,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get noSectionFound => 'لا يوجد اقسام متاحة';
 
   @override
-  String get usersTitle => 'المستخدمون';
+  String get demoMembers => 'اعضاء الغرفة';
 
   @override
   String get usersEmptyTitle => 'لا يوجد مستخدمون بعد';
@@ -242,6 +242,30 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get usersErrorGeneric => 'حدث خطأ أثناء تحميل المستخدمين.';
+
+  @override
+  String get viewPersonalInfo => 'عرض المعلومات الشخصية';
+
+  @override
+  String get changePermissions => 'تغيير الصلاحيات';
+
+  @override
+  String get removeFromRoom => 'حذف العضو من الغرفة';
+
+  @override
+  String get userNameHint => 'اسم المستخدم';
+
+  @override
+  String get searchUser => 'ابحث عن مستخدم';
+
+  @override
+  String get startTyping => 'ابدأ بالكتابة للبحث...';
+
+  @override
+  String get noUsersFound => 'لا يوجد مستخدمون';
+
+  @override
+  String get sendInvitation => 'إرسال دعوة';
 
   @override
   String get pleaseEnterEmail => 'يرجى إدخال عنوان بريدك الإلكتروني';
@@ -697,4 +721,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get failedToUploadImage => 'فشل رفع الصورة';
+
+  @override
+  String get demoCourses => 'كورسات الديمو';
+
+  @override
+  String get demoCoursesDescription => 'الكورسات المتاحة في الديمو الخاص بك';
+
+  @override
+  String get availableCourses => 'كورسات متاحة';
+
+  @override
+  String get courses => 'الكورسات';
 }

@@ -83,7 +83,6 @@ class AuthCubit extends Cubit<AuthState> {
         return false;
       },
     );
-
     if (shouldStop) return;
   }
 

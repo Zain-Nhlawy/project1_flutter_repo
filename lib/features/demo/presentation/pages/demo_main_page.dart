@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/core/di/service_locator.dart';
-import 'package:project1/features/course/presentation/pages/courses_inProgress_screen.dart';
 import 'package:project1/features/demo/domain/entities/demo_entity.dart';
 import 'package:project1/features/demo/presentation/cubit/department%20cubit/department_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/department%20cubit/department_state.dart';
@@ -156,7 +155,7 @@ class DemoMainPage extends StatelessWidget {
           final currentPlan = demo.plan?.toLowerCase() ?? 'starter';
           final isFreePlan = currentPlan == 'starter' || currentPlan == 'free';
 
-          final isLimitReached = isFreePlan && departments.length >= 0;
+          final isLimitReached = isFreePlan && departments.length >= 5;
 
           return ListView(
             padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),

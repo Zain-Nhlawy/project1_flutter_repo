@@ -5,7 +5,7 @@ class MembersEntity {
     required this.lastName,
     required this.email,
     required this.imagePath,
-    required this.role,
+     this.role,
   });
 
   final String? id;
@@ -13,5 +13,5 @@ class MembersEntity {
   final String lastName;
   final String email;
   final String? imagePath;
-  final String role;
+  final String? role;
 }

@@ -43,6 +43,13 @@ class NotFoundFailure extends Failure {
   ]);
 }
 
+class BadRequestFailure extends Failure {
+  const BadRequestFailure(
+    super.message, {
+    super.errors,
+  });
+}
+
 
 class UnknownFailure extends Failure {
   const UnknownFailure([

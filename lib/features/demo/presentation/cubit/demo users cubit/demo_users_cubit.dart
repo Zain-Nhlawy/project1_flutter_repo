@@ -17,4 +17,15 @@ class DemoUserCubit extends Cubit<DemoUsersState> {
       (users) => emit(GetDemoUsersLoaded(users)),
     );
   }
+
+  Future<void> searchUsers(String query) async {
+    emit(GetDemoUsersLoading());
+
+    final result = await getUsersUseCase.search(query);
+
+    result.fold(
+      (error) => emit(GetDemoUsersError(error)),
+      (users) => emit(GetDemoUsersLoaded(users)),
+    );
+  }
 }

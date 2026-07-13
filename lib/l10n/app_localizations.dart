@@ -518,11 +518,11 @@ abstract class AppLocalizations {
   /// **'No section found'**
   String get noSectionFound;
 
-  /// No description provided for @usersTitle.
+  /// No description provided for @demoMembers.
   ///
   /// In en, this message translates to:
-  /// **'Users'**
-  String get usersTitle;
+  /// **'Demo Members'**
+  String get demoMembers;
 
   /// No description provided for @usersEmptyTitle.
   ///
@@ -541,6 +541,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Something went wrong while loading users.'**
   String get usersErrorGeneric;
+
+  /// No description provided for @viewPersonalInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'View personal info'**
+  String get viewPersonalInfo;
+
+  /// No description provided for @changePermissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Change permissions'**
+  String get changePermissions;
+
+  /// No description provided for @removeFromRoom.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from room'**
+  String get removeFromRoom;
+
+  /// No description provided for @userNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'User name'**
+  String get userNameHint;
+
+  /// No description provided for @searchUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Search user'**
+  String get searchUser;
+
+  /// No description provided for @startTyping.
+  ///
+  /// In en, this message translates to:
+  /// **'Start typing to search...'**
+  String get startTyping;
+
+  /// No description provided for @noUsersFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No users found'**
+  String get noUsersFound;
+
+  /// No description provided for @sendInvitation.
+  ///
+  /// In en, this message translates to:
+  /// **'Send invite'**
+  String get sendInvitation;
 
   /// No description provided for @pleaseEnterEmail.
   ///
@@ -1429,6 +1477,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to upload image'**
   String get failedToUploadImage;
+
+  /// No description provided for @demoCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo Courses'**
+  String get demoCourses;
+
+  /// No description provided for @demoCoursesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Courses available in your demo'**
+  String get demoCoursesDescription;
+
+  /// No description provided for @availableCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Available Courses'**
+  String get availableCourses;
+
+  /// No description provided for @courses.
+  ///
+  /// In en, this message translates to:
+  /// **'Courses'**
+  String get courses;
 }
 
 class _AppLocalizationsDelegate

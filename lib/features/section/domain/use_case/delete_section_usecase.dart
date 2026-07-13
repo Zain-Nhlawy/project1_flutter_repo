@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import 'package:project1/core/errors/failures.dart';
 import 'package:project1/features/section/domain/repository/section_repository.dart';
 
 class DeleteSectionUseCase {
@@ -5,7 +7,7 @@ class DeleteSectionUseCase {
 
   DeleteSectionUseCase(this.repository);
 
-  Future<void> call({
+  Future<Either<Failure, void>> call({
     required String courseId,
     required String sectionId,
   }) {

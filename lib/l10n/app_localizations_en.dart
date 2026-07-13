@@ -233,7 +233,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noSectionFound => 'No section found';
 
   @override
-  String get usersTitle => 'Users';
+  String get demoMembers => 'Demo Members';
 
   @override
   String get usersEmptyTitle => 'No users yet';
@@ -243,6 +243,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get usersErrorGeneric => 'Something went wrong while loading users.';
+
+  @override
+  String get viewPersonalInfo => 'View personal info';
+
+  @override
+  String get changePermissions => 'Change permissions';
+
+  @override
+  String get removeFromRoom => 'Remove from room';
+
+  @override
+  String get userNameHint => 'User name';
+
+  @override
+  String get searchUser => 'Search user';
+
+  @override
+  String get startTyping => 'Start typing to search...';
+
+  @override
+  String get noUsersFound => 'No users found';
+
+  @override
+  String get sendInvitation => 'Send invite';
 
   @override
   String get pleaseEnterEmail => 'Please enter your email address';
@@ -700,4 +724,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get failedToUploadImage => 'Failed to upload image';
+
+  @override
+  String get demoCourses => 'Demo Courses';
+
+  @override
+  String get demoCoursesDescription => 'Courses available in your demo';
+
+  @override
+  String get availableCourses => 'Available Courses';
+
+  @override
+  String get courses => 'Courses';
 }

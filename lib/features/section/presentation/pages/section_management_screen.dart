@@ -241,10 +241,10 @@ class _SectionManagementScreenState
       value: cubit,
       child: BlocConsumer<SectionCubit, SectionState>(
         listener: (context, state) {
-          if (state.error != null) {
+          if (state.errors != null && state.errors!.isNotEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(state.error!),
+                content: Text(state.errors!.first),
               ),
             );
           }

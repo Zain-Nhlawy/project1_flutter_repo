@@ -1,76 +1,79 @@
 import 'package:project1/features/course/domain/entities/course_entity.dart';
 import 'package:project1/features/course/domain/entities/tag_entity.dart';
 
-abstract class CourseState {}
+abstract class CourseState {
+  const CourseState();
+}
 
-class CourseInitial extends CourseState {}
+class CourseInitial extends CourseState {
+  const CourseInitial();
+}
 
-
-
-class CourseTagsLoading extends CourseState {}
+class CourseTagsLoading extends CourseState {
+  const CourseTagsLoading();
+}
 
 class CourseTagsLoaded extends CourseState {
   final List<TagEntity> tags;
-
-  CourseTagsLoaded(this.tags);
+  const CourseTagsLoaded(this.tags);
 }
 
 class CourseTagsError extends CourseState {
-  final String message;
-
-  CourseTagsError(this.message);
+  final List<String> errors;
+  const CourseTagsError(this.errors);
 }
 
-
-
-class CourseCreating extends CourseState {}
+class CourseCreating extends CourseState {
+  const CourseCreating();
+}
 
 class CourseCreated extends CourseState {
   final CourseEntity course;
-
-  CourseCreated(this.course);
+  const CourseCreated(this.course);
 }
 
 class CourseCreateError extends CourseState {
-  final String message;
-
-  CourseCreateError(this.message);
+  final List<String> errors;
+  const CourseCreateError(this.errors);
 }
 
-class CourseLoading extends CourseState {}
+class CourseLoading extends CourseState {
+  const CourseLoading();
+}
 
 class CourseLoaded extends CourseState {
   final List<CourseEntity> courses;
-
-  CourseLoaded(this.courses);
+  const CourseLoaded(this.courses);
 }
 
 class CourseError extends CourseState {
-  final String message;
-
-  CourseError(this.message);
+  final List<String> errors;
+  const CourseError(this.errors);
 }
 
-class CourseUpdating extends CourseState {}
+class CourseUpdating extends CourseState {
+  const CourseUpdating();
+}
 
 class CourseUpdated extends CourseState {
   final CourseEntity course;
-
-  CourseUpdated(this.course);
+  const CourseUpdated(this.course);
 }
 
 class CourseUpdateError extends CourseState {
-  final String message;
-
-  CourseUpdateError(this.message);
+  final List<String> errors;
+  const CourseUpdateError(this.errors);
 }
 
-class CourseDeleting extends CourseState {}
+class CourseDeleting extends CourseState {
+  const CourseDeleting();
+}
 
-class CourseDeleted extends CourseState {}
+class CourseDeleted extends CourseState {
+  const CourseDeleted();
+}
 
 class CourseDeleteError extends CourseState {
-  final String message;
-
-  CourseDeleteError(this.message);
+  final List<String> errors;
+  const CourseDeleteError(this.errors);
 }

@@ -143,13 +143,15 @@ Widget build(BuildContext context) {
       }
 
       if (state is CourseCreateError) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(state.message),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(state.errors.isNotEmpty ? state.errors.first : ''),
+      backgroundColor: Colors.red,
+    ),
+  );
+}
+
+
     },
     child: Scaffold(
       backgroundColor: AppColors.background,
