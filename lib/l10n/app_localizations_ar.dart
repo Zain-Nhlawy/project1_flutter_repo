@@ -709,4 +709,29 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get courses => 'الكورسات';
+
+  @override
+  String get publish => 'نشر';
+
+  @override
+  String get publishCourse => 'نشر الكورس';
+
+  @override
+  String get publishCourseConfirmation =>
+      'هل أنت متأكد من نشر هذا الكورس؟ بعد النشر لن تتمكن من تعديله.';
+
+  @override
+  String get seeMore => 'عرض المزيد';
+
+  @override
+  String get producedBy => 'تم إعداده بواسطة';
+
+  @override
+  String get aboutThisCourse => 'عن هذا الكورس';
+
+  @override
+  String get courseContent => 'محتوى الكورس';
+
+  @override
+  String get courseDetails => 'تفاصيل الكورس';
 }

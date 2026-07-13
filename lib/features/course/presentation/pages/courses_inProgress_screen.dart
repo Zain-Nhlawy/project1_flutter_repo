@@ -150,6 +150,7 @@ class CoursesInProgressScreen extends StatelessWidget {
                               description: course.description,
                               tags: course.tags,
                               visibility: course.visibility,
+                              isPublished: course.isPublished,
                               onTap: () async {
                                 final result = await Navigator.push(
                                   context,

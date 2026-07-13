@@ -12,7 +12,9 @@ class CourseCard extends StatelessWidget {
   final String description;
   final List<String> tags;
   final String? visibility;
+  final bool isPublished;
   final VoidCallback? onTap;
+  final VoidCallback? onSeeMore;
 
   const CourseCard({
     super.key,
@@ -24,7 +26,9 @@ class CourseCard extends StatelessWidget {
     required this.description,
     this.tags = const [],
     this.visibility,
+    this.isPublished = false,
     this.onTap,
+    this.onSeeMore,
   });
 
   @override
@@ -250,14 +254,22 @@ class CourseCard extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerRight,
                     child: SizedBox(
-                      width: 110,
-                      child: CustomButton(
-                        text: "Manage",
-                        height: 38,
-                        onPressed: onTap,
-                        gradient: AppColors.buttonGradient,
-                        expand: false,
-                      ),
+                      width: 125,
+                      child: isPublished
+                          ? CustomButton(
+                              text: localizations.seeMore,
+                              height: 38,
+                              onPressed: onSeeMore,
+                              gradient: AppColors.buttonGradient,
+                              expand: false,
+                            )
+                          : CustomButton(
+                              text: "Manage",
+                              height: 38,
+                              onPressed: onTap,
+                              gradient: AppColors.buttonGradient,
+                              expand: false,
+                            ),
                     ),
                   ),
                 ],

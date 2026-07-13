@@ -1453,6 +1453,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Courses'**
   String get courses;
+
+  /// No description provided for @publish.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish'**
+  String get publish;
+
+  /// No description provided for @publishCourse.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish Course'**
+  String get publishCourse;
+
+  /// No description provided for @publishCourseConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to publish this course? After publishing, it can no longer be edited.'**
+  String get publishCourseConfirmation;
+
+  /// No description provided for @seeMore.
+  ///
+  /// In en, this message translates to:
+  /// **'See More'**
+  String get seeMore;
+
+  /// No description provided for @producedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Produced by'**
+  String get producedBy;
+
+  /// No description provided for @aboutThisCourse.
+  ///
+  /// In en, this message translates to:
+  /// **'About this course'**
+  String get aboutThisCourse;
+
+  /// No description provided for @courseContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Course Content'**
+  String get courseContent;
+
+  /// No description provided for @courseDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Course Details'**
+  String get courseDetails;
 }
 
 class _AppLocalizationsDelegate

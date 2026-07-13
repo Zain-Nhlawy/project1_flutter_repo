@@ -8,10 +8,10 @@ import 'package:project1/features/course/upload_photo/presentation/cubit/upload_
 import 'package:project1/features/course/domain/entities/course_entity.dart';
 import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
 import 'package:project1/features/course/presentation/cubit/course_state.dart';
-import 'package:project1/features/course/presentation/widgets/course_image_picker.dart';
+import 'package:project1/features/course/presentation/widgets/management/course_image_picker.dart';
 import 'package:project1/features/course/presentation/widgets/custom_button.dart';
 import 'package:project1/features/course/presentation/widgets/custom_text_field.dart';
-import 'package:project1/features/course/presentation/widgets/visibility_dropdown.dart';
+import 'package:project1/features/course/presentation/widgets/management/visibility_dropdown.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 

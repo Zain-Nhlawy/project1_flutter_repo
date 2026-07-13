@@ -32,8 +32,11 @@ import 'package:project1/features/course/data/repository/course_repository_impl.
 import 'package:project1/features/course/domain/repository/course_repository.dart';
 import 'package:project1/features/course/domain/use_case/create_course_usecase.dart';
 import 'package:project1/features/course/domain/use_case/delete_course_usecase.dart';
+import 'package:project1/features/course/domain/use_case/get_course_usecase.dart';
+import 'package:project1/features/course/domain/use_case/get_demo_course_usecase.dart';
 import 'package:project1/features/course/domain/use_case/get_demo_courses_usecase.dart';
 import 'package:project1/features/course/domain/use_case/get_tags_usecase.dart';
+import 'package:project1/features/course/domain/use_case/publish_course_usecase.dart';
 import 'package:project1/features/course/domain/use_case/update_course_usecase.dart';
 import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
 import 'package:project1/features/course/presentation/cubit/tags_cubit.dart';
@@ -341,7 +344,14 @@ getIt.registerFactory<DemoUserCubit>(
   getIt.registerLazySingleton<UpdateCourseUseCase>(
     () => UpdateCourseUseCase(getIt<CourseRepository>()),
   );
-  getIt.registerLazySingleton(() => DeleteCourseUseCase(getIt()));
+  getIt.registerLazySingleton(() => DeleteCourseUseCase(getIt()),
+  );
+  getIt.registerLazySingleton(() => PublishCourseUseCase(getIt(),),
+  );
+  getIt.registerLazySingleton<GetCourseUseCase>(() => GetCourseUseCase(getIt<CourseRepository>()),
+  );
+  getIt.registerLazySingleton<GetDemoCourseUseCase>(() => GetDemoCourseUseCase(getIt<CourseRepository>()),
+  );
 
 // cubit
 getIt.registerFactory<UploadPhotoCourseCubit>(
@@ -349,16 +359,18 @@ getIt.registerFactory<UploadPhotoCourseCubit>(
     getIt<UploadPhotoCourseUseCase>(),
   ),
 );
-
 getIt.registerFactory<TagsCubit>(
   () => TagsCubit(getTagsUseCase: getIt<GetTagsUseCase>()),
 );
 getIt.registerFactory<CourseCubit>(
   () => CourseCubit(
     createCourseUseCase: getIt<CreateCourseUseCase>(),
+    getCourseUseCase: getIt<GetCourseUseCase>(),
     getDemoCoursesUseCase: getIt<GetDemoCoursesUseCase>(),
+    getDemoCourseUseCase: getIt<GetDemoCourseUseCase>(),
     updateCourseUseCase: getIt<UpdateCourseUseCase>(),
-    deleteCourseUseCase: getIt(),
+    publishCourseUseCase: getIt<PublishCourseUseCase>(),
+    deleteCourseUseCase: getIt<DeleteCourseUseCase>(),
   ),
 );
 

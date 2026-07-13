@@ -35,6 +35,19 @@ class CourseRemoteDataSource {
     }
   }
 
+  Future<CourseModel> getCourse(String courseId) async {
+    try {
+      final res = await dioClient.dio.get('/courses/$courseId');
+      final data = res.data?['data'];
+      if (data == null) {
+        throw const ServerException('Failed to load course.');
+      }
+      return CourseModel.fromJson(data);
+    } on DioException catch (e) {
+      throw mapDioException(e);
+    }
+  }
+
   Future<List<CourseModel>> getDemoCourses(String demoId) async {
     try {
       final res = await dioClient.dio.get('/demos/$demoId/assets/cursor');
@@ -52,6 +65,23 @@ class CourseRemoteDataSource {
           })
           .whereType<CourseModel>()
           .toList();
+    } on DioException catch (e) {
+      throw mapDioException(e);
+    }
+  }
+
+  Future<CourseModel> getDemoCourse({
+    required String demoId,
+    required String assetId,
+  }) async {
+    try {
+      final res = await dioClient.dio.get('/demos/$demoId/assets/$assetId');
+      final data = res.data?['data'];
+      final courseJson = data?['course'];
+      if (courseJson == null) {
+        throw const ServerException('Failed to load asset course.');
+      }
+      return CourseModel.fromJson(courseJson);
     } on DioException catch (e) {
       throw mapDioException(e);
     }
@@ -86,4 +116,18 @@ class CourseRemoteDataSource {
       throw mapDioException(e);
     }
   }
+
+  Future<CourseModel> publishCourse(String courseId) async {
+  try {
+    final res = await dioClient.dio.post(
+      '/courses/$courseId/publish',
+    );
+
+    return CourseModel.fromJson(
+      res.data['data'],
+    );
+  } on DioException catch (e) {
+    throw mapDioException(e);
+  }
+}
 }

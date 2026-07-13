@@ -290,5 +290,13 @@
   "demoCourses": "Demo Courses",
   "demoCoursesDescription": "Courses available in your demo",
   "availableCourses": "Available Courses",
-  "courses": "Courses"
+  "courses": "Courses",
+  "publish":"Publish",
+"publishCourse":"Publish Course",
+"publishCourseConfirmation":"Are you sure you want to publish this course? After publishing, it can no longer be edited.",
+"seeMore": "See More",
+"producedBy": "Produced by",
+"aboutThisCourse": "About this course",
+"courseContent": "Course Content",
+"courseDetails": "Course Details"
 }

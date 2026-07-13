@@ -50,8 +50,21 @@ class CourseRepositoryImpl implements CourseRepository {
   }
 
   @override
+  Future<Either<Failure, CourseEntity>> getCourse(String courseId) {
+    return _handle(() => remoteDataSource.getCourse(courseId));
+  }
+
+  @override
   Future<Either<Failure, List<CourseEntity>>> getDemoCourses(String demoId) {
     return _handle(() => remoteDataSource.getDemoCourses(demoId));
+  }
+
+  @override
+  Future<Either<Failure, CourseEntity>> getDemoCourse({
+    required String demoId,
+    required String assetId,
+  }) {
+    return _handle(() => remoteDataSource.getDemoCourse(demoId: demoId, assetId: assetId));
   }
 
   @override
@@ -71,4 +84,11 @@ class CourseRepositoryImpl implements CourseRepository {
   Future<Either<Failure, void>> deleteCourse(String courseId) {
     return _handle(() => remoteDataSource.deleteCourse(courseId));
   }
+
+  @override
+Future<Either<Failure, CourseEntity>> publishCourse(String courseId) {
+  return _handle(
+    () => remoteDataSource.publishCourse(courseId),
+  );
+}
 }
