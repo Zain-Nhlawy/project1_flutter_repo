@@ -41,7 +41,6 @@ class _Verify2FAScreenState extends State<Verify2FAScreen> {
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
-    final size = MediaQuery.of(context).size;
 
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
@@ -53,14 +52,22 @@ class _Verify2FAScreenState extends State<Verify2FAScreen> {
           );
         }
 
-        if (state is AuthError) {
-          ScaffoldMessenger.of(context).showSnackBar(
+
+        if (state is AuthError && state.errors.isNotEmpty) {
+          final messenger = ScaffoldMessenger.of(context);
+
+          messenger.clearSnackBars();
+
+          messenger.showSnackBar(
             SnackBar(
-              content: Text(state.message),
+              content: Text(state.errors.first),
               backgroundColor: AppColors.error,
             ),
           );
         }
+
+
+
       },
       child: Scaffold(
         backgroundColor: AppColors.background,

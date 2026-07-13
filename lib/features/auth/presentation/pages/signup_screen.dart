@@ -43,12 +43,21 @@ class SignupScreen extends StatelessWidget {
             ),
           );
         }
+          if (state is AuthError && state.errors.isNotEmpty) {
+            final messenger = ScaffoldMessenger.of(context);
 
-        if (state is AuthError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
-        }
+            messenger.clearSnackBars();
+
+            messenger.showSnackBar(
+              SnackBar(
+                content: Text(state.errors.first),
+                backgroundColor: AppColors.error,
+              ),
+            );
+          }
+
+
+
       },
       builder: (context, state) {
         final isLoading = state is AuthLoading;

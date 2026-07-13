@@ -11,7 +11,7 @@ class UploadPhotoSuccess extends UploadPhotoState {
 }
 
 class UploadPhotoError extends UploadPhotoState {
-  final String message;
+  final List<String> errors;
 
-  UploadPhotoError(this.message);
+  UploadPhotoError(this.errors);
 }

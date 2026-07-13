@@ -67,19 +67,18 @@ class _Enable2FAScreenState extends State<Enable2FAScreen> {
           Navigator.pop(context, true);
         }
 
-        if (state is AuthError) {
-          if (!mounted) return;
+      if (state is AuthError && state.errors.isNotEmpty) {
+        final messenger = ScaffoldMessenger.of(context);
 
-          setState(() {
-            isLoading = false;
-          });
+        messenger.clearSnackBars();
 
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-            ),
-          );
-        }
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(state.errors.first),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
       },
       child: Scaffold(
         backgroundColor: AppColors.background,

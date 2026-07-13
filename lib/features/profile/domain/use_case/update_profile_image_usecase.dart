@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:dartz/dartz.dart';
+import 'package:project1/core/errors/failures.dart';
 import 'package:project1/features/profile/domain/repository/profile_repository.dart';
 
 class UpdateProfileImageUseCase {
@@ -6,7 +8,10 @@ class UpdateProfileImageUseCase {
 
   UpdateProfileImageUseCase(this.repository);
 
-  Future<void> call(File file, String userId) {
+  Future<Either<Failure, void>> call(
+    File file,
+    String userId,
+  ) {
     return repository.updateProfileImage(file, userId);
   }
 }
