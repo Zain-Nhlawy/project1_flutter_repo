@@ -28,4 +28,21 @@ class DemoUserCubit extends Cubit<DemoUsersState> {
       (users) => emit(GetDemoUsersLoaded(users)),
     );
   }
+
+  Future<void> removeUser(String demoId, String userId) async {
+    emit(GetDemoUsersLoading());
+
+    final result = await getUsersUseCase.removeUserFromDemo(demoId, userId);
+
+    result.fold(
+      (error) => emit(GetDemoUsersError(error)),
+      (success) {
+        if (success) {
+          fetchUsers(demoId); 
+        } else {
+          emit(GetDemoUsersError('Failed to remove user.'));
+        }
+      },
+    );
+  }
 }

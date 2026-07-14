@@ -1,6 +1,7 @@
 class MembersEntity {
   const MembersEntity({
     this.id,
+    this.demoId,
     required this.firstName,
     required this.lastName,
     required this.email,
@@ -9,6 +10,7 @@ class MembersEntity {
   });
 
   final String? id;
+  final String? demoId;
   final String firstName;
   final String lastName;
   final String email;

@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_cubit.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class UserOptionsMenu extends StatelessWidget {
-  const UserOptionsMenu({super.key});
+  final String demoId;
+  final String userId;
+  const UserOptionsMenu({
+    super.key,
+    required this.demoId,
+    required this.userId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +60,31 @@ class UserOptionsMenu extends StatelessWidget {
           ),
         ),
         PopupMenuItem(
+          onTap: () => showDialog(
+            context: context,
+            builder: (dialogContext) {
+              return BlocProvider.value(
+                value: getIt<DemoUserCubit>(),
+                child: AlertDialog(
+                  title: Text('Remove user?'),
+                  content: Text('Are you sure you want to remove this user?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(dialogContext).pop(),
+                      child: Text('cancel'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        getIt<DemoUserCubit>().removeUser(demoId, userId);
+                        Navigator.of(dialogContext).pop();
+                      },
+                      child: Text('confirm'),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
           value: 2,
           child: Row(
             children: [

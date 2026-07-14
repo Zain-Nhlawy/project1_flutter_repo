@@ -3,6 +3,7 @@ import 'package:project1/features/demo/shared/entities/user_entity.dart';
 class MembersModel extends MembersEntity {
   const MembersModel({
     super.id,
+    super.demoId,
     required super.firstName,
     required super.lastName,
     required super.email,
@@ -13,6 +14,7 @@ class MembersModel extends MembersEntity {
   factory MembersModel.fromJson(Map<String, dynamic> json) {
     final user = json['user'] as Map<String, dynamic>;
     return MembersModel(
+      demoId: json['demoId'] as String,
       id: user['id'] as String,
       firstName: user['firstName'] as String,
       lastName: user['lastName'] as String,
@@ -24,6 +26,7 @@ class MembersModel extends MembersEntity {
 
   Map<String, dynamic> toJson() {
     return {
+      'demoId': demoId,
       'id': id,
       'firstName': firstName,
       'lastName': lastName,

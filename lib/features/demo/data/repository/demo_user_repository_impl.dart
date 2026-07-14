@@ -27,4 +27,13 @@ class DemoUserRepositoryImpl implements DemoUsersRepository {
     }
   }
   
+Future<Either<String, bool>> removeUserFromDemo(String demoId, String userId) async {
+    try {
+      final result = await remoteDataSource.removeUserFromDemo(demoId, userId);
+      return Right(result);
+    } catch (e) {
+      return Left('Failed to remove user from demo: $e');
+    }
+  }
+
 }

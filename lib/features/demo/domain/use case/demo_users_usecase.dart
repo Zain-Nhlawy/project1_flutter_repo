@@ -13,4 +13,8 @@ class DemoUsersUsecase {
 Future<Either<String, List<MembersEntity>>> search(String query) async {
     return await repository.searchDemoUsers(query);
   }
+
+  Future<Either<String, bool>> removeUserFromDemo(String demoId, String userId) async {
+    return await repository.removeUserFromDemo(demoId, userId);
+  }
 }

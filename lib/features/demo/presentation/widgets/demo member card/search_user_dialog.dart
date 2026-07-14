@@ -113,7 +113,9 @@ class SearchUserDialog extends StatelessWidget {
                               child: Row(
                                 children: [
                                   CircleAvatar(
-                                    radius: 26,
+                                    radius: 26
+                                    
+                                    ,
                                     backgroundImage: NetworkImage(
                                       user.imagePath ?? '',
                                     ),

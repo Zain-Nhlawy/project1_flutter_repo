@@ -72,7 +72,7 @@ class UserCard extends StatelessWidget {
                   const SizedBox(width: 8),
                   UserRoleBadge(role: user.role!),
                   const SizedBox(width: 4),
-                  const UserOptionsMenu(),
+                   UserOptionsMenu( demoId: user.demoId!, userId: user.id! ),
                 ],
               ),
             ),
