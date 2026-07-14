@@ -9,6 +9,7 @@ import 'package:project1/features/demo/presentation/cubit/demo%20cubit/demo_cubi
 import 'package:project1/features/demo/presentation/pages/add_demo_screen.dart';
 import 'package:project1/features/home/presentation/widgets/state_card.dart';
 import 'package:project1/l10n/app_localizations.dart';
+import 'package:animations/animations.dart';
 
 class MainHeader extends StatelessWidget {
   final int myDemosCount;
@@ -85,11 +86,19 @@ class MainHeader extends StatelessWidget {
                       final currentDemoCubit = context.read<DemoCubit>();
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (routeContext) => BlocProvider.value(
+                        PageRouteBuilder(
+                          transitionDuration: const Duration(milliseconds: 300),
+                          pageBuilder: (routeContext, animation, secondaryAnimation) => BlocProvider.value(
                             value: currentDemoCubit,
                             child: const AddDemoScreen(),
                           ),
+                          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                            return FadeThroughTransition(
+                              animation: animation,
+                              secondaryAnimation: secondaryAnimation,
+                              child: child,
+                            );
+                          },
                         ),
                       );
                     },

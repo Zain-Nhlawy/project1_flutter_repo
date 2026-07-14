@@ -1549,6 +1549,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Course Details'**
   String get courseDetails;
+
+  /// No description provided for @courseCreatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Course created successfully'**
+  String get courseCreatedSuccessfully;
+
+  /// No description provided for @noSectionsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No sections available'**
+  String get noSectionsAvailable;
+
+  /// No description provided for @demoCreatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo Created Successfully!'**
+  String get demoCreatedSuccessfully;
+
+  /// No description provided for @removeUserPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove user?'**
+  String get removeUserPrompt;
+
+  /// No description provided for @areYouSureRemoveUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to remove this user?'**
+  String get areYouSureRemoveUser;
+
+  /// No description provided for @testPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Test Page'**
+  String get testPage;
+
+  /// No description provided for @openDiagram.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Diagram'**
+  String get openDiagram;
+
+  /// No description provided for @photopeaEditor.
+  ///
+  /// In en, this message translates to:
+  /// **'Photopea Editor'**
+  String get photopeaEditor;
+
+  /// No description provided for @englishLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get englishLanguage;
+
+  /// No description provided for @quizResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz Result'**
+  String get quizResult;
+
+  /// No description provided for @confirmAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Answer'**
+  String get confirmAnswer;
+
+  /// No description provided for @usersTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Users'**
+  String get usersTab;
+
+  /// No description provided for @demoStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo Stats'**
+  String get demoStats;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeDark;
 }
 
 class _AppLocalizationsDelegate

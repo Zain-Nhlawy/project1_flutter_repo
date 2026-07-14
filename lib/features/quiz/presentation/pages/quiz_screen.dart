@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'quiz_result_screen.dart';
+import 'package:project1/l10n/app_localizations.dart';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key});
@@ -116,7 +117,7 @@ class _QuizScreenState extends State<QuizScreen> {
           children: [
             const Icon(Icons.quiz_outlined),
             const SizedBox(width: 8),
-            Text("Quiz", style: AppTextStyles.h3),
+            Text(AppLocalizations.of(context)!.quiz, style: AppTextStyles.h3),
           ],
         ),
       ),
@@ -276,7 +277,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     backgroundColor: primary,
                     foregroundColor: Colors.white,
                   ),
-                  child: const Text("Confirm Answer"),
+                  child: Text(AppLocalizations.of(context)!.confirmAnswer),
                 ),
               ),
             if (answered)

@@ -66,19 +66,19 @@ class UserOptionsMenu extends StatelessWidget {
               return BlocProvider.value(
                 value: getIt<DemoUserCubit>(),
                 child: AlertDialog(
-                  title: Text('Remove user?'),
-                  content: Text('Are you sure you want to remove this user?'),
+                  title: Text(l10n.removeUserPrompt),
+                  content: Text(l10n.areYouSureRemoveUser),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.of(dialogContext).pop(),
-                      child: Text('cancel'),
+                      child: Text(l10n.cancel),
                     ),
                     ElevatedButton(
                       onPressed: () {
                         getIt<DemoUserCubit>().removeUser(demoId, userId);
                         Navigator.of(dialogContext).pop();
                       },
-                      child: Text('confirm'),
+                      child: Text(l10n.confirm),
                     ),
                   ],
                 ),

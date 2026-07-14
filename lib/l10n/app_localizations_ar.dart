@@ -412,7 +412,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get oldPassword => 'كلمة المرور الحالية';
 
   @override
-  String get pleaseFillAllFields => 'الرجاء تعبئة جميع الحقول';
+  String get pleaseFillAllFields => 'الرجاء ملء جميع الحقول';
 
   @override
   String get security => 'الأمان';
@@ -632,7 +632,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get questionsBank => 'بنك الأسئلة';
 
   @override
-  String get quiz => 'الكويز';
+  String get quiz => 'اختبار';
 
   @override
   String get renameSection => 'إعادة تسمية القسم';
@@ -758,4 +758,47 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get courseDetails => 'تفاصيل الكورس';
+
+  @override
+  String get courseCreatedSuccessfully => 'تم إنشاء الدورة بنجاح';
+
+  @override
+  String get noSectionsAvailable => 'لا توجد أقسام متاحة';
+
+  @override
+  String get demoCreatedSuccessfully => 'تم إنشاء الديمو بنجاح!';
+
+  @override
+  String get removeUserPrompt => 'إزالة المستخدم؟';
+
+  @override
+  String get areYouSureRemoveUser =>
+      'هل أنت متأكد أنك تريد إزالة هذا المستخدم؟';
+
+  @override
+  String get testPage => 'صفحة اختبار';
+
+  @override
+  String get openDiagram => 'فتح المخطط';
+
+  @override
+  String get photopeaEditor => 'محرر Photopea';
+
+  @override
+  String get englishLanguage => 'الإنجليزية';
+
+  @override
+  String get quizResult => 'نتيجة الاختبار';
+
+  @override
+  String get confirmAnswer => 'تأكيد الإجابة';
+
+  @override
+  String get usersTab => 'المستخدمون';
+
+  @override
+  String get demoStats => 'إحصائيات الغرفة';
+
+  @override
+  String get themeDark => 'داكن';
 }

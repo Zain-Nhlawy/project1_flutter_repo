@@ -287,6 +287,25 @@
   "producedBy": "تم إعداده بواسطة",
   "aboutThisCourse": "عن هذا الكورس",
   "courseContent": "محتوى الكورس",
-  "courseDetails": "تفاصيل الكورس"
-
+  "courseDetails": "تفاصيل الكورس",
+  "pleaseFillAllFields": "الرجاء ملء جميع الحقول",
+  "failedToUploadImage": "فشل رفع الصورة",
+  "courseCreatedSuccessfully": "تم إنشاء الدورة بنجاح",
+  "noSectionsAvailable": "لا توجد أقسام متاحة",
+  "demoCreatedSuccessfully": "تم إنشاء الديمو بنجاح!",
+  "removeUserPrompt": "إزالة المستخدم؟",
+  "areYouSureRemoveUser": "هل أنت متأكد أنك تريد إزالة هذا المستخدم؟",
+  "cancel": "إلغاء",
+  "confirm": "تأكيد",
+  "testPage": "صفحة اختبار",
+  "openDiagram": "فتح المخطط",
+  "photopeaEditor": "محرر Photopea",
+  "englishLanguage": "الإنجليزية",
+  "quizResult": "نتيجة الاختبار",
+  "backToHome": "العودة للرئيسية",
+  "quiz": "اختبار",
+  "confirmAnswer": "تأكيد الإجابة",
+  "usersTab": "المستخدمون",
+  "demoStats": "إحصائيات الغرفة",
+  "themeDark": "داكن"
 }

@@ -5,6 +5,7 @@ import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/pages/login_screen.dart';
 import 'package:project1/features/profile/presentation/cubit/locale_cubit.dart';
+import 'package:project1/features/profile/presentation/cubit/theme_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/user_state.dart';
 import 'package:project1/features/profile/presentation/pages/security_settings_screen.dart';
@@ -24,9 +25,11 @@ class ProfileScreen extends StatelessWidget {
     final textScale = MediaQuery.textScalerOf(context).scale(1);
     final localizations = AppLocalizations.of(context)!;
     final currentLocale = context.watch<LocaleCubit>().state.languageCode;
+    final themeCubit = context.watch<ThemeCubit>();
+    final isDark = themeCubit.isDark;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.backgroundOf(context),
       body: BlocBuilder<UserCubit, UserState>(
         builder: (context, state) {
           String name = "";
@@ -92,28 +95,30 @@ class ProfileScreen extends StatelessWidget {
 
                       Container(
                         decoration: BoxDecoration(
-                          color: AppColors.surface,
+                          color: AppColors.surfaceOf(context),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Column(
                           children: [
                             ProfileTile(
-                              icon: Icons.light_mode_outlined,
-                              iconBackgroundColor: Colors.lightBlue,
-                              iconColor: Colors.lightBlue,
+                              icon: isDark ? Icons.dark_mode_outlined : Icons.light_mode_outlined,
+                              iconBackgroundColor: isDark ? Colors.indigo : Colors.lightBlue,
+                              iconColor: isDark ? Colors.indigo : Colors.lightBlue,
                               title: localizations.tileTheme,
                               trailing: Row(
                                 children: [
                                   Text(
-                                    localizations.themeLight,
+                                    isDark ? localizations.themeDark : localizations.themeLight,
                                     style: AppTextStyles.bodyMedium.copyWith(
-                                      color: AppColors.textSecondary,
+                                      color: AppColors.textSecondaryOf(context),
                                       fontSize: 14 * textScale,
                                     ),
                                   ),
                                   Switch(
-                                    value: false,
-                                    onChanged: (val) {},
+                                    value: isDark,
+                                    onChanged: (val) {
+                                      context.read<ThemeCubit>().toggleTheme(val);
+                                    },
                                   ),
                                 ],
                               ),
@@ -163,7 +168,7 @@ class ProfileScreen extends StatelessWidget {
 
                       Container(
                         decoration: BoxDecoration(
-                          color: AppColors.surface,
+                          color: AppColors.surfaceOf(context),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Column(
@@ -233,7 +238,7 @@ class ProfileScreen extends StatelessWidget {
                             vertical: size.height * 0.02,
                           ),
                           decoration: BoxDecoration(
-                            color: AppColors.surface,
+                            color: AppColors.surfaceOf(context),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Row(
@@ -275,7 +280,7 @@ class ProfileScreen extends StatelessWidget {
   ) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.surface,
+      backgroundColor: AppColors.surfaceOf(context),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -292,7 +297,7 @@ class ProfileScreen extends StatelessWidget {
                 },
               ),
               ListTile(
-                title: const Text("English"),
+                title: Text(AppLocalizations.of(context)!.englishLanguage),
                 onTap: () {
                   Navigator.pop(context);
                   context.read<LocaleCubit>().changeLanguage('en');

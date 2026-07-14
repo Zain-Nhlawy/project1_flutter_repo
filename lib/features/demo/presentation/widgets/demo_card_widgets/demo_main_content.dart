@@ -5,6 +5,7 @@ import 'package:project1/features/demo/domain/entities/demo_entity.dart';
 import 'package:project1/features/demo/presentation/pages/demo_main_page.dart';
 import 'package:project1/features/demo/presentation/pages/payment_pages/upgrade_plan.dart';
 import 'package:project1/l10n/app_localizations.dart';
+import 'package:animations/animations.dart';
 
 class DemoMainContent extends StatelessWidget {
   final DemoEntity demo;
@@ -93,8 +94,16 @@ class DemoMainContent extends StatelessWidget {
                     ? () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => DemoMainPage(demo: demo),
+                          PageRouteBuilder(
+                            transitionDuration: const Duration(milliseconds: 300),
+                            pageBuilder: (context, animation, secondaryAnimation) => DemoMainPage(demo: demo),
+                            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                              return FadeThroughTransition(
+                                animation: animation,
+                                secondaryAnimation: secondaryAnimation,
+                                child: child,
+                              );
+                            },
                           ),
                         );
                       }
@@ -102,9 +111,16 @@ class DemoMainContent extends StatelessWidget {
                     ? () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                UpgradePlanScreen(demoId: demo.id!),
+                          PageRouteBuilder(
+                            transitionDuration: const Duration(milliseconds: 300),
+                            pageBuilder: (context, animation, secondaryAnimation) => UpgradePlanScreen(demoId: demo.id!),
+                            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                              return FadeThroughTransition(
+                                animation: animation,
+                                secondaryAnimation: secondaryAnimation,
+                                child: child,
+                              );
+                            },
                           ),
                         );
                       }

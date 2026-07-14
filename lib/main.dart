@@ -14,6 +14,7 @@ import 'package:project1/features/auth/presentation/pages/reset_password_screen.
 import 'package:project1/features/course/presentation/pages/courses_inProgress_screen.dart';
 import 'package:project1/features/course/presentation/pages/create_course_screen.dart';
 import 'package:project1/features/profile/presentation/cubit/locale_cubit.dart';
+import 'package:project1/features/profile/presentation/cubit/theme_cubit.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:project1/l10n/l10n.dart';
 
@@ -56,6 +57,7 @@ void main() async {
   },
 ),
         BlocProvider<LocaleCubit>(create: (_) => LocaleCubit()),
+        BlocProvider<ThemeCubit>(create: (_) => ThemeCubit()),
       ],
       child: MyApp(initialResetToken: initialResetToken),
     ),
@@ -119,24 +121,30 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return BlocBuilder<LocaleCubit, Locale>(
       builder: (context, locale) {
-        return MaterialApp(
-          navigatorKey: navigatorKey,
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.lightTheme,
-          title: 'App',
-          supportedLocales: L10n.all,
-          locale: locale,
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          home:
-              widget.initialResetToken != null &&
-                  widget.initialResetToken!.isNotEmpty
-              ? ResetPasswordScreen(token: widget.initialResetToken!)
-              : const LoginScreen(),
+        return BlocBuilder<ThemeCubit, ThemeMode>(
+          builder: (context, themeMode) {
+            return MaterialApp(
+              navigatorKey: navigatorKey,
+              debugShowCheckedModeBanner: false,
+              theme: AppTheme.lightTheme,
+              darkTheme: AppTheme.darkTheme,
+              themeMode: themeMode,
+              title: 'App',
+              supportedLocales: L10n.all,
+              locale: locale,
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              home:
+                  widget.initialResetToken != null &&
+                      widget.initialResetToken!.isNotEmpty
+                  ? ResetPasswordScreen(token: widget.initialResetToken!)
+                  : const LoginScreen(),
+            );
+          },
         );
       },
     );

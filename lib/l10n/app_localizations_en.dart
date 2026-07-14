@@ -761,4 +761,47 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get courseDetails => 'Course Details';
+
+  @override
+  String get courseCreatedSuccessfully => 'Course created successfully';
+
+  @override
+  String get noSectionsAvailable => 'No sections available';
+
+  @override
+  String get demoCreatedSuccessfully => 'Demo Created Successfully!';
+
+  @override
+  String get removeUserPrompt => 'Remove user?';
+
+  @override
+  String get areYouSureRemoveUser =>
+      'Are you sure you want to remove this user?';
+
+  @override
+  String get testPage => 'Test Page';
+
+  @override
+  String get openDiagram => 'Open Diagram';
+
+  @override
+  String get photopeaEditor => 'Photopea Editor';
+
+  @override
+  String get englishLanguage => 'English';
+
+  @override
+  String get quizResult => 'Quiz Result';
+
+  @override
+  String get confirmAnswer => 'Confirm Answer';
+
+  @override
+  String get usersTab => 'Users';
+
+  @override
+  String get demoStats => 'Demo Stats';
+
+  @override
+  String get themeDark => 'Dark';
 }

@@ -6,6 +6,7 @@ import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/features/demo/domain/entities/demo_entity.dart';
 import 'package:project1/features/demo/presentation/pages/payment_pages/upgrade_plan.dart';
 import 'package:project1/l10n/app_localizations.dart';
+import 'package:animations/animations.dart';
 
 class HeaderWidget extends StatelessWidget {
   final DemoEntity demo;
@@ -205,9 +206,17 @@ class HeaderWidget extends StatelessWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) =>
+                            PageRouteBuilder(
+                              transitionDuration: const Duration(milliseconds: 300),
+                              pageBuilder: (context, animation, secondaryAnimation) =>
                                   UpgradePlanScreen(demoId: demo.id!),
+                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                return FadeThroughTransition(
+                                  animation: animation,
+                                  secondaryAnimation: secondaryAnimation,
+                                  child: child,
+                                );
+                              },
                             ),
                           );
                         },

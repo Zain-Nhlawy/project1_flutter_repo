@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
@@ -34,12 +35,20 @@ class NavigationsTabs extends StatelessWidget {
           return Scaffold(
             backgroundColor: AppColors.background,
             extendBody: true,
-            body: PageView(
-              controller: cubit.pageController,
-              onPageChanged: (index) {
-                cubit.updateIndex(index);
+            body: PageTransitionSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (
+                Widget child,
+                Animation<double> animation,
+                Animation<double> secondaryAnimation,
+              ) {
+                return FadeThroughTransition(
+                  animation: animation,
+                  secondaryAnimation: secondaryAnimation,
+                  child: child,
+                );
               },
-              children: cubit.pages,
+              child: cubit.pages[state.currentIndex],
             ),
             bottomNavigationBar: _buildModernNavBar(
               state,

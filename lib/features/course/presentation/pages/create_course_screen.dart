@@ -57,8 +57,8 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
   Future<void> handleCreateCourse() async {
   if (!isValid) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Please fill all fields"),
+       SnackBar(
+        content: Text(AppLocalizations.of(context)!.pleaseFillAllFields),
         backgroundColor: Colors.red,
       ),
     );
@@ -74,8 +74,8 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
 
     if (uploadedUrl == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Failed to upload image"),
+         SnackBar(
+          content: Text(AppLocalizations.of(context)!.failedToUploadImage),
           backgroundColor: Colors.red,
         ),
       );
@@ -134,8 +134,8 @@ Widget build(BuildContext context) {
     listener: (context, state) {
       if (state is CourseCreated) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Course created successfully"),
+          SnackBar(
+            content: Text(localizations.courseCreatedSuccessfully),
             backgroundColor: Colors.green,
           ),
         );

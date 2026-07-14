@@ -38,7 +38,7 @@ class AddDemoScreen extends StatelessWidget {
             } else if (demoState is AddDemoSuccess) {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Demo Created Successfully!')),
+                SnackBar(content: Text(AppLocalizations.of(context)!.demoCreatedSuccessfully)),
               );
               Navigator.pop(context);
             } else if (demoState is AddDemoError) {

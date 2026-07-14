@@ -7,6 +7,7 @@ import 'package:project1/features/demo/domain/use%20case/demo_payment_usecase.da
 import 'package:project1/features/demo/presentation/cubit/payment%20for%20demo/demo_payment_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/payment%20for%20demo/demo_payment_state.dart';
 import 'package:project1/features/demo/presentation/pages/payment_pages/payment_success_screen.dart';
+import 'package:animations/animations.dart';
 
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -61,13 +62,22 @@ class _PaymentWebViewContentState extends State<_PaymentWebViewContent> {
 
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(
-                  builder: (newContext) => BlocProvider(
+                PageRouteBuilder(
+                  transitionDuration: const Duration(milliseconds: 300),
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      BlocProvider(
                     create: (context) => PaymentWebViewCubit(
                       requestPaymentUseCase: getIt<DemoPaymentUseCase>(),
                     ),
                     child: PaymentSuccessScreen(sessionId: sessionId),
                   ),
+                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                    return FadeThroughTransition(
+                      animation: animation,
+                      secondaryAnimation: secondaryAnimation,
+                      child: child,
+                    );
+                  },
                 ),
               );
               return NavigationDecision.prevent;

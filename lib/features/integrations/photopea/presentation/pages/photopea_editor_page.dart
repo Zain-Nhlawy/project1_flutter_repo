@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:project1/l10n/app_localizations.dart';
 
 class PhotopeaEditorPage extends StatefulWidget {
   const PhotopeaEditorPage({super.key});
@@ -17,7 +18,7 @@ class _PhotopeaEditorPageState extends State<PhotopeaEditorPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Photopea Editor", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(AppLocalizations.of(context)!.photopeaEditor, style: const TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: Colors.black87,
         elevation: 0,
       ),

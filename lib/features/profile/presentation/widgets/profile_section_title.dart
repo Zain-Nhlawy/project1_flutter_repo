@@ -16,7 +16,7 @@ class ProfileSectionTitle extends StatelessWidget {
       child: Text(
         title.toUpperCase(),
         style: AppTextStyles.label.copyWith(
-          color: AppColors.textSecondary.withOpacity(0.7),
+          color: AppColors.textSecondaryOf(context).withOpacity(0.7),
           fontWeight: FontWeight.bold,
           letterSpacing: 1.2,
           fontSize: 12 * textScale,
