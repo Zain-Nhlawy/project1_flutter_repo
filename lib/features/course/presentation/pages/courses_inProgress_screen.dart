@@ -8,7 +8,7 @@ import 'package:project1/features/course/upload_photo/presentation/cubit/upload_
 import 'package:project1/features/course/presentation/cubit/course_state.dart';
 import 'package:project1/features/course/presentation/pages/course_management_screen.dart';
 import 'package:project1/features/course/presentation/pages/create_course_screen.dart';
-import 'package:project1/features/course/presentation/widgets/course_card.dart';
+import 'package:project1/features/course/presentation/widgets/details/course_card.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class CoursesInProgressScreen extends StatelessWidget {
@@ -171,6 +171,7 @@ class CoursesInProgressScreen extends StatelessWidget {
                                       ],
                                       child: CourseManagementScreen(
                                         courseId: course.id,
+                                        assetId: course.assetId!,
                                         demoId: demoId,
                                         title: course.title,
                                         company: course.demo?.name ?? '',

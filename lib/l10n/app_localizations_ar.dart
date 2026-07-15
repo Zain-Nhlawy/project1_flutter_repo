@@ -666,7 +666,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get deleteAttachmentConfirmation => 'هل أنت متأكد من حذف هذا الملحق؟';
 
   @override
-  String get noAttachments => 'لا توجد ملحقات بعد';
+  String get noAttachments => 'لا يوجد مرفقات';
 
   @override
   String get saveLesson => 'حفظ الدرس';
@@ -734,4 +734,52 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get courseDetails => 'تفاصيل الكورس';
+
+  @override
+  String get selectVideoFirst => 'يرجى اختيار فيديو أولاً.';
+
+  @override
+  String get operationInProgressTitle => 'عملية جارية';
+
+  @override
+  String get operationInProgressMessage =>
+      'يوجد رفع فيديو أو إنشاء درس قيد التنفيذ. إذا غادرت الآن، قد يكتمل رفع الفيديو دون ربطه بالدرس. هل تريد المغادرة على أي حال؟';
+
+  @override
+  String get stay => 'البقاء';
+
+  @override
+  String get leaveAnyway => 'الخروج على أي حال';
+
+  @override
+  String get deleteLesson => 'حذف الدرس';
+
+  @override
+  String get deleteLessonConfirmation =>
+      'هل أنت متأكد من حذف هذا الدرس؟ لا يمكن التراجع عن هذا الإجراء.';
+
+  @override
+  String get deleteLessonFailed => 'فشل حذف الدرس.';
+
+  @override
+  String get leaveWhileBusyTitle => 'عملية قيد التنفيذ';
+
+  @override
+  String get leaveWhileBusyMessage =>
+      'في عملية رفع/حفظ شغالة حالياً. إذا خرجت هلق، ممكن تخسر التغييرات. متأكد إنك بدك تطلع؟';
+
+  @override
+  String get lessonUpdatedSuccessfully => 'تم حفظ التعديلات بنجاح';
+
+  @override
+  String get lessonUpdateFailed => 'فشل حفظ التعديلات';
+
+  @override
+  String get pressToSelectVideo => 'اضغط لاختيار فيديو';
+
+  @override
+  String get preparingToUpload => 'جاري التحضير للرفع...';
+
+  @override
+  String get uploadingVideo => 'جاري رفع الفيديو...';
 }

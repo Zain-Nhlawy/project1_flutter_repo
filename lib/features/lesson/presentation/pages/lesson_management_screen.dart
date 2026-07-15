@@ -1,19 +1,34 @@
+import 'dart:async';
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:project1/config/theme/app_colors.dart';
-import 'package:project1/features/attachment/presentation/widgets/lesson_attachments_section.dart';
-import 'package:project1/features/lesson/presentation/pages/create_lesson_screen.dart';
-import 'package:project1/features/lesson/presentation/widgets/custom_text_field.dart';
-import 'package:project1/features/lesson/presentation/widgets/lesson_video_picker.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:media_kit/media_kit.dart';
+import 'package:project1/features/lesson/presentation/widgets/management/lesson_management_view.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
+import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/features/attachment/domain/entities/lesson_attachment_entity.dart';
+import 'package:project1/features/attachment/presentation/cubit/lesson_attachment_cubit.dart';
+import 'package:project1/features/attachment/upload/presentation/cubit/attachment_upload_cubit.dart';
+import 'package:project1/features/lesson/presentation/cubit/lesson_cubit.dart';
+import 'package:project1/features/lesson/presentation/widgets/management/lesson_leave_confirmation_dialog.dart';
+import 'package:project1/features/lesson/upload_video/presentation/cubit/lesson_video_upload_cubit.dart';
+import 'package:project1/features/lesson/upload_video/presentation/cubit/lesson_video_upload_state.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class LessonManagementScreen extends StatefulWidget {
+  final String sectionId;
+  final String lessonId;
   final String lessonTitle;
   final String lessonDescription;
   final String? videoUrl;
-  final List<LessonAttachment> initialAttachments;
+  final List<LessonAttachmentEntity> initialAttachments;
 
   const LessonManagementScreen({
     super.key,
+    required this.sectionId,
+    required this.lessonId,
     required this.lessonTitle,
     required this.lessonDescription,
     this.videoUrl,
@@ -28,18 +43,24 @@ class _LessonManagementScreenState extends State<LessonManagementScreen> {
   late TextEditingController titleController;
   late TextEditingController descriptionController;
 
-  String? selectedVideo;
-  late List<LessonAttachment> attachments;
+  String? selectedVideoUrl;
+  File? newVideoFile;
+  Duration _videoDuration = Duration.zero;
+
+  Uint8List? _videoThumbnail;
+  bool _loadingThumbnail = false;
 
   bool isEditing = false;
+  bool _hasChanges = false;
+  bool _isSaving = false;
 
   @override
   void initState() {
     super.initState();
     titleController = TextEditingController(text: widget.lessonTitle);
     descriptionController = TextEditingController(text: widget.lessonDescription);
-    selectedVideo = widget.videoUrl;
-    attachments = List<LessonAttachment>.from(widget.initialAttachments);
+    selectedVideoUrl = widget.videoUrl;
+    _generateThumbnail();
   }
 
   @override
@@ -49,15 +70,134 @@ class _LessonManagementScreenState extends State<LessonManagementScreen> {
     super.dispose();
   }
 
-  void pickVideo() {
-    // TODO
+  Future<void> _generateThumbnail() async {
+    if (newVideoFile == null && (selectedVideoUrl == null || selectedVideoUrl!.isEmpty)) {
+      return;
+    }
+
+    setState(() => _loadingThumbnail = true);
+
+    try {
+      final Uint8List? bytes = await VideoThumbnail.thumbnailData(
+        video: newVideoFile?.path ?? selectedVideoUrl!,
+        imageFormat: ImageFormat.JPEG,
+        maxWidth: 400,
+        quality: 60,
+      );
+
+      if (!mounted) return;
+      setState(() {
+        _videoThumbnail = bytes;
+        _loadingThumbnail = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _loadingThumbnail = false);
+    }
+  }
+
+  Future<void> pickVideo(BuildContext context) async {
+    final result = await ImagePicker().pickVideo(source: ImageSource.gallery);
+    if (result == null) return;
+
+    final file = File(result.path);
+    final player = Player();
+
+    try {
+      await player.open(Media(file.path));
+      Duration duration = player.state.duration;
+      var attempts = 0;
+      while (duration == Duration.zero && attempts < 10) {
+        await Future.delayed(const Duration(milliseconds: 200));
+        duration = player.state.duration;
+        attempts++;
+      }
+
+      if (!mounted) return;
+
+      setState(() {
+        newVideoFile = file;
+        _videoDuration = duration;
+      });
+
+      await _generateThumbnail();
+    } finally {
+      await player.dispose();
+    }
   }
 
   bool get isValid {
     return titleController.text.isNotEmpty && descriptionController.text.isNotEmpty;
   }
 
-  void toggleEditOrSave() {
+  Future<void> _saveLessonChanges(BuildContext context) async {
+  setState(() => _isSaving = true);
+
+  String? finalVideoUrl = selectedVideoUrl;
+  int? finalDuration = _videoDuration.inSeconds > 0 ? _videoDuration.inSeconds : null;
+
+  if (newVideoFile != null) {
+    final uploadedUrl = await _uploadVideoAndWait(context, newVideoFile!);
+
+    if (uploadedUrl == null) {
+      if (mounted) setState(() => _isSaving = false);
+      return;
+    }
+    finalVideoUrl = uploadedUrl;
+  }
+
+  final lesson = await context.read<LessonCubit>().updateLessonAndReturn(
+        sectionId: widget.sectionId,
+        lessonId: widget.lessonId,
+        title: titleController.text.trim(),
+        description: descriptionController.text.trim(),
+        videoUrl: finalVideoUrl,
+        duration: finalDuration,
+      );
+
+  if (!mounted) return;
+  setState(() => _isSaving = false);
+
+  if (lesson != null) {
+    Navigator.of(context).pop(true); 
+  } else {
+    final localizations = AppLocalizations.of(context)!;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(localizations.lessonUpdateFailed),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
+}
+
+  Future<String?> _uploadVideoAndWait(BuildContext context, File file) async {
+    final cubit = context.read<LessonVideoUploadCubit>();
+    final completer = Completer<String?>();
+
+    late final StreamSubscription subscription;
+    subscription = cubit.stream.listen((state) {
+      if (state is LessonVideoUploadSuccess) {
+        subscription.cancel();
+        completer.complete(state.cdnUrl);
+      } else if (state is LessonVideoUploadError) {
+        subscription.cancel();
+        final message = state.errors.isNotEmpty ? state.errors.first : 'Upload failed';
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(message), backgroundColor: Colors.red),
+          );
+        }
+        completer.complete(null);
+      }
+    });
+
+    cubit.uploadVideo(sectionId: widget.sectionId, file: file);
+
+    return completer.future;
+  }
+
+  void toggleEditOrSave(BuildContext context) {
     if (isEditing) {
       if (!isValid) {
         final localizations = AppLocalizations.of(context)!;
@@ -72,259 +212,49 @@ class _LessonManagementScreenState extends State<LessonManagementScreen> {
         );
         return;
       }
-      // TODO
-      setState(() => isEditing = false);
+      _saveLessonChanges(context);
     } else {
       setState(() => isEditing = true);
     }
   }
 
-  Future<void> addAttachment() async {
-    final localizations = AppLocalizations.of(context)!;
-    final controller = TextEditingController();
-
-    final result = await showDialog<String>(
-      context: context,
-      builder: (dialogContext) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          title: Text(localizations.addAttachment),
-          content: CustomTextField(
-            controller: controller,
-            hintText: localizations.attachmentName,
-            icon: Icons.attach_file,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(dialogContext),
-              child: Text(
-                localizations.cancel,
-                style: const TextStyle(color: AppColors.textSecondary),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                final value = controller.text.trim();
-                if (value.isNotEmpty) {
-                  Navigator.pop(dialogContext, value);
-                }
-              },
-              child: Text(
-                localizations.add,
-                style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-
-    if (result != null) {
-      setState(() {
-        attachments.add(
-          LessonAttachment(
-            id: DateTime.now().millisecondsSinceEpoch.toString(),
-            name: result,
-          ),
-        );
-      });
+  Future<void> _handleBack(BuildContext context, bool isBusy) async {
+    if (!isBusy) {
+      Navigator.pop(context, _hasChanges);
+      return;
     }
-  }
-
-  Future<void> editAttachment(LessonAttachment attachment) async {
-    final localizations = AppLocalizations.of(context)!;
-    final controller = TextEditingController(text: attachment.name);
-
-    final result = await showDialog<String>(
-      context: context,
-      builder: (dialogContext) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          title: Text(localizations.editAttachment),
-          content: CustomTextField(
-            controller: controller,
-            hintText: localizations.attachmentName,
-            icon: Icons.edit_outlined,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(dialogContext),
-              child: Text(
-                localizations.cancel,
-                style: const TextStyle(color: AppColors.textSecondary),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                final value = controller.text.trim();
-                if (value.isNotEmpty) {
-                  Navigator.pop(dialogContext, value);
-                }
-              },
-              child: Text(
-                localizations.save,
-                style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-
-    if (result != null) {
-      setState(() {
-        final index = attachments.indexWhere((e) => e.id == attachment.id);
-        attachments[index] = attachment.copyWith(name: result);
-      });
+    final shouldLeave = await showLeaveWhileBusyDialog(context);
+    if (shouldLeave && context.mounted) {
+      Navigator.pop(context, _hasChanges);
     }
-  }
-
-  Future<void> deleteAttachment(LessonAttachment attachment) async {
-    final localizations = AppLocalizations.of(context)!;
-
-    final confirm = await showDialog<bool>(
-      context: context,
-      builder: (dialogContext) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          title: Text(localizations.deleteAttachment),
-          content: Text(localizations.deleteAttachmentConfirmation),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(dialogContext, false),
-              child: Text(localizations.cancel),
-            ),
-            TextButton(
-              onPressed: () => Navigator.pop(dialogContext, true),
-              child: Text(
-                localizations.delete,
-                style: TextStyle(color: Colors.red.shade400, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-
-    if (confirm == true) {
-      setState(() {
-        attachments.removeWhere((e) => e.id == attachment.id);
-      });
-    }
-  }
-
-  Widget _sectionTitle(String title) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Text(
-        title,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 16,
-          color: AppColors.primary,
-        ),
-      ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
-
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          localizations.lessonManagement,
-          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(gradient: AppColors.primaryGradient),
-        ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 55),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _sectionTitle(localizations.lessonVideo),
-
-            LessonVideoPicker(
-              selectedVideo: selectedVideo,
-              onTap: pickVideo,
-              enabled: isEditing,
-            ),
-
-            const SizedBox(height: 24),
-
-            _sectionTitle(localizations.lessonTitle),
-
-            CustomTextField(
-              controller: titleController,
-              hintText: localizations.enterLessonTitle,
-              icon: Icons.title_rounded,
-              enabled: isEditing,
-            ),
-
-            const SizedBox(height: 24),
-
-            _sectionTitle(localizations.lessonDescription),
-
-            CustomTextField(
-              controller: descriptionController,
-              hintText: localizations.enterLessonDescription,
-              icon: Icons.description_outlined,
-              maxLines: 6,
-              enabled: isEditing,
-            ),
-
-            const SizedBox(height: 24),
-
-            LessonAttachmentsSection(
-              attachments: attachments,
-              onAdd: addAttachment,
-              onEdit: editAttachment,
-              onDelete: deleteAttachment,
-              enabled: isEditing,
-            ),
-
-            const SizedBox(height: 32),
-
-            SizedBox(
-              width: double.infinity,
-              height: 52,
-              child: OutlinedButton.icon(
-                onPressed: toggleEditOrSave,
-                icon: Icon(
-                  isEditing ? Icons.check_circle_outline : Icons.edit_outlined,
-                  color: isEditing ? Colors.white : AppColors.primary,
-                ),
-                label: Text(
-                  isEditing ? localizations.saveChanges : localizations.editLesson,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: isEditing ? Colors.white : AppColors.primary,
-                  ),
-                ),
-                style: OutlinedButton.styleFrom(
-                  backgroundColor: isEditing ? Colors.green.shade600 : Colors.transparent,
-                  side: BorderSide(
-                    color: isEditing ? Colors.green.shade600 : AppColors.primary,
-                    width: 1.6,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => getIt<LessonCubit>()),
+        BlocProvider(create: (_) => getIt<LessonVideoUploadCubit>()),
+        BlocProvider(create: (_) => getIt<AttachmentUploadCubit>()),
+        BlocProvider(create: (_) => getIt<LessonAttachmentCubit>()),
+      ],
+      child: Builder(
+        builder: (context) {
+          return LessonManagementView(
+            titleController: titleController,
+            descriptionController: descriptionController,
+            lessonId: widget.lessonId,
+            videoThumbnail: _videoThumbnail,
+            loadingThumbnail: _loadingThumbnail,
+            isEditing: isEditing,
+            isSaving: _isSaving,
+            onPickVideo: () => pickVideo(context),
+            onToggleEditOrSave: () => toggleEditOrSave(context),
+            onBack: (isBusy) => _handleBack(context, isBusy),
+          );
+        },
       ),
     );
   }
 }
+

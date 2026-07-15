@@ -4,6 +4,20 @@ import 'package:dio/dio.dart';
 import 'package:project1/core/network/dio_client.dart';
 import 'package:project1/core/storage/secure_storage.dart';
 import 'package:project1/core/storage/storage_keys.dart';
+import 'package:project1/features/attachment/data/data_sources/lesson_attachment_remote_data_source.dart';
+import 'package:project1/features/attachment/data/repository/lesson_attachment_repository_impl.dart';
+import 'package:project1/features/attachment/domain/repository/lesson_attachment_repository.dart';
+import 'package:project1/features/attachment/domain/use_case/create_attachment_usecase.dart';
+import 'package:project1/features/attachment/domain/use_case/delete_attachment_usecase.dart';
+import 'package:project1/features/attachment/domain/use_case/get_attachments_usecase.dart';
+import 'package:project1/features/attachment/domain/use_case/update_attachment_usecase.dart';
+import 'package:project1/features/attachment/presentation/cubit/lesson_attachment_cubit.dart';
+import 'package:project1/features/attachment/upload/data/data_sources/attachment_upload_remote_data_source.dart';
+import 'package:project1/features/attachment/upload/data/repository/attachment_upload_repository_impl.dart';
+import 'package:project1/features/attachment/upload/domain/repository/attachment_upload_repository.dart';
+import 'package:project1/features/attachment/upload/domain/use_case/generate_attachment_upload_url_usecase.dart';
+import 'package:project1/features/attachment/upload/domain/use_case/upload_attachment_file_usecase.dart';
+import 'package:project1/features/attachment/upload/presentation/cubit/attachment_upload_cubit.dart';
 import 'package:project1/features/auth/data/data_sources/auth_remote_datasource.dart';
 import 'package:project1/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:project1/features/auth/domain/repository/auth_repository.dart';
@@ -64,6 +78,21 @@ import 'package:project1/features/department/data/data_sources/department_data_s
 import 'package:project1/features/department/domain/repository/department_repository.dart';
 import 'package:project1/features/department/data/repository/department_repository_implement.dart';
 import 'package:project1/features/department/domain/use_case/get_department_use_case.dart';
+import 'package:project1/features/lesson/data/data_sources/lesson_remote_datasource.dart';
+import 'package:project1/features/lesson/data/repository/lesson_repository_impl.dart';
+import 'package:project1/features/lesson/domain/repository/lesson_repository.dart';
+import 'package:project1/features/lesson/domain/use_case/create_lesson_usecase.dart';
+import 'package:project1/features/lesson/domain/use_case/delete_lesson_usecase.dart';
+import 'package:project1/features/lesson/domain/use_case/get_lesson_usecase.dart';
+import 'package:project1/features/lesson/domain/use_case/get_lessons_usecase.dart';
+import 'package:project1/features/lesson/domain/use_case/update_lesson_usecase.dart';
+import 'package:project1/features/lesson/presentation/cubit/lesson_cubit.dart';
+import 'package:project1/features/lesson/upload_video/data/data_sources/lesson_video_upload_remote_datasource.dart';
+import 'package:project1/features/lesson/upload_video/data/repository/lesson_video_upload_repository_impl.dart';
+import 'package:project1/features/lesson/upload_video/domain/repository/lesson_video_upload_repository.dart';
+import 'package:project1/features/lesson/upload_video/domain/use_case/generate_video_upload_url_usecase.dart';
+import 'package:project1/features/lesson/upload_video/domain/use_case/upload_video_file_usecase.dart';
+import 'package:project1/features/lesson/upload_video/presentation/cubit/lesson_video_upload_cubit.dart';
 import 'package:project1/features/profile/data/data_sources/profile_remote_datasource.dart';
 import 'package:project1/features/profile/data/repository/profile_repository_impl.dart';
 import 'package:project1/features/profile/domain/repository/profile_repository.dart';
@@ -438,4 +467,141 @@ getIt.registerFactory<SectionCubit>(
 );
 
 //////////////////////// Section ////////////////////////
+
+
+
+//////////////////////// Lesson ////////////////////////
+
+// datasource
+getIt.registerLazySingleton<LessonVideoUploadRemoteDataSource>(
+  () => LessonVideoUploadRemoteDataSource(getIt<DioClient>()),
+);
+getIt.registerLazySingleton<LessonRemoteDataSource>(
+  () => LessonRemoteDataSource(
+    getIt(),
+  ),
+);
+
+// repository
+getIt.registerLazySingleton<LessonVideoUploadRepository>(
+  () => LessonVideoUploadRepositoryImpl(getIt<LessonVideoUploadRemoteDataSource>()),
+);
+getIt.registerLazySingleton<LessonRepository>(
+  () => LessonRepositoryImpl(
+    getIt(),
+  ),
+);
+
+// usecases
+getIt.registerLazySingleton<GenerateVideoUploadUrlUseCase>(
+  () => GenerateVideoUploadUrlUseCase(getIt<LessonVideoUploadRepository>()),
+);
+
+getIt.registerLazySingleton<UploadVideoFileUseCase>(
+  () => UploadVideoFileUseCase(getIt<LessonVideoUploadRepository>()),
+);
+
+getIt.registerLazySingleton<CreateLessonUseCase>(
+  () => CreateLessonUseCase(
+    getIt(),
+  ),
+);
+
+getIt.registerLazySingleton<GetLessonUseCase>(
+  () => GetLessonUseCase(getIt<LessonRepository>()),
+);
+
+getIt.registerLazySingleton<GetLessonsUseCase>(
+  () => GetLessonsUseCase(getIt<LessonRepository>()),
+);
+
+getIt.registerLazySingleton<UpdateLessonUseCase>(
+  () => UpdateLessonUseCase(getIt<LessonRepository>()),
+);
+
+getIt.registerLazySingleton<DeleteLessonUseCase>(
+  () => DeleteLessonUseCase(getIt<LessonRepository>()),
+);
+
+// cubit
+getIt.registerFactory<LessonVideoUploadCubit>(
+  () => LessonVideoUploadCubit(
+    generateVideoUploadUrlUseCase: getIt<GenerateVideoUploadUrlUseCase>(),
+    uploadVideoFileUseCase: getIt<UploadVideoFileUseCase>(),
+  ),
+);
+getIt.registerFactory<LessonCubit>(
+  () => LessonCubit(
+    createLessonUseCase: getIt<CreateLessonUseCase>(),
+    getLessonUseCase: getIt<GetLessonUseCase>(),
+    getLessonsUseCase: getIt<GetLessonsUseCase>(),
+    updateLessonUseCase: getIt<UpdateLessonUseCase>(),
+    deleteLessonUseCase: getIt<DeleteLessonUseCase>(),
+  ),
+);
+
+//////////////////////// Lesson ////////////////////////
+
+
+
+//////////////////////// Attachment ////////////////////////
+
+// 1. Data Sources
+getIt.registerLazySingleton<LessonAttachmentRemoteDataSource>(
+  () => LessonAttachmentRemoteDataSource(getIt<DioClient>()),
+);
+getIt.registerLazySingleton<AttachmentUploadRemoteDataSource>(
+  () => AttachmentUploadRemoteDataSource(getIt<DioClient>()),
+);
+
+// 2. Repositories
+getIt.registerLazySingleton<LessonAttachmentRepository>(
+  () => LessonAttachmentRepositoryImpl(getIt<LessonAttachmentRemoteDataSource>()),
+);
+
+// تصحيح: الربط يجب أن يتم مع AttachmentUploadRemoteDataSource وليس LessonAttachmentRemoteDataSource
+getIt.registerLazySingleton<AttachmentUploadRepository>(
+  () => AttachmentUploadRepositoryImpl(
+    getIt<AttachmentUploadRemoteDataSource>(), // <--- تم التصحيح هنا
+    getIt<DioClient>(),
+  ),
+);
+
+// 3. Use Cases
+getIt.registerLazySingleton<GetAttachmentsUseCase>(
+  () => GetAttachmentsUseCase(getIt<LessonAttachmentRepository>()),
+);
+getIt.registerLazySingleton<UpdateAttachmentUseCase>(
+  () => UpdateAttachmentUseCase(getIt<LessonAttachmentRepository>()),
+);
+getIt.registerLazySingleton<DeleteAttachmentUseCase>(
+  () => DeleteAttachmentUseCase(getIt<LessonAttachmentRepository>()),
+);
+getIt.registerLazySingleton<CreateAttachmentUseCase>(
+  () => CreateAttachmentUseCase(getIt<LessonAttachmentRepository>()),
+);
+getIt.registerLazySingleton<GenerateAttachmentUploadUrlUseCase>(
+  () => GenerateAttachmentUploadUrlUseCase(getIt<AttachmentUploadRepository>()),
+);
+getIt.registerLazySingleton<UploadAttachmentFileUseCase>(
+  () => UploadAttachmentFileUseCase(getIt<AttachmentUploadRepository>()),
+);
+
+// 4. Cubits
+getIt.registerFactory<LessonAttachmentCubit>(
+  () => LessonAttachmentCubit(
+    getAttachmentsUseCase: getIt<GetAttachmentsUseCase>(),
+    updateAttachmentUseCase: getIt<UpdateAttachmentUseCase>(),
+    deleteAttachmentUseCase: getIt<DeleteAttachmentUseCase>(),
+  ),
+);
+getIt.registerFactory<AttachmentUploadCubit>(
+  () => AttachmentUploadCubit(
+    generateUploadUrlUseCase: getIt<GenerateAttachmentUploadUrlUseCase>(),
+    uploadFileUseCase: getIt<UploadAttachmentFileUseCase>(),
+    createAttachmentUseCase: getIt<CreateAttachmentUseCase>(),
+  ),
+);
+
+//////////////////////// Attachment ////////////////////////
 }

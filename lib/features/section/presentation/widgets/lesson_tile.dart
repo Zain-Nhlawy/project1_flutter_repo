@@ -4,11 +4,13 @@ import 'package:project1/config/theme/app_colors.dart';
 class LessonTile extends StatelessWidget {
   final String title;
   final VoidCallback onEdit;
+  final VoidCallback onDelete;
 
   const LessonTile({
     super.key,
     required this.title,
     required this.onEdit,
+    required this.onDelete,
   });
 
   @override
@@ -40,6 +42,13 @@ class LessonTile extends StatelessWidget {
           IconButton(
             onPressed: onEdit,
             icon: const Icon(Icons.edit_outlined, size: 18, color: AppColors.textSecondary),
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+            splashRadius: 18,
+          ),
+          IconButton(
+            onPressed: onDelete,
+            icon: Icon(Icons.delete_outline, size: 18, color: Colors.red.shade400),
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(),
             splashRadius: 18,

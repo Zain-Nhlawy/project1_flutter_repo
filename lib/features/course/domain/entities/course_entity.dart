@@ -9,6 +9,7 @@ class CourseEntity {
   final String imagePath;
 
   final String? demoId;
+  final String? assetId; 
 
   final List<String> tagIds;
   final List<String> tags;
@@ -31,22 +32,16 @@ class CourseEntity {
     required this.visibility,
     this.price,
     required this.imagePath,
-
     this.demoId,
-
+    this.assetId, 
     this.tagIds = const [],
     this.tags = const [],
-
     this.demo,
-
     required this.createdAt,
     required this.updatedAt,
-
     this.sectionsCount = 0,
     this.totalLessons = 0,
     this.totalDuration = 0,
-
     this.isPublished = false,
-
   });
 }

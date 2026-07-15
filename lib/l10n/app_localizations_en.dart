@@ -603,7 +603,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addLesson => 'Add Lesson';
 
   @override
-  String get noLessonsYet => 'No lessons yet';
+  String get noLessonsYet => 'No lessons yet.';
 
   @override
   String get questionsBank => 'Questions Bank';
@@ -668,7 +668,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Are you sure you want to delete this attachment?';
 
   @override
-  String get noAttachments => 'No attachments yet';
+  String get noAttachments => 'No attachments.';
 
   @override
   String get saveLesson => 'Save Lesson';
@@ -737,4 +737,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get courseDetails => 'Course Details';
+
+  @override
+  String get selectVideoFirst => 'Please select a video first.';
+
+  @override
+  String get operationInProgressTitle => 'Operation in Progress';
+
+  @override
+  String get operationInProgressMessage =>
+      'A video upload or lesson creation is currently in progress. If you leave now, the video may finish uploading without being linked to the lesson. Are you sure you want to leave?';
+
+  @override
+  String get stay => 'Stay';
+
+  @override
+  String get leaveAnyway => 'Leave Anyway';
+
+  @override
+  String get deleteLesson => 'Delete Lesson';
+
+  @override
+  String get deleteLessonConfirmation =>
+      'Are you sure you want to delete this lesson? This action cannot be undone.';
+
+  @override
+  String get deleteLessonFailed => 'Failed to delete the lesson.';
+
+  @override
+  String get leaveWhileBusyTitle => 'Operation in Progress';
+
+  @override
+  String get leaveWhileBusyMessage =>
+      'An upload or save operation is currently in progress. If you leave now, your changes may be lost. Are you sure you want to leave?';
+
+  @override
+  String get lessonUpdatedSuccessfully => 'Changes saved successfully.';
+
+  @override
+  String get lessonUpdateFailed => 'Failed to save changes.';
+
+  @override
+  String get pressToSelectVideo => 'Press to select video';
+
+  @override
+  String get preparingToUpload => 'Preparing to upload...';
+
+  @override
+  String get uploadingVideo => 'Uploading video...';
 }

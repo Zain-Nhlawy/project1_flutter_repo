@@ -10,6 +10,7 @@ class CourseModel extends CourseEntity {
     super.price,
     required super.imagePath,
     super.demoId,
+    super.assetId,
     super.tagIds = const [],
     super.tags = const [],
     super.demo,
@@ -19,12 +20,10 @@ class CourseModel extends CourseEntity {
     super.totalLessons = 0,
     super.totalDuration = 0,
     super.isPublished = false,
-
   }) : super(
           createdAt: createdAt ?? DateTime.now(),
           updatedAt: updatedAt ?? DateTime.now(),
         );
-
 
   factory CourseModel.fromJson(Map<String, dynamic> json) {
     return CourseModel(
@@ -43,29 +42,44 @@ class CourseModel extends CourseEntity {
               ?.map((e) => e['name'].toString())
               .toList() ??
           [],
-      demo: json['demo'] != null
-          ? DemoModel.fromJson(json['demo'])
-          : null,
+      demo: json['demo'] != null ? DemoModel.fromJson(json['demo']) : null,
       isPublished: json['isPublished'] ?? false,
-      createdAt: DateTime.tryParse(
-            json['createdAt'] ?? '',
-          ) ??
-          DateTime.now(),
-      updatedAt: DateTime.tryParse(
-            json['updatedAt'] ?? '',
-          ) ??
-          DateTime.now(),
-      sectionsCount:
-          json['sectionsCount'] ?? 0,
-      totalLessons:
-          json['lessonCount'] ?? 0,
-      totalDuration:
-          json['totalDuration'] ?? 0,
-
+      createdAt: DateTime.tryParse(json['createdAt'] ?? '') ?? DateTime.now(),
+      updatedAt: DateTime.tryParse(json['updatedAt'] ?? '') ?? DateTime.now(),
+      sectionsCount: json['sectionsCount'] ?? 0,
+      totalLessons: json['lessonCount'] ?? 0,
+      totalDuration: json['totalDuration'] ?? 0,
     );
   }
 
+  factory CourseModel.fromAssetJson(Map<String, dynamic> assetJson) {
+    final courseJson = assetJson['course'] as Map<String, dynamic>?;
+    if (courseJson == null) {
+      throw ArgumentError('Asset json does not contain a course object');
+    }
 
+    final course = CourseModel.fromJson(courseJson);
+
+    return CourseModel(
+      id: course.id,
+      title: course.title,
+      description: course.description,
+      visibility: course.visibility,
+      price: course.price,
+      imagePath: course.imagePath,
+      demoId: assetJson['demoId'] ?? course.demoId,
+      assetId: assetJson['id'], 
+      tagIds: course.tagIds,
+      tags: course.tags,
+      demo: course.demo,
+      createdAt: course.createdAt,
+      updatedAt: course.updatedAt,
+      sectionsCount: course.sectionsCount,
+      totalLessons: course.totalLessons,
+      totalDuration: course.totalDuration,
+      isPublished: course.isPublished,
+    );
+  }
 
   @override
   Map<String, dynamic> toJson() {

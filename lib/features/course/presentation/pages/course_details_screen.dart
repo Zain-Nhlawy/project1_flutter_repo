@@ -80,7 +80,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                   CourseHeader(
                     imageUrl: course.imagePath,
                     totalLessons: course.totalLessons,
-                    totalDuration: "${course.totalDuration} min",
+                    totalDurationSeconds: course.totalDuration,
                   ),
                   const SizedBox(height: 30),
                   Padding(
@@ -194,7 +194,6 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
               ),
             );
           }
-
           return const SizedBox();
         },
       ),

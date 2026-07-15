@@ -270,6 +270,24 @@
   "producedBy": "تم إعداده بواسطة",
   "aboutThisCourse": "عن هذا الكورس",
   "courseContent": "محتوى الكورس",
-  "courseDetails": "تفاصيل الكورس"
+  "courseDetails": "تفاصيل الكورس",
+  "selectVideoFirst": "يرجى اختيار فيديو أولاً.",
+  "operationInProgressTitle": "عملية جارية", "operationInProgressMessage": "يوجد رفع فيديو أو إنشاء درس قيد التنفيذ. إذا غادرت الآن، قد يكتمل رفع الفيديو دون ربطه بالدرس. هل تريد المغادرة على أي حال؟", "stay": "البقاء", "leaveAnyway": "المغادرة على أي حال",
+  "deleteLesson": "حذف الدرس",
+  "deleteLessonConfirmation": "هل أنت متأكد أنك تريد حذف هذا الدرس؟",
+  "deleteLessonFailed": "فشل حذف الدرس.",
+  "leaveWhileBusyTitle": "عملية قيد التنفيذ",
+"leaveWhileBusyMessage": "في عملية رفع/حفظ شغالة حالياً. إذا خرجت هلق، ممكن تخسر التغييرات. متأكد إنك بدك تطلع؟",
+"stay": "البقاء",
+"leaveAnyway": "الخروج على أي حال",
+"lessonUpdatedSuccessfully": "تم حفظ التعديلات بنجاح",
+"lessonUpdateFailed": "فشل حفظ التعديلات",
+"deleteLesson": "حذف الدرس",
+"deleteLessonConfirmation": "هل أنت متأكد من حذف هذا الدرس؟ لا يمكن التراجع عن هذا الإجراء.",
+"noLessonsYet": "لا يوجد دروس بعد",
+"noAttachments": "لا يوجد مرفقات",
+"pressToSelectVideo": "اضغط لاختيار فيديو",
+"preparingToUpload": "جاري التحضير للرفع...",
+"uploadingVideo": "جاري رفع الفيديو..."
 
 }

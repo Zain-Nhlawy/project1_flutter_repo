@@ -1,20 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_theme.dart';
+import 'package:project1/l10n/app_localizations.dart';
 
 class CourseHeader extends StatelessWidget {
   final String imageUrl;
-  final String totalDuration;
+  final int totalDurationSeconds; // تغيير النوع لاستقبال الثواني
   final int totalLessons;
 
   const CourseHeader({
     super.key,
     required this.imageUrl,
-    required this.totalDuration,
+    required this.totalDurationSeconds,
     required this.totalLessons,
   });
 
+  String formatDuration(int totalSeconds) {
+  final duration = Duration(seconds: totalSeconds);
+  String twoDigits(int value) => value.toString().padLeft(2, '0');
+  
+  final hours = twoDigits(duration.inHours);
+  final minutes = twoDigits(duration.inMinutes.remainder(60));
+  final seconds = twoDigits(duration.inSeconds.remainder(60));
+  
+  return '$hours:$minutes:$seconds';
+}
+
   @override
   Widget build(BuildContext context) {
+    final formattedDuration = formatDuration(totalDurationSeconds);
+    final l10n = AppLocalizations.of(context)!; 
+
     return SizedBox(
       height: 310,
       child: Stack(
@@ -29,19 +44,9 @@ class CourseHeader extends StatelessWidget {
                   ? DecorationImage(
                       image: NetworkImage(imageUrl),
                       fit: BoxFit.cover,
-                      onError: (_, __) {},
                     )
                   : null,
             ),
-            child: imageUrl.isEmpty
-                ? const Center(
-                    child: Icon(
-                      Icons.image_outlined,
-                      size: 50,
-                      color: Colors.grey,
-                    ),
-                  )
-                : null,
           ),
           Positioned(
             bottom: 0,
@@ -58,8 +63,8 @@ class CourseHeader extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _infoItem(Icons.access_time, totalDuration, "Total Content", context),
-                  _infoItem(Icons.play_circle_outline, '$totalLessons', "Lessons", context),
+                  _infoItem(Icons.access_time, formattedDuration, l10n.duration, context),
+                  _infoItem(Icons.play_circle_outline, '$totalLessons', l10n.lessons, context),
                 ],
               ),
             ),

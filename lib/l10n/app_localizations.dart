@@ -1241,7 +1241,7 @@ abstract class AppLocalizations {
   /// No description provided for @noLessonsYet.
   ///
   /// In en, this message translates to:
-  /// **'No lessons yet'**
+  /// **'No lessons yet.'**
   String get noLessonsYet;
 
   /// No description provided for @questionsBank.
@@ -1367,7 +1367,7 @@ abstract class AppLocalizations {
   /// No description provided for @noAttachments.
   ///
   /// In en, this message translates to:
-  /// **'No attachments yet'**
+  /// **'No attachments.'**
   String get noAttachments;
 
   /// No description provided for @saveLesson.
@@ -1501,6 +1501,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Course Details'**
   String get courseDetails;
+
+  /// No description provided for @selectVideoFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a video first.'**
+  String get selectVideoFirst;
+
+  /// No description provided for @operationInProgressTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Operation in Progress'**
+  String get operationInProgressTitle;
+
+  /// No description provided for @operationInProgressMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'A video upload or lesson creation is currently in progress. If you leave now, the video may finish uploading without being linked to the lesson. Are you sure you want to leave?'**
+  String get operationInProgressMessage;
+
+  /// No description provided for @stay.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay'**
+  String get stay;
+
+  /// No description provided for @leaveAnyway.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave Anyway'**
+  String get leaveAnyway;
+
+  /// No description provided for @deleteLesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Lesson'**
+  String get deleteLesson;
+
+  /// No description provided for @deleteLessonConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this lesson? This action cannot be undone.'**
+  String get deleteLessonConfirmation;
+
+  /// No description provided for @deleteLessonFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete the lesson.'**
+  String get deleteLessonFailed;
+
+  /// No description provided for @leaveWhileBusyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Operation in Progress'**
+  String get leaveWhileBusyTitle;
+
+  /// No description provided for @leaveWhileBusyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'An upload or save operation is currently in progress. If you leave now, your changes may be lost. Are you sure you want to leave?'**
+  String get leaveWhileBusyMessage;
+
+  /// No description provided for @lessonUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes saved successfully.'**
+  String get lessonUpdatedSuccessfully;
+
+  /// No description provided for @lessonUpdateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to save changes.'**
+  String get lessonUpdateFailed;
+
+  /// No description provided for @pressToSelectVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Press to select video'**
+  String get pressToSelectVideo;
+
+  /// No description provided for @preparingToUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing to upload...'**
+  String get preparingToUpload;
+
+  /// No description provided for @uploadingVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploading video...'**
+  String get uploadingVideo;
 }
 
 class _AppLocalizationsDelegate

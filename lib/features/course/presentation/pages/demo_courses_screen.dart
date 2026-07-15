@@ -5,7 +5,7 @@ import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
 import 'package:project1/features/course/presentation/cubit/course_state.dart';
 import 'package:project1/features/course/presentation/pages/course_details_screen.dart';
-import 'package:project1/features/course/presentation/widgets/course_card.dart';
+import 'package:project1/features/course/presentation/widgets/details/course_card.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class DemoCoursesScreen extends StatelessWidget {

@@ -7,11 +7,13 @@ import 'package:project1/l10n/app_localizations.dart';
 class CourseManagementActionsRow extends StatelessWidget {
   final String courseId;
   final String courseTitle;
+  final VoidCallback onSectionsChanged;
 
   const CourseManagementActionsRow({
     super.key,
     required this.courseId,
     required this.courseTitle,
+    required this.onSectionsChanged,
   });
 
   @override
@@ -28,9 +30,7 @@ class CourseManagementActionsRow extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => PlaceholderScreen(
-                    title: localizations.manageFaq,
-                  ),
+                  builder: (_) => PlaceholderScreen(title: localizations.manageFaq),
                 ),
               );
             },
@@ -41,8 +41,8 @@ class CourseManagementActionsRow extends StatelessWidget {
           child: ManagementActionTile(
             icon: Icons.view_list_rounded,
             label: localizations.manageSections,
-            onTap: () {
-              Navigator.push(
+            onTap: () async {
+              final result = await Navigator.push<bool>(
                 context,
                 MaterialPageRoute(
                   builder: (_) => SectionManagementScreen(
@@ -51,6 +51,9 @@ class CourseManagementActionsRow extends StatelessWidget {
                   ),
                 ),
               );
+              if (result == true) {
+                onSectionsChanged();
+              }
             },
           ),
         ),
