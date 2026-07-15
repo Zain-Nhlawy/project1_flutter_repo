@@ -24,7 +24,7 @@ class ProfileInfoCard extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(size.width * 0.05),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.surfaceOf(context),
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
@@ -81,7 +81,7 @@ class ProfileInfoCard extends StatelessWidget {
           Text(
             name,
             style: AppTextStyles.h3.copyWith(
-              color: AppColors.textPrimary,
+              color: AppColors.textPrimaryOf(context),
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -91,7 +91,7 @@ class ProfileInfoCard extends StatelessWidget {
           Text(
             email,
             style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.textSecondary,
+              color: AppColors.textSecondaryOf(context),
             ),
           ),
         ],

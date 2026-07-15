@@ -4,7 +4,7 @@ import 'package:project1/l10n/app_localizations.dart';
 
 class CourseHeader extends StatelessWidget {
   final String imageUrl;
-  final int totalDurationSeconds; // تغيير النوع لاستقبال الثواني
+  final int totalDurationSeconds; 
   final int totalLessons;
 
   const CourseHeader({

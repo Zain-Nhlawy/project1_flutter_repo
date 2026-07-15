@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/features/section/presentation/cubit/section_cubit.dart';
 import 'package:project1/features/section/presentation/cubit/section_state.dart';
+import 'package:project1/l10n/app_localizations.dart';
 
 class CourseTabs extends StatefulWidget {
   final String courseId;
@@ -70,8 +71,8 @@ class _CourseTabsState extends State<CourseTabs> {
                       }
 
                       if (state.sections.isEmpty) {
-                        return const Center(
-                          child: Text("No sections available"),
+                        return Center(
+                          child: Text(AppLocalizations.of(context)!.noSectionsAvailable),
                         );
                       }
 

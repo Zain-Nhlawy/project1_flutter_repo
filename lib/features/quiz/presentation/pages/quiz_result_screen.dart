@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/l10n/app_localizations.dart';
 
 class QuizResultScreen extends StatelessWidget {
   final int score;
@@ -40,7 +41,7 @@ class QuizResultScreen extends StatelessWidget {
             gradient: AppColors.headerGradient,
           ),
           child: AppBar(
-            title: const Text("Quiz Result"),
+            title: Text(AppLocalizations.of(context)!.quizResult),
             centerTitle: true,
             backgroundColor: Colors.transparent,
             elevation: 0,
@@ -114,7 +115,7 @@ class QuizResultScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text("Back to Home"),
+                  child: Text(AppLocalizations.of(context)!.backToHome),
                 ),
               ),
             ),

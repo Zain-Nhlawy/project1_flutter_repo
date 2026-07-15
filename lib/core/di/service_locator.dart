@@ -306,6 +306,9 @@ getIt.registerFactory<DemoUserCubit>(
   getIt.registerLazySingleton(
     () => DemoPaymentUseCase(getIt<DemoPaymentRepository>()),
   );
+
+
+
   ////////////////////////Demo////////////////////////
 
   ///////////////////// department ////////////////
@@ -546,7 +549,7 @@ getIt.registerFactory<LessonCubit>(
 
 //////////////////////// Attachment ////////////////////////
 
-// 1. Data Sources
+//Data Sources
 getIt.registerLazySingleton<LessonAttachmentRemoteDataSource>(
   () => LessonAttachmentRemoteDataSource(getIt<DioClient>()),
 );
@@ -554,20 +557,19 @@ getIt.registerLazySingleton<AttachmentUploadRemoteDataSource>(
   () => AttachmentUploadRemoteDataSource(getIt<DioClient>()),
 );
 
-// 2. Repositories
+//Repositories
 getIt.registerLazySingleton<LessonAttachmentRepository>(
   () => LessonAttachmentRepositoryImpl(getIt<LessonAttachmentRemoteDataSource>()),
 );
 
-// تصحيح: الربط يجب أن يتم مع AttachmentUploadRemoteDataSource وليس LessonAttachmentRemoteDataSource
 getIt.registerLazySingleton<AttachmentUploadRepository>(
   () => AttachmentUploadRepositoryImpl(
-    getIt<AttachmentUploadRemoteDataSource>(), // <--- تم التصحيح هنا
+    getIt<AttachmentUploadRemoteDataSource>(),
     getIt<DioClient>(),
   ),
 );
 
-// 3. Use Cases
+//Use Cases
 getIt.registerLazySingleton<GetAttachmentsUseCase>(
   () => GetAttachmentsUseCase(getIt<LessonAttachmentRepository>()),
 );
@@ -587,7 +589,7 @@ getIt.registerLazySingleton<UploadAttachmentFileUseCase>(
   () => UploadAttachmentFileUseCase(getIt<AttachmentUploadRepository>()),
 );
 
-// 4. Cubits
+//Cubits
 getIt.registerFactory<LessonAttachmentCubit>(
   () => LessonAttachmentCubit(
     getAttachmentsUseCase: getIt<GetAttachmentsUseCase>(),

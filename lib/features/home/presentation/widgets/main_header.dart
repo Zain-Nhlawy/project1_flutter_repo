@@ -3,12 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/user_state.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20cubit/demo_cubit.dart';
+import 'package:project1/features/demo/presentation/cubit/invitations_cubit/invitation_cubit.dart';
 import 'package:project1/features/demo/presentation/pages/add_demo_screen.dart';
+import 'package:project1/features/demo/presentation/pages/invitations_page.dart';
 import 'package:project1/features/home/presentation/widgets/state_card.dart';
 import 'package:project1/l10n/app_localizations.dart';
+import 'package:animations/animations.dart';
 
 class MainHeader extends StatelessWidget {
   final int myDemosCount;
@@ -85,11 +89,22 @@ class MainHeader extends StatelessWidget {
                       final currentDemoCubit = context.read<DemoCubit>();
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (routeContext) => BlocProvider.value(
-                            value: currentDemoCubit,
-                            child: const AddDemoScreen(),
-                          ),
+                        PageRouteBuilder(
+                          transitionDuration: const Duration(milliseconds: 300),
+                          pageBuilder:
+                              (routeContext, animation, secondaryAnimation) =>
+                                  BlocProvider.value(
+                                    value: currentDemoCubit,
+                                    child: const AddDemoScreen(),
+                                  ),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                                return FadeThroughTransition(
+                                  animation: animation,
+                                  secondaryAnimation: secondaryAnimation,
+                                  child: child,
+                                );
+                              },
                         ),
                       );
                     },
@@ -121,10 +136,21 @@ class MainHeader extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BlocProvider(
+                              create: (context) =>
+                                  InvitationCubit(usecase: getIt()),
+                              child: const InvitationsPage(),
+                            ),
+                          ),
+                        );
+                      },
                       padding: EdgeInsets.symmetric(
                         horizontal: size.width * 0.02,
-                        vertical: size.height * 0.012,
+                        vertical: size.height * 0.015,
                       ),
                       constraints: const BoxConstraints(),
                       icon: Icon(

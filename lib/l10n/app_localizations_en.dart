@@ -214,9 +214,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your payment has been processed successfully. Your demo is now ready to use.';
 
   @override
-  String get backToHome => 'Back to Home';
-
-  @override
   String get processingPayment => 'processing payment';
 
   @override
@@ -233,7 +230,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noSectionFound => 'No section found';
 
   @override
-  String get usersTitle => 'Users';
+  String get demoMembers => 'Demo Members';
 
   @override
   String get usersEmptyTitle => 'No users yet';
@@ -243,6 +240,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get usersErrorGeneric => 'Something went wrong while loading users.';
+
+  @override
+  String get viewPersonalInfo => 'View personal info';
+
+  @override
+  String get changePermissions => 'Change permissions';
+
+  @override
+  String get removeFromRoom => 'Remove from room';
+
+  @override
+  String get userNameHint => 'User name';
+
+  @override
+  String get searchUser => 'Search user';
+
+  @override
+  String get startTyping => 'Start typing to search...';
+
+  @override
+  String get noUsersFound => 'No users found';
+
+  @override
+  String get sendInvitation => 'Send invite';
 
   @override
   String get pleaseEnterEmail => 'Please enter your email address';
@@ -381,7 +402,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get changePassword => 'Change Password';
 
   @override
-  String get enterPasswordToContinue => 'Enter password to continue';
+  String get enterPasswordToContinue =>
+      'Enter your current and new password to continue';
 
   @override
   String get oldPassword => 'Current password';
@@ -390,13 +412,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseFillAllFields => 'Please fill all fields';
 
   @override
-  String get security => 'Security';
-
-  @override
   String get twoFactorAuth => 'Two-Factor Authentication';
-
-  @override
-  String get extraSecurityLayer => 'Extra security layer for your account';
 
   @override
   String get resendVerificationEmail => 'Resend verification email';
@@ -429,9 +445,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get both => 'Both';
 
   @override
-  String get cancel => 'Cancel';
-
-  @override
   String get storagePermissionDenied =>
       'No storage permission. Please enable it from settings.';
 
@@ -443,6 +456,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pngSaved => 'PNG saved successfully';
+
+  @override
+  String get security => 'Security';
+
+  @override
+  String get extraSecurityLayer => 'Extra security layer for your account';
 
   @override
   String get enableTwoFactorAuth => 'Enable Two-Factor Authentication';
@@ -566,12 +585,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ongoingCourses => 'Ongoing courses';
 
   @override
-  String get lessons => 'Lessons';
-
-  @override
-  String get duration => 'Duration';
-
-  @override
   String get courseManagement => 'Course Management';
 
   @override
@@ -603,13 +616,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addLesson => 'Add Lesson';
 
   @override
-  String get noLessonsYet => 'No lessons yet.';
+  String get noLessonsYet => 'No lessons yet';
 
   @override
   String get questionsBank => 'Questions Bank';
-
-  @override
-  String get quiz => 'Quiz';
 
   @override
   String get renameSection => 'Rename Section';
@@ -668,7 +678,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Are you sure you want to delete this attachment?';
 
   @override
-  String get noAttachments => 'No attachments.';
+  String get noAttachments => 'No attachments yet';
 
   @override
   String get saveLesson => 'Save Lesson';
@@ -739,6 +749,68 @@ class AppLocalizationsEn extends AppLocalizations {
   String get courseDetails => 'Course Details';
 
   @override
+  String get courseCreatedSuccessfully => 'Course created successfully';
+
+  @override
+  String get noSectionsAvailable => 'No sections available';
+
+  @override
+  String get demoCreatedSuccessfully => 'Demo Created Successfully!';
+
+  @override
+  String get removeUserPrompt => 'Remove user?';
+
+  @override
+  String get areYouSureRemoveUser =>
+      'Are you sure you want to remove this user?';
+
+  @override
+  String get testPage => 'Test Page';
+
+  @override
+  String get openDiagram => 'Open Diagram';
+
+  @override
+  String get photopeaEditor => 'Photopea Editor';
+
+  @override
+  String get englishLanguage => 'English';
+
+  @override
+  String get quizResult => 'Quiz Result';
+
+  @override
+  String get backToHome => 'Back to Home';
+
+  @override
+  String get confirmAnswer => 'Confirm Answer';
+
+  @override
+  String get usersTab => 'Users';
+
+  @override
+  String get demoStats => 'Demo Stats';
+
+  @override
+  String get themeDark => 'Dark';
+
+  @override
+  String get areYouSureSendInvitation =>
+      'Are you sure you want to send an invitation to this user?';
+
+  @override
+  String get userAlreadyInvited => 'User is already invited to this demo';
+
+  @override
+  String get invitationSentSuccessfully => 'Invitation sent successfully';
+
+  @override
+  String get notificationsTitle => 'Notifications';
+
+  @override
+  String get noNewNotifications => 'No new notifications';
+
+  @override
   String get selectVideoFirst => 'Please select a video first.';
 
   @override
@@ -758,10 +830,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deleteLesson => 'Delete Lesson';
 
   @override
-  String get deleteLessonConfirmation =>
-      'Are you sure you want to delete this lesson? This action cannot be undone.';
-
-  @override
   String get deleteLessonFailed => 'Failed to delete the lesson.';
 
   @override
@@ -778,6 +846,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get lessonUpdateFailed => 'Failed to save changes.';
 
   @override
+  String get deleteLessonConfirmation =>
+      'Are you sure you want to delete this lesson? This action cannot be undone.';
+
+  @override
   String get pressToSelectVideo => 'Press to select video';
 
   @override
@@ -785,4 +857,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get uploadingVideo => 'Uploading video...';
+
+  @override
+  String invitedBy(String firstName, String lastName) {
+    return 'Invited by $firstName $lastName';
+  }
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get quiz => 'Quiz';
+
+  @override
+  String get lessons => 'Lessons';
+
+  @override
+  String get duration => 'Duration';
 }

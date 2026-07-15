@@ -213,9 +213,6 @@ class AppLocalizationsAr extends AppLocalizations {
       'تمت معالجة الدفع الخاص بك بنجاح. الديمو جاهز الآن للاستخدام.';
 
   @override
-  String get backToHome => 'العودة للرئيسية';
-
-  @override
   String get processingPayment => 'جاري تأكيد الدفع ...';
 
   @override
@@ -232,7 +229,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get noSectionFound => 'لا يوجد اقسام متاحة';
 
   @override
-  String get usersTitle => 'المستخدمون';
+  String get demoMembers => 'اعضاء الغرفة';
 
   @override
   String get usersEmptyTitle => 'لا يوجد مستخدمون بعد';
@@ -242,6 +239,30 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get usersErrorGeneric => 'حدث خطأ أثناء تحميل المستخدمين.';
+
+  @override
+  String get viewPersonalInfo => 'عرض المعلومات الشخصية';
+
+  @override
+  String get changePermissions => 'تغيير الصلاحيات';
+
+  @override
+  String get removeFromRoom => 'حذف العضو من الغرفة';
+
+  @override
+  String get userNameHint => 'اسم المستخدم';
+
+  @override
+  String get searchUser => 'ابحث عن مستخدم';
+
+  @override
+  String get startTyping => 'ابدأ بالكتابة للبحث...';
+
+  @override
+  String get noUsersFound => 'لا يوجد مستخدمون';
+
+  @override
+  String get sendInvitation => 'إرسال دعوة';
 
   @override
   String get pleaseEnterEmail => 'يرجى إدخال عنوان بريدك الإلكتروني';
@@ -382,7 +403,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get changePassword => 'تغيير كلمة المرور';
 
   @override
-  String get enterPasswordToContinue => 'أدخل كلمة المرور للمتابعة';
+  String get enterPasswordToContinue =>
+      'أدخل كلمة المرور الحالية والجديدة للمتابعة';
 
   @override
   String get oldPassword => 'كلمة المرور الحالية';
@@ -391,13 +413,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get pleaseFillAllFields => 'الرجاء تعبئة جميع الحقول';
 
   @override
-  String get security => 'الأمان';
-
-  @override
   String get twoFactorAuth => 'المصادقة الثنائية';
-
-  @override
-  String get extraSecurityLayer => 'طبقة أمان إضافية لحسابك';
 
   @override
   String get resendVerificationEmail => 'إعادة إرسال رابط التحقق';
@@ -430,9 +446,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get both => 'الاثنين';
 
   @override
-  String get cancel => 'إلغاء';
-
-  @override
   String get storagePermissionDenied => 'ما عندك إذن تخزين، فعّله من الإعدادات';
 
   @override
@@ -443,6 +456,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get pngSaved => 'تم حفظ PNG بنجاح';
+
+  @override
+  String get security => 'الأمان';
+
+  @override
+  String get extraSecurityLayer => 'طبقة أمان إضافية لحسابك';
 
   @override
   String get enableTwoFactorAuth => 'تفعيل المصادقة الثنائية';
@@ -565,12 +584,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get ongoingCourses => 'كورسات قيد الإنشاء';
 
   @override
-  String get lessons => 'الدروس';
-
-  @override
-  String get duration => 'المدة';
-
-  @override
   String get courseManagement => 'إدارة الكورس';
 
   @override
@@ -606,9 +619,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get questionsBank => 'بنك الأسئلة';
-
-  @override
-  String get quiz => 'الكويز';
 
   @override
   String get renameSection => 'إعادة تسمية القسم';
@@ -666,7 +676,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get deleteAttachmentConfirmation => 'هل أنت متأكد من حذف هذا الملحق؟';
 
   @override
-  String get noAttachments => 'لا يوجد مرفقات';
+  String get noAttachments => 'لا توجد ملحقات بعد';
 
   @override
   String get saveLesson => 'حفظ الدرس';
@@ -736,6 +746,68 @@ class AppLocalizationsAr extends AppLocalizations {
   String get courseDetails => 'تفاصيل الكورس';
 
   @override
+  String get courseCreatedSuccessfully => 'تم إنشاء الدورة بنجاح';
+
+  @override
+  String get noSectionsAvailable => 'لا توجد أقسام متاحة';
+
+  @override
+  String get demoCreatedSuccessfully => 'تم إنشاء الديمو بنجاح!';
+
+  @override
+  String get removeUserPrompt => 'إزالة المستخدم؟';
+
+  @override
+  String get areYouSureRemoveUser =>
+      'هل أنت متأكد أنك تريد إزالة هذا المستخدم؟';
+
+  @override
+  String get testPage => 'صفحة اختبار';
+
+  @override
+  String get openDiagram => 'فتح المخطط';
+
+  @override
+  String get photopeaEditor => 'محرر Photopea';
+
+  @override
+  String get englishLanguage => 'الإنجليزية';
+
+  @override
+  String get quizResult => 'نتيجة الاختبار';
+
+  @override
+  String get backToHome => 'العودة للرئيسية';
+
+  @override
+  String get confirmAnswer => 'تأكيد الإجابة';
+
+  @override
+  String get usersTab => 'المستخدمون';
+
+  @override
+  String get demoStats => 'إحصائيات الغرفة';
+
+  @override
+  String get themeDark => 'داكن';
+
+  @override
+  String get areYouSureSendInvitation =>
+      'هل أنت متأكد أنك تريد إرسال دعوة لهذا المستخدم؟';
+
+  @override
+  String get userAlreadyInvited => 'المستخدم مدعو بالفعل إلى هذه الغرفة';
+
+  @override
+  String get invitationSentSuccessfully => 'تم إرسال الدعوة بنجاح';
+
+  @override
+  String get notificationsTitle => 'الإشعارات';
+
+  @override
+  String get noNewNotifications => 'لا توجد إشعارات جديدة';
+
+  @override
   String get selectVideoFirst => 'يرجى اختيار فيديو أولاً.';
 
   @override
@@ -755,10 +827,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get deleteLesson => 'حذف الدرس';
 
   @override
-  String get deleteLessonConfirmation =>
-      'هل أنت متأكد من حذف هذا الدرس؟ لا يمكن التراجع عن هذا الإجراء.';
-
-  @override
   String get deleteLessonFailed => 'فشل حذف الدرس.';
 
   @override
@@ -775,6 +843,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get lessonUpdateFailed => 'فشل حفظ التعديلات';
 
   @override
+  String get deleteLessonConfirmation =>
+      'هل أنت متأكد من حذف هذا الدرس؟ لا يمكن التراجع عن هذا الإجراء.';
+
+  @override
   String get pressToSelectVideo => 'اضغط لاختيار فيديو';
 
   @override
@@ -782,4 +854,21 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get uploadingVideo => 'جاري رفع الفيديو...';
+
+  @override
+  String invitedBy(String firstName, String lastName) {
+    return 'تمت دعوتك بواسطة $firstName $lastName';
+  }
+
+  @override
+  String get cancel => 'إلغاء';
+
+  @override
+  String get quiz => 'اختبار';
+
+  @override
+  String get lessons => 'الدروس';
+
+  @override
+  String get duration => 'المدة';
 }

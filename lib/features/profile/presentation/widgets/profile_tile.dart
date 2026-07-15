@@ -55,7 +55,7 @@ class ProfileTile extends StatelessWidget {
                   child: Text(
                     title,
                     style: AppTextStyles.titleMedium.copyWith(
-                      color: AppColors.textPrimary,
+                      color: AppColors.textPrimaryOf(context),
                       fontSize: 15 * textScale,
                     ),
                   ),
@@ -67,8 +67,8 @@ class ProfileTile extends StatelessWidget {
           if (showDivider)
             Padding(
               padding: EdgeInsets.only(left: size.width * 0.16),
-              child: const Divider(
-                color: AppColors.border,
+              child: Divider(
+                color: AppColors.borderOf(context),
                 height: 1,
                 thickness: 0.5,
               ),

@@ -482,12 +482,6 @@ abstract class AppLocalizations {
   /// **'Your payment has been processed successfully. Your demo is now ready to use.'**
   String get paymentSuccessMessage;
 
-  /// No description provided for @backToHome.
-  ///
-  /// In en, this message translates to:
-  /// **'Back to Home'**
-  String get backToHome;
-
   /// No description provided for @processingPayment.
   ///
   /// In en, this message translates to:
@@ -518,11 +512,11 @@ abstract class AppLocalizations {
   /// **'No section found'**
   String get noSectionFound;
 
-  /// No description provided for @usersTitle.
+  /// No description provided for @demoMembers.
   ///
   /// In en, this message translates to:
-  /// **'Users'**
-  String get usersTitle;
+  /// **'Demo Members'**
+  String get demoMembers;
 
   /// No description provided for @usersEmptyTitle.
   ///
@@ -541,6 +535,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Something went wrong while loading users.'**
   String get usersErrorGeneric;
+
+  /// No description provided for @viewPersonalInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'View personal info'**
+  String get viewPersonalInfo;
+
+  /// No description provided for @changePermissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Change permissions'**
+  String get changePermissions;
+
+  /// No description provided for @removeFromRoom.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from room'**
+  String get removeFromRoom;
+
+  /// No description provided for @userNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'User name'**
+  String get userNameHint;
+
+  /// No description provided for @searchUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Search user'**
+  String get searchUser;
+
+  /// No description provided for @startTyping.
+  ///
+  /// In en, this message translates to:
+  /// **'Start typing to search...'**
+  String get startTyping;
+
+  /// No description provided for @noUsersFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No users found'**
+  String get noUsersFound;
+
+  /// No description provided for @sendInvitation.
+  ///
+  /// In en, this message translates to:
+  /// **'Send invite'**
+  String get sendInvitation;
 
   /// No description provided for @pleaseEnterEmail.
   ///
@@ -815,7 +857,7 @@ abstract class AppLocalizations {
   /// No description provided for @enterPasswordToContinue.
   ///
   /// In en, this message translates to:
-  /// **'Enter password to continue'**
+  /// **'Enter your current and new password to continue'**
   String get enterPasswordToContinue;
 
   /// No description provided for @oldPassword.
@@ -830,23 +872,11 @@ abstract class AppLocalizations {
   /// **'Please fill all fields'**
   String get pleaseFillAllFields;
 
-  /// No description provided for @security.
-  ///
-  /// In en, this message translates to:
-  /// **'Security'**
-  String get security;
-
   /// No description provided for @twoFactorAuth.
   ///
   /// In en, this message translates to:
   /// **'Two-Factor Authentication'**
   String get twoFactorAuth;
-
-  /// No description provided for @extraSecurityLayer.
-  ///
-  /// In en, this message translates to:
-  /// **'Extra security layer for your account'**
-  String get extraSecurityLayer;
 
   /// No description provided for @resendVerificationEmail.
   ///
@@ -908,12 +938,6 @@ abstract class AppLocalizations {
   /// **'Both'**
   String get both;
 
-  /// No description provided for @cancel.
-  ///
-  /// In en, this message translates to:
-  /// **'Cancel'**
-  String get cancel;
-
   /// No description provided for @storagePermissionDenied.
   ///
   /// In en, this message translates to:
@@ -937,6 +961,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'PNG saved successfully'**
   String get pngSaved;
+
+  /// No description provided for @security.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get security;
+
+  /// No description provided for @extraSecurityLayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra security layer for your account'**
+  String get extraSecurityLayer;
 
   /// No description provided for @enableTwoFactorAuth.
   ///
@@ -1166,18 +1202,6 @@ abstract class AppLocalizations {
   /// **'Ongoing courses'**
   String get ongoingCourses;
 
-  /// No description provided for @lessons.
-  ///
-  /// In en, this message translates to:
-  /// **'Lessons'**
-  String get lessons;
-
-  /// No description provided for @duration.
-  ///
-  /// In en, this message translates to:
-  /// **'Duration'**
-  String get duration;
-
   /// No description provided for @courseManagement.
   ///
   /// In en, this message translates to:
@@ -1241,7 +1265,7 @@ abstract class AppLocalizations {
   /// No description provided for @noLessonsYet.
   ///
   /// In en, this message translates to:
-  /// **'No lessons yet.'**
+  /// **'No lessons yet'**
   String get noLessonsYet;
 
   /// No description provided for @questionsBank.
@@ -1249,12 +1273,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Questions Bank'**
   String get questionsBank;
-
-  /// No description provided for @quiz.
-  ///
-  /// In en, this message translates to:
-  /// **'Quiz'**
-  String get quiz;
 
   /// No description provided for @renameSection.
   ///
@@ -1367,7 +1385,7 @@ abstract class AppLocalizations {
   /// No description provided for @noAttachments.
   ///
   /// In en, this message translates to:
-  /// **'No attachments.'**
+  /// **'No attachments yet'**
   String get noAttachments;
 
   /// No description provided for @saveLesson.
@@ -1502,6 +1520,126 @@ abstract class AppLocalizations {
   /// **'Course Details'**
   String get courseDetails;
 
+  /// No description provided for @courseCreatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Course created successfully'**
+  String get courseCreatedSuccessfully;
+
+  /// No description provided for @noSectionsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No sections available'**
+  String get noSectionsAvailable;
+
+  /// No description provided for @demoCreatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo Created Successfully!'**
+  String get demoCreatedSuccessfully;
+
+  /// No description provided for @removeUserPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove user?'**
+  String get removeUserPrompt;
+
+  /// No description provided for @areYouSureRemoveUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to remove this user?'**
+  String get areYouSureRemoveUser;
+
+  /// No description provided for @testPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Test Page'**
+  String get testPage;
+
+  /// No description provided for @openDiagram.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Diagram'**
+  String get openDiagram;
+
+  /// No description provided for @photopeaEditor.
+  ///
+  /// In en, this message translates to:
+  /// **'Photopea Editor'**
+  String get photopeaEditor;
+
+  /// No description provided for @englishLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get englishLanguage;
+
+  /// No description provided for @quizResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz Result'**
+  String get quizResult;
+
+  /// No description provided for @backToHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Home'**
+  String get backToHome;
+
+  /// No description provided for @confirmAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Answer'**
+  String get confirmAnswer;
+
+  /// No description provided for @usersTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Users'**
+  String get usersTab;
+
+  /// No description provided for @demoStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo Stats'**
+  String get demoStats;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeDark;
+
+  /// No description provided for @areYouSureSendInvitation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to send an invitation to this user?'**
+  String get areYouSureSendInvitation;
+
+  /// No description provided for @userAlreadyInvited.
+  ///
+  /// In en, this message translates to:
+  /// **'User is already invited to this demo'**
+  String get userAlreadyInvited;
+
+  /// No description provided for @invitationSentSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation sent successfully'**
+  String get invitationSentSuccessfully;
+
+  /// No description provided for @notificationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notificationsTitle;
+
+  /// No description provided for @noNewNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'No new notifications'**
+  String get noNewNotifications;
+
   /// No description provided for @selectVideoFirst.
   ///
   /// In en, this message translates to:
@@ -1538,12 +1676,6 @@ abstract class AppLocalizations {
   /// **'Delete Lesson'**
   String get deleteLesson;
 
-  /// No description provided for @deleteLessonConfirmation.
-  ///
-  /// In en, this message translates to:
-  /// **'Are you sure you want to delete this lesson? This action cannot be undone.'**
-  String get deleteLessonConfirmation;
-
   /// No description provided for @deleteLessonFailed.
   ///
   /// In en, this message translates to:
@@ -1574,6 +1706,12 @@ abstract class AppLocalizations {
   /// **'Failed to save changes.'**
   String get lessonUpdateFailed;
 
+  /// No description provided for @deleteLessonConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this lesson? This action cannot be undone.'**
+  String get deleteLessonConfirmation;
+
   /// No description provided for @pressToSelectVideo.
   ///
   /// In en, this message translates to:
@@ -1591,6 +1729,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Uploading video...'**
   String get uploadingVideo;
+
+  /// No description provided for @invitedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Invited by {firstName} {lastName}'**
+  String invitedBy(String firstName, String lastName);
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @quiz.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz'**
+  String get quiz;
+
+  /// No description provided for @lessons.
+  ///
+  /// In en, this message translates to:
+  /// **'Lessons'**
+  String get lessons;
+
+  /// No description provided for @duration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get duration;
 }
 
 class _AppLocalizationsDelegate

@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:project1/core/shared/entities/user_entity.dart';
+import 'package:project1/features/demo/domain/entities/invitation_entity.dart';
+import 'package:project1/features/demo/domain/entities/user_entity.dart';
 import 'package:project1/features/demo/domain/repository/demo_users_repository.dart';
 
 class DemoUsersUsecase {
@@ -10,5 +11,23 @@ class DemoUsersUsecase {
     return await repository.getDemoUsers(demoId);
   }
 
+Future<Either<String, List<MembersEntity>>> search(String query) async {
+    return await repository.searchDemoUsers(query);
+  }
 
+  Future<Either<String, bool>> removeUserFromDemo(String demoId, String userId) async {
+    return await repository.removeUserFromDemo(demoId, userId);
+  }
+  Future<Either<String, bool>> sendInvitation(String demoId, String userId) async {
+    return await repository.sendInvitation(demoId, userId);
+  }
+  Future<Either<String, List<InvitationEntity>>> getReceivedInvitations() async {
+    return await repository.getReceivedInvitations();
+  }
+  Future<void> acceptInvitation(String invitationId) async {
+    return await repository.acceptInvitation(invitationId);
+  }
+  Future<void> rejectInvitation(String invitationId) async {
+    return await repository.rejectInvitation(invitationId);
+  }
 }

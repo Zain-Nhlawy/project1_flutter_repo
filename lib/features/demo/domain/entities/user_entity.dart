@@ -1,17 +1,19 @@
 class MembersEntity {
   const MembersEntity({
     this.id,
+    this.demoId,
     required this.firstName,
     required this.lastName,
     required this.email,
     required this.imagePath,
-    required this.role,
+     this.role,
   });
 
   final String? id;
+  final String? demoId;
   final String firstName;
   final String lastName;
   final String email;
   final String? imagePath;
-  final String role;
+  final String? role;
 }

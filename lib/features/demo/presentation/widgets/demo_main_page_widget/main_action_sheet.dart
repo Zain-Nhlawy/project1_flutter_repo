@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/core/di/service_locator.dart';
-import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
 import 'package:project1/features/course/presentation/pages/courses_selection_screen.dart';
-import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_cubit.dart';
+import 'package:project1/features/demo/presentation/cubit/demo users cubit/demo_users_cubit.dart';
 import 'package:project1/features/demo/presentation/pages/demo_users_page.dart';
+import 'package:project1/l10n/app_localizations.dart';
+import 'package:animations/animations.dart';
 
 class MainActionsSheet extends StatelessWidget {
   final String demoId;
@@ -13,6 +14,7 @@ class MainActionsSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return SafeArea(
       child: Padding(
@@ -22,41 +24,60 @@ class MainActionsSheet extends StatelessWidget {
           children: [
             _CircleActionButton(
               icon: Icons.menu_book_outlined,
-              label: 'Courses',
+              label: l10n.courses,
               theme: theme,
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (_) => CoursesSelectionScreen(
-                      demoId: demoId,
-                    ),
+                  PageRouteBuilder(
+                    transitionDuration: const Duration(milliseconds: 300),
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        CoursesSelectionScreen(demoId: demoId),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                          return FadeThroughTransition(
+                            animation: animation,
+                            secondaryAnimation: secondaryAnimation,
+                            child: child,
+                          );
+                        },
                   ),
                 );
               },
             ),
-_CircleActionButton(
-  icon: Icons.people_alt_outlined,
-  label: 'Users',
-  theme: theme,
-  onTap: () {
-    Navigator.pop(context);
+            _CircleActionButton(
+              icon: Icons.people_alt_outlined,
+              label: l10n.usersTab,
+              theme: theme,
+              onTap: () {
+                Navigator.pop(context);
 
-   Navigator.push(
-  context,
-  MaterialPageRoute(
-    builder: (_) => BlocProvider(
-      create: (_) => getIt<DemoUserCubit>()..fetchUsers(demoId),
-      child: const DemoUsersScreen(),
-    ),
-  ),
-);
-  },
-),
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    transitionDuration: const Duration(milliseconds: 300),
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        BlocProvider(
+                          create: (_) =>
+                              getIt<DemoUserCubit>()..fetchUsers(demoId),
+                          child: DemoUsersScreen(demoId: demoId),
+                        ),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                          return FadeThroughTransition(
+                            animation: animation,
+                            secondaryAnimation: secondaryAnimation,
+                            child: child,
+                          );
+                        },
+                  ),
+                );
+              },
+            ),
             _CircleActionButton(
               icon: Icons.bar_chart_outlined,
-              label: 'Demo Stats',
+              label: l10n.demoStats,
               theme: theme,
               onTap: () {
                 Navigator.pop(context);

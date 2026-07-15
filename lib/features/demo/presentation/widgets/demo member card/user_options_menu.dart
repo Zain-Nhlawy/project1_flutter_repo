@@ -1,0 +1,106 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_cubit.dart';
+import 'package:project1/l10n/app_localizations.dart';
+
+class UserOptionsMenu extends StatelessWidget {
+  final String demoId;
+  final String userId;
+  const UserOptionsMenu({
+    super.key,
+    required this.demoId,
+    required this.userId,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+
+    return PopupMenuButton<int>(
+      icon: Icon(Icons.more_vert_rounded, color: colors.onSurfaceVariant),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      color: colors.surfaceContainer,
+      elevation: 3,
+      onSelected: (value) {},
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          value: 0,
+          child: Row(
+            children: [
+              Icon(
+                Icons.info_outline_rounded,
+                size: 20,
+                color: colors.onSurface,
+              ),
+              const SizedBox(width: 12),
+              Text(
+                l10n.viewPersonalInfo,
+                style: TextStyle(color: colors.onSurface),
+              ),
+            ],
+          ),
+        ),
+        PopupMenuItem(
+          value: 1,
+          child: Row(
+            children: [
+              Icon(
+                Icons.admin_panel_settings_rounded,
+                size: 20,
+                color: colors.onSurface,
+              ),
+              const SizedBox(width: 12),
+              Text(
+                l10n.changePermissions,
+                style: TextStyle(color: colors.onSurface),
+              ),
+            ],
+          ),
+        ),
+        PopupMenuItem(
+          onTap: () => showDialog(
+            context: context,
+            builder: (dialogContext) {
+              return BlocProvider.value(
+                value: getIt<DemoUserCubit>(),
+                child: AlertDialog(
+                  title: Text(l10n.removeUserPrompt),
+                  content: Text(l10n.areYouSureRemoveUser),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(dialogContext).pop(),
+                      child: Text(l10n.cancel),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        getIt<DemoUserCubit>().removeUser(demoId, userId);
+                        Navigator.of(dialogContext).pop();
+                      },
+                      child: Text(l10n.confirm),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+          value: 2,
+          child: Row(
+            children: [
+              Icon(Icons.person_remove_rounded, size: 20, color: colors.error),
+              const SizedBox(width: 12),
+              Text(
+                l10n.removeFromRoom,
+                style: TextStyle(
+                  color: colors.error,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}

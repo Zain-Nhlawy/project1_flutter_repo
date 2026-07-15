@@ -155,7 +155,7 @@ class DemoMainPage extends StatelessWidget {
           final currentPlan = demo.plan?.toLowerCase() ?? 'starter';
           final isFreePlan = currentPlan == 'starter' || currentPlan == 'free';
 
-          final isLimitReached = isFreePlan && departments.length >= 0;
+          final isLimitReached = isFreePlan && departments.length >= 5;
 
           return ListView(
             padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
