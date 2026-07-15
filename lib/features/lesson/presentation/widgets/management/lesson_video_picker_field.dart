@@ -6,6 +6,7 @@ import 'package:project1/features/lesson/upload_video/presentation/cubit/lesson_
 
 class LessonVideoPickerField extends StatelessWidget {
   final Uint8List? thumbnail;
+  final String? thumbnailUrl;
   final bool loadingThumbnail;
   final bool enabled;
   final bool isUploading;
@@ -15,6 +16,7 @@ class LessonVideoPickerField extends StatelessWidget {
   const LessonVideoPickerField({
     super.key,
     required this.thumbnail,
+    this.thumbnailUrl,
     required this.loadingThumbnail,
     required this.enabled,
     required this.isUploading,
@@ -47,6 +49,26 @@ class LessonVideoPickerField extends StatelessWidget {
                     const Center(child: CircularProgressIndicator(strokeWidth: 2))
                   else if (thumbnail != null)
                     Image.memory(thumbnail!, fit: BoxFit.cover)
+                  else if (thumbnailUrl != null)
+                    Image.network(
+                      thumbnailUrl!,
+                      fit: BoxFit.cover,
+                      loadingBuilder: (context, child, progress) {
+                        if (progress == null) return child;
+                        return const Center(
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        );
+                      },
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Center(
+                          child: Icon(
+                            Icons.video_library_outlined,
+                            size: 40,
+                            color: AppColors.textSecondary,
+                          ),
+                        );
+                      },
+                    )
                   else
                     const Center(
                       child: Icon(
@@ -55,7 +77,7 @@ class LessonVideoPickerField extends StatelessWidget {
                         color: AppColors.textSecondary,
                       ),
                     ),
-                  if (!loadingThumbnail && thumbnail != null)
+                  if (!loadingThumbnail && (thumbnail != null || thumbnailUrl != null))
                     Container(
                       color: Colors.black.withOpacity(0.25),
                       child: const Center(

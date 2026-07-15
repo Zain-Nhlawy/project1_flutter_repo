@@ -16,6 +16,7 @@ class LessonManagementView extends StatelessWidget {
   final TextEditingController descriptionController;
   final String lessonId;
   final Uint8List? videoThumbnail;
+  final String? thumbnailUrl;
   final bool loadingThumbnail;
   final bool isEditing;
   final bool isSaving;
@@ -29,6 +30,7 @@ class LessonManagementView extends StatelessWidget {
     required this.descriptionController,
     required this.lessonId,
     required this.videoThumbnail,
+    this.thumbnailUrl,
     required this.loadingThumbnail,
     required this.isEditing,
     required this.isSaving,
@@ -64,6 +66,7 @@ class LessonManagementView extends StatelessWidget {
                 children: [
                   LessonVideoPickerField(
                     thumbnail: videoThumbnail,
+                    thumbnailUrl: thumbnailUrl,
                     loadingThumbnail: loadingThumbnail,
                     enabled: isEditing,
                     isUploading: isUploadingVideo,

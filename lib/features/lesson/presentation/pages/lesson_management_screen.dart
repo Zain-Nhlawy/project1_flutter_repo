@@ -48,11 +48,13 @@ class _LessonManagementScreenState extends State<LessonManagementScreen> {
   Duration _videoDuration = Duration.zero;
 
   Uint8List? _videoThumbnail;
+  String? _thumbnailUrl;
   bool _loadingThumbnail = false;
 
   bool isEditing = false;
   bool _hasChanges = false;
   bool _isSaving = false;
+
 
   @override
   void initState() {
@@ -71,38 +73,61 @@ class _LessonManagementScreenState extends State<LessonManagementScreen> {
   }
 
   Future<void> _generateThumbnail() async {
-    if (newVideoFile == null && (selectedVideoUrl == null || selectedVideoUrl!.isEmpty)) {
-      return;
-    }
-
+  if (newVideoFile == null && (selectedVideoUrl == null || selectedVideoUrl!.isEmpty)) {
+    return;
+  }
+  if (newVideoFile != null) {
     setState(() => _loadingThumbnail = true);
-
     try {
       final Uint8List? bytes = await VideoThumbnail.thumbnailData(
-        video: newVideoFile?.path ?? selectedVideoUrl!,
+        video: newVideoFile!.path,
         imageFormat: ImageFormat.JPEG,
         maxWidth: 400,
         quality: 60,
       );
-
       if (!mounted) return;
       setState(() {
         _videoThumbnail = bytes;
+        _thumbnailUrl = null;
         _loadingThumbnail = false;
       });
     } catch (e) {
       if (!mounted) return;
       setState(() => _loadingThumbnail = false);
     }
+    return;
   }
+  setState(() {
+    _thumbnailUrl = _buildThumbnailUrl(selectedVideoUrl!);
+    _videoThumbnail = null;
+    _loadingThumbnail = false;
+  });
+}
+
+String? _buildThumbnailUrl(String videoUrl) {
+  try {
+    final uri = Uri.parse(videoUrl);
+    final path = uri.path;
+    if (!path.contains('/uploads/lessons/')) return null;
+    final newPath = path
+        .replaceFirst('/uploads/lessons/', '/uploads/thumbnails/lessons/')
+        .replaceAll(RegExp(r'\.mp4$', caseSensitive: false), '.jpg')
+        .replaceAll(RegExp(r'\.mov$', caseSensitive: false), '.jpg')
+        .replaceAll(RegExp(r'\.avi$', caseSensitive: false), '.jpg')
+        .replaceAll(RegExp(r'\.mkv$', caseSensitive: false), '.jpg')
+        .replaceAll(RegExp(r'\.webm$', caseSensitive: false), '.jpg');
+    return uri.replace(path: newPath).toString();
+  } catch (e) {
+    debugPrint('Failed to build thumbnail URL: $e');
+    return null;
+  }
+}
 
   Future<void> pickVideo(BuildContext context) async {
     final result = await ImagePicker().pickVideo(source: ImageSource.gallery);
     if (result == null) return;
-
     final file = File(result.path);
     final player = Player();
-
     try {
       await player.open(Media(file.path));
       Duration duration = player.state.duration;
@@ -112,14 +137,11 @@ class _LessonManagementScreenState extends State<LessonManagementScreen> {
         duration = player.state.duration;
         attempts++;
       }
-
       if (!mounted) return;
-
       setState(() {
         newVideoFile = file;
         _videoDuration = duration;
       });
-
       await _generateThumbnail();
     } finally {
       await player.dispose();
@@ -159,7 +181,12 @@ class _LessonManagementScreenState extends State<LessonManagementScreen> {
   setState(() => _isSaving = false);
 
   if (lesson != null) {
-    Navigator.of(context).pop(true); 
+    setState(() {
+      selectedVideoUrl = finalVideoUrl;
+      newVideoFile = null;
+      _thumbnailUrl = finalVideoUrl != null ? _buildThumbnailUrl(finalVideoUrl) : null;
+    });
+    Navigator.of(context).pop(true);
   } else {
     final localizations = AppLocalizations.of(context)!;
     ScaffoldMessenger.of(context).showSnackBar(
@@ -245,6 +272,7 @@ class _LessonManagementScreenState extends State<LessonManagementScreen> {
             descriptionController: descriptionController,
             lessonId: widget.lessonId,
             videoThumbnail: _videoThumbnail,
+            thumbnailUrl: _thumbnailUrl,
             loadingThumbnail: _loadingThumbnail,
             isEditing: isEditing,
             isSaving: _isSaving,
