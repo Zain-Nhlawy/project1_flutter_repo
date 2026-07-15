@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project1/features/demo/shared/entities/user_entity.dart';
+import 'package:project1/features/demo/domain/entities/user_entity.dart';
 
 class UserAvatar extends StatelessWidget {
   const UserAvatar({super.key, required this.user});

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "377877897782",
+    "project_id": "linco-project-471db",
+    "storage_bucket": "linco-project-471db.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:377877897782:android:2ed5fb1c63a05358dd2e97",
+        "android_client_info": {
+          "package_name": "com.lincolms.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2aWWazdHTcfwUF64tpvFbYYDJkfeIqfI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

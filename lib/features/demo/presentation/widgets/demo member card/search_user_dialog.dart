@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/features/demo/presentation/cubit/search%20for%20users/search_user_state.dart';
 import 'package:project1/features/demo/presentation/cubit/search%20for%20users/serach_user_cubit.dart';
+import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_cubit.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class SearchUserDialog extends StatelessWidget {
-  const SearchUserDialog({super.key});
+  final String demoId;
+  const SearchUserDialog({super.key, required this.demoId});
 
   @override
   Widget build(BuildContext context) {
@@ -113,9 +115,7 @@ class SearchUserDialog extends StatelessWidget {
                               child: Row(
                                 children: [
                                   CircleAvatar(
-                                    radius: 26
-                                    
-                                    ,
+                                    radius: 26,
                                     backgroundImage: NetworkImage(
                                       user.imagePath ?? '',
                                     ),
@@ -146,8 +146,46 @@ class SearchUserDialog extends StatelessWidget {
                                   const SizedBox(width: 8),
                                   Center(
                                     child: IconButton(
-                                      color: colors.tertiary,
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        if (user.id != null) {
+                                          showDialog(
+                                            context: context,
+                                            builder: (dialogContext) {
+                                              return AlertDialog(
+                                                title: Text(l10n.sendInvitation),
+                                                content: Text(l10n.areYouSureSendInvitation),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () => Navigator.of(dialogContext).pop(),
+                                                    child: Text(l10n.cancel),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () async {
+                                                      Navigator.of(dialogContext).pop();
+                                                      final error = await context
+                                                          .read<DemoUserCubit>()
+                                                          .sendInvitation(demoId, user.id!);
+                                                      
+                                                      if (context.mounted) {
+                                                        if (error != null) {
+                                                          ScaffoldMessenger.of(context).showSnackBar(
+                                                            SnackBar(content: Text(error == 'user_already_invited' ? l10n.userAlreadyInvited : error)),
+                                                          );
+                                                        } else {
+                                                          ScaffoldMessenger.of(context).showSnackBar(
+                                                            SnackBar(content: Text(l10n.invitationSentSuccessfully)),
+                                                          );
+                                                        }
+                                                      }
+                                                    },
+                                                    child: Text(l10n.confirm),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        }
+                                      },
                                       icon: const Icon(
                                         Icons.person_add_rounded,
                                         size: 22,

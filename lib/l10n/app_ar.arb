@@ -307,5 +307,11 @@
   "confirmAnswer": "تأكيد الإجابة",
   "usersTab": "المستخدمون",
   "demoStats": "إحصائيات الغرفة",
-  "themeDark": "داكن"
+  "themeDark": "داكن",
+  "areYouSureSendInvitation": "هل أنت متأكد أنك تريد إرسال دعوة لهذا المستخدم؟",
+  "userAlreadyInvited": "المستخدم مدعو بالفعل إلى هذه الغرفة",
+  "invitationSentSuccessfully": "تم إرسال الدعوة بنجاح",
+  "notificationsTitle": "الإشعارات",
+  "noNewNotifications": "لا توجد إشعارات جديدة",
+  "invitedBy": "تمت دعوتك بواسطة {firstName} {lastName}"
 }

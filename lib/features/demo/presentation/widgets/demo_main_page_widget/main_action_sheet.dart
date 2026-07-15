@@ -61,7 +61,7 @@ class MainActionsSheet extends StatelessWidget {
                         BlocProvider(
                           create: (_) =>
                               getIt<DemoUserCubit>()..fetchUsers(demoId),
-                          child: const DemoUsersScreen(),
+                          child: DemoUsersScreen(demoId: demoId),
                         ),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {

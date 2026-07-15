@@ -4,15 +4,16 @@ import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/demo/domain/use%20case/demo_users_usecase.dart';
 import 'package:project1/features/demo/presentation/cubit/search%20for%20users/serach_user_cubit.dart';
 import 'package:project1/features/demo/presentation/widgets/demo%20member%20card/search_user_dialog.dart';
-import 'package:project1/features/demo/shared/entities/user_entity.dart';
+import 'package:project1/features/demo/domain/entities/user_entity.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_state.dart';
 import 'package:project1/features/demo/presentation/widgets/demo%20member%20card/demo_users_card.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class DemoUsersScreen extends StatelessWidget {
-  const DemoUsersScreen({super.key, this.onUserTap});
+  const DemoUsersScreen({super.key, required this.demoId, this.onUserTap});
 
+  final String demoId;
   final ValueChanged<MembersEntity>? onUserTap;
 
   @override
@@ -33,12 +34,18 @@ class DemoUsersScreen extends StatelessWidget {
         elevation: 6,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
         onPressed: () {
+          final demoUserCubit = context.read<DemoUserCubit>();
           showDialog(
             context: context,
             builder: (dialogContext) {
-              return BlocProvider(
-                create: (_) => SearchUserCubit(getIt<DemoUsersUsecase>()),
-                child: const SearchUserDialog(),
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(value: demoUserCubit),
+                  BlocProvider(
+                    create: (_) => SearchUserCubit(getIt<DemoUsersUsecase>()),
+                  ),
+                ],
+                child: SearchUserDialog(demoId: demoId),
               );
             },
           );

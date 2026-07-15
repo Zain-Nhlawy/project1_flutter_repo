@@ -32,7 +32,7 @@ class DemoCard extends StatelessWidget {
             : null,
         boxShadow: [
           BoxShadow(
-            color: AppColors.textSecondary.withOpacity(0.06),
+            color: AppColors.textSecondary.withOpacity(0.3),
             blurRadius: 14,
             offset: const Offset(0, 6),
           ),

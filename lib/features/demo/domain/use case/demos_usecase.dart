@@ -15,4 +15,7 @@ class GetDemosUseCase {
   Future<Either<String, void>> addDemo(DemoModel demo) async {
     return await repository.addDemo(demo);
   }
+
+  
+  
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project1/features/demo/presentation/widgets/demo member card/user_role.dart';
-import 'package:project1/features/demo/shared/entities/user_entity.dart';
+import 'package:project1/features/demo/domain/entities/user_entity.dart';
 import 'user_avatar.dart';
 import 'user_options_menu.dart';
 

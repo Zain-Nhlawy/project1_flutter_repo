@@ -332,5 +332,21 @@
 "confirmAnswer": "Confirm Answer",
 "usersTab": "Users",
 "demoStats": "Demo Stats",
-"themeDark": "Dark"
+"themeDark": "Dark",
+"areYouSureSendInvitation": "Are you sure you want to send an invitation to this user?",
+"userAlreadyInvited": "User is already invited to this demo",
+"invitationSentSuccessfully": "Invitation sent successfully",
+"notificationsTitle": "Notifications",
+"noNewNotifications": "No new notifications",
+"invitedBy": "Invited by {firstName} {lastName}",
+"@invitedBy": {
+  "placeholders": {
+    "firstName": {
+      "type": "String"
+    },
+    "lastName": {
+      "type": "String"
+    }
+  }
+}
 }

@@ -801,4 +801,25 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get themeDark => 'داكن';
+
+  @override
+  String get areYouSureSendInvitation =>
+      'هل أنت متأكد أنك تريد إرسال دعوة لهذا المستخدم؟';
+
+  @override
+  String get userAlreadyInvited => 'المستخدم مدعو بالفعل إلى هذه الغرفة';
+
+  @override
+  String get invitationSentSuccessfully => 'تم إرسال الدعوة بنجاح';
+
+  @override
+  String get notificationsTitle => 'الإشعارات';
+
+  @override
+  String get noNewNotifications => 'لا توجد إشعارات جديدة';
+
+  @override
+  String invitedBy(String firstName, String lastName) {
+    return 'تمت دعوتك بواسطة $firstName $lastName';
+  }
 }

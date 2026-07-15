@@ -804,4 +804,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get themeDark => 'Dark';
+
+  @override
+  String get areYouSureSendInvitation =>
+      'Are you sure you want to send an invitation to this user?';
+
+  @override
+  String get userAlreadyInvited => 'User is already invited to this demo';
+
+  @override
+  String get invitationSentSuccessfully => 'Invitation sent successfully';
+
+  @override
+  String get notificationsTitle => 'Notifications';
+
+  @override
+  String get noNewNotifications => 'No new notifications';
+
+  @override
+  String invitedBy(String firstName, String lastName) {
+    return 'Invited by $firstName $lastName';
+  }
 }

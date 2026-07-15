@@ -34,15 +34,25 @@ class DemoUserCubit extends Cubit<DemoUsersState> {
 
     final result = await getUsersUseCase.removeUserFromDemo(demoId, userId);
 
-    result.fold(
-      (error) => emit(GetDemoUsersError(error)),
-      (success) {
-        if (success) {
-          fetchUsers(demoId); 
-        } else {
-          emit(GetDemoUsersError('Failed to remove user.'));
-        }
-      },
-    );
+    result.fold((error) => emit(GetDemoUsersError(error)), (success) {
+      if (success) {
+        fetchUsers(demoId);
+      } else {
+        emit(GetDemoUsersError('Failed to remove user.'));
+      }
+    });
+  }
+
+  Future<String?> sendInvitation(String demoId, String userId) async {
+    final result = await getUsersUseCase.sendInvitation(demoId, userId);
+
+    return result.fold((error) => error, (success) {
+      if (success) {
+        fetchUsers(demoId);
+        return null; // success
+      } else {
+        return 'Failed to send invitation.';
+      }
+    });
   }
 }

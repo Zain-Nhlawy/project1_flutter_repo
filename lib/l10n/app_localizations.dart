@@ -1633,6 +1633,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Dark'**
   String get themeDark;
+
+  /// No description provided for @areYouSureSendInvitation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to send an invitation to this user?'**
+  String get areYouSureSendInvitation;
+
+  /// No description provided for @userAlreadyInvited.
+  ///
+  /// In en, this message translates to:
+  /// **'User is already invited to this demo'**
+  String get userAlreadyInvited;
+
+  /// No description provided for @invitationSentSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation sent successfully'**
+  String get invitationSentSuccessfully;
+
+  /// No description provided for @notificationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notificationsTitle;
+
+  /// No description provided for @noNewNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'No new notifications'**
+  String get noNewNotifications;
+
+  /// No description provided for @invitedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Invited by {firstName} {lastName}'**
+  String invitedBy(String firstName, String lastName);
 }
 
 class _AppLocalizationsDelegate
