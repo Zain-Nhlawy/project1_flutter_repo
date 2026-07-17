@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/features/lesson/domain/entities/lesson_entity.dart';
+import 'package:project1/features/lesson/presentation/cubit/lesson_cubit.dart';
+import 'package:project1/features/lesson/presentation/pages/lesson_details_screen.dart';
+import 'package:project1/features/lesson/presentation/widgets/datails/lesson_connector.dart';
+import 'package:project1/features/lesson/presentation/widgets/datails/lesson_tile.dart';
+import 'package:project1/features/section/domain/entities/section_entity.dart';
 import 'package:project1/features/section/presentation/cubit/section_cubit.dart';
 import 'package:project1/features/section/presentation/cubit/section_state.dart';
 import 'package:project1/l10n/app_localizations.dart';
@@ -20,10 +27,7 @@ class _CourseTabsState extends State<CourseTabs> {
   @override
   void initState() {
     super.initState();
-
-    context.read<SectionCubit>().getSections(
-      courseId: widget.courseId,
-    );
+    context.read<SectionCubit>().getSections(courseId: widget.courseId);
   }
 
   @override
@@ -37,35 +41,27 @@ class _CourseTabsState extends State<CourseTabs> {
           TabBar(
             labelColor: primary,
             indicatorSize: TabBarIndicatorSize.tab,
-            tabs: const [
-              Tab(text: "Lessons"),
-              Tab(text: "FAQ"),
+            tabs: [
+              Tab(text: AppLocalizations.of(context)!.lessons),
+              Tab(text: AppLocalizations.of(context)!.faq),
             ],
           ),
-
           Expanded(
             child: TabBarView(
               children: [
                 Theme(
-                  data: Theme.of(context).copyWith(
-                    dividerColor: Colors.transparent,
-                  ),
+                  data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
                   child: BlocBuilder<SectionCubit, SectionState>(
                     builder: (context, state) {
                       if (state.isLoading) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
+                        return const Center(child: CircularProgressIndicator());
                       }
 
-                      if (state.errors != null &&
-                          state.errors!.isNotEmpty) {
+                      if (state.errors != null && state.errors!.isNotEmpty) {
                         return Center(
                           child: Text(
                             state.errors!.first,
-                            style: const TextStyle(
-                              color: Colors.red,
-                            ),
+                            style: const TextStyle(color: Colors.red),
                           ),
                         );
                       }
@@ -77,46 +73,11 @@ class _CourseTabsState extends State<CourseTabs> {
                       }
 
                       return ListView(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
                         children: state.sections.map((section) {
                           return Column(
                             children: [
-                              ExpansionTile(
-                                title: Text(
-                                  section.title,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-
-                                // SectionEntity
-                                // لا تحتوي lessons
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      vertical: 12,
-                                    ),
-                                    child: Text(
-                                      "No lessons loaded yet",
-                                    ),
-                                  ),
-
-                                  // عند ربط LessonCubit
-                                  /*
-                                  LessonConnector(
-                                    num: 1,
-                                    isLast: true,
-                                    showTopLine: false,
-                                    child: LessonTile(
-                                      num: 1,
-                                    ),
-                                  ),
-                                  */
-                                ],
-                              ),
-
+                              _SectionLessonsExpansionTile(section: section),
                               Divider(
                                 height: 1,
                                 thickness: 1,
@@ -129,7 +90,6 @@ class _CourseTabsState extends State<CourseTabs> {
                     },
                   ),
                 ),
-
                 ListView(
                   padding: const EdgeInsets.all(16),
                   children: [
@@ -140,7 +100,6 @@ class _CourseTabsState extends State<CourseTabs> {
                       primary: primary,
                     ),
                     const SizedBox(height: 12),
-
                     _FaqItem(
                       question: "Do I need prior programming experience?",
                       answer:
@@ -148,7 +107,6 @@ class _CourseTabsState extends State<CourseTabs> {
                       primary: primary,
                     ),
                     const SizedBox(height: 12),
-
                     _FaqItem(
                       question: "Will I receive a certificate?",
                       answer:
@@ -156,7 +114,6 @@ class _CourseTabsState extends State<CourseTabs> {
                       primary: primary,
                     ),
                     const SizedBox(height: 12),
-
                     _FaqItem(
                       question: "Can I access the course on mobile?",
                       answer:
@@ -164,7 +121,6 @@ class _CourseTabsState extends State<CourseTabs> {
                       primary: primary,
                     ),
                     const SizedBox(height: 12),
-
                     _FaqItem(
                       question: "How long do I have access to the course?",
                       answer:
@@ -182,6 +138,108 @@ class _CourseTabsState extends State<CourseTabs> {
   }
 }
 
+class _SectionLessonsExpansionTile extends StatefulWidget {
+  final SectionEntity section;
+
+  const _SectionLessonsExpansionTile({required this.section});
+
+  @override
+  State<_SectionLessonsExpansionTile> createState() => _SectionLessonsExpansionTileState();
+}
+
+class _SectionLessonsExpansionTileState extends State<_SectionLessonsExpansionTile> {
+  late final LessonCubit _lessonCubit;
+  List<LessonEntity> _lessons = [];
+  bool _loading = false;
+  bool _loadedOnce = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _lessonCubit = getIt<LessonCubit>();
+  }
+
+  @override
+  void dispose() {
+    _lessonCubit.close();
+    super.dispose();
+  }
+
+  Future<void> _fetchLessons() async {
+    setState(() => _loading = true);
+
+    final lessons = await _lessonCubit.getLessons(sectionId: widget.section.id);
+
+    if (!mounted) return;
+    setState(() {
+      _lessons = lessons..sort((a, b) => a.order.compareTo(b.order));
+      _loading = false;
+      _loadedOnce = true;
+    });
+  }
+
+  void _openLesson(LessonEntity lesson) {
+  final index = _lessons.indexWhere((l) => l.id == lesson.id);
+
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => LessonDetailsScreen(
+        lessons: _lessons,
+        initialIndex: index,
+      ),
+    ),
+  );
+}
+
+  @override
+  Widget build(BuildContext context) {
+    return ExpansionTile(
+      title: Text(
+        widget.section.title,
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      ),
+      onExpansionChanged: (expanded) {
+        if (expanded && !_loadedOnce) {
+          _fetchLessons();
+        }
+      },
+      children: [
+        if (_loading)
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 16),
+            child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+          )
+        else if (_lessons.isEmpty)
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 12),
+            child: Text("No lessons yet"),
+          )
+        else
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Column(
+              children: _lessons.asMap().entries.map((entry) {
+                final index = entry.key;
+                final lesson = entry.value;
+                final isLast = index == _lessons.length - 1;
+
+                return LessonConnector(
+                  num: index + 1,
+                  isLast: isLast,
+                  showTopLine: index != 0,
+                  child: GestureDetector(
+                    onTap: () => _openLesson(lesson),
+                    child: LessonTile(num: index + 1, title: lesson.title),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+      ],
+    );
+  }
+}
 
 class _FaqItem extends StatelessWidget {
   final String question;
@@ -200,9 +258,7 @@ class _FaqItem extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: primary.withOpacity(0.08),
-        ),
+        border: Border.all(color: primary.withOpacity(0.08)),
         boxShadow: [
           BoxShadow(
             color: primary.withOpacity(0.08),
@@ -211,42 +267,21 @@ class _FaqItem extends StatelessWidget {
           ),
         ],
       ),
-
       child: Theme(
-        data: Theme.of(context).copyWith(
-          dividerColor: Colors.transparent,
-        ),
-
+        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
-          tilePadding: const EdgeInsets.symmetric(
-            horizontal: 18,
-            vertical: 4,
-          ),
-          childrenPadding: const EdgeInsets.fromLTRB(
-            18,
-            0,
-            18,
-            18,
-          ),
+          tilePadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 4),
+          childrenPadding: const EdgeInsets.fromLTRB(18, 0, 18, 18),
           iconColor: primary,
           collapsedIconColor: primary,
-
           title: Text(
             question,
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: primary,
-              fontSize: 15,
-            ),
+            style: TextStyle(fontWeight: FontWeight.w600, color: primary, fontSize: 15),
           ),
-
           children: [
             Text(
               answer,
-              style: TextStyle(
-                color: Colors.grey.shade700,
-                height: 1.6,
-              ),
+              style: TextStyle(color: Colors.grey.shade700, height: 1.6),
             ),
           ],
         ),

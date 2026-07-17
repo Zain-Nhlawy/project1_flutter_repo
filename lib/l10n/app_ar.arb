@@ -308,9 +308,15 @@
 "deleteLessonConfirmation": "هل أنت متأكد من حذف هذا الدرس؟ لا يمكن التراجع عن هذا الإجراء.",
 "pressToSelectVideo": "اضغط لاختيار فيديو",
 "preparingToUpload": "جاري التحضير للرفع...",
+"processingVideo": "جاري معالجة الفيديو...",
 "uploadingVideo": "جاري رفع الفيديو...",
 "cancel": "إلغاء",
 "quiz": "اختبار",
 "lessons": "الدروس",
-"duration": "المدة"
+"duration": "المدة",
+"lessonOverview": "نظرة عامة على الدرس",
+"failedToOpenAttachment": "تعذر فتح المرفق",
+"videoLoadFailed": "تعذر تحميل الفيديو",
+"retry": "إعادة المحاولة",
+"faq": "الأسئلة الشائعة"
 }

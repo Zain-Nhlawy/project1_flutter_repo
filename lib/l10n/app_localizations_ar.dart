@@ -853,6 +853,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get preparingToUpload => 'جاري التحضير للرفع...';
 
   @override
+  String get processingVideo => 'جاري معالجة الفيديو...';
+
+  @override
   String get uploadingVideo => 'جاري رفع الفيديو...';
 
   @override
@@ -871,4 +874,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get duration => 'المدة';
+
+  @override
+  String get lessonOverview => 'نظرة عامة على الدرس';
+
+  @override
+  String get failedToOpenAttachment => 'تعذر فتح المرفق';
+
+  @override
+  String get videoLoadFailed => 'تعذر تحميل الفيديو';
+
+  @override
+  String get retry => 'إعادة المحاولة';
+
+  @override
+  String get faq => 'الأسئلة الشائعة';
 }

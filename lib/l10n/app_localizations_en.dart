@@ -856,6 +856,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get preparingToUpload => 'Preparing to upload...';
 
   @override
+  String get processingVideo => 'processing video...';
+
+  @override
   String get uploadingVideo => 'Uploading video...';
 
   @override
@@ -874,4 +877,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get duration => 'Duration';
+
+  @override
+  String get lessonOverview => 'Lesson overview';
+
+  @override
+  String get failedToOpenAttachment => 'Failed to open attachment';
+
+  @override
+  String get videoLoadFailed => 'Failed to load video';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get faq => 'FAQ';
 }

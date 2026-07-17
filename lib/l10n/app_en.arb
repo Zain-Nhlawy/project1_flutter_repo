@@ -328,6 +328,7 @@
   "deleteLessonConfirmation": "Are you sure you want to delete this lesson? This action cannot be undone.",
   "pressToSelectVideo": "Press to select video",
   "preparingToUpload": "Preparing to upload...",
+  "processingVideo": "processing video...",
 "uploadingVideo": "Uploading video...",
 "invitedBy": "Invited by {firstName} {lastName}",
 "@invitedBy": {
@@ -343,5 +344,10 @@
 "cancel": "Cancel",
 "quiz": "Quiz",
 "lessons": "Lessons",
-"duration": "Duration"
+"duration": "Duration",
+"lessonOverview": "Lesson overview",
+"failedToOpenAttachment": "Failed to open attachment",
+"videoLoadFailed": "Failed to load video",
+"retry": "Retry",
+"faq": "FAQ"
 }

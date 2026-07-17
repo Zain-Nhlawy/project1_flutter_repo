@@ -1724,6 +1724,12 @@ abstract class AppLocalizations {
   /// **'Preparing to upload...'**
   String get preparingToUpload;
 
+  /// No description provided for @processingVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'processing video...'**
+  String get processingVideo;
+
   /// No description provided for @uploadingVideo.
   ///
   /// In en, this message translates to:
@@ -1759,6 +1765,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Duration'**
   String get duration;
+
+  /// No description provided for @lessonOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson overview'**
+  String get lessonOverview;
+
+  /// No description provided for @failedToOpenAttachment.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to open attachment'**
+  String get failedToOpenAttachment;
+
+  /// No description provided for @videoLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load video'**
+  String get videoLoadFailed;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @faq.
+  ///
+  /// In en, this message translates to:
+  /// **'FAQ'**
+  String get faq;
 }
 
 class _AppLocalizationsDelegate

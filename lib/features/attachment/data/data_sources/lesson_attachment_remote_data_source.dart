@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:project1/core/errors/dio_exception_mapper.dart';
 import 'package:project1/core/errors/exceptions.dart';
 import 'package:project1/core/network/dio_client.dart';
@@ -94,7 +95,7 @@ class LessonAttachmentRemoteDataSource {
       final response = await dioClient.dio.get(
         '/lessons/$lessonId/attachments/$attachmentId',
       );
-
+      debugPrint(response.data.toString());
       final data = response.data['data'];
       if (data == null) {
         throw const ServerException('Attachment not found.');
@@ -120,7 +121,7 @@ class LessonAttachmentRemoteDataSource {
           if (cursor != null) 'cursor': cursor,
         },
       );
-
+      debugPrint(response.data.toString());
       final List list = response.data['data'];
 
       return list
