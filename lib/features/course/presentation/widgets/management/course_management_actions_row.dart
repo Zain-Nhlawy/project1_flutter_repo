@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project1/features/course/presentation/pages/PlaceholderScreen.dart';
 import 'package:project1/features/course/presentation/widgets/management/management_action_tile.dart';
+import 'package:project1/features/faq/presentation/pages/course_faq_management_screen.dart';
 import 'package:project1/features/section/presentation/pages/section_management_screen.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
@@ -30,7 +30,10 @@ class CourseManagementActionsRow extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => PlaceholderScreen(title: localizations.manageFaq),
+                  builder: (_) => CourseFaqManagementScreen(
+                    courseId: courseId,
+                    courseTitle: courseTitle,
+                  ),
                 ),
               );
             },

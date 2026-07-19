@@ -318,5 +318,19 @@
 "failedToOpenAttachment": "تعذر فتح المرفق",
 "videoLoadFailed": "تعذر تحميل الفيديو",
 "retry": "إعادة المحاولة",
-"faq": "الأسئلة الشائعة"
+"faq": "الأسئلة الشائعة",
+"noFaqAvailable": "لا توجد أسئلة شائعة",
+"addFaq": "إضافة سؤال شائع",
+"question": "السؤال",
+"questionIsRequired": "حقل السؤال مطلوب",
+"answer": "الإجابة",
+"answerIsRequired": "حقل الإجابة مطلوب",
+"deleteFaq": "حذف السؤال الشائع",
+"deleteFaqConfirmation": "هل أنت متأكد من أنك تريد حذف \"{question}\"؟",
+"delete": "حذف",
+"tapToAddFaq": "اضغط على \"إضافة سؤال شائع\" لإنشاء أول واحد.",
+"noFaqsYet": "لا توجد أسئلة شائعة بعد",
+"retry": "إعادة المحاولة",
+"faqs": "الأسئلة الشائعة",
+"noLessonsYet": "لا توجد دروس بعد"
 }

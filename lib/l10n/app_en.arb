@@ -349,5 +349,19 @@
 "failedToOpenAttachment": "Failed to open attachment",
 "videoLoadFailed": "Failed to load video",
 "retry": "Retry",
-"faq": "FAQ"
+"faq": "FAQ",
+"noFaqAvailable": "No FAQs available",
+"addFaq": "Add FAQ",
+"question": "Question",
+"questionIsRequired": "Question is required",
+"answer": "Answer",
+"answerIsRequired": "Answer is required",
+"deleteFaq": "Delete FAQ",
+"deleteFaqConfirmation": "Are you sure you want to delete \"{question}\"?",
+"delete": "Delete",
+"tapToAddFaq": "Tap \"Add FAQ\" to create the first one.",
+"noFaqsYet": "No FAQs yet",
+"retry": "Retry",
+"faqs": "FAQs",
+"noLessonsYet": "No lessons yet"
 }

@@ -615,7 +615,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get addLesson => 'إضافة درس';
 
   @override
-  String get noLessonsYet => 'لا يوجد دروس بعد';
+  String get noLessonsYet => 'لا توجد دروس بعد';
 
   @override
   String get questionsBank => 'بنك الأسئلة';
@@ -889,4 +889,39 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get faq => 'الأسئلة الشائعة';
+
+  @override
+  String get noFaqAvailable => 'لا توجد أسئلة شائعة';
+
+  @override
+  String get addFaq => 'إضافة سؤال شائع';
+
+  @override
+  String get question => 'السؤال';
+
+  @override
+  String get questionIsRequired => 'حقل السؤال مطلوب';
+
+  @override
+  String get answer => 'الإجابة';
+
+  @override
+  String get answerIsRequired => 'حقل الإجابة مطلوب';
+
+  @override
+  String get deleteFaq => 'حذف السؤال الشائع';
+
+  @override
+  String deleteFaqConfirmation(Object question) {
+    return 'هل أنت متأكد من أنك تريد حذف \"$question\"؟';
+  }
+
+  @override
+  String get tapToAddFaq => 'اضغط على \"إضافة سؤال شائع\" لإنشاء أول واحد.';
+
+  @override
+  String get noFaqsYet => 'لا توجد أسئلة شائعة بعد';
+
+  @override
+  String get faqs => 'الأسئلة الشائعة';
 }

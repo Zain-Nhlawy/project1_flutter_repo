@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/features/faq/domain/entities/course_faq_entity.dart';
+import 'package:project1/features/faq/presentation/cubit/course_faq_cubit.dart';
+import 'package:project1/features/faq/presentation/cubit/course_faq_state.dart';
+import 'package:project1/features/faq/presentation/widgets/details/Faq_item.dart';
 import 'package:project1/features/lesson/domain/entities/lesson_entity.dart';
 import 'package:project1/features/lesson/presentation/cubit/lesson_cubit.dart';
 import 'package:project1/features/lesson/presentation/pages/lesson_details_screen.dart';
@@ -24,10 +29,19 @@ class CourseTabs extends StatefulWidget {
 }
 
 class _CourseTabsState extends State<CourseTabs> {
+  late final CourseFaqCubit _faqCubit;
+
   @override
   void initState() {
     super.initState();
     context.read<SectionCubit>().getSections(courseId: widget.courseId);
+    _faqCubit = getIt<CourseFaqCubit>()..getCourseFaqs(courseId: widget.courseId);
+  }
+
+  @override
+  void dispose() {
+    _faqCubit.close();
+    super.dispose();
   }
 
   @override
@@ -90,44 +104,45 @@ class _CourseTabsState extends State<CourseTabs> {
                     },
                   ),
                 ),
-                ListView(
-                  padding: const EdgeInsets.all(16),
-                  children: [
-                    _FaqItem(
-                      question: "Who is this course designed for?",
-                      answer:
-                          "This course is designed for students, developers, and anyone interested in mastering data structures and algorithmic thinking.",
-                      primary: primary,
-                    ),
-                    const SizedBox(height: 12),
-                    _FaqItem(
-                      question: "Do I need prior programming experience?",
-                      answer:
-                          "Basic programming knowledge is recommended, but the course starts from the fundamentals and gradually moves to advanced topics.",
-                      primary: primary,
-                    ),
-                    const SizedBox(height: 12),
-                    _FaqItem(
-                      question: "Will I receive a certificate?",
-                      answer:
-                          "Yes, you will receive a certificate of completion after successfully finishing the course requirements.",
-                      primary: primary,
-                    ),
-                    const SizedBox(height: 12),
-                    _FaqItem(
-                      question: "Can I access the course on mobile?",
-                      answer:
-                          "Absolutely. The course is optimized for desktop, tablet, and mobile devices.",
-                      primary: primary,
-                    ),
-                    const SizedBox(height: 12),
-                    _FaqItem(
-                      question: "How long do I have access to the course?",
-                      answer:
-                          "You will have lifetime access to all lessons, updates, and supporting materials.",
-                      primary: primary,
-                    ),
-                  ],
+                BlocProvider.value(
+                  value: _faqCubit,
+                  child: BlocBuilder<CourseFaqCubit, CourseFaqState>(
+                    builder: (context, state) {
+                      if (state is CourseFaqLoading || state is CourseFaqInitial) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+
+                      if (state is CourseFaqError) {
+                        return Center(
+                          child: Text(
+                            state.message,
+                            style: const TextStyle(color: Colors.red),
+                          ),
+                        );
+                      }
+
+                      final faqs = state is CourseFaqLoaded ? state.faqs : <CourseFaqEntity>[];
+
+                      if (faqs.isEmpty) {
+                        return Center(
+                          child: Text(AppLocalizations.of(context)!.noFaqAvailable),
+                        );
+                      }
+
+                      return ListView.separated(
+                        padding: const EdgeInsets.all(16),
+                        itemCount: faqs.length,
+                        separatorBuilder: (_, __) => const SizedBox(height: 12),
+                        itemBuilder: (context, index) {
+                          final faq = faqs[index];
+                          return FaqItem(
+                            question: faq.question,
+                            answer: faq.answer,
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ),
               ],
             ),
@@ -179,18 +194,18 @@ class _SectionLessonsExpansionTileState extends State<_SectionLessonsExpansionTi
   }
 
   void _openLesson(LessonEntity lesson) {
-  final index = _lessons.indexWhere((l) => l.id == lesson.id);
+    final index = _lessons.indexWhere((l) => l.id == lesson.id);
 
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => LessonDetailsScreen(
-        lessons: _lessons,
-        initialIndex: index,
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => LessonDetailsScreen(
+          lessons: _lessons,
+          initialIndex: index,
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -211,10 +226,13 @@ class _SectionLessonsExpansionTileState extends State<_SectionLessonsExpansionTi
             child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
           )
         else if (_lessons.isEmpty)
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 12),
-            child: Text("No lessons yet"),
-          )
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: Text(
+            AppLocalizations.of(context)!.noLessonsYet,
+            style: TextStyle(color: AppColors.textSecondary),
+          ),
+        )
         else
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -241,51 +259,3 @@ class _SectionLessonsExpansionTileState extends State<_SectionLessonsExpansionTi
   }
 }
 
-class _FaqItem extends StatelessWidget {
-  final String question;
-  final String answer;
-  final Color primary;
-
-  const _FaqItem({
-    required this.question,
-    required this.answer,
-    required this.primary,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: primary.withOpacity(0.08)),
-        boxShadow: [
-          BoxShadow(
-            color: primary.withOpacity(0.08),
-            blurRadius: 18,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Theme(
-        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-        child: ExpansionTile(
-          tilePadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 4),
-          childrenPadding: const EdgeInsets.fromLTRB(18, 0, 18, 18),
-          iconColor: primary,
-          collapsedIconColor: primary,
-          title: Text(
-            question,
-            style: TextStyle(fontWeight: FontWeight.w600, color: primary, fontSize: 15),
-          ),
-          children: [
-            Text(
-              answer,
-              style: TextStyle(color: Colors.grey.shade700, height: 1.6),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

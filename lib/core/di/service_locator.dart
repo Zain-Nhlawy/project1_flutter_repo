@@ -78,6 +78,14 @@ import 'package:project1/features/department/data/data_sources/department_data_s
 import 'package:project1/features/department/domain/repository/department_repository.dart';
 import 'package:project1/features/department/data/repository/department_repository_implement.dart';
 import 'package:project1/features/department/domain/use_case/get_department_use_case.dart';
+import 'package:project1/features/faq/data/data_sources/course_faq_remote_data_source.dart';
+import 'package:project1/features/faq/data/repository/course_faq_repository_impl.dart';
+import 'package:project1/features/faq/domain/repository/course_faq_repository.dart';
+import 'package:project1/features/faq/domain/use_case/create_course_faq_usecase.dart';
+import 'package:project1/features/faq/domain/use_case/delete_course_faq_usecase.dart';
+import 'package:project1/features/faq/domain/use_case/get_course_faq_usecase.dart';
+import 'package:project1/features/faq/domain/use_case/get_course_faqs_usecase.dart';
+import 'package:project1/features/faq/presentation/cubit/course_faq_cubit.dart';
 import 'package:project1/features/lesson/data/data_sources/lesson_remote_datasource.dart';
 import 'package:project1/features/lesson/data/repository/lesson_repository_impl.dart';
 import 'package:project1/features/lesson/domain/repository/lesson_repository.dart';
@@ -606,4 +614,43 @@ getIt.registerFactory<AttachmentUploadCubit>(
 );
 
 //////////////////////// Attachment ////////////////////////
+
+
+
+//////////////////////// Course FAQ ////////////////////////
+
+//Data Sources
+getIt.registerLazySingleton<CourseFaqRemoteDataSource>(
+  () => CourseFaqRemoteDataSource(getIt<DioClient>()),
+);
+
+//Repositories
+getIt.registerLazySingleton<CourseFaqRepository>(
+  () => CourseFaqRepositoryImpl(getIt<CourseFaqRemoteDataSource>()),
+);
+
+//Use Cases
+getIt.registerLazySingleton<GetCourseFaqUseCase>(
+  () => GetCourseFaqUseCase(getIt<CourseFaqRepository>()),
+);
+getIt.registerLazySingleton<GetCourseFaqsUseCase>(
+  () => GetCourseFaqsUseCase(getIt<CourseFaqRepository>()),
+);
+getIt.registerLazySingleton<CreateCourseFaqUseCase>(
+  () => CreateCourseFaqUseCase(getIt<CourseFaqRepository>()),
+);
+getIt.registerLazySingleton<DeleteCourseFaqUseCase>(
+  () => DeleteCourseFaqUseCase(getIt<CourseFaqRepository>()),
+);
+
+//Cubits
+getIt.registerFactory<CourseFaqCubit>(
+  () => CourseFaqCubit(
+    getCourseFaqsUseCase: getIt<GetCourseFaqsUseCase>(),
+    createCourseFaqUseCase: getIt<CreateCourseFaqUseCase>(),
+    deleteCourseFaqUseCase: getIt<DeleteCourseFaqUseCase>(),
+  ),
+);
+
+//////////////////////// Course FAQ ////////////////////////
 }

@@ -1795,6 +1795,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'FAQ'**
   String get faq;
+
+  /// No description provided for @noFaqAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No FAQs available'**
+  String get noFaqAvailable;
+
+  /// No description provided for @addFaq.
+  ///
+  /// In en, this message translates to:
+  /// **'Add FAQ'**
+  String get addFaq;
+
+  /// No description provided for @question.
+  ///
+  /// In en, this message translates to:
+  /// **'Question'**
+  String get question;
+
+  /// No description provided for @questionIsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Question is required'**
+  String get questionIsRequired;
+
+  /// No description provided for @answer.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer'**
+  String get answer;
+
+  /// No description provided for @answerIsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer is required'**
+  String get answerIsRequired;
+
+  /// No description provided for @deleteFaq.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete FAQ'**
+  String get deleteFaq;
+
+  /// No description provided for @deleteFaqConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete \"{question}\"?'**
+  String deleteFaqConfirmation(Object question);
+
+  /// No description provided for @tapToAddFaq.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap \"Add FAQ\" to create the first one.'**
+  String get tapToAddFaq;
+
+  /// No description provided for @noFaqsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No FAQs yet'**
+  String get noFaqsYet;
+
+  /// No description provided for @faqs.
+  ///
+  /// In en, this message translates to:
+  /// **'FAQs'**
+  String get faqs;
 }
 
 class _AppLocalizationsDelegate

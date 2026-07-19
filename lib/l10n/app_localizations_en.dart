@@ -892,4 +892,39 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get faq => 'FAQ';
+
+  @override
+  String get noFaqAvailable => 'No FAQs available';
+
+  @override
+  String get addFaq => 'Add FAQ';
+
+  @override
+  String get question => 'Question';
+
+  @override
+  String get questionIsRequired => 'Question is required';
+
+  @override
+  String get answer => 'Answer';
+
+  @override
+  String get answerIsRequired => 'Answer is required';
+
+  @override
+  String get deleteFaq => 'Delete FAQ';
+
+  @override
+  String deleteFaqConfirmation(Object question) {
+    return 'Are you sure you want to delete \"$question\"?';
+  }
+
+  @override
+  String get tapToAddFaq => 'Tap \"Add FAQ\" to create the first one.';
+
+  @override
+  String get noFaqsYet => 'No FAQs yet';
+
+  @override
+  String get faqs => 'FAQs';
 }
