@@ -35,7 +35,7 @@ void main() async {
 
   String? initialResetToken;
 
-  try {
+  try {ذ
     final appLinks = AppLinks();
     final uri = await appLinks.getInitialLink();
 
