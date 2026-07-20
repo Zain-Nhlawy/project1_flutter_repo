@@ -71,7 +71,10 @@ class DemoUsersScreen extends StatelessWidget {
               separatorBuilder: (_, __) => const SizedBox(height: 10),
               itemBuilder: (context, index) {
                 final user = state.users[index];
-                return UserCard(user: user);
+                return UserCard(
+                  user: user,
+                  onTap: onUserTap != null ? () => onUserTap!(user) : null,
+                );
               },
             );
           }

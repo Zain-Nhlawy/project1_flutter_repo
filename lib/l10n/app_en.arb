@@ -364,5 +364,13 @@
 "noFaqsYet": "No FAQs yet",
 "retry": "Retry",
 "faqs": "FAQs",
-"noLessonsYet": "No lessons yet"
+"noLessonsYet": "No lessons yet",
+"enterSectionName": "Enter section name",
+"sectionDescription": "Section Description",
+"enterSectionDescription": "Enter section description",
+"manager": "Manager",
+"selectManager": "Select manager",
+"pleaseSelectManager": "Please select a manager",
+"departmentAddedSuccessfully": "Section added successfully",
+"requiredField": "Fields is required"
 }

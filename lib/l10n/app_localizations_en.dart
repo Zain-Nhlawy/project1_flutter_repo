@@ -930,4 +930,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get faqs => 'FAQs';
+
+  @override
+  String get enterSectionName => 'Enter section name';
+
+  @override
+  String get sectionDescription => 'Section Description';
+
+  @override
+  String get enterSectionDescription => 'Enter section description';
+
+  @override
+  String get manager => 'Manager';
+
+  @override
+  String get selectManager => 'Select manager';
+
+  @override
+  String get pleaseSelectManager => 'Please select a manager';
+
+  @override
+  String get departmentAddedSuccessfully => 'Section added successfully';
+
+  @override
+  String get requiredField => 'Fields is required';
 }

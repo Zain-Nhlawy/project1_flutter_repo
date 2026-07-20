@@ -17,3 +17,5 @@ class DepartmentError extends DepartmentState {
 
   DepartmentError(this.message);
 }
+
+class DepartmentCreated extends DepartmentState {}

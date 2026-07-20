@@ -3,13 +3,13 @@ class DepartmentEntity {
   final String name;
   final String managerId;
   final String description;
-  final int memberCount;
+  final int? memberCount;
 
   DepartmentEntity({
     this.id,
     required this.name,
     required this.managerId,
     required this.description,
-    required this.memberCount,
+    this.memberCount,
   });
 }

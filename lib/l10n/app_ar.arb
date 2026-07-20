@@ -333,5 +333,13 @@
 "noFaqsYet": "لا توجد أسئلة شائعة بعد",
 "retry": "إعادة المحاولة",
 "faqs": "الأسئلة الشائعة",
-"noLessonsYet": "لا توجد دروس بعد"
+"noLessonsYet": "لا توجد دروس بعد",
+"enterSectionName": "أدخل اسم القسم",
+"sectionDescription": "وصف القسم",
+"enterSectionDescription": "أدخل وصف القسم",
+"manager": "المدير",
+"selectManager": "اختر المدير",
+"pleaseSelectManager": "الرجاء اختيار مدير",
+"departmentAddedSuccessfully": "تم إضافة القسم بنجاح",
+"requiredField": "قسم مطلوب "
 }

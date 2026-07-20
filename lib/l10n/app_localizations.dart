@@ -1867,6 +1867,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'FAQs'**
   String get faqs;
+
+  /// No description provided for @enterSectionName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter section name'**
+  String get enterSectionName;
+
+  /// No description provided for @sectionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Section Description'**
+  String get sectionDescription;
+
+  /// No description provided for @enterSectionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter section description'**
+  String get enterSectionDescription;
+
+  /// No description provided for @manager.
+  ///
+  /// In en, this message translates to:
+  /// **'Manager'**
+  String get manager;
+
+  /// No description provided for @selectManager.
+  ///
+  /// In en, this message translates to:
+  /// **'Select manager'**
+  String get selectManager;
+
+  /// No description provided for @pleaseSelectManager.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a manager'**
+  String get pleaseSelectManager;
+
+  /// No description provided for @departmentAddedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Section added successfully'**
+  String get departmentAddedSuccessfully;
+
+  /// No description provided for @requiredField.
+  ///
+  /// In en, this message translates to:
+  /// **'Fields is required'**
+  String get requiredField;
 }
 
 class _AppLocalizationsDelegate

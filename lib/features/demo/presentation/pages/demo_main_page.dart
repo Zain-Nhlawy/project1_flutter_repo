@@ -3,13 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/demo/domain/entities/demo_entity.dart';
-import 'package:project1/features/demo/presentation/cubit/department%20cubit/department_cubit.dart';
-import 'package:project1/features/demo/presentation/cubit/department%20cubit/department_state.dart';
+import 'package:project1/features/department/presentation/cubit/department%20cubit/department_cubit.dart';
+import 'package:project1/features/department/presentation/cubit/department%20cubit/department_state.dart';
 import 'package:project1/features/demo/presentation/cubit/main_page_switch_cubit.dart';
 import 'package:project1/features/demo/presentation/widgets/demo_main_page_widget/header_widget.dart';
 import 'package:project1/features/demo/presentation/widgets/demo_main_page_widget/item_card_widget.dart';
 import 'package:project1/features/demo/presentation/widgets/demo_main_page_widget/main_action_sheet.dart';
 import 'package:project1/features/demo/presentation/widgets/demo_main_page_widget/toggle_switch_widget.dart';
+import 'package:project1/features/department/presentation/pages/add_department_screen.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
 
@@ -179,7 +180,18 @@ class DemoMainPage extends StatelessWidget {
                                 l10n.limitReachedSnackBar,
                               );
                             }
-                          : () {},
+                          : () {
+                              final departmentCubit = context.read<DepartmentCubit>();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BlocProvider.value(
+                                    value: departmentCubit,
+                                    child: AddDepartmentScreen(demoId: demo.id!),
+                                  ),
+                                ),
+                              );
+                            },
                       borderRadius: BorderRadius.circular(12),
                       child: Container(
                         padding: EdgeInsets.symmetric(

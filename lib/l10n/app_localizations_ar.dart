@@ -927,4 +927,28 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get faqs => 'الأسئلة الشائعة';
+
+  @override
+  String get enterSectionName => 'أدخل اسم القسم';
+
+  @override
+  String get sectionDescription => 'وصف القسم';
+
+  @override
+  String get enterSectionDescription => 'أدخل وصف القسم';
+
+  @override
+  String get manager => 'المدير';
+
+  @override
+  String get selectManager => 'اختر المدير';
+
+  @override
+  String get pleaseSelectManager => 'الرجاء اختيار مدير';
+
+  @override
+  String get departmentAddedSuccessfully => 'تم إضافة القسم بنجاح';
+
+  @override
+  String get requiredField => 'قسم مطلوب ';
 }
