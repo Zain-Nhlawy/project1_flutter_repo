@@ -96,9 +96,10 @@ class DemoCoursesScreen extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (_) => BlocProvider(
                             create: (_) => getIt<CourseCubit>(),
-                            child: CourseDetailsScreen(
-                              courseId: course.id,
-                            ),
+                            child: CourseDetailsScreen.fromDemo(
+                              demoId: course.demoId!,
+                              assetId: course.assetId!,
+                            )
                           ),
                         ),
                       );
