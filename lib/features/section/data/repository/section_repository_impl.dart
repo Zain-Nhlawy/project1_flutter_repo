@@ -24,11 +24,13 @@ class SectionRepositoryImpl implements SectionRepository {
     required String title,
     required int order,
   }) {
-    return _handle(() => remoteDataSource.createSection(
-          courseId: courseId,
-          title: title,
-          order: order,
-        ));
+    return _handle(
+      () => remoteDataSource.createSection(
+        courseId: courseId,
+        title: title,
+        order: order,
+      ),
+    );
   }
 
   @override
@@ -36,10 +38,10 @@ class SectionRepositoryImpl implements SectionRepository {
     required String courseId,
     required String sectionId,
   }) {
-    return _handle(() => remoteDataSource.getSection(
-          courseId: courseId,
-          sectionId: sectionId,
-        ));
+    return _handle(
+      () =>
+          remoteDataSource.getSection(courseId: courseId, sectionId: sectionId),
+    );
   }
 
   @override
@@ -49,12 +51,14 @@ class SectionRepositoryImpl implements SectionRepository {
     required String title,
     required int order,
   }) {
-    return _handle(() => remoteDataSource.updateSection(
-          courseId: courseId,
-          sectionId: sectionId,
-          title: title,
-          order: order,
-        ));
+    return _handle(
+      () => remoteDataSource.updateSection(
+        courseId: courseId,
+        sectionId: sectionId,
+        title: title,
+        order: order,
+      ),
+    );
   }
 
   @override
@@ -62,10 +66,12 @@ class SectionRepositoryImpl implements SectionRepository {
     required String courseId,
     required String sectionId,
   }) {
-    return _handle(() => remoteDataSource.deleteSection(
-          courseId: courseId,
-          sectionId: sectionId,
-        ));
+    return _handle(
+      () => remoteDataSource.deleteSection(
+        courseId: courseId,
+        sectionId: sectionId,
+      ),
+    );
   }
 
   @override

@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
-import 'package:project1/l10n/app_localizations.dart'; 
+import 'package:project1/l10n/app_localizations.dart';
 
 class XmlPreviewPage extends StatelessWidget {
   final String xml;
   final String filePath;
 
-  const XmlPreviewPage({
-    super.key,
-    required this.xml,
-    required this.filePath,
-  });
+  const XmlPreviewPage({super.key, required this.xml, required this.filePath});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +19,10 @@ class XmlPreviewPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primary,
-        title: Text(title, style: AppTextStyles.titleLarge.copyWith(color: Colors.white)),
+        title: Text(
+          title,
+          style: AppTextStyles.titleLarge.copyWith(color: Colors.white),
+        ),
       ),
       body: Column(
         children: [
@@ -37,7 +36,9 @@ class XmlPreviewPage extends StatelessWidget {
                 Expanded(
                   child: Text(
                     '$savedAt: $filePath',
-                    style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
                   ),
                 ),
               ],

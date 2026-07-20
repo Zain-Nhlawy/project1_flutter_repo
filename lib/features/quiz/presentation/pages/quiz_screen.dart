@@ -84,10 +84,8 @@ class _QuizScreenState extends State<QuizScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (_) => QuizResultScreen(
-            score: score,
-            total: questions.length,
-          ),
+          builder: (_) =>
+              QuizResultScreen(score: score, total: questions.length),
         ),
       );
       return;
@@ -150,15 +148,10 @@ class _QuizScreenState extends State<QuizScreen> {
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [
-                    primary.withOpacity(.08),
-                    primary.withOpacity(.03),
-                  ],
+                  colors: [primary.withOpacity(.08), primary.withOpacity(.03)],
                 ),
                 borderRadius: BorderRadius.circular(24),
-                border: Border.all(
-                  color: primary.withOpacity(.15),
-                ),
+                border: Border.all(color: primary.withOpacity(.15)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -257,8 +250,9 @@ class _QuizScreenState extends State<QuizScreen> {
                           if (icon != null)
                             Icon(
                               icon,
-                              color:
-                                  index == correct ? Colors.green : Colors.red,
+                              color: index == correct
+                                  ? Colors.green
+                                  : Colors.red,
                             ),
                         ],
                       ),
@@ -288,9 +282,7 @@ class _QuizScreenState extends State<QuizScreen> {
                 decoration: BoxDecoration(
                   color: Colors.amber.withOpacity(.08),
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: Colors.amber.withOpacity(.3),
-                  ),
+                  border: Border.all(color: Colors.amber.withOpacity(.3)),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -11,14 +11,17 @@ class PhotopeaEditorPage extends StatefulWidget {
 
 class _PhotopeaEditorPageState extends State<PhotopeaEditorPage> {
   double _progress = 0;
-  
+
   final String photopeaUrl = "https://www.photopea.com#%7%7B%22t";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.photopeaEditor, style: const TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(
+          AppLocalizations.of(context)!.photopeaEditor,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Colors.black87,
         elevation: 0,
       ),
@@ -28,12 +31,12 @@ class _PhotopeaEditorPageState extends State<PhotopeaEditorPage> {
             initialUrlRequest: URLRequest(url: WebUri(photopeaUrl)),
             initialSettings: InAppWebViewSettings(
               javaScriptEnabled: true,
-  useHybridComposition: true, 
-  hardwareAcceleration: true,
-  javaScriptCanOpenWindowsAutomatically: true,
-  iframeAllow: "camera; microphone; display-capture; geolocation",
-  allowUniversalAccessFromFileURLs: true,
-  allowFileAccessFromFileURLs: true,
+              useHybridComposition: true,
+              hardwareAcceleration: true,
+              javaScriptCanOpenWindowsAutomatically: true,
+              iframeAllow: "camera; microphone; display-capture; geolocation",
+              allowUniversalAccessFromFileURLs: true,
+              allowFileAccessFromFileURLs: true,
             ),
             onProgressChanged: (controller, progress) {
               setState(() {
@@ -45,7 +48,9 @@ class _PhotopeaEditorPageState extends State<PhotopeaEditorPage> {
             LinearProgressIndicator(
               value: _progress,
               backgroundColor: Colors.black12,
-              valueColor: const AlwaysStoppedAnimation<Color>(Colors.blueAccent),
+              valueColor: const AlwaysStoppedAnimation<Color>(
+                Colors.blueAccent,
+              ),
             ),
         ],
       ),

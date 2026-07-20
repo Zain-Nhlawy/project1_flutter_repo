@@ -42,15 +42,14 @@ class CourseCubit extends Cubit<CourseState> {
     );
   }
 
-  
-Future<void> getCourse(String courseId) async {
-  emit(const CourseDetailsLoading());
-  final result = await getCourseUseCase(courseId);
-  result.fold(
-    (failure) => emit(CourseDetailsError(_errorsOf(failure))),
-    (course) => emit(CourseDetailsLoaded(course)),
-  );
-}
+  Future<void> getCourse(String courseId) async {
+    emit(const CourseDetailsLoading());
+    final result = await getCourseUseCase(courseId);
+    result.fold(
+      (failure) => emit(CourseDetailsError(_errorsOf(failure))),
+      (course) => emit(CourseDetailsLoaded(course)),
+    );
+  }
 
   Future<void> getDemoCourses(String demoId) async {
     emit(const CourseLoading());
@@ -91,24 +90,14 @@ Future<void> getCourse(String courseId) async {
     );
   }
 
-  Future<void> publishCourse(
-  String courseId,
-) async {
-  emit(const CoursePublishing());
+  Future<void> publishCourse(String courseId) async {
+    emit(const CoursePublishing());
 
-  final result = await publishCourseUseCase(
-    courseId,
-  );
+    final result = await publishCourseUseCase(courseId);
 
-  result.fold(
-    (failure) => emit(
-      CoursePublishError(
-        _errorsOf(failure),
-      ),
-    ),
-    (course) => emit(
-      CoursePublished(course),
-    ),
-  );
-}
+    result.fold(
+      (failure) => emit(CoursePublishError(_errorsOf(failure))),
+      (course) => emit(CoursePublished(course)),
+    );
+  }
 }

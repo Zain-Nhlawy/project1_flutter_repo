@@ -6,11 +6,7 @@ class QuizResultScreen extends StatelessWidget {
   final int score;
   final int total;
 
-  const QuizResultScreen({
-    super.key,
-    required this.score,
-    required this.total,
-  });
+  const QuizResultScreen({super.key, required this.score, required this.total});
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +15,8 @@ class QuizResultScreen extends StatelessWidget {
     final title = percent >= 0.8
         ? "Excellent"
         : percent >= 0.5
-            ? "Good Job"
-            : "Keep Practicing";
+        ? "Good Job"
+        : "Keep Practicing";
 
     final subtitle = percent >= 0.6
         ? "You did great this time!"
@@ -37,9 +33,7 @@ class QuizResultScreen extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(80),
         child: Container(
-          decoration: const BoxDecoration(
-            gradient: AppColors.headerGradient,
-          ),
+          decoration: const BoxDecoration(gradient: AppColors.headerGradient),
           child: AppBar(
             title: Text(AppLocalizations.of(context)!.quizResult),
             centerTitle: true,
@@ -53,10 +47,7 @@ class QuizResultScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              image,
-              height: 210,
-            ),
+            Image.asset(image, height: 210),
             const SizedBox(height: 30),
             Text(
               "$score / $total",

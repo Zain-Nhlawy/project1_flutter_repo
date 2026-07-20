@@ -12,5 +12,4 @@ class InvitationEntity {
     required this.senderFirstName,
     required this.senderLastName,
   });
-
 }

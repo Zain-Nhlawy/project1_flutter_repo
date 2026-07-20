@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:project1/core/di/service_locator.dart';
 
-
 class Api {
   late Dio dio;
 

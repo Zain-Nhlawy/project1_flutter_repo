@@ -11,9 +11,6 @@ class Generate2FAUseCase {
     required String email,
     required String password,
   }) {
-    return repository.generate2FA(
-      email: email,
-      password: password,
-    );
+    return repository.generate2FA(email: email, password: password);
   }
 }

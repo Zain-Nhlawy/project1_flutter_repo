@@ -22,14 +22,8 @@ class InvitationModel extends InvitationEntity {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'demo': {
-        'name': demoName,
-        'imagePath': demoImagePath,
-      },
-      'sender': {
-        'firstName': senderFirstName,
-        'lastName': senderLastName,
-      },
+      'demo': {'name': demoName, 'imagePath': demoImagePath},
+      'sender': {'firstName': senderFirstName, 'lastName': senderLastName},
     };
   }
 }

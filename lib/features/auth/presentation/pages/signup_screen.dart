@@ -16,7 +16,8 @@ class SignupScreen extends StatelessWidget {
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   final TextEditingController dobController = TextEditingController();
 
   SignupScreen({super.key});
@@ -30,34 +31,29 @@ class SignupScreen extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is RegisterSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
 
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => VerifyEmailScreen(
-                email: emailController.text,
-              ),
+              builder: (_) => VerifyEmailScreen(email: emailController.text),
             ),
           );
         }
-          if (state is AuthError && state.errors.isNotEmpty) {
-            final messenger = ScaffoldMessenger.of(context);
+        if (state is AuthError && state.errors.isNotEmpty) {
+          final messenger = ScaffoldMessenger.of(context);
 
-            messenger.clearSnackBars();
+          messenger.clearSnackBars();
 
-            messenger.showSnackBar(
-              SnackBar(
-                content: Text(state.errors.first),
-                backgroundColor: AppColors.error,
-              ),
-            );
-          }
-
-
-
+          messenger.showSnackBar(
+            SnackBar(
+              content: Text(state.errors.first),
+              backgroundColor: AppColors.error,
+            ),
+          );
+        }
       },
       builder: (context, state) {
         final isLoading = state is AuthLoading;
@@ -149,9 +145,7 @@ class SignupScreen extends StatelessWidget {
 
                             const SizedBox(height: 16),
 
-                            DatePickerField(
-                              controller: dobController,
-                            ),
+                            DatePickerField(controller: dobController),
 
                             const SizedBox(height: 16),
 
@@ -186,7 +180,8 @@ class SignupScreen extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(16),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: AppColors.primary.withOpacity(0.25),
+                                            color: AppColors.primary
+                                                .withOpacity(0.25),
                                             blurRadius: 12,
                                             offset: const Offset(0, 4),
                                           ),
@@ -196,11 +191,13 @@ class SignupScreen extends StatelessWidget {
                                         onPressed: () {
                                           if (passwordController.text !=
                                               confirmPasswordController.text) {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
                                               SnackBar(
                                                 content: Text(
-                                                  localizations.passwordsDoNotMatch,
+                                                  localizations
+                                                      .passwordsDoNotMatch,
                                                 ),
                                               ),
                                             );
@@ -208,7 +205,8 @@ class SignupScreen extends StatelessWidget {
                                           }
 
                                           context.read<AuthCubit>().register({
-                                            "firstName": firstNameController.text,
+                                            "firstName":
+                                                firstNameController.text,
                                             "lastName": lastNameController.text,
                                             "birthDate": dobController.text,
                                             "email": emailController.text,
@@ -220,16 +218,19 @@ class SignupScreen extends StatelessWidget {
                                           shadowColor: Colors.transparent,
                                           elevation: 0,
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(16),
+                                            borderRadius: BorderRadius.circular(
+                                              16,
+                                            ),
                                           ),
                                         ),
                                         child: Center(
                                           child: Text(
                                             localizations.createAccountBtn,
-                                            style: AppTextStyles.titleMedium.copyWith(
-                                              color: AppColors.surface,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                            style: AppTextStyles.titleMedium
+                                                .copyWith(
+                                                  color: AppColors.surface,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                           ),
                                         ),
                                       ),
@@ -256,9 +257,7 @@ class SignupScreen extends StatelessWidget {
                               style: OutlinedButton.styleFrom(
                                 minimumSize: const Size(double.infinity, 56),
                                 backgroundColor: AppColors.surface,
-                                side: const BorderSide(
-                                  color: AppColors.border,
-                                ),
+                                side: const BorderSide(color: AppColors.border),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(16),
                                 ),

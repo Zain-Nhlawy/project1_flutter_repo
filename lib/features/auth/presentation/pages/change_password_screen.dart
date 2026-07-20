@@ -51,9 +51,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     }
 
     context.read<AuthCubit>().changePassword(
-          oldPassword: oldPasswordController.text,
-          newPassword: newPasswordController.text,
-        );
+      oldPassword: oldPasswordController.text,
+      newPassword: newPasswordController.text,
+    );
   }
 
   @override
@@ -73,19 +73,17 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           );
           Navigator.pop(context);
         } else if (state is AuthError && state.errors.isNotEmpty) {
-            final messenger = ScaffoldMessenger.of(context);
+          final messenger = ScaffoldMessenger.of(context);
 
-            messenger.clearSnackBars();
+          messenger.clearSnackBars();
 
-            messenger.showSnackBar(
-              SnackBar(
-                content: Text(state.errors.first),
-                backgroundColor: AppColors.error,
-              ),
-            );
-          }
-
-
+          messenger.showSnackBar(
+            SnackBar(
+              content: Text(state.errors.first),
+              backgroundColor: AppColors.error,
+            ),
+          );
+        }
       },
       child: Scaffold(
         backgroundColor: AppColors.background,
@@ -179,7 +177,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                               child: ElevatedButton(
                                 onPressed: isLoading
                                     ? null
-                                    : () => _handleChangePassword(localizations),
+                                    : () =>
+                                          _handleChangePassword(localizations),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.transparent,
                                   shadowColor: Colors.transparent,
@@ -202,9 +201,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                           localizations.changePassword,
                                           style: AppTextStyles.titleMedium
                                               .copyWith(
-                                            color: AppColors.surface,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                                color: AppColors.surface,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                         ),
                                 ),
                               ),

@@ -44,11 +44,7 @@ class ProfileTile extends StatelessWidget {
                     color: iconBackgroundColor.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Icon(
-                    icon,
-                    color: iconColor,
-                    size: 20 * textScale,
-                  ),
+                  child: Icon(icon, color: iconColor, size: 20 * textScale),
                 ),
                 SizedBox(width: size.width * 0.04),
                 Expanded(
@@ -78,4 +74,3 @@ class ProfileTile extends StatelessWidget {
     );
   }
 }
-

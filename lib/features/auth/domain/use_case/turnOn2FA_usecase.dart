@@ -7,11 +7,7 @@ class TurnOn2FAUseCase {
 
   TurnOn2FAUseCase(this.repository);
 
-  Future<Either<Failure, String>> call({
-    required String tfaCode,
-  }) {
-    return repository.turnOn2FA(
-      tfaCode: tfaCode,
-    );
+  Future<Either<Failure, String>> call({required String tfaCode}) {
+    return repository.turnOn2FA(tfaCode: tfaCode);
   }
 }

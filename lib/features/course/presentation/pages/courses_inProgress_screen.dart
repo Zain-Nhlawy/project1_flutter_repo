@@ -8,201 +8,175 @@ import 'package:project1/features/course/upload_photo/presentation/cubit/upload_
 import 'package:project1/features/course/presentation/cubit/course_state.dart';
 import 'package:project1/features/course/presentation/pages/course_management_screen.dart';
 import 'package:project1/features/course/presentation/pages/create_course_screen.dart';
-import 'package:project1/features/course/presentation/widgets/course_card.dart';
+import 'package:project1/features/course/presentation/widgets/details/course_card.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class CoursesInProgressScreen extends StatelessWidget {
   final String demoId;
-  const CoursesInProgressScreen({
-    super.key,
-    required this.demoId,
-  });
+  const CoursesInProgressScreen({super.key, required this.demoId});
 
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
-            backgroundColor: AppColors.background,
-            floatingActionButton: FloatingActionButton.extended(
-              onPressed: () async {
-                final result = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => MultiBlocProvider(
-                      providers: [
-                        BlocProvider.value(
-                          value: context.read<CourseCubit>(),
-                        ),
-                        BlocProvider(
-                          create: (_) => getIt<TagsCubit>()..fetchTags(),
-                        ),
-                        BlocProvider(
-                          create: (_) => getIt<UploadPhotoCourseCubit>(),
-                        ),
-                      ],
-                      child: CreateCourseScreen(
-                        demoId: demoId,
-                      ),
-                    ),
-                  ),
-                );
-
-                if (result == true && context.mounted) {
-                  context.read<CourseCubit>().getDemoCourses(demoId);
-                }
-              },
-              backgroundColor: AppColors.primary,
-              icon: const Icon(Icons.add_rounded,color: Colors.white),
-              label: Text(
-                localizations.createCourse,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            body: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xffF7F9FC),
-                    Colors.white,
-                  ],
-                ),
-              ),
-              child: BlocBuilder<CourseCubit,CourseState>(
-                builder: (context,state) {
-                  if(state is CourseLoading){
-                    return const Center(child:CircularProgressIndicator());
-                  }
-                  if (state is CourseError) {
-                    return Center(
-                      child: Text(
-                        state.errors.isNotEmpty ? state.errors.first : '',
-                        style: const TextStyle(color: Colors.red),
-                      ),
-                    );
-                  }
-                  if(state is CourseLoaded){
-                    final courses=state.courses;
-                    if(courses.isEmpty){
-                      return Center(
-                        child:Text(localizations.noCoursesFound),
-                      );
-                    }
-                    final ongoingCourses = courses
-                    .where((course) => !course.isPublished)
-                    .toList();
-                    return ListView(
-                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 160),
-                      children: [
-                        Text(
-                          localizations.ongoingCourses,
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.primary,
-                          ),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          localizations.manageCoursesDescription,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey.shade600,
-                          ),
-                        ),
-                        const SizedBox(height: 18),
-                        Container(
-                          padding: const EdgeInsets.all(14),
-                          decoration: BoxDecoration(
-                            color: AppColors.primary.withOpacity(.08),
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.menu_book_rounded,
-                                color: AppColors.primary,
-                              ),
-                              const SizedBox(width: 10),
-                              Text(
-                                "${ongoingCourses.length} ${localizations.coursesInProgress}",
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        ...ongoingCourses.map(
-                          (course) {
-                            return CourseCard(
-                              id: course.id,
-                              title: course.title,
-                              companyName: course.demo?.name ?? '',
-                              imageUrl: course.imagePath,
-                              price: course.price,
-                              description: course.description,
-                              tags: course.tags,
-                              visibility: course.visibility,
-                              isPublished: course.isPublished,
-                              onTap: () async {
-                                final result = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => MultiBlocProvider(
-                                      providers: [
-                                        BlocProvider.value(
-                                          value: context.read<CourseCubit>(),
-                                        ),
-                                        BlocProvider(
-                                          create: (_) =>
-                                              getIt<TagsCubit>()..fetchTags(),
-                                        ),
-                                        BlocProvider(
-                                          create: (_) =>
-                                              getIt<UploadPhotoCourseCubit>(),
-                                        ),
-                                      ],
-                                      child: CourseManagementScreen(
-                                        courseId: course.id,
-                                        demoId: demoId,
-                                        title: course.title,
-                                        company: course.demo?.name ?? '',
-                                        image: course.imagePath,
-                                        lessons: course.totalLessons,
-                                        duration: course.totalDuration,
-                                        description: course.description,
-                                        price: course.price,
-                                        visibility: course.visibility,
-                                        tagIds: course.tagIds,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                                if (result == true && context.mounted) {
-                                  context
-                                      .read<CourseCubit>()
-                                      .getDemoCourses(demoId);
-                                }
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    );
-                  }
-                  return Center(
-                    child:Text(localizations.noCoursesFound),
-                  );
-                },
+      backgroundColor: AppColors.background,
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () async {
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(value: context.read<CourseCubit>()),
+                  BlocProvider(create: (_) => getIt<TagsCubit>()..fetchTags()),
+                  BlocProvider(create: (_) => getIt<UploadPhotoCourseCubit>()),
+                ],
+                child: CreateCourseScreen(demoId: demoId),
               ),
             ),
           );
+
+          if (result == true && context.mounted) {
+            context.read<CourseCubit>().getDemoCourses(demoId);
+          }
+        },
+        backgroundColor: AppColors.primary,
+        icon: const Icon(Icons.add_rounded, color: Colors.white),
+        label: Text(
+          localizations.createCourse,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xffF7F9FC), Colors.white],
+          ),
+        ),
+        child: BlocBuilder<CourseCubit, CourseState>(
+          builder: (context, state) {
+            if (state is CourseLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (state is CourseError) {
+              return Center(
+                child: Text(
+                  state.errors.isNotEmpty ? state.errors.first : '',
+                  style: const TextStyle(color: Colors.red),
+                ),
+              );
+            }
+            if (state is CourseLoaded) {
+              final courses = state.courses;
+              if (courses.isEmpty) {
+                return Center(child: Text(localizations.noCoursesFound));
+              }
+              final ongoingCourses = courses
+                  .where((course) => !course.isPublished)
+                  .toList();
+              return ListView(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 160),
+                children: [
+                  Text(
+                    localizations.ongoingCourses,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    localizations.manageCoursesDescription,
+                    style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                  ),
+                  const SizedBox(height: 18),
+                  Container(
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withOpacity(.08),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.menu_book_rounded,
+                          color: AppColors.primary,
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          "${ongoingCourses.length} ${localizations.coursesInProgress}",
+                          style: const TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ...ongoingCourses.map((course) {
+                    return CourseCard(
+                      id: course.id,
+                      title: course.title,
+                      companyName: course.demo?.name ?? '',
+                      imageUrl: course.imagePath,
+                      price: course.price,
+                      description: course.description,
+                      tags: course.tags,
+                      visibility: course.visibility,
+                      isPublished: course.isPublished,
+                      onTap: () async {
+                        final result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => MultiBlocProvider(
+                              providers: [
+                                BlocProvider.value(
+                                  value: context.read<CourseCubit>(),
+                                ),
+                                BlocProvider(
+                                  create: (_) =>
+                                      getIt<TagsCubit>()..fetchTags(),
+                                ),
+                                BlocProvider(
+                                  create: (_) =>
+                                      getIt<UploadPhotoCourseCubit>(),
+                                ),
+                              ],
+                              child: CourseManagementScreen(
+                                courseId: course.id,
+                                assetId: course.assetId!,
+                                demoId: demoId,
+                                title: course.title,
+                                company: course.demo?.name ?? '',
+                                image: course.imagePath,
+                                lessons: course.totalLessons,
+                                duration: course.totalDuration,
+                                description: course.description,
+                                price: course.price,
+                                visibility: course.visibility,
+                                tagIds: course.tagIds,
+                              ),
+                            ),
+                          ),
+                        );
+                        if (result == true && context.mounted) {
+                          context.read<CourseCubit>().getDemoCourses(demoId);
+                        }
+                      },
+                    );
+                  }),
+                ],
+              );
+            }
+            return Center(child: Text(localizations.noCoursesFound));
+          },
+        ),
+      ),
+    );
   }
 }

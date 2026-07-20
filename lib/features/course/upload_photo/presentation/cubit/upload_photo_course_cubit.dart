@@ -7,7 +7,7 @@ class UploadPhotoCourseCubit extends Cubit<UploadPhotoCourseState> {
   final UploadPhotoCourseUseCase uploadPhotoUseCase;
 
   UploadPhotoCourseCubit(this.uploadPhotoUseCase)
-      : super(UploadPhotoCourseInitial());
+    : super(UploadPhotoCourseInitial());
 
   Future<String?> uploadPhoto(File file) async {
     emit(UploadPhotoCourseLoading());
@@ -19,9 +19,7 @@ class UploadPhotoCourseCubit extends Cubit<UploadPhotoCourseState> {
 
       return url;
     } catch (e) {
-      emit(
-        UploadPhotoCourseError(e.toString()),
-      );
+      emit(UploadPhotoCourseError(e.toString()));
 
       return null;
     }

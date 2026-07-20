@@ -25,8 +25,6 @@ abstract class AuthRepository {
     required String email,
     required String password,
   });
-  Future<Either<Failure, String>> turnOn2FA({
-    required String tfaCode,
-  });
+  Future<Either<Failure, String>> turnOn2FA({required String tfaCode});
   Future<Either<Failure, String>> turnOff2FA();
 }

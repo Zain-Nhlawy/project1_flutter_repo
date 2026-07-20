@@ -22,13 +22,8 @@ class VisibilityDropdown extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14),
       decoration: BoxDecoration(
-        color: enabled
-            ? AppColors.surface
-            : AppColors.surface.withOpacity(0.5),
-        border: Border.all(
-          color: AppColors.border,
-          width: 1.2,
-        ),
+        color: enabled ? AppColors.surface : AppColors.surface.withOpacity(0.5),
+        border: Border.all(color: AppColors.border, width: 1.2),
         borderRadius: BorderRadius.circular(15),
         boxShadow: enabled
             ? [
@@ -46,9 +41,7 @@ class VisibilityDropdown extends StatelessWidget {
           isExpanded: true,
           icon: Icon(
             Icons.keyboard_arrow_down_rounded,
-            color: enabled
-                ? AppColors.primary
-                : AppColors.textSecondary,
+            color: enabled ? AppColors.primary : AppColors.textSecondary,
           ),
           items: [
             DropdownMenuItem(

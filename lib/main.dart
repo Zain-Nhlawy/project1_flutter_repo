@@ -11,8 +11,6 @@ import 'package:project1/features/auth/domain/use_case/verify_email_usecase.dart
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/pages/login_screen.dart';
 import 'package:project1/features/auth/presentation/pages/reset_password_screen.dart';
-import 'package:project1/features/course/presentation/pages/courses_inProgress_screen.dart';
-import 'package:project1/features/course/presentation/pages/create_course_screen.dart';
 import 'package:project1/features/profile/presentation/cubit/locale_cubit.dart';
 import 'package:project1/features/profile/presentation/cubit/theme_cubit.dart';
 import 'package:project1/l10n/app_localizations.dart';
@@ -24,9 +22,7 @@ final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   MediaKit.ensureInitialized();
 
   await dotenv.load();
@@ -35,7 +31,7 @@ void main() async {
 
   String? initialResetToken;
 
-  try {ذ
+  try {
     final appLinks = AppLinks();
     final uri = await appLinks.getInitialLink();
 
@@ -56,11 +52,11 @@ void main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider<AuthCubit>(
-  create: (_) {
-    print("creating auth cubit");
-    return getIt<AuthCubit>();
-  },
-),
+          create: (_) {
+            print("creating auth cubit");
+            return getIt<AuthCubit>();
+          },
+        ),
         BlocProvider<LocaleCubit>(create: (_) => LocaleCubit()),
         BlocProvider<ThemeCubit>(create: (_) => ThemeCubit()),
       ],

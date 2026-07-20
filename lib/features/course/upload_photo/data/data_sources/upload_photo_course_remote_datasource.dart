@@ -29,9 +29,7 @@ class UploadPhotoCourseRemoteDataSource {
 
     final res = await dioClient.dio.post(
       '/courses/upload-url',
-      data: {
-        "fileName": file.path.split('/').last,
-      },
+      data: {"fileName": file.path.split('/').last},
     );
 
     final data = res.data['data'];
@@ -44,10 +42,7 @@ class UploadPhotoCourseRemoteDataSource {
       uploadUrl,
       data: await file.readAsBytes(),
       options: Options(
-        headers: {
-          'x-ms-blob-type': 'BlockBlob',
-          'Content-Type': contentType,
-        },
+        headers: {'x-ms-blob-type': 'BlockBlob', 'Content-Type': contentType},
       ),
     );
 

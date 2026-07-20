@@ -17,7 +17,5 @@ abstract class CourseRepository {
     CourseEntity course,
   );
   Future<Either<Failure, void>> deleteCourse(String courseId);
-  Future<Either<Failure, CourseEntity>> publishCourse(
-    String courseId,
-  );
+  Future<Either<Failure, CourseEntity>> publishCourse(String courseId);
 }

@@ -28,12 +28,20 @@ class SectionSubRow extends StatelessWidget {
           Expanded(
             child: Text(
               label,
-              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textPrimary,
+              ),
             ),
           ),
           IconButton(
             onPressed: onEdit,
-            icon: const Icon(Icons.edit_outlined, size: 18, color: AppColors.textSecondary),
+            icon: const Icon(
+              Icons.edit_outlined,
+              size: 18,
+              color: AppColors.textSecondary,
+            ),
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(),
             splashRadius: 18,

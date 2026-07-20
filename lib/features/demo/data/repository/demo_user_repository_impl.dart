@@ -9,7 +9,9 @@ class DemoUserRepositoryImpl implements DemoUsersRepository {
   DemoUserRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<Either<String, List<MembersEntity>>> getDemoUsers(String demoId) async {
+  Future<Either<String, List<MembersEntity>>> getDemoUsers(
+    String demoId,
+  ) async {
     try {
       final users = await remoteDataSource.getDemoUsers(demoId);
       return Right(users);
@@ -19,7 +21,9 @@ class DemoUserRepositoryImpl implements DemoUsersRepository {
   }
 
   @override
-  Future<Either<String, List<MembersEntity>>> searchDemoUsers(String query) async {
+  Future<Either<String, List<MembersEntity>>> searchDemoUsers(
+    String query,
+  ) async {
     try {
       final users = await remoteDataSource.searchDemoUsers(query);
       return Right(users);
@@ -27,9 +31,12 @@ class DemoUserRepositoryImpl implements DemoUsersRepository {
       return Left('Failed to search demo users: $e');
     }
   }
-  
-@override
-  Future<Either<String, bool>> removeUserFromDemo(String demoId, String userId) async {
+
+  @override
+  Future<Either<String, bool>> removeUserFromDemo(
+    String demoId,
+    String userId,
+  ) async {
     try {
       final result = await remoteDataSource.removeUserFromDemo(demoId, userId);
       return Right(result);
@@ -37,9 +44,12 @@ class DemoUserRepositoryImpl implements DemoUsersRepository {
       return Left('Failed to remove user from demo: $e');
     }
   }
-@override
-  Future<Either<String, bool>> sendInvitation(String demoId, String userId) async
-  {
+
+  @override
+  Future<Either<String, bool>> sendInvitation(
+    String demoId,
+    String userId,
+  ) async {
     try {
       final result = await remoteDataSource.sendInvitation(demoId, userId);
       return Right(result);
@@ -51,7 +61,8 @@ class DemoUserRepositoryImpl implements DemoUsersRepository {
     }
   }
 
-  Future<Either<String, List<InvitationEntity>>> getReceivedInvitations() async {
+  Future<Either<String, List<InvitationEntity>>>
+  getReceivedInvitations() async {
     try {
       final invitations = await remoteDataSource.getReceivedInvitations();
       return Right(invitations);
@@ -77,5 +88,4 @@ class DemoUserRepositoryImpl implements DemoUsersRepository {
       throw Exception('Failed to reject invitation: $e');
     }
   }
-
 }

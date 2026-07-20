@@ -77,17 +77,35 @@ class _DrawioPageState extends State<DrawioPage> {
     final result = await showDialog<String>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text(l10n?.saveDiagram ?? 'Save Diagram', style: AppTextStyles.h3),
-        content: Text(l10n?.whatDoYouWantToSave ?? 'What do you want to save?', style: AppTextStyles.bodyMedium),
+        title: Text(
+          l10n?.saveDiagram ?? 'Save Diagram',
+          style: AppTextStyles.h3,
+        ),
+        content: Text(
+          l10n?.whatDoYouWantToSave ?? 'What do you want to save?',
+          style: AppTextStyles.bodyMedium,
+        ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, 'xml'), child: Text(l10n?.xmlOnly ?? 'XML only')),
-          TextButton(onPressed: () => Navigator.pop(ctx, 'png'), child: Text(l10n?.pngOnly ?? 'PNG only')),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, 'xml'),
+            child: Text(l10n?.xmlOnly ?? 'XML only'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, 'png'),
+            child: Text(l10n?.pngOnly ?? 'PNG only'),
+          ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
             onPressed: () => Navigator.pop(ctx, 'both'),
-            child: Text(l10n?.both ?? 'Both', style: const TextStyle(color: Colors.white)),
+            child: Text(
+              l10n?.both ?? 'Both',
+              style: const TextStyle(color: Colors.white),
+            ),
           ),
-          TextButton(onPressed: () => Navigator.pop(ctx, 'cancel'), child: Text(l10n?.cancel ?? 'Cancel')),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, 'cancel'),
+            child: Text(l10n?.cancel ?? 'Cancel'),
+          ),
         ],
       ),
     );
@@ -102,21 +120,30 @@ class _DrawioPageState extends State<DrawioPage> {
           _savedFilePath = path;
         });
         if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n?.xmlSaved ?? 'XML Saved')));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n?.xmlSaved ?? 'XML Saved')));
       }
       if (result == 'png' || result == 'both') {
         await _storage.savePng(png);
         if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n?.pngSaved ?? 'PNG Saved')));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n?.pngSaved ?? 'PNG Saved')));
       }
     } else {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n?.storagePermissionDenied ?? 'Permission Denied')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n?.storagePermissionDenied ?? 'Permission Denied'),
+        ),
+      );
     }
   }
 
   Future<bool> _requestPermission() async {
-    return await Permission.storage.request().isGranted || await Permission.manageExternalStorage.request().isGranted;
+    return await Permission.storage.request().isGranted ||
+        await Permission.manageExternalStorage.request().isGranted;
   }
 
   @override
@@ -129,19 +156,33 @@ class _DrawioPageState extends State<DrawioPage> {
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(l10n?.diagramEditor ?? 'Diagram Editor', style: AppTextStyles.titleLarge.copyWith(color: Colors.white)),
+        title: Text(
+          l10n?.diagramEditor ?? 'Diagram Editor',
+          style: AppTextStyles.titleLarge.copyWith(color: Colors.white),
+        ),
         actions: [
           if (_savedXml != null)
             IconButton(
               icon: const Icon(Icons.visibility, color: Colors.white),
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => XmlPreviewPage(xml: _savedXml!, filePath: _savedFilePath ?? ''))),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => XmlPreviewPage(
+                    xml: _savedXml!,
+                    filePath: _savedFilePath ?? '',
+                  ),
+                ),
+              ),
             ),
         ],
       ),
       body: Stack(
         children: [
           WebViewWidget(controller: _controller),
-          if (_isLoading) const Center(child: CircularProgressIndicator(color: AppColors.primary)),
+          if (_isLoading)
+            const Center(
+              child: CircularProgressIndicator(color: AppColors.primary),
+            ),
         ],
       ),
     );

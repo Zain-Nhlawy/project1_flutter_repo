@@ -62,7 +62,8 @@ class SectionCubit extends Cubit<SectionState> {
     );
 
     result.fold(
-      (failure) => emit(state.copyWith(isLoading: false, errors: _errorsOf(failure))),
+      (failure) =>
+          emit(state.copyWith(isLoading: false, errors: _errorsOf(failure))),
       (section) => emit(state.copyWith(isLoading: false, section: section)),
     );
   }
@@ -115,15 +116,14 @@ class SectionCubit extends Cubit<SectionState> {
     );
   }
 
-  Future<void> getSections({
-    required String courseId,
-  }) async {
+  Future<void> getSections({required String courseId}) async {
     emit(state.copyWith(isLoading: true, errors: null));
 
     final result = await getSectionsUseCase(courseId: courseId);
 
     result.fold(
-      (failure) => emit(state.copyWith(isLoading: false, errors: _errorsOf(failure))),
+      (failure) =>
+          emit(state.copyWith(isLoading: false, errors: _errorsOf(failure))),
       (sections) => emit(state.copyWith(isLoading: false, sections: sections)),
     );
   }

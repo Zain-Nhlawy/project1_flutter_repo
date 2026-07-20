@@ -64,7 +64,9 @@ class CourseRepositoryImpl implements CourseRepository {
     required String demoId,
     required String assetId,
   }) {
-    return _handle(() => remoteDataSource.getDemoCourse(demoId: demoId, assetId: assetId));
+    return _handle(
+      () => remoteDataSource.getDemoCourse(demoId: demoId, assetId: assetId),
+    );
   }
 
   @override
@@ -86,9 +88,7 @@ class CourseRepositoryImpl implements CourseRepository {
   }
 
   @override
-Future<Either<Failure, CourseEntity>> publishCourse(String courseId) {
-  return _handle(
-    () => remoteDataSource.publishCourse(courseId),
-  );
-}
+  Future<Either<Failure, CourseEntity>> publishCourse(String courseId) {
+    return _handle(() => remoteDataSource.publishCourse(courseId));
+  }
 }

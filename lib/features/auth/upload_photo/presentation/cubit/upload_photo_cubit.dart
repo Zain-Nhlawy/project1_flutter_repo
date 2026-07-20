@@ -7,8 +7,7 @@ import 'upload_photo_state.dart';
 class UploadPhotoCubit extends Cubit<UploadPhotoState> {
   final UploadPhotoUseCase uploadPhotoUseCase;
 
-  UploadPhotoCubit(this.uploadPhotoUseCase)
-      : super(UploadPhotoInitial());
+  UploadPhotoCubit(this.uploadPhotoUseCase) : super(UploadPhotoInitial());
 
   Future<String?> uploadPhoto(File file) async {
     emit(UploadPhotoLoading());
@@ -28,10 +27,6 @@ class UploadPhotoCubit extends Cubit<UploadPhotoState> {
   }
 
   void _emitFailure(Failure failure) {
-    emit(
-      UploadPhotoError(
-        failure.errors ?? [failure.message],
-      ),
-    );
+    emit(UploadPhotoError(failure.errors ?? [failure.message]));
   }
 }

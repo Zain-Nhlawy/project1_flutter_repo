@@ -11,6 +11,7 @@ import 'package:project1/features/demo/presentation/widgets/demo_main_page_widge
 import 'package:project1/features/demo/presentation/widgets/demo_main_page_widget/main_action_sheet.dart';
 import 'package:project1/features/demo/presentation/widgets/demo_main_page_widget/toggle_switch_widget.dart';
 import 'package:project1/l10n/app_localizations.dart';
+import 'package:project1/config/theme/snackbar_theme.dart';
 
 class DemoMainPage extends StatelessWidget {
   final DemoEntity demo;
@@ -173,11 +174,9 @@ class DemoMainPage extends StatelessWidget {
                     InkWell(
                       onTap: isLimitReached
                           ? () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(l10n.limitReachedSnackBar),
-                                  backgroundColor: theme.colorScheme.error,
-                                ),
+                              SnackbarTheme().newSnackBarError(
+                                context,
+                                l10n.limitReachedSnackBar,
                               );
                             }
                           : () {},

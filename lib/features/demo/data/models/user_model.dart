@@ -4,6 +4,7 @@ class MembersModel extends MembersEntity {
   const MembersModel({
     super.id,
     super.demoId,
+    super.memberIdInDemo,
     required super.firstName,
     required super.lastName,
     required super.email,
@@ -15,6 +16,7 @@ class MembersModel extends MembersEntity {
     final user = json['user'] as Map<String, dynamic>;
     return MembersModel(
       demoId: json['demoId'] as String,
+      memberIdInDemo: json['id'] as String?,
       id: user['id'] as String,
       firstName: user['firstName'] as String,
       lastName: user['lastName'] as String,

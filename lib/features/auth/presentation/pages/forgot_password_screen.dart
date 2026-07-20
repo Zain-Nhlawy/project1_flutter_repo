@@ -34,9 +34,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       return;
     }
 
-    final body = {
-      "email": emailController.text.trim(),
-    };
+    final body = {"email": emailController.text.trim()};
 
     context.read<AuthCubit>().forgotPassword(body);
   }
@@ -66,22 +64,18 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               ],
             ),
           );
+        } else if (state is AuthError && state.errors.isNotEmpty) {
+          final messenger = ScaffoldMessenger.of(context);
 
-          } else if (state is AuthError && state.errors.isNotEmpty) {
-            final messenger = ScaffoldMessenger.of(context);
+          messenger.clearSnackBars();
 
-            messenger.clearSnackBars();
-
-            messenger.showSnackBar(
-              SnackBar(
-                content: Text(state.errors.first),
-                backgroundColor: AppColors.error,
-              ),
-            );
-          }
-
-
-
+          messenger.showSnackBar(
+            SnackBar(
+              content: Text(state.errors.first),
+              backgroundColor: AppColors.error,
+            ),
+          );
+        }
       },
       child: Scaffold(
         backgroundColor: AppColors.background,
@@ -157,7 +151,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                 ],
                               ),
                               child: ElevatedButton(
-                                onPressed: isLoading ? null : () => _handleForgotPassword(localizations),
+                                onPressed: isLoading
+                                    ? null
+                                    : () =>
+                                          _handleForgotPassword(localizations),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.transparent,
                                   shadowColor: Colors.transparent,
@@ -178,10 +175,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                         )
                                       : Text(
                                           localizations.sendResetLink,
-                                          style: AppTextStyles.titleMedium.copyWith(
-                                            color: AppColors.surface,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                          style: AppTextStyles.titleMedium
+                                              .copyWith(
+                                                color: AppColors.surface,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                         ),
                                 ),
                               ),

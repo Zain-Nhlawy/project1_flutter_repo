@@ -17,22 +17,19 @@ class StepProgressIndicator extends StatelessWidget {
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(
-        totalSteps,
-        (index) {
-          final isActive = index == currentStep;
-          return AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            margin: EdgeInsets.symmetric(horizontal: size.width * 0.01),
-            height: size.height * 0.01,
-            width: isActive ? size.width * 0.08 : size.width * 0.025,
-            decoration: BoxDecoration(
-              color: isActive ? AppColors.primary : AppColors.border,
-              borderRadius: BorderRadius.circular(10),
-            ),
-          );
-        },
-      ),
+      children: List.generate(totalSteps, (index) {
+        final isActive = index == currentStep;
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          margin: EdgeInsets.symmetric(horizontal: size.width * 0.01),
+          height: size.height * 0.01,
+          width: isActive ? size.width * 0.08 : size.width * 0.025,
+          decoration: BoxDecoration(
+            color: isActive ? AppColors.primary : AppColors.border,
+            borderRadius: BorderRadius.circular(10),
+          ),
+        );
+      }),
     );
   }
 }

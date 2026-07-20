@@ -60,9 +60,8 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => Verify2FAScreen(
-                twoFactorToken: state.twoFactorToken,
-              ),
+              builder: (_) =>
+                  Verify2FAScreen(twoFactorToken: state.twoFactorToken),
             ),
           );
           return;
@@ -86,21 +85,17 @@ class _LoginScreenState extends State<LoginScreen> {
             }
           });
         } else if (state is AuthError && state.errors.isNotEmpty) {
-            final messenger = ScaffoldMessenger.of(context);
+          final messenger = ScaffoldMessenger.of(context);
 
-            messenger.clearSnackBars();
+          messenger.clearSnackBars();
 
-            messenger.showSnackBar(
-              SnackBar(
-                content: Text(state.errors.first),
-                backgroundColor: AppColors.error,
-              ),
-            );
-          }
-
-
-
-
+          messenger.showSnackBar(
+            SnackBar(
+              content: Text(state.errors.first),
+              backgroundColor: AppColors.error,
+            ),
+          );
+        }
       },
       child: Scaffold(
         backgroundColor: AppColors.background,

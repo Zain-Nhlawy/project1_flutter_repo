@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
-
 class ToggleSwitchWidget extends StatelessWidget {
   final bool isSectionsActive;
   final Function(bool) onToggle;
@@ -35,13 +34,17 @@ class ToggleSwitchWidget extends StatelessWidget {
               child: Container(
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: isSectionsActive ? theme.colorScheme.surface : Colors.transparent,
+                  color: isSectionsActive
+                      ? theme.colorScheme.surface
+                      : Colors.transparent,
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Text(
                   l10n.sections,
                   style: AppTextStyles.bodyLarge.copyWith(
-                    color: isSectionsActive ? theme.colorScheme.secondary : theme.colorScheme.surface,
+                    color: isSectionsActive
+                        ? theme.colorScheme.secondary
+                        : theme.colorScheme.surface,
                   ),
                 ),
               ),
@@ -54,13 +57,17 @@ class ToggleSwitchWidget extends StatelessWidget {
               child: Container(
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: !isSectionsActive ? theme.colorScheme.surface : Colors.transparent,
+                  color: !isSectionsActive
+                      ? theme.colorScheme.surface
+                      : Colors.transparent,
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Text(
                   l10n.groups,
                   style: AppTextStyles.bodyLarge.copyWith(
-                    color: !isSectionsActive ? theme.colorScheme.primary : theme.colorScheme.surface,
+                    color: !isSectionsActive
+                        ? theme.colorScheme.primary
+                        : theme.colorScheme.surface,
                   ),
                 ),
               ),

@@ -6,7 +6,7 @@ import 'package:project1/features/profile/presentation/pages/profile_screen.dart
 
 class NavigationTabsCubit extends Cubit<NavigationTabsState> {
   NavigationTabsCubit() : super(const NavigationTabsState(0));
-  
+
   final pages = [HomePage(), const Placeholder(), ProfileScreen()];
 
   void changePage(int index) {

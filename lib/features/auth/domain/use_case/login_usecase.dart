@@ -8,9 +8,7 @@ class LoginUseCase {
 
   LoginUseCase(this.repository);
 
-  Future<Either<Failure, LoginResponse>> call(
-    Map<String, dynamic> body,
-  ) {
+  Future<Either<Failure, LoginResponse>> call(Map<String, dynamic> body) {
     return repository.login(body);
   }
 }

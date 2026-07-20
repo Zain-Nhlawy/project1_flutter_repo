@@ -221,16 +221,25 @@ class HeaderWidget extends StatelessWidget {
                           Navigator.push(
                             context,
                             PageRouteBuilder(
-                              transitionDuration: const Duration(milliseconds: 300),
-                              pageBuilder: (context, animation, secondaryAnimation) =>
-                                  UpgradePlanScreen(demoId: demo.id!),
-                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                return FadeThroughTransition(
-                                  animation: animation,
-                                  secondaryAnimation: secondaryAnimation,
-                                  child: child,
-                                );
-                              },
+                              transitionDuration: const Duration(
+                                milliseconds: 300,
+                              ),
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) =>
+                                      UpgradePlanScreen(demoId: demo.id!),
+                              transitionsBuilder:
+                                  (
+                                    context,
+                                    animation,
+                                    secondaryAnimation,
+                                    child,
+                                  ) {
+                                    return FadeThroughTransition(
+                                      animation: animation,
+                                      secondaryAnimation: secondaryAnimation,
+                                      child: child,
+                                    );
+                                  },
                             ),
                           );
                         },

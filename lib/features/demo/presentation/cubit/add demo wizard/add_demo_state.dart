@@ -14,13 +14,15 @@ class AddDemoState {
     this.availableFeatures = const [
       {
         "title": "API Tester",
-        "description": "Built-in tool to test endpoints directly inside the demo room.",
+        "description":
+            "Built-in tool to test endpoints directly inside the demo room.",
         "icon": Icons.api_rounded,
         "color": Colors.purple,
       },
       {
         "title": "Custom Drawer",
-        "description": "Add a fully customizable side drawer for quick navigation.",
+        "description":
+            "Add a fully customizable side drawer for quick navigation.",
         "icon": Icons.view_sidebar_rounded,
         "color": Colors.blue,
       },
@@ -49,7 +51,8 @@ class AddDemoState {
     return AddDemoState(
       currentPage: currentPage ?? this.currentPage,
       availableFeatures: availableFeatures,
-      selectedFeatureIndices: selectedFeatureIndices ?? this.selectedFeatureIndices,
+      selectedFeatureIndices:
+          selectedFeatureIndices ?? this.selectedFeatureIndices,
       demoName: demoName ?? this.demoName,
       demoDescription: demoDescription ?? this.demoDescription,
       demoImagePath: demoImagePath ?? this.demoImagePath,

@@ -4,7 +4,7 @@ import 'package:project1/config/theme/app_colors.dart';
 
 class CourseImagePicker extends StatelessWidget {
   final File? selectedImage;
-  final String? initialImageUrl; 
+  final String? initialImageUrl;
   final VoidCallback onTap;
   final VoidCallback onRemove;
   final String uploadLabel;
@@ -22,12 +22,17 @@ class CourseImagePicker extends StatelessWidget {
 
   DecorationImage? _resolveImage() {
     if (selectedImage != null) {
-      return DecorationImage(image: FileImage(selectedImage!), fit: BoxFit.cover);
+      return DecorationImage(
+        image: FileImage(selectedImage!),
+        fit: BoxFit.cover,
+      );
     }
     if (initialImageUrl != null && initialImageUrl!.isNotEmpty) {
       final isNetwork = initialImageUrl!.startsWith('http');
       return DecorationImage(
-        image: isNetwork ? NetworkImage(initialImageUrl!) : AssetImage(initialImageUrl!) as ImageProvider,
+        image: isNetwork
+            ? NetworkImage(initialImageUrl!)
+            : AssetImage(initialImageUrl!) as ImageProvider,
         fit: BoxFit.cover,
       );
     }
@@ -105,40 +110,57 @@ class CourseImagePicker extends StatelessWidget {
                 ],
               )
             : (enabled
-                ? Align(
-                    alignment: Alignment.topRight,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.black54,
-                        child: IconButton(
-                          icon: const Icon(Icons.close, color: Colors.white, size: 18),
-                          onPressed: onRemove,
+                  ? Align(
+                      alignment: Alignment.topRight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CircleAvatar(
+                          backgroundColor: Colors.black54,
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.close,
+                              color: Colors.white,
+                              size: 18,
+                            ),
+                            onPressed: onRemove,
+                          ),
                         ),
                       ),
-                    ),
-                  )
-                : Align(
-                    alignment: Alignment.topRight,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        decoration: BoxDecoration(
-                          color: Colors.black45,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: const Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.edit_outlined, color: Colors.white, size: 14),
-                            SizedBox(width: 4),
-                            Text('', style: TextStyle(color: Colors.white, fontSize: 11)),
-                          ],
+                    )
+                  : Align(
+                      alignment: Alignment.topRight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.black45,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.edit_outlined,
+                                color: Colors.white,
+                                size: 14,
+                              ),
+                              SizedBox(width: 4),
+                              Text(
+                                '',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 11,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  )),
+                    )),
       ),
     );
   }

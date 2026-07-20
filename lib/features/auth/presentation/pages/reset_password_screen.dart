@@ -48,10 +48,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       return;
     }
 
-    final body = {
-      "token": widget.token,
-      "password": passwordController.text,
-    };
+    final body = {"token": widget.token, "password": passwordController.text};
 
     context.read<AuthCubit>().resetPassword(body);
   }
@@ -75,9 +72,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   onPressed: () {
                     Navigator.pop(context);
                     Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                        builder: (_) => const LoginScreen(),
-                      ),
+                      MaterialPageRoute(builder: (_) => const LoginScreen()),
                       (route) => false,
                     );
                   },
@@ -87,20 +82,17 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             ),
           );
         } else if (state is AuthError && state.errors.isNotEmpty) {
-            final messenger = ScaffoldMessenger.of(context);
+          final messenger = ScaffoldMessenger.of(context);
 
-            messenger.clearSnackBars();
+          messenger.clearSnackBars();
 
-            messenger.showSnackBar(
-              SnackBar(
-                content: Text(state.errors.first),
-                backgroundColor: AppColors.error,
-              ),
-            );
-          }
-
-
-
+          messenger.showSnackBar(
+            SnackBar(
+              content: Text(state.errors.first),
+              backgroundColor: AppColors.error,
+            ),
+          );
+        }
       },
       child: Scaffold(
         backgroundColor: AppColors.background,
@@ -207,10 +199,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                         )
                                       : Text(
                                           localizations.resetPasswordBtn,
-                                          style: AppTextStyles.titleMedium.copyWith(
-                                            color: AppColors.surface,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                          style: AppTextStyles.titleMedium
+                                              .copyWith(
+                                                color: AppColors.surface,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                         ),
                                 ),
                               ),

@@ -14,18 +14,19 @@ class DemoRepositoryImpl implements DemoRepository {
   Future<Either<String, List<DemoModel>>> getDemos() async {
     try {
       final result = await remoteDataSource.getDemos();
-      return Right(result); 
+      return Right(result);
     } catch (e) {
-      return Left(e.toString()); 
+      return Left(e.toString());
     }
   }
+
   @override
   Future<Either<String, void>> addDemo(DemoEntity demo) async {
     try {
       await remoteDataSource.addDemo(demo as DemoModel);
-      return const Right(null); 
+      return const Right(null);
     } catch (e) {
-      return Left(e.toString()); 
+      return Left(e.toString());
     }
   }
 }

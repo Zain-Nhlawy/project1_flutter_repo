@@ -192,10 +192,7 @@ class AuthRemoteDataSource {
     try {
       final res = await dioClient.dio.post(
         '/authentication/sign-in/2fa',
-        data: {
-          'twoFactorToken': twoFactorToken,
-          'tfaCode': tfaCode,
-        },
+        data: {'twoFactorToken': twoFactorToken, 'tfaCode': tfaCode},
         options: Options(extra: {'noAuth': true}),
       );
 
@@ -222,10 +219,7 @@ class AuthRemoteDataSource {
     try {
       final res = await dioClient.dio.post(
         '/authentication/2fa/generate',
-        data: {
-          'email': email,
-          'password': password,
-        },
+        data: {'email': email, 'password': password},
       );
 
       final data = res.data?['data'];

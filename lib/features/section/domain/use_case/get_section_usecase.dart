@@ -12,9 +12,6 @@ class GetSectionUseCase {
     required String courseId,
     required String sectionId,
   }) {
-    return repository.getSection(
-      courseId: courseId,
-      sectionId: sectionId,
-    );
+    return repository.getSection(courseId: courseId, sectionId: sectionId);
   }
 }

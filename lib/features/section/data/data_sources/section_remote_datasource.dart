@@ -17,10 +17,7 @@ class SectionRemoteDataSource {
     try {
       final res = await dioClient.dio.post(
         '/courses/$courseId/sections',
-        data: {
-          'title': title,
-          'order': order,
-        },
+        data: {'title': title, 'order': order},
       );
       return SectionModel.fromJson(res.data['data']);
     } on DioException catch (e) {
@@ -51,10 +48,7 @@ class SectionRemoteDataSource {
     try {
       final res = await dioClient.dio.patch(
         '/courses/$courseId/sections/$sectionId',
-        data: {
-          'title': title,
-          'order': order,
-        },
+        data: {'title': title, 'order': order},
       );
       return SectionModel.fromJson(res.data['data']);
     } on DioException catch (e) {
@@ -67,21 +61,15 @@ class SectionRemoteDataSource {
     required String sectionId,
   }) async {
     try {
-      await dioClient.dio.delete(
-        '/courses/$courseId/sections/$sectionId',
-      );
+      await dioClient.dio.delete('/courses/$courseId/sections/$sectionId');
     } on DioException catch (e) {
       throw mapDioException(e);
     }
   }
 
-  Future<List<SectionModel>> getSections({
-    required String courseId,
-  }) async {
+  Future<List<SectionModel>> getSections({required String courseId}) async {
     try {
-      final res = await dioClient.dio.get(
-        '/courses/$courseId/sections/cursor',
-      );
+      final res = await dioClient.dio.get('/courses/$courseId/sections/cursor');
 
       final List<dynamic>? data = res.data['data'];
 

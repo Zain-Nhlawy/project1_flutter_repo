@@ -8,9 +8,7 @@ class PublishCourseUseCase {
 
   PublishCourseUseCase(this.repository);
 
-  Future<Either<Failure, CourseEntity>> call(
-    String courseId,
-  ) {
+  Future<Either<Failure, CourseEntity>> call(String courseId) {
     return repository.publishCourse(courseId);
   }
 }

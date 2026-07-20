@@ -25,10 +25,7 @@ class CourseRemoteDataSource {
 
   Future<CourseModel> createCourse(CourseModel course) async {
     try {
-      final res = await dioClient.dio.post(
-        '/courses',
-        data: course.toJson(),
-      );
+      final res = await dioClient.dio.post('/courses', data: course.toJson());
       return CourseModel.fromJson(res.data['data']);
     } on DioException catch (e) {
       throw mapDioException(e);
@@ -57,11 +54,8 @@ class CourseRemoteDataSource {
       }
       return data
           .map((asset) {
-            final courseJson = asset['course'];
-            if (courseJson == null) {
-              return null;
-            }
-            return CourseModel.fromJson(courseJson);
+            if (asset['course'] == null) return null;
+            return CourseModel.fromAssetJson(Map<String, dynamic>.from(asset));
           })
           .whereType<CourseModel>()
           .toList();
@@ -77,11 +71,10 @@ class CourseRemoteDataSource {
     try {
       final res = await dioClient.dio.get('/demos/$demoId/assets/$assetId');
       final data = res.data?['data'];
-      final courseJson = data?['course'];
-      if (courseJson == null) {
-        throw const ServerException('Failed to load asset course.');
+      if (data == null) {
+        throw const ServerException('Failed to load course.');
       }
-      return CourseModel.fromJson(courseJson);
+      return CourseModel.fromAssetJson(Map<String, dynamic>.from(data));
     } on DioException catch (e) {
       throw mapDioException(e);
     }
@@ -118,16 +111,18 @@ class CourseRemoteDataSource {
   }
 
   Future<CourseModel> publishCourse(String courseId) async {
-  try {
-    final res = await dioClient.dio.post(
-      '/courses/$courseId/publish',
-    );
+    try {
+      final res = await dioClient.dio.post('/courses/$courseId/publish');
+      final data = res.data['data'];
+      if (data == null) {
+        throw const ServerException(
+          'Published successfully but no data returned.',
+        );
+      }
 
-    return CourseModel.fromJson(
-      res.data['data'],
-    );
-  } on DioException catch (e) {
-    throw mapDioException(e);
+      return CourseModel.fromJson(res.data['data']);
+    } on DioException catch (e) {
+      throw mapDioException(e);
+    }
   }
-}
 }

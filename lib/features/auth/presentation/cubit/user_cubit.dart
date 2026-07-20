@@ -28,25 +28,18 @@ class UserCubit extends Cubit<UserState> {
     );
   }
 
-  Future<void> updateProfileImage(
-  File file,
-  String userId,
-) async {
-  emit(const UserLoading());
+  Future<void> updateProfileImage(File file, String userId) async {
+    emit(const UserLoading());
 
-  final result = await updateProfileImageUseCase(file, userId);
+    final result = await updateProfileImageUseCase(file, userId);
 
-  result.fold(
-    (failure) {
-      emit(
-        UserError(
-          failure.errors ?? [failure.message],
-        ),
-      );
-    },
-    (_) async {
-      await getMe();
-    },
-  );
-}
+    result.fold(
+      (failure) {
+        emit(UserError(failure.errors ?? [failure.message]));
+      },
+      (_) async {
+        await getMe();
+      },
+    );
+  }
 }

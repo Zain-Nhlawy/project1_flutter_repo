@@ -66,18 +66,19 @@ class _PaymentWebViewContentState extends State<_PaymentWebViewContent> {
                   transitionDuration: const Duration(milliseconds: 300),
                   pageBuilder: (context, animation, secondaryAnimation) =>
                       BlocProvider(
-                    create: (context) => PaymentWebViewCubit(
-                      requestPaymentUseCase: getIt<DemoPaymentUseCase>(),
-                    ),
-                    child: PaymentSuccessScreen(sessionId: sessionId),
-                  ),
-                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                    return FadeThroughTransition(
-                      animation: animation,
-                      secondaryAnimation: secondaryAnimation,
-                      child: child,
-                    );
-                  },
+                        create: (context) => PaymentWebViewCubit(
+                          requestPaymentUseCase: getIt<DemoPaymentUseCase>(),
+                        ),
+                        child: PaymentSuccessScreen(sessionId: sessionId),
+                      ),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                        return FadeThroughTransition(
+                          animation: animation,
+                          secondaryAnimation: secondaryAnimation,
+                          child: child,
+                        );
+                      },
                 ),
               );
               return NavigationDecision.prevent;

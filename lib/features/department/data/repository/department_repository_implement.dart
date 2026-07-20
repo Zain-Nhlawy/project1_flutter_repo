@@ -23,5 +23,4 @@ class DepartmentRepositoryImplement implements DepartmentRepository {
       return Left(e.toString());
     }
   }
-
 }

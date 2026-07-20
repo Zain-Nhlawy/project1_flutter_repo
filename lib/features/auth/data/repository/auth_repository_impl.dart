@@ -15,12 +15,12 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this.remote, this.storage);
 
   Future<Either<Failure, T>> _handle<T>(Future<T> Function() call) async {
-  try {
-    return Right(await call());
-  } on Exception catch (e) {
-    return Left(mapExceptionToFailure(e));
+    try {
+      return Right(await call());
+    } on Exception catch (e) {
+      return Left(mapExceptionToFailure(e));
+    }
   }
-}
 
   Future<void> _saveTokens(LoginResponse res) async {
     if (res.accessToken != null && res.refreshToken != null) {
@@ -60,9 +60,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, LoginResponse>> googleLogin(
-    String idToken,
-  ) async {
+  Future<Either<Failure, LoginResponse>> googleLogin(String idToken) async {
     return _handle(() async {
       final res = await remote.googleLogin(idToken);
       await _saveTokens(res);
@@ -79,16 +77,12 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, String>> forgotPassword(
-    Map<String, dynamic> body,
-  ) {
+  Future<Either<Failure, String>> forgotPassword(Map<String, dynamic> body) {
     return _handle(() => remote.forgotPassword(body));
   }
 
   @override
-  Future<Either<Failure, String>> resetPassword(
-    Map<String, dynamic> body,
-  ) {
+  Future<Either<Failure, String>> resetPassword(Map<String, dynamic> body) {
     return _handle(() => remote.resetPassword(body));
   }
 
@@ -136,18 +130,11 @@ class AuthRepositoryImpl implements AuthRepository {
     required String email,
     required String password,
   }) {
-    return _handle(
-      () => remote.generate2FA(
-        email: email,
-        password: password,
-      ),
-    );
+    return _handle(() => remote.generate2FA(email: email, password: password));
   }
 
   @override
-  Future<Either<Failure, String>> turnOn2FA({
-    required String tfaCode,
-  }) {
+  Future<Either<Failure, String>> turnOn2FA({required String tfaCode}) {
     return _handle(() => remote.turnOn2FA(tfaCode: tfaCode));
   }
 

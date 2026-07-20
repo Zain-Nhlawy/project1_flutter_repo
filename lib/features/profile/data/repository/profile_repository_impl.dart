@@ -22,15 +22,9 @@ class ProfileRepositoryImpl implements ProfileRepository {
       final uploadUrl = res['uploadUrl'];
       final cdnUrl = res['cdnUrl'];
 
-      await remote.uploadFile(
-        uploadUrl,
-        file,
-      );
+      await remote.uploadFile(uploadUrl, file);
 
-      await remote.updateProfileImage(
-        userId,
-        cdnUrl,
-      );
+      await remote.updateProfileImage(userId, cdnUrl);
 
       return const Right(null);
     } on AppException catch (e) {

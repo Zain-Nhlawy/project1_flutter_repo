@@ -42,10 +42,7 @@ class ProfileRemoteDataSource {
     }
   }
 
-  Future<void> uploadFile(
-    String uploadUrl,
-    File file,
-  ) async {
+  Future<void> uploadFile(String uploadUrl, File file) async {
     try {
       await Dio().put(
         uploadUrl,
@@ -62,17 +59,9 @@ class ProfileRemoteDataSource {
     }
   }
 
-  Future<void> updateProfileImage(
-    String userId,
-    String url,
-  ) async {
+  Future<void> updateProfileImage(String userId, String url) async {
     try {
-      await dioClient.dio.patch(
-        '/users/$userId',
-        data: {
-          "imagePath": url,
-        },
-      );
+      await dioClient.dio.patch('/users/$userId', data: {"imagePath": url});
     } on DioException catch (e) {
       throw mapDioException(e);
     }

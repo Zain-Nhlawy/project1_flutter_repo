@@ -11,9 +11,6 @@ class DeleteSectionUseCase {
     required String courseId,
     required String sectionId,
   }) {
-    return repository.deleteSection(
-      courseId: courseId,
-      sectionId: sectionId,
-    );
+    return repository.deleteSection(courseId: courseId, sectionId: sectionId);
   }
 }

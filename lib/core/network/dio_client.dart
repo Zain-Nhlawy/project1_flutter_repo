@@ -14,31 +14,35 @@ class DioClient extends Api {
 
     Future<void> doRefresh() async {
       print('🟢 Starting refresh...');
-  try {
-    final storedRefresh = await storage.read(StorageKeys.refreshToken);
-    print('🟢 Refresh response: $storedRefresh');
-    if (storedRefresh == null || storedRefresh.isEmpty) return;
+      try {
+        final storedRefresh = await storage.read(StorageKeys.refreshToken);
+        print('🟢 Refresh response: $storedRefresh');
+        if (storedRefresh == null || storedRefresh.isEmpty) return;
 
-    final data = await refreshToken();
-    if (data != null) {
-      final newAccess = data['accessToken'];
-      final newRefresh = data['refreshToken'];
-      if (newAccess != null) await storage.write(StorageKeys.token, newAccess);
-      if (newRefresh != null) await storage.write(StorageKeys.refreshToken, newRefresh);
+        final data = await refreshToken();
+        if (data != null) {
+          final newAccess = data['accessToken'];
+          final newRefresh = data['refreshToken'];
+          if (newAccess != null)
+            await storage.write(StorageKeys.token, newAccess);
+          if (newRefresh != null)
+            await storage.write(StorageKeys.refreshToken, newRefresh);
+        }
+      } catch (e) {
+        print('🔴 Refresh failed: $e');
+        await storage.delete(StorageKeys.token);
+        await storage.delete(StorageKeys.refreshToken);
+        rethrow;
+      } finally {
+        _refreshFuture = null;
+      }
     }
-  } catch (e) {
-    print('🔴 Refresh failed: $e');
-    await storage.delete(StorageKeys.token);
-    await storage.delete(StorageKeys.refreshToken);
-    rethrow;
-  } finally {
-    _refreshFuture = null;
-  }
-}
 
     Future<void> handleRefresh() {
       if (_refreshFuture != null) {
-        print('🟡 handleRefresh() -> reusing EXISTING refresh future (race avoided)');
+        print(
+          '🟡 handleRefresh() -> reusing EXISTING refresh future (race avoided)',
+        );
       } else {
         print('🟡 handleRefresh() -> starting NEW refresh future');
       }
@@ -51,7 +55,9 @@ class DioClient extends Api {
         final expired = JwtDecoder.isExpired(token);
         final remaining = JwtDecoder.getRemainingTime(token).inSeconds;
         final result = expired || remaining < 60;
-        print('🟣 shouldRefresh: expired=$expired, remaining=${remaining}s, result=$result');
+        print(
+          '🟣 shouldRefresh: expired=$expired, remaining=${remaining}s, result=$result',
+        );
         return result;
       } catch (e) {
         print('❌ shouldRefresh EXCEPTION: $e');
@@ -72,10 +78,14 @@ class DioClient extends Api {
           final noAuth = options.extra['noAuth'] == true;
           if (!noAuth) {
             final token = await storage.read(StorageKeys.token);
-            print('➡️ [${options.path}] current access token = ${token == null ? "NULL" : "present (len=${token.length})"}');
+            print(
+              '➡️ [${options.path}] current access token = ${token == null ? "NULL" : "present (len=${token.length})"}',
+            );
             if (token != null && token.isNotEmpty) {
               if (shouldRefresh(token)) {
-                print('⚠️ [${options.path}] Token needs refresh, calling handleRefresh()');
+                print(
+                  '⚠️ [${options.path}] Token needs refresh, calling handleRefresh()',
+                );
                 await handleRefresh();
               }
               final updatedToken = await storage.read(StorageKeys.token);
@@ -89,7 +99,9 @@ class DioClient extends Api {
           return handler.next(options);
         },
         onError: (DioException error, handler) async {
-          print('🔴 ERROR: ${error.requestOptions.path} -> status=${error.response?.statusCode}');
+          print(
+            '🔴 ERROR: ${error.requestOptions.path} -> status=${error.response?.statusCode}',
+          );
 
           final is401 = error.response?.statusCode == 401;
           final retried = error.requestOptions.extra['retried'] == true;
@@ -118,7 +130,9 @@ class DioClient extends Api {
           }
 
           try {
-            print('🔁 [${error.requestOptions.path}] Attempting refresh + retry...');
+            print(
+              '🔁 [${error.requestOptions.path}] Attempting refresh + retry...',
+            );
 
             await handleRefresh();
 
@@ -137,10 +151,7 @@ class DioClient extends Api {
                   ...request.headers,
                   'Authorization': 'Bearer $newToken',
                 },
-                extra: {
-                  ...request.extra,
-                  'retried': true,
-                },
+                extra: {...request.extra, 'retried': true},
               ),
             );
 
@@ -149,7 +160,7 @@ class DioClient extends Api {
             print('❌ Retry failed: $e');
             return handler.next(error);
           }
-        }
+        },
       ),
     );
   }

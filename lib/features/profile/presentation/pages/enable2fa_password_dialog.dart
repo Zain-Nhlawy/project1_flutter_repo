@@ -11,8 +11,7 @@ class Enable2FAPasswordDialog extends StatefulWidget {
       _Enable2FAPasswordDialogState();
 }
 
-class _Enable2FAPasswordDialogState
-    extends State<Enable2FAPasswordDialog> {
+class _Enable2FAPasswordDialogState extends State<Enable2FAPasswordDialog> {
   final _passwordController = TextEditingController();
 
   bool obscure = true;
@@ -29,19 +28,12 @@ class _Enable2FAPasswordDialogState
 
     return AlertDialog(
       backgroundColor: AppColors.surface,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18),
-      ),
-      title: Text(
-        local.enableTwoFactorAuth,
-        style: AppTextStyles.titleMedium,
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+      title: Text(local.enableTwoFactorAuth, style: AppTextStyles.titleMedium),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            local.enterPasswordToEnable2FA,
-          ),
+          Text(local.enterPasswordToEnable2FA),
           const SizedBox(height: 18),
           TextField(
             controller: _passwordController,
@@ -52,11 +44,7 @@ class _Enable2FAPasswordDialogState
                 borderRadius: BorderRadius.circular(12),
               ),
               suffixIcon: IconButton(
-                icon: Icon(
-                  obscure
-                      ? Icons.visibility_off
-                      : Icons.visibility,
-                ),
+                icon: Icon(obscure ? Icons.visibility_off : Icons.visibility),
                 onPressed: () {
                   setState(() {
                     obscure = !obscure;
@@ -73,20 +61,13 @@ class _Enable2FAPasswordDialogState
           child: Text(local.cancel),
         ),
         ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primary,
-          ),
+          style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
           onPressed: () {
-            Navigator.pop(
-              context,
-              _passwordController.text.trim(),
-            );
+            Navigator.pop(context, _passwordController.text.trim());
           },
           child: Text(
             local.confirm,
-            style: const TextStyle(
-              color: AppColors.surface,
-            ),
+            style: const TextStyle(color: AppColors.surface),
           ),
         ),
       ],

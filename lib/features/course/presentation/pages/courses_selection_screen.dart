@@ -10,30 +10,21 @@ import 'package:project1/l10n/app_localizations.dart';
 class CoursesSelectionScreen extends StatefulWidget {
   final String demoId;
 
-  const CoursesSelectionScreen({
-    super.key,
-    required this.demoId,
-  });
+  const CoursesSelectionScreen({super.key, required this.demoId});
 
   @override
-  State<CoursesSelectionScreen> createState() =>
-      _CoursesSelectionScreenState();
+  State<CoursesSelectionScreen> createState() => _CoursesSelectionScreenState();
 }
 
-class _CoursesSelectionScreenState
-    extends State<CoursesSelectionScreen>
+class _CoursesSelectionScreenState extends State<CoursesSelectionScreen>
     with SingleTickerProviderStateMixin {
-
   late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
 
-    _tabController = TabController(
-      length: 2,
-      vsync: this,
-    );
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -44,20 +35,15 @@ class _CoursesSelectionScreenState
 
   @override
   Widget build(BuildContext context) {
-
     final localizations = AppLocalizations.of(context)!;
 
     return BlocProvider(
-      create: (_) => getIt<CourseCubit>()
-        ..getDemoCourses(widget.demoId),
+      create: (_) => getIt<CourseCubit>()..getDemoCourses(widget.demoId),
 
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back_ios_new,
-              color: Colors.white,
-            ),
+            icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
             onPressed: () => Navigator.pop(context),
           ),
 
@@ -83,33 +69,20 @@ class _CoursesSelectionScreenState
             unselectedLabelColor: Colors.white70,
 
             tabs: [
+              Tab(text: localizations.demoCourses),
 
-              Tab(
-                text: localizations.demoCourses,
-              ),
-
-              Tab(
-                text: localizations.ongoingCourses,
-              ),
-
+              Tab(text: localizations.ongoingCourses),
             ],
           ),
         ),
-
 
         body: TabBarView(
           controller: _tabController,
 
           children: [
+            DemoCoursesScreen(demoId: widget.demoId),
 
-            DemoCoursesScreen(
-              demoId: widget.demoId,
-            ),
-
-            CoursesInProgressScreen(
-              demoId: widget.demoId,
-            ),
-
+            CoursesInProgressScreen(demoId: widget.demoId),
           ],
         ),
       ),

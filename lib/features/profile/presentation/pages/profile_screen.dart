@@ -11,7 +11,7 @@ import 'package:project1/features/auth/presentation/cubit/user_state.dart';
 import 'package:project1/features/profile/presentation/pages/security_settings_screen.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import '../widgets/profile_info_card.dart';
-import '../widgets/profile_section_title.dart'; 
+import '../widgets/profile_section_title.dart';
 import '../widgets/profile_tile.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -80,11 +80,11 @@ class ProfileScreen extends StatelessWidget {
                       SizedBox(height: size.height * 0.03),
 
                       ProfileInfoCard(
-                      name: name,
-                      email: email,
-                      imagePath: image,
-                      onImageTap: () => _pickAndUploadImage(context),
-                    ),
+                        name: name,
+                        email: email,
+                        imagePath: image,
+                        onImageTap: () => _pickAndUploadImage(context),
+                      ),
 
                       Align(
                         alignment: Alignment.centerLeft,
@@ -101,14 +101,22 @@ class ProfileScreen extends StatelessWidget {
                         child: Column(
                           children: [
                             ProfileTile(
-                              icon: isDark ? Icons.dark_mode_outlined : Icons.light_mode_outlined,
-                              iconBackgroundColor: isDark ? Colors.indigo : Colors.lightBlue,
-                              iconColor: isDark ? Colors.indigo : Colors.lightBlue,
+                              icon: isDark
+                                  ? Icons.dark_mode_outlined
+                                  : Icons.light_mode_outlined,
+                              iconBackgroundColor: isDark
+                                  ? Colors.indigo
+                                  : Colors.lightBlue,
+                              iconColor: isDark
+                                  ? Colors.indigo
+                                  : Colors.lightBlue,
                               title: localizations.tileTheme,
                               trailing: Row(
                                 children: [
                                   Text(
-                                    isDark ? localizations.themeDark : localizations.themeLight,
+                                    isDark
+                                        ? localizations.themeDark
+                                        : localizations.themeLight,
                                     style: AppTextStyles.bodyMedium.copyWith(
                                       color: AppColors.textSecondaryOf(context),
                                       fontSize: 14 * textScale,
@@ -117,7 +125,9 @@ class ProfileScreen extends StatelessWidget {
                                   Switch(
                                     value: isDark,
                                     onChanged: (val) {
-                                      context.read<ThemeCubit>().toggleTheme(val);
+                                      context.read<ThemeCubit>().toggleTheme(
+                                        val,
+                                      );
                                     },
                                   ),
                                 ],
@@ -309,27 +319,28 @@ class ProfileScreen extends StatelessWidget {
       },
     );
   }
+
   Future<void> _pickAndUploadImage(BuildContext context) async {
-  final picker = ImagePicker();
+    final picker = ImagePicker();
 
-  final XFile? file = await picker.pickImage(
-    source: ImageSource.gallery,
-    imageQuality: 80,
-  );
+    final XFile? file = await picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 80,
+    );
 
-  if (file == null) return;
+    if (file == null) return;
 
-  final userState = context.read<UserCubit>().state;
+    final userState = context.read<UserCubit>().state;
 
-  if (userState is! UserLoaded) {
-    return;
+    if (userState is! UserLoaded) {
+      return;
+    }
+
+    final imageFile = File(file.path);
+
+    await context.read<UserCubit>().updateProfileImage(
+      imageFile,
+      userState.user.id,
+    );
   }
-
-  final imageFile = File(file.path);
-
-  await context.read<UserCubit>().updateProfileImage(
-    imageFile,
-    userState.user.id,
-  );
-}
 }

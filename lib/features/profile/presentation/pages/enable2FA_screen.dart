@@ -10,10 +10,7 @@ import 'package:project1/l10n/app_localizations.dart';
 class Enable2FAScreen extends StatefulWidget {
   final String qrCode;
 
-  const Enable2FAScreen({
-    super.key,
-    required this.qrCode,
-  });
+  const Enable2FAScreen({super.key, required this.qrCode});
 
   @override
   State<Enable2FAScreen> createState() => _Enable2FAScreenState();
@@ -31,9 +28,7 @@ class _Enable2FAScreenState extends State<Enable2FAScreen> {
   void _enable2FA() {
     if (codeController.text.trim().isEmpty) return;
 
-    context.read<AuthCubit>().turnOn2FA(
-          tfaCode: codeController.text.trim(),
-        );
+    context.read<AuthCubit>().turnOn2FA(tfaCode: codeController.text.trim());
   }
 
   @override
@@ -45,11 +40,9 @@ class _Enable2FAScreenState extends State<Enable2FAScreen> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is TurnOn2FASuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-            ),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
 
           Navigator.pop(context, true);
         }
@@ -83,7 +76,8 @@ class _Enable2FAScreenState extends State<Enable2FAScreen> {
           ),
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              minHeight: MediaQuery.of(context).size.height -
+              minHeight:
+                  MediaQuery.of(context).size.height -
                   AppBar().preferredSize.height -
                   MediaQuery.of(context).padding.top,
             ),
@@ -95,10 +89,7 @@ class _Enable2FAScreenState extends State<Enable2FAScreen> {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 10),
-                Text(
-                  local.scanQrCodeDescription,
-                  textAlign: TextAlign.center,
-                ),
+                Text(local.scanQrCodeDescription, textAlign: TextAlign.center),
                 const SizedBox(height: 24),
                 Container(
                   padding: const EdgeInsets.all(16),

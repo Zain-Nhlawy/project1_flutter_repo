@@ -31,10 +31,7 @@ class DemoRemoteDataSourceImpl implements DemoRemoteDataSource {
   @override
   Future<void> addDemo(DemoModel demo) async {
     try {
-      final response = await dio.post(
-        '/demos',
-        data: demo.toJson(),
-      );
+      final response = await dio.post('/demos', data: demo.toJson());
 
       if (response.statusCode != 200 && response.statusCode != 201) {
         throw Exception(response.data['message']);

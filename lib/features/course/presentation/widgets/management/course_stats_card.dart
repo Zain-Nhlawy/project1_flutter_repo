@@ -46,7 +46,11 @@ class _StatTile extends StatelessWidget {
   final String label;
   final String value;
 
-  const _StatTile({required this.icon, required this.label, required this.value});
+  const _StatTile({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +64,10 @@ class _StatTile extends StatelessWidget {
         ),
         Text(
           label,
-          style: TextStyle(color: AppColors.textSecondary.withOpacity(0.7), fontSize: 12),
+          style: TextStyle(
+            color: AppColors.textSecondary.withOpacity(0.7),
+            fontSize: 12,
+          ),
         ),
       ],
     );

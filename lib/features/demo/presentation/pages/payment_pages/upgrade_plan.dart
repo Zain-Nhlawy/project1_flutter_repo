@@ -8,6 +8,7 @@ import 'package:project1/features/demo/presentation/cubit/payment%20for%20demo/d
 import 'package:project1/features/demo/presentation/cubit/payment%20for%20demo/demo_payment_state.dart';
 import 'package:project1/features/demo/presentation/pages/payment_pages/payment_webview.dart';
 import 'package:project1/l10n/app_localizations.dart';
+import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:animations/animations.dart';
 
 class UpgradePlanScreen extends StatefulWidget {
@@ -213,28 +214,39 @@ class UpgradePlanScreenState extends State<UpgradePlanScreen> {
                                     Navigator.push(
                                       context,
                                       PageRouteBuilder(
-                                        transitionDuration: const Duration(milliseconds: 300),
-                                        pageBuilder: (context, animation, secondaryAnimation) =>
-                                            PaymentWebViewScreen(
+                                        transitionDuration: const Duration(
+                                          milliseconds: 300,
+                                        ),
+                                        pageBuilder:
+                                            (
+                                              context,
+                                              animation,
+                                              secondaryAnimation,
+                                            ) => PaymentWebViewScreen(
                                               paymentUrl: paymentUrl,
                                             ),
-                                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                          return FadeThroughTransition(
-                                            animation: animation,
-                                            secondaryAnimation: secondaryAnimation,
-                                            child: child,
-                                          );
-                                        },
+                                        transitionsBuilder:
+                                            (
+                                              context,
+                                              animation,
+                                              secondaryAnimation,
+                                              child,
+                                            ) {
+                                              return FadeThroughTransition(
+                                                animation: animation,
+                                                secondaryAnimation:
+                                                    secondaryAnimation,
+                                                child: child,
+                                              );
+                                            },
                                       ),
                                     );
                                   }
                                 } catch (e) {
                                   if (context.mounted) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(e.toString()),
-                                        backgroundColor: Colors.red,
-                                      ),
+                                    SnackbarTheme().newSnackBarError(
+                                      context,
+                                      e.toString(),
                                     );
                                   }
                                 }

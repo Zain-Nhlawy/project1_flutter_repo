@@ -16,8 +16,7 @@ class QaCard extends StatefulWidget {
   State<QaCard> createState() => _QaCardState();
 }
 
-class _QaCardState extends State<QaCard>
-    with TickerProviderStateMixin {
+class _QaCardState extends State<QaCard> with TickerProviderStateMixin {
   bool _expanded = false;
 
   @override
@@ -27,21 +26,16 @@ class _QaCardState extends State<QaCard>
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: BorderSide(
-          color: Colors.grey.withOpacity(.2),
-        ),
+        side: BorderSide(color: Colors.grey.withOpacity(.2)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                const CircleAvatar(
-                  child: Icon(Icons.person),
-                ),
+                const CircleAvatar(child: Icon(Icons.person)),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
@@ -59,26 +53,20 @@ class _QaCardState extends State<QaCard>
 
             Text(
               widget.question,
-              style: const TextStyle(
-                fontSize: 15,
-                height: 1.4,
-              ),
+              style: const TextStyle(fontSize: 15, height: 1.4),
             ),
 
             const SizedBox(height: 12),
 
             InkWell(
-              borderRadius:
-                  BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(8),
               onTap: () {
                 setState(() {
                   _expanded = !_expanded;
                 });
               },
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 6,
-                ),
+                padding: const EdgeInsets.symmetric(vertical: 6),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -87,8 +75,7 @@ class _QaCardState extends State<QaCard>
                           ? Icons.keyboard_arrow_up
                           : Icons.keyboard_arrow_down,
                       size: 20,
-                      color: Theme.of(context)
-                          .primaryColor,
+                      color: Theme.of(context).primaryColor,
                     ),
                     const SizedBox(width: 4),
                     Text(
@@ -96,10 +83,8 @@ class _QaCardState extends State<QaCard>
                           ? "Hide Replies"
                           : "${widget.replies.length} Replies",
                       style: TextStyle(
-                        fontWeight:
-                            FontWeight.w600,
-                        color: Theme.of(context)
-                            .primaryColor,
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
                   ],
@@ -108,63 +93,36 @@ class _QaCardState extends State<QaCard>
             ),
 
             AnimatedSize(
-              duration: const Duration(
-                milliseconds: 250,
-              ),
+              duration: const Duration(milliseconds: 250),
               curve: Curves.easeInOut,
               child: !_expanded
                   ? const SizedBox.shrink()
                   : Padding(
-                      padding:
-                          const EdgeInsets.only(
-                        top: 8,
-                      ),
+                      padding: const EdgeInsets.only(top: 8),
                       child: Column(
                         children: widget.replies
                             .map(
                               (reply) => Container(
-                                width:
-                                    double.infinity,
-                                margin:
-                                    const EdgeInsets
-                                        .only(
-                                  bottom: 8,
-                                ),
-                                padding:
-                                    const EdgeInsets
-                                        .all(12),
-                                decoration:
-                                    BoxDecoration(
-                                  color: Colors
-                                      .grey.shade100,
-                                  borderRadius:
-                                      BorderRadius
-                                          .circular(
-                                    12,
-                                  ),
+                                width: double.infinity,
+                                margin: const EdgeInsets.only(bottom: 8),
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade100,
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Row(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment
-                                          .start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const Icon(
                                       Icons.reply,
                                       size: 18,
-                                      color:
-                                          Colors.grey,
+                                      color: Colors.grey,
                                     ),
-                                    const SizedBox(
-                                      width: 8,
-                                    ),
+                                    const SizedBox(width: 8),
                                     Expanded(
                                       child: Text(
                                         reply,
-                                        style:
-                                            const TextStyle(
-                                          height:
-                                              1.4,
-                                        ),
+                                        style: const TextStyle(height: 1.4),
                                       ),
                                     ),
                                   ],

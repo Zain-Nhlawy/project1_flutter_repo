@@ -3,23 +3,18 @@ class PaymentWebViewState {
   final String? status;
   final String? errorMessage;
 
-  PaymentWebViewState({
-    this.isLoading = false, 
-    this.status, 
-    this.errorMessage,
-  });
+  PaymentWebViewState({this.isLoading = false, this.status, this.errorMessage});
 }
-  abstract class PaymentRequestState {}
 
-  class PaymentRequestInitial extends PaymentRequestState {}
+abstract class PaymentRequestState {}
 
-  class PaymentRequestLoading extends PaymentRequestState {}
+class PaymentRequestInitial extends PaymentRequestState {}
 
-  class PaymentRequestSuccess extends PaymentRequestState {}
+class PaymentRequestLoading extends PaymentRequestState {}
 
-  class PaymentRequestError extends PaymentRequestState {
-    final String message;
-    PaymentRequestError(this.message);
-  }
+class PaymentRequestSuccess extends PaymentRequestState {}
 
-
+class PaymentRequestError extends PaymentRequestState {
+  final String message;
+  PaymentRequestError(this.message);
+}

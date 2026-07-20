@@ -6,10 +6,7 @@ import 'package:project1/l10n/app_localizations.dart';
 class CourseDeleteButton extends StatelessWidget {
   final String courseId;
 
-  const CourseDeleteButton({
-    super.key,
-    required this.courseId,
-  });
+  const CourseDeleteButton({super.key, required this.courseId});
 
   Future<void> _showConfirmDialog(BuildContext context) async {
     final localizations = AppLocalizations.of(context)!;
@@ -18,7 +15,9 @@ class CourseDeleteButton extends StatelessWidget {
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           title: Text(localizations.deleteCourseTitle),
           content: Text(localizations.deleteCourseConfirmation),
           actions: [
@@ -52,10 +51,7 @@ class CourseDeleteButton extends StatelessWidget {
       height: 52,
       child: OutlinedButton.icon(
         onPressed: () => _showConfirmDialog(context),
-        icon: const Icon(
-          Icons.delete_outline,
-          color: Colors.red,
-        ),
+        icon: const Icon(Icons.delete_outline, color: Colors.red),
         label: Text(
           localizations.deleteCourseTitle,
           style: const TextStyle(
@@ -65,7 +61,9 @@ class CourseDeleteButton extends StatelessWidget {
         ),
         style: OutlinedButton.styleFrom(
           side: const BorderSide(color: Colors.red, width: 1.5),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
         ),
       ),
     );

@@ -20,29 +20,36 @@ class PaymentWebViewCubit extends Cubit<PaymentWebViewState> {
     return result.fold((error) => throw Exception(error), (url) => url);
   }
 
-Future<void> handlePaymentSuccess(String sessionId) async {
-    if (isClosed) return; 
+  Future<void> handlePaymentSuccess(String sessionId) async {
+    if (isClosed) return;
     emit(PaymentWebViewState(isLoading: true));
-    
+
     bool isConfirmed = false;
-    int maxRetries = 10; 
+    int maxRetries = 10;
     int attempts = 0;
 
     while (!isConfirmed && attempts < maxRetries) {
-      if (isClosed) return; 
+      if (isClosed) return;
 
       attempts++;
       final result = await requestPaymentUseCase.confirmPayment(sessionId);
-      
+
       await result.fold(
         (error) async {
-          if (!isClosed) emit(PaymentWebViewState(isLoading: false, errorMessage: error.toString()));
-          isConfirmed = true; 
+          if (!isClosed)
+            emit(
+              PaymentWebViewState(
+                isLoading: false,
+                errorMessage: error.toString(),
+              ),
+            );
+          isConfirmed = true;
         },
         (status) async {
           if (status.toLowerCase() == 'complete') {
-            if (!isClosed) emit(PaymentWebViewState(isLoading: false, status: status));
-            isConfirmed = true; 
+            if (!isClosed)
+              emit(PaymentWebViewState(isLoading: false, status: status));
+            isConfirmed = true;
           } else {
             await Future.delayed(const Duration(seconds: 3));
           }
@@ -52,10 +59,13 @@ Future<void> handlePaymentSuccess(String sessionId) async {
 
     if (!isConfirmed && attempts >= maxRetries) {
       if (!isClosed) {
-        emit(PaymentWebViewState(
-          isLoading: false, 
-          errorMessage: "Payment confirmation failed after multiple attempts. Please try again later.",
-        ));
+        emit(
+          PaymentWebViewState(
+            isLoading: false,
+            errorMessage:
+                "Payment confirmation failed after multiple attempts. Please try again later.",
+          ),
+        );
       }
     }
   }

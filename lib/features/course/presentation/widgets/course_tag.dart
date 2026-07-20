@@ -20,10 +20,7 @@ class CourseTag extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(30),
       child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 8,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           color: selected ? primaryColor : primaryColor.withOpacity(0.08),
           borderRadius: BorderRadius.circular(30),

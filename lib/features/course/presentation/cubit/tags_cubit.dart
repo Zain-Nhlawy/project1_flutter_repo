@@ -13,11 +13,7 @@ class TagsCubit extends Cubit<TagsState> {
     result.fold(
       (failure) {
         if (!isClosed) {
-          emit(
-            TagsError(
-              failure.errors ?? [failure.message],
-            ),
-          );
+          emit(TagsError(failure.errors ?? [failure.message]));
         }
       },
       (tags) {

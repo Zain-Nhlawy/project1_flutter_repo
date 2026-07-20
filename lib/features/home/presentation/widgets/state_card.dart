@@ -20,9 +20,7 @@ class StatCard extends StatelessWidget {
     final textScale = MediaQuery.textScalerOf(context).scale(1);
 
     return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: size.height * 0.02,
-      ),
+      padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
       decoration: BoxDecoration(
         color: AppColors.surface.withOpacity(0.2),
         borderRadius: BorderRadius.circular(20),
@@ -35,11 +33,7 @@ class StatCard extends StatelessWidget {
               color: AppColors.surface,
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              icon,
-              color: AppColors.primary,
-              size: 20 * textScale,
-            ),
+            child: Icon(icon, color: AppColors.primary, size: 20 * textScale),
           ),
           SizedBox(height: size.height * 0.01),
           Text(

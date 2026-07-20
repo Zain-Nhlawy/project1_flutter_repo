@@ -8,10 +8,7 @@ class UpdateProfileImageUseCase {
 
   UpdateProfileImageUseCase(this.repository);
 
-  Future<Either<Failure, void>> call(
-    File file,
-    String userId,
-  ) {
+  Future<Either<Failure, void>> call(File file, String userId) {
     return repository.updateProfileImage(file, userId);
   }
 }

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project1/core/di/service_locator.dart';
+
 import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_cubit.dart';
 import 'package:project1/l10n/app_localizations.dart';
+import 'package:project1/config/theme/snackbar_theme.dart';
 
 class UserOptionsMenu extends StatelessWidget {
   final String demoId;
-  final String userId;
+  final String userIdInDemo;
   const UserOptionsMenu({
     super.key,
     required this.demoId,
-    required this.userId,
+    required this.userIdInDemo,
   });
 
   @override
@@ -60,31 +61,47 @@ class UserOptionsMenu extends StatelessWidget {
           ),
         ),
         PopupMenuItem(
-          onTap: () => showDialog(
-            context: context,
-            builder: (dialogContext) {
-              return BlocProvider.value(
-                value: getIt<DemoUserCubit>(),
-                child: AlertDialog(
-                  title: Text(l10n.removeUserPrompt),
-                  content: Text(l10n.areYouSureRemoveUser),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.of(dialogContext).pop(),
-                      child: Text(l10n.cancel),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        getIt<DemoUserCubit>().removeUser(demoId, userId);
-                        Navigator.of(dialogContext).pop();
-                      },
-                      child: Text(l10n.confirm),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
+          onTap: () {
+            final cubit = context.read<DemoUserCubit>();
+            showDialog(
+              context: context,
+              builder: (dialogContext) {
+                return BlocProvider.value(
+                  value: cubit,
+                  child: AlertDialog(
+                    title: Text(l10n.removeUserPrompt),
+                    content: Text(l10n.areYouSureRemoveUser),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(dialogContext).pop(),
+                        child: Text(l10n.cancel),
+                      ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          final successMessage = l10n.memberRemovedSuccessfully;
+
+                          final success = await cubit.removeUser(
+                            demoId,
+                            userIdInDemo,
+                          );
+                          if (success && dialogContext.mounted) {
+                            SnackbarTheme().newSnackBarSuccess(
+                              dialogContext,
+                              successMessage,
+                            );
+                          }
+                          if (dialogContext.mounted) {
+                            Navigator.of(dialogContext).pop();
+                          }
+                        },
+                        child: Text(l10n.confirm),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
           value: 2,
           child: Row(
             children: [

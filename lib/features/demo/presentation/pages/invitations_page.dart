@@ -102,7 +102,10 @@ class _InvitationsPageState extends State<InvitationsPage> {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              l10n.invitedBy(inv.senderFirstName, inv.senderLastName),
+                              l10n.invitedBy(
+                                inv.senderFirstName,
+                                inv.senderLastName,
+                              ),
                               style: TextStyle(
                                 color: Colors.grey.shade600,
                                 fontSize: 13,

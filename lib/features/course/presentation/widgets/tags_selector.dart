@@ -34,7 +34,10 @@ class TagsSelector extends StatelessWidget {
     if (availableTags.isEmpty) {
       return Text(
         localizations.noTagsAvailable,
-        style: TextStyle(fontSize: 12, color: AppColors.textSecondary.withOpacity(0.6)),
+        style: TextStyle(
+          fontSize: 12,
+          color: AppColors.textSecondary.withOpacity(0.6),
+        ),
       );
     }
 

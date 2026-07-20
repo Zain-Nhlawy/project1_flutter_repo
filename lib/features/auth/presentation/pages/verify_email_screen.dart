@@ -10,10 +10,7 @@ import 'package:project1/l10n/app_localizations.dart';
 class VerifyEmailScreen extends StatelessWidget {
   final String email;
 
-  const VerifyEmailScreen({
-    super.key,
-    required this.email,
-  });
+  const VerifyEmailScreen({super.key, required this.email});
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +19,9 @@ class VerifyEmailScreen extends StatelessWidget {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is ResendVerificationEmailSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
         }
         if (state is AuthError && state.errors.isNotEmpty) {
           final messenger = ScaffoldMessenger.of(context);
@@ -38,8 +35,6 @@ class VerifyEmailScreen extends StatelessWidget {
             ),
           );
         }
-
-
       },
       child: Scaffold(
         backgroundColor: AppColors.background,
@@ -47,7 +42,8 @@ class VerifyEmailScreen extends StatelessWidget {
           child: SingleChildScrollView(
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                minHeight: MediaQuery.of(context).size.height -
+                minHeight:
+                    MediaQuery.of(context).size.height -
                     MediaQuery.of(context).padding.top -
                     MediaQuery.of(context).padding.bottom,
               ),

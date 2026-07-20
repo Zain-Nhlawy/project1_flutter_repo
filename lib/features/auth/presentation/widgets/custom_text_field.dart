@@ -51,10 +51,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         keyboardType: widget.keyboardType,
         onSubmitted: widget.onSubmitted,
         decoration: InputDecoration(
-          prefixIcon: Icon(
-            widget.icon,
-            color: AppColors.primary,
-          ),
+          prefixIcon: Icon(widget.icon, color: AppColors.primary),
           suffixIcon: widget.isPassword
               ? IconButton(
                   icon: Icon(
@@ -71,31 +68,20 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 )
               : null,
           hintText: widget.hintText,
-          hintStyle: const TextStyle(
-            color: AppColors.textSecondary,
-          ),
+          hintStyle: const TextStyle(color: AppColors.textSecondary),
           filled: true,
           fillColor: AppColors.surface,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(
-              color: AppColors.border,
-              width: 1.2,
-            ),
+            borderSide: const BorderSide(color: AppColors.border, width: 1.2),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(
-              color: AppColors.border,
-              width: 1.2,
-            ),
+            borderSide: const BorderSide(color: AppColors.border, width: 1.2),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(
-              color: AppColors.primary,
-              width: 2,
-            ),
+            borderSide: const BorderSide(color: AppColors.primary, width: 2),
           ),
         ),
       ),

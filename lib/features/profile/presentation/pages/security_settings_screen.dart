@@ -15,8 +15,7 @@ class SecuritySettingsScreen extends StatefulWidget {
   const SecuritySettingsScreen({super.key});
 
   @override
-  State<SecuritySettingsScreen> createState() =>
-      _SecuritySettingsScreenState();
+  State<SecuritySettingsScreen> createState() => _SecuritySettingsScreenState();
 }
 
 class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
@@ -37,9 +36,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
           await Navigator.push<bool>(
             context,
             MaterialPageRoute(
-              builder: (_) => Enable2FAScreen(
-                qrCode: state.qrData,
-              ),
+              builder: (_) => Enable2FAScreen(qrCode: state.qrData),
             ),
           );
 
@@ -61,9 +58,9 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
               ? state.message
               : (state as TurnOff2FASuccess).message;
 
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(msg)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(msg)));
         }
         if (state is AuthError && state.errors.isNotEmpty) {
           final messenger = ScaffoldMessenger.of(context);
@@ -98,10 +95,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
                 child: ListTile(
                   leading: const CircleAvatar(
                     backgroundColor: Color(0xFFE3F2FD),
-                    child: Icon(
-                      Icons.lock_outline,
-                      color: Colors.blue,
-                    ),
+                    child: Icon(Icons.lock_outline, color: Colors.blue),
                   ),
                   title: Text(
                     local.changePassword,
@@ -132,10 +126,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
                   activeColor: AppColors.primary,
                   secondary: const CircleAvatar(
                     backgroundColor: Color(0xFFE8F5E9),
-                    child: Icon(
-                      Icons.security,
-                      color: Colors.green,
-                    ),
+                    child: Icon(Icons.security, color: Colors.green),
                   ),
                   title: Text(
                     local.twoFactorAuth,
@@ -164,8 +155,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
 
                           final password = await showDialog<String>(
                             context: context,
-                            builder: (_) =>
-                                const Enable2FAPasswordDialog(),
+                            builder: (_) => const Enable2FAPasswordDialog(),
                           );
 
                           if (password == null || password.isEmpty) {

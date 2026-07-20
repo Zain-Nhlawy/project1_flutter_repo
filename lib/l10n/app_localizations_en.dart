@@ -214,9 +214,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your payment has been processed successfully. Your demo is now ready to use.';
 
   @override
-  String get backToHome => 'Back to Home';
-
-  @override
   String get processingPayment => 'processing payment';
 
   @override
@@ -252,6 +249,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get removeFromRoom => 'Remove from room';
+
+  @override
+  String get memberRemovedSuccessfully => 'The Member removed successfully';
 
   @override
   String get userNameHint => 'User name';
@@ -405,7 +405,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get changePassword => 'Change Password';
 
   @override
-  String get enterPasswordToContinue => 'Enter password to continue';
+  String get enterPasswordToContinue =>
+      'Enter your current and new password to continue';
 
   @override
   String get oldPassword => 'Current password';
@@ -414,13 +415,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseFillAllFields => 'Please fill all fields';
 
   @override
-  String get security => 'Security';
-
-  @override
   String get twoFactorAuth => 'Two-Factor Authentication';
-
-  @override
-  String get extraSecurityLayer => 'Extra security layer for your account';
 
   @override
   String get resendVerificationEmail => 'Resend verification email';
@@ -453,9 +448,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get both => 'Both';
 
   @override
-  String get cancel => 'Cancel';
-
-  @override
   String get storagePermissionDenied =>
       'No storage permission. Please enable it from settings.';
 
@@ -467,6 +459,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pngSaved => 'PNG saved successfully';
+
+  @override
+  String get security => 'Security';
+
+  @override
+  String get extraSecurityLayer => 'Extra security layer for your account';
 
   @override
   String get enableTwoFactorAuth => 'Enable Two-Factor Authentication';
@@ -590,12 +588,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ongoingCourses => 'Ongoing courses';
 
   @override
-  String get lessons => 'Lessons';
-
-  @override
-  String get duration => 'Duration';
-
-  @override
   String get courseManagement => 'Course Management';
 
   @override
@@ -631,9 +623,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get questionsBank => 'Questions Bank';
-
-  @override
-  String get quiz => 'Quiz';
 
   @override
   String get renameSection => 'Rename Section';
@@ -794,6 +783,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quizResult => 'Quiz Result';
 
   @override
+  String get backToHome => 'Back to Home';
+
+  @override
   String get confirmAnswer => 'Confirm Answer';
 
   @override
@@ -822,7 +814,120 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noNewNotifications => 'No new notifications';
 
   @override
+  String get selectVideoFirst => 'Please select a video first.';
+
+  @override
+  String get operationInProgressTitle => 'Operation in Progress';
+
+  @override
+  String get operationInProgressMessage =>
+      'A video upload or lesson creation is currently in progress. If you leave now, the video may finish uploading without being linked to the lesson. Are you sure you want to leave?';
+
+  @override
+  String get stay => 'Stay';
+
+  @override
+  String get leaveAnyway => 'Leave Anyway';
+
+  @override
+  String get deleteLesson => 'Delete Lesson';
+
+  @override
+  String get deleteLessonFailed => 'Failed to delete the lesson.';
+
+  @override
+  String get leaveWhileBusyTitle => 'Operation in Progress';
+
+  @override
+  String get leaveWhileBusyMessage =>
+      'An upload or save operation is currently in progress. If you leave now, your changes may be lost. Are you sure you want to leave?';
+
+  @override
+  String get lessonUpdatedSuccessfully => 'Changes saved successfully.';
+
+  @override
+  String get lessonUpdateFailed => 'Failed to save changes.';
+
+  @override
+  String get deleteLessonConfirmation =>
+      'Are you sure you want to delete this lesson? This action cannot be undone.';
+
+  @override
+  String get pressToSelectVideo => 'Press to select video';
+
+  @override
+  String get preparingToUpload => 'Preparing to upload...';
+
+  @override
+  String get processingVideo => 'processing video...';
+
+  @override
+  String get uploadingVideo => 'Uploading video...';
+
+  @override
   String invitedBy(String firstName, String lastName) {
     return 'Invited by $firstName $lastName';
   }
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get quiz => 'Quiz';
+
+  @override
+  String get lessons => 'Lessons';
+
+  @override
+  String get duration => 'Duration';
+
+  @override
+  String get lessonOverview => 'Lesson overview';
+
+  @override
+  String get failedToOpenAttachment => 'Failed to open attachment';
+
+  @override
+  String get videoLoadFailed => 'Failed to load video';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get faq => 'FAQ';
+
+  @override
+  String get noFaqAvailable => 'No FAQs available';
+
+  @override
+  String get addFaq => 'Add FAQ';
+
+  @override
+  String get question => 'Question';
+
+  @override
+  String get questionIsRequired => 'Question is required';
+
+  @override
+  String get answer => 'Answer';
+
+  @override
+  String get answerIsRequired => 'Answer is required';
+
+  @override
+  String get deleteFaq => 'Delete FAQ';
+
+  @override
+  String deleteFaqConfirmation(Object question) {
+    return 'Are you sure you want to delete \"$question\"?';
+  }
+
+  @override
+  String get tapToAddFaq => 'Tap \"Add FAQ\" to create the first one.';
+
+  @override
+  String get noFaqsYet => 'No FAQs yet';
+
+  @override
+  String get faqs => 'FAQs';
 }

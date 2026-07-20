@@ -6,11 +6,11 @@ abstract class DepartmentRemoteDataSource {
   Future<List<DepartmentModel>> getDepartment(String demoId);
 }
 
- class DepartmentRemoteDataSourcImpl implements DepartmentRemoteDataSource {
+class DepartmentRemoteDataSourcImpl implements DepartmentRemoteDataSource {
   final Dio dio;
 
   DepartmentRemoteDataSourcImpl(DioClient dioClient, {required this.dio});
-    @override
+  @override
   Future<List<DepartmentModel>> getDepartment(String demoId) async {
     try {
       final response = await dio.get('/demos/$demoId/departments');

@@ -11,10 +11,7 @@ import 'package:project1/l10n/app_localizations.dart';
 class Verify2FAScreen extends StatefulWidget {
   final String twoFactorToken;
 
-  const Verify2FAScreen({
-    super.key,
-    required this.twoFactorToken,
-  });
+  const Verify2FAScreen({super.key, required this.twoFactorToken});
 
   @override
   State<Verify2FAScreen> createState() => _Verify2FAScreenState();
@@ -27,9 +24,9 @@ class _Verify2FAScreenState extends State<Verify2FAScreen> {
     if (codeController.text.length != 6) return;
 
     context.read<AuthCubit>().verify2FA(
-          twoFactorToken: widget.twoFactorToken,
-          tfaCode: codeController.text,
-        );
+      twoFactorToken: widget.twoFactorToken,
+      tfaCode: codeController.text,
+    );
   }
 
   @override
@@ -52,7 +49,6 @@ class _Verify2FAScreenState extends State<Verify2FAScreen> {
           );
         }
 
-
         if (state is AuthError && state.errors.isNotEmpty) {
           final messenger = ScaffoldMessenger.of(context);
 
@@ -65,9 +61,6 @@ class _Verify2FAScreenState extends State<Verify2FAScreen> {
             ),
           );
         }
-
-
-
       },
       child: Scaffold(
         backgroundColor: AppColors.background,
@@ -77,11 +70,7 @@ class _Verify2FAScreenState extends State<Verify2FAScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.lock_outline,
-                  size: 80,
-                  color: AppColors.primary,
-                ),
+                Icon(Icons.lock_outline, size: 80, color: AppColors.primary),
 
                 const SizedBox(height: 20),
 

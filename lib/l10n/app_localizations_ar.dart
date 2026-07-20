@@ -213,9 +213,6 @@ class AppLocalizationsAr extends AppLocalizations {
       'تمت معالجة الدفع الخاص بك بنجاح. الديمو جاهز الآن للاستخدام.';
 
   @override
-  String get backToHome => 'العودة للرئيسية';
-
-  @override
   String get processingPayment => 'جاري تأكيد الدفع ...';
 
   @override
@@ -251,6 +248,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get removeFromRoom => 'حذف العضو من الغرفة';
+
+  @override
+  String get memberRemovedSuccessfully => 'تمت إزالة العضو بنجاح';
 
   @override
   String get userNameHint => 'اسم المستخدم';
@@ -406,22 +406,17 @@ class AppLocalizationsAr extends AppLocalizations {
   String get changePassword => 'تغيير كلمة المرور';
 
   @override
-  String get enterPasswordToContinue => 'أدخل كلمة المرور للمتابعة';
+  String get enterPasswordToContinue =>
+      'أدخل كلمة المرور الحالية والجديدة للمتابعة';
 
   @override
   String get oldPassword => 'كلمة المرور الحالية';
 
   @override
-  String get pleaseFillAllFields => 'الرجاء ملء جميع الحقول';
-
-  @override
-  String get security => 'الأمان';
+  String get pleaseFillAllFields => 'الرجاء تعبئة جميع الحقول';
 
   @override
   String get twoFactorAuth => 'المصادقة الثنائية';
-
-  @override
-  String get extraSecurityLayer => 'طبقة أمان إضافية لحسابك';
 
   @override
   String get resendVerificationEmail => 'إعادة إرسال رابط التحقق';
@@ -454,9 +449,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get both => 'الاثنين';
 
   @override
-  String get cancel => 'إلغاء';
-
-  @override
   String get storagePermissionDenied => 'ما عندك إذن تخزين، فعّله من الإعدادات';
 
   @override
@@ -467,6 +459,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get pngSaved => 'تم حفظ PNG بنجاح';
+
+  @override
+  String get security => 'الأمان';
+
+  @override
+  String get extraSecurityLayer => 'طبقة أمان إضافية لحسابك';
 
   @override
   String get enableTwoFactorAuth => 'تفعيل المصادقة الثنائية';
@@ -589,12 +587,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get ongoingCourses => 'كورسات قيد الإنشاء';
 
   @override
-  String get lessons => 'الدروس';
-
-  @override
-  String get duration => 'المدة';
-
-  @override
   String get courseManagement => 'إدارة الكورس';
 
   @override
@@ -626,13 +618,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get addLesson => 'إضافة درس';
 
   @override
-  String get noLessonsYet => 'لا يوجد دروس بعد';
+  String get noLessonsYet => 'لا توجد دروس بعد';
 
   @override
   String get questionsBank => 'بنك الأسئلة';
-
-  @override
-  String get quiz => 'اختبار';
 
   @override
   String get renameSection => 'إعادة تسمية القسم';
@@ -791,6 +780,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get quizResult => 'نتيجة الاختبار';
 
   @override
+  String get backToHome => 'العودة للرئيسية';
+
+  @override
   String get confirmAnswer => 'تأكيد الإجابة';
 
   @override
@@ -819,7 +811,120 @@ class AppLocalizationsAr extends AppLocalizations {
   String get noNewNotifications => 'لا توجد إشعارات جديدة';
 
   @override
+  String get selectVideoFirst => 'يرجى اختيار فيديو أولاً.';
+
+  @override
+  String get operationInProgressTitle => 'عملية جارية';
+
+  @override
+  String get operationInProgressMessage =>
+      'يوجد رفع فيديو أو إنشاء درس قيد التنفيذ. إذا غادرت الآن، قد يكتمل رفع الفيديو دون ربطه بالدرس. هل تريد المغادرة على أي حال؟';
+
+  @override
+  String get stay => 'البقاء';
+
+  @override
+  String get leaveAnyway => 'الخروج على أي حال';
+
+  @override
+  String get deleteLesson => 'حذف الدرس';
+
+  @override
+  String get deleteLessonFailed => 'فشل حذف الدرس.';
+
+  @override
+  String get leaveWhileBusyTitle => 'عملية قيد التنفيذ';
+
+  @override
+  String get leaveWhileBusyMessage =>
+      'في عملية رفع/حفظ شغالة حالياً. إذا خرجت هلق، ممكن تخسر التغييرات. متأكد إنك بدك تطلع؟';
+
+  @override
+  String get lessonUpdatedSuccessfully => 'تم حفظ التعديلات بنجاح';
+
+  @override
+  String get lessonUpdateFailed => 'فشل حفظ التعديلات';
+
+  @override
+  String get deleteLessonConfirmation =>
+      'هل أنت متأكد من حذف هذا الدرس؟ لا يمكن التراجع عن هذا الإجراء.';
+
+  @override
+  String get pressToSelectVideo => 'اضغط لاختيار فيديو';
+
+  @override
+  String get preparingToUpload => 'جاري التحضير للرفع...';
+
+  @override
+  String get processingVideo => 'جاري معالجة الفيديو...';
+
+  @override
+  String get uploadingVideo => 'جاري رفع الفيديو...';
+
+  @override
   String invitedBy(String firstName, String lastName) {
     return 'تمت دعوتك بواسطة $firstName $lastName';
   }
+
+  @override
+  String get cancel => 'إلغاء';
+
+  @override
+  String get quiz => 'اختبار';
+
+  @override
+  String get lessons => 'الدروس';
+
+  @override
+  String get duration => 'المدة';
+
+  @override
+  String get lessonOverview => 'نظرة عامة على الدرس';
+
+  @override
+  String get failedToOpenAttachment => 'تعذر فتح المرفق';
+
+  @override
+  String get videoLoadFailed => 'تعذر تحميل الفيديو';
+
+  @override
+  String get retry => 'إعادة المحاولة';
+
+  @override
+  String get faq => 'الأسئلة الشائعة';
+
+  @override
+  String get noFaqAvailable => 'لا توجد أسئلة شائعة';
+
+  @override
+  String get addFaq => 'إضافة سؤال شائع';
+
+  @override
+  String get question => 'السؤال';
+
+  @override
+  String get questionIsRequired => 'حقل السؤال مطلوب';
+
+  @override
+  String get answer => 'الإجابة';
+
+  @override
+  String get answerIsRequired => 'حقل الإجابة مطلوب';
+
+  @override
+  String get deleteFaq => 'حذف السؤال الشائع';
+
+  @override
+  String deleteFaqConfirmation(Object question) {
+    return 'هل أنت متأكد من أنك تريد حذف \"$question\"؟';
+  }
+
+  @override
+  String get tapToAddFaq => 'اضغط على \"إضافة سؤال شائع\" لإنشاء أول واحد.';
+
+  @override
+  String get noFaqsYet => 'لا توجد أسئلة شائعة بعد';
+
+  @override
+  String get faqs => 'الأسئلة الشائعة';
 }

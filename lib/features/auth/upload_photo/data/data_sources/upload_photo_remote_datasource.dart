@@ -36,9 +36,7 @@ class UploadPhotoRemoteDataSource {
           "isPublic": true,
           "folder": "users",
         },
-        options: Options(
-          extra: {'noAuth': true},
-        ),
+        options: Options(extra: {'noAuth': true}),
       );
 
       final data = res.data['data'];
@@ -50,10 +48,7 @@ class UploadPhotoRemoteDataSource {
         uploadUrl,
         data: await file.readAsBytes(),
         options: Options(
-          headers: {
-            'x-ms-blob-type': 'BlockBlob',
-            'Content-Type': contentType,
-          },
+          headers: {'x-ms-blob-type': 'BlockBlob', 'Content-Type': contentType},
         ),
       );
 

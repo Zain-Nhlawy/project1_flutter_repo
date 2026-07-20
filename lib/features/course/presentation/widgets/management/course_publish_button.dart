@@ -6,10 +6,7 @@ import 'package:project1/l10n/app_localizations.dart';
 class CoursePublishButton extends StatelessWidget {
   final String courseId;
 
-  const CoursePublishButton({
-    super.key,
-    required this.courseId,
-  });
+  const CoursePublishButton({super.key, required this.courseId});
 
   Future<void> _showConfirmDialog(BuildContext context) async {
     final localizations = AppLocalizations.of(context)!;
@@ -18,7 +15,9 @@ class CoursePublishButton extends StatelessWidget {
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           title: Text(localizations.publishCourse),
           content: Text(localizations.publishCourseConfirmation),
           actions: [

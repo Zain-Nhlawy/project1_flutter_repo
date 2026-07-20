@@ -1,33 +1,36 @@
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:media_kit/media_kit.dart';
 import 'package:project1/config/theme/app_colors.dart';
-import 'package:project1/features/attachment/presentation/widgets/lesson_attachments_section.dart';
-import 'package:project1/features/lesson/presentation/widgets/custom_button.dart';
-import 'package:project1/features/lesson/presentation/widgets/custom_text_field.dart';
-import 'package:project1/features/lesson/presentation/widgets/lesson_video_picker.dart';
+import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/features/attachment/presentation/cubit/lesson_attachment_cubit.dart';
+import 'package:project1/features/attachment/presentation/widgets/management/lesson_attachments_manager.dart';
+import 'package:project1/features/attachment/upload/presentation/cubit/attachment_upload_cubit.dart';
+import 'package:project1/features/lesson/presentation/cubit/lesson_cubit.dart';
+import 'package:project1/features/lesson/presentation/cubit/lesson_state.dart';
+import 'package:project1/features/lesson/presentation/widgets/management/lesson_action_button.dart';
+import 'package:project1/features/lesson/presentation/widgets/management/lesson_app_bar.dart';
+import 'package:project1/features/lesson/presentation/widgets/management/lesson_form_section.dart';
+import 'package:project1/features/lesson/presentation/widgets/management/lesson_leave_confirmation_dialog.dart';
+import 'package:project1/features/lesson/presentation/widgets/management/lesson_upload_progress.dart';
+import 'package:project1/features/lesson/presentation/widgets/management/lesson_video_section.dart';
+import 'package:project1/features/lesson/upload_video/presentation/cubit/lesson_video_upload_cubit.dart';
+import 'package:project1/features/lesson/upload_video/presentation/cubit/lesson_video_upload_state.dart';
 import 'package:project1/l10n/app_localizations.dart';
-
-class LessonAttachment {
-  final String id;
-  final String name;
-
-  const LessonAttachment({
-    required this.id,
-    required this.name,
-  });
-
-  LessonAttachment copyWith({
-    String? id,
-    String? name,
-  }) {
-    return LessonAttachment(
-      id: id ?? this.id,
-      name: name ?? this.name,
-    );
-  }
-}
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 class CreateLessonScreen extends StatefulWidget {
-  const CreateLessonScreen({super.key});
+  final String sectionId;
+  final int nextOrder;
+
+  const CreateLessonScreen({
+    super.key,
+    required this.sectionId,
+    this.nextOrder = 1,
+  });
 
   @override
   State<CreateLessonScreen> createState() => _CreateLessonScreenState();
@@ -36,10 +39,12 @@ class CreateLessonScreen extends StatefulWidget {
 class _CreateLessonScreenState extends State<CreateLessonScreen> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
+  Duration _videoDuration = Duration.zero;
 
-  String? selectedVideo;
-
-  List<LessonAttachment> attachments = [];
+  File? selectedFile;
+  Uint8List? _videoThumbnail;
+  bool _loadingThumbnail = false;
+  final _attachmentsManagerKey = GlobalKey<LessonAttachmentsManagerState>();
 
   @override
   void dispose() {
@@ -48,254 +53,221 @@ class _CreateLessonScreenState extends State<CreateLessonScreen> {
     super.dispose();
   }
 
-  void pickVideo() {
-    // TODO
-  }
+  Future<void> pickVideo() async {
+    final result = await ImagePicker().pickVideo(source: ImageSource.gallery);
+    if (result == null) return;
 
-  void saveLesson() {
-    // TODO
-  }
+    final file = File(result.path);
+    final player = Player();
 
-  Future<void> addAttachment() async {
-    final localizations = AppLocalizations.of(context)!;
-    final controller = TextEditingController();
+    try {
+      await player.open(Media(file.path));
+      Duration duration = player.state.duration;
+      var attempts = 0;
+      while (duration == Duration.zero && attempts < 10) {
+        await Future.delayed(const Duration(milliseconds: 200));
+        duration = player.state.duration;
+        attempts++;
+      }
 
-    final result = await showDialog<String>(
-      context: context,
-      builder: (dialogContext) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          title: Text(localizations.addAttachment),
-          content: CustomTextField(
-            controller: controller,
-            hintText: localizations.attachmentName,
-            icon: Icons.attach_file,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(dialogContext),
-              child: Text(
-                localizations.cancel,
-                style: const TextStyle(color: AppColors.textSecondary),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                final value = controller.text.trim();
-                if (value.isNotEmpty) {
-                  Navigator.pop(dialogContext, value);
-                }
-              },
-              child: Text(
-                localizations.add,
-                style: const TextStyle(
-                  color: AppColors.primary,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
+      if (!mounted) return;
 
-    if (result != null) {
       setState(() {
-        attachments.add(
-          LessonAttachment(
-            id: DateTime.now().millisecondsSinceEpoch.toString(),
-            name: result,
-          ),
-        );
+        selectedFile = file;
+        _videoDuration = duration;
       });
+
+      await _generateThumbnail(file);
+    } finally {
+      await player.dispose();
     }
   }
 
-  Future<void> editAttachment(LessonAttachment attachment) async {
-    final localizations = AppLocalizations.of(context)!;
-    final controller = TextEditingController(text: attachment.name);
+  Future<void> _generateThumbnail(File file) async {
+    setState(() => _loadingThumbnail = true);
 
-    final result = await showDialog<String>(
-      context: context,
-      builder: (dialogContext) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          title: Text(localizations.editAttachment),
-          content: CustomTextField(
-            controller: controller,
-            hintText: localizations.attachmentName,
-            icon: Icons.edit_outlined,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(dialogContext),
-              child: Text(
-                localizations.cancel,
-                style: const TextStyle(color: AppColors.textSecondary),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                final value = controller.text.trim();
-                if (value.isNotEmpty) {
-                  Navigator.pop(dialogContext, value);
-                }
-              },
-              child: Text(
-                localizations.save,
-                style: const TextStyle(
-                  color: AppColors.primary,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
+    try {
+      final bytes = await VideoThumbnail.thumbnailData(
+        video: file.path,
+        imageFormat: ImageFormat.JPEG,
+        maxWidth: 400,
+        quality: 60,
+      );
 
-    if (result != null) {
+      if (!mounted) return;
       setState(() {
-        final index = attachments.indexWhere((e) => e.id == attachment.id);
-        attachments[index] = attachment.copyWith(name: result);
+        _videoThumbnail = bytes;
+        _loadingThumbnail = false;
       });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _loadingThumbnail = false);
     }
   }
 
-  Future<void> deleteAttachment(LessonAttachment attachment) async {
-    final localizations = AppLocalizations.of(context)!;
+  bool get isValid =>
+      _titleController.text.trim().isNotEmpty &&
+      _descriptionController.text.trim().isNotEmpty &&
+      selectedFile != null;
 
-    final confirm = await showDialog<bool>(
-      context: context,
-      builder: (dialogContext) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          title: Text(localizations.deleteAttachment),
-          content: Text(localizations.deleteAttachmentConfirmation),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(dialogContext, false),
-              child: Text(localizations.cancel),
-            ),
-            TextButton(
-              onPressed: () => Navigator.pop(dialogContext, true),
-              child: Text(
-                localizations.delete,
-                style: TextStyle(
-                  color: Colors.red.shade400,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-
-    if (confirm == true) {
-      setState(() {
-        attachments.removeWhere((e) => e.id == attachment.id);
-      });
-    }
-  }
-
-  Widget _sectionTitle(String title) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Text(
-        title,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 16,
-          color: AppColors.primary,
+  Future<void> saveLesson(BuildContext context) async {
+    final l = AppLocalizations.of(context)!;
+    if (!isValid) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l.fillAllFieldsWarning),
+          backgroundColor: Colors.red,
         ),
-      ),
+      );
+      return;
+    }
+
+    context.read<LessonVideoUploadCubit>().uploadVideo(
+      sectionId: widget.sectionId,
+      file: selectedFile!,
     );
+  }
+
+  Future<void> _handleBack(bool isBusy) async {
+    if (!isBusy) {
+      Navigator.pop(context);
+      return;
+    }
+    final shouldLeave = await showLeaveWhileBusyDialog(context);
+    if (shouldLeave && mounted) {
+      Navigator.pop(context);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => getIt<LessonVideoUploadCubit>()),
+        BlocProvider(create: (_) => getIt<LessonCubit>()),
+        BlocProvider(create: (_) => getIt<AttachmentUploadCubit>()),
 
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: Text(
-          localizations.createLesson,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: AppColors.primaryGradient,
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 55),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _sectionTitle(localizations.lessonVideo),
+        BlocProvider(create: (_) => getIt<LessonAttachmentCubit>()),
+      ],
+      child: Builder(
+        builder: (context) {
+          return MultiBlocListener(
+            listeners: [
+              BlocListener<LessonVideoUploadCubit, LessonVideoUploadState>(
+                listener: _handleUploadState,
+              ),
+              BlocListener<LessonCubit, LessonState>(
+                listener: _handleLessonState,
+              ),
+            ],
+            child: BlocBuilder<LessonVideoUploadCubit, LessonVideoUploadState>(
+              builder: (context, uploadState) {
+                return BlocBuilder<LessonCubit, LessonState>(
+                  builder: (context, lessonState) {
+                    final isUploading =
+                        uploadState is LessonVideoUploadRequestingUrl ||
+                        uploadState is LessonVideoUploadInProgress;
+                    final isCreatingLesson = lessonState is LessonLoading;
+                    final isBusy = isUploading || isCreatingLesson;
 
-            LessonVideoPicker(
-              selectedVideo: selectedVideo,
-              onTap: pickVideo,
+                    return PopScope(
+                      canPop: !isBusy,
+                      onPopInvokedWithResult: (didPop, result) {
+                        if (didPop) return;
+                        _handleBack(isBusy);
+                      },
+                      child: Scaffold(
+                        backgroundColor: AppColors.background,
+                        appBar: LessonAppBar(
+                          onBackPressed: () => _handleBack(isBusy),
+                        ),
+                        body: SingleChildScrollView(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            children: [
+                              LessonVideoSection(
+                                state: uploadState,
+                                selectedFile: selectedFile,
+                                thumbnail: _videoThumbnail,
+                                loadingThumbnail: _loadingThumbnail,
+                                onPick: pickVideo,
+                              ),
+                              if (isUploading)
+                                LessonUploadProgress(state: uploadState),
+                              const SizedBox(height: 24),
+                              const SizedBox(height: 24),
+                              LessonFormSection(
+                                titleController: _titleController,
+                                descriptionController: _descriptionController,
+                              ),
+                              const SizedBox(height: 24),
+                              LessonAttachmentsManager(
+                                key: _attachmentsManagerKey,
+                                lessonId: null,
+                                enabled: !isBusy,
+                              ),
+                              const SizedBox(height: 32),
+                              LessonActionButton(
+                                loading: isBusy,
+                                onPressed: isBusy
+                                    ? null
+                                    : () => saveLesson(context),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
-
-            const SizedBox(height: 24),
-
-            _sectionTitle(localizations.lessonTitle),
-
-            CustomTextField(
-              controller: _titleController,
-              hintText: localizations.enterLessonTitle,
-              icon: Icons.title_rounded,
-            ),
-
-            const SizedBox(height: 24),
-
-            _sectionTitle(localizations.lessonDescription),
-
-            CustomTextField(
-              controller: _descriptionController,
-              hintText: localizations.enterLessonDescription,
-              icon: Icons.description_outlined,
-              maxLines: 6,
-            ),
-
-            const SizedBox(height: 24),
-
-            LessonAttachmentsSection(
-              attachments: attachments,
-              onAdd: addAttachment,
-              onEdit: editAttachment,
-              onDelete: deleteAttachment,
-            ),
-
-            const SizedBox(height: 32),
-
-            CustomButton(
-              text: localizations.createLesson,
-              gradient: AppColors.buttonGradient,
-              expand: true,
-              onPressed: saveLesson,
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
+  }
+
+  void _handleUploadState(BuildContext context, LessonVideoUploadState state) {
+    if (state is LessonVideoUploadSuccess) {
+      context.read<LessonCubit>().createLesson(
+        sectionId: widget.sectionId,
+        title: _titleController.text.trim(),
+        order: widget.nextOrder,
+        videoUrl: state.cdnUrl,
+        description: _descriptionController.text.trim(),
+        duration: _videoDuration.inSeconds,
+      );
+    } else if (state is LessonVideoUploadError) {
+      final message = state.errors.isNotEmpty
+          ? state.errors.first
+          : "Upload failed";
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message), backgroundColor: Colors.red),
+      );
+    }
+  }
+
+  Future<void> _handleLessonState(
+    BuildContext context,
+    LessonState state,
+  ) async {
+    if (state is LessonSuccess) {
+      await _attachmentsManagerKey.currentState?.uploadPendingAttachments(
+        context,
+        state.lesson.id,
+      );
+
+      if (!context.mounted) return;
+
+      Navigator.pop(context, true);
+    } else if (state is LessonError) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(state.errors.isNotEmpty ? state.errors.first : "Error"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 }

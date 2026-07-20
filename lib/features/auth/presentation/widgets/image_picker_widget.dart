@@ -7,10 +7,7 @@ import 'package:project1/config/theme/app_colors.dart';
 class ImagePickerWidget extends StatefulWidget {
   final ValueChanged<File?> onImageSelected;
 
-  const ImagePickerWidget({
-    super.key,
-    required this.onImageSelected,
-  });
+  const ImagePickerWidget({super.key, required this.onImageSelected});
 
   @override
   State<ImagePickerWidget> createState() => _ImagePickerWidgetState();
@@ -57,8 +54,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
               child: CircleAvatar(
                 radius: 55,
                 backgroundColor: AppColors.surface,
-                backgroundImage:
-                    _image != null ? FileImage(_image!) : null,
+                backgroundImage: _image != null ? FileImage(_image!) : null,
                 child: _image == null
                     ? const Icon(
                         Icons.person,

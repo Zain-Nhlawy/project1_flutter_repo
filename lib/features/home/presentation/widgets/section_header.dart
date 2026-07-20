@@ -34,14 +34,16 @@ class SectionHeader extends StatelessWidget {
               context,
               PageRouteBuilder(
                 transitionDuration: const Duration(milliseconds: 300),
-                pageBuilder: (context, animation, secondaryAnimation) => DemosPage(title: title, demos: demoList),
-                transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                  return FadeThroughTransition(
-                    animation: animation,
-                    secondaryAnimation: secondaryAnimation,
-                    child: child,
-                  );
-                },
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    DemosPage(title: title, demos: demoList),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                      return FadeThroughTransition(
+                        animation: animation,
+                        secondaryAnimation: secondaryAnimation,
+                        child: child,
+                      );
+                    },
               ),
             );
           },

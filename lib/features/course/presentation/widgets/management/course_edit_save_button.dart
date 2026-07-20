@@ -33,7 +33,9 @@ class CourseEditSaveButton extends StatelessWidget {
           ),
         ),
         style: OutlinedButton.styleFrom(
-          backgroundColor: isEditing ? Colors.green.shade600 : Colors.transparent,
+          backgroundColor: isEditing
+              ? Colors.green.shade600
+              : Colors.transparent,
           side: BorderSide(
             color: isEditing ? Colors.green.shade600 : AppColors.primary,
             width: 1.6,

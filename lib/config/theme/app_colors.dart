@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class AppColors {
   AppColors._();
 
@@ -42,46 +41,31 @@ class AppColors {
   static const LinearGradient primaryGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [
-      primary,
-      secondary,
-    ],
+    colors: [primary, secondary],
   );
 
   static const LinearGradient headerGradient = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [
-      secondary,
-      tertiary,
-    ],
+    colors: [secondary, tertiary],
   );
 
   static const LinearGradient darkHeaderGradient = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [
-      Color(0xFF152A3E),
-      Color(0xFF1D3A52),
-    ],
+    colors: [Color(0xFF152A3E), Color(0xFF1D3A52)],
   );
 
   static const LinearGradient buttonGradient = LinearGradient(
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
-    colors: [
-      primary,
-      tertiary,
-    ],
+    colors: [primary, tertiary],
   );
 
   static const LinearGradient darkButtonGradient = LinearGradient(
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
-    colors: [
-      darkSecondary,
-      darkTertiary,
-    ],
+    colors: [darkSecondary, darkTertiary],
   );
 
   static const BoxShadow primaryShadow = BoxShadow(
@@ -126,4 +110,4 @@ class AppColors {
 
   static BoxShadow primaryShadowOf(BuildContext context) =>
       _isDark(context) ? darkPrimaryShadow : primaryShadow;
-}
+}

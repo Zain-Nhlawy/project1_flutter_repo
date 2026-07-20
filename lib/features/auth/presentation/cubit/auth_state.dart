@@ -49,7 +49,6 @@ class ForgotPasswordSuccess extends AuthState {
 class ResetPasswordSuccess extends AuthState {
   final String message;
   const ResetPasswordSuccess(this.message);
-
 }
 
 class AuthChangePasswordSuccess extends AuthState {

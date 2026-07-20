@@ -8,18 +8,14 @@ class TestPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.testPage),
-      ),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.testPage)),
       body: Center(
         child: ElevatedButton(
           child: Text(AppLocalizations.of(context)!.openDiagram),
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (_) => const DrawioPage(),
-              ),
+              MaterialPageRoute(builder: (_) => const DrawioPage()),
             );
           },
         ),

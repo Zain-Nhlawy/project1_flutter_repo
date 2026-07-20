@@ -2,8 +2,8 @@ import 'package:project1/features/demo/domain/entities/user_entity.dart';
 
 class SearchUserModel extends MembersEntity {
   const SearchUserModel({
-     super.demoId,  
-     super.id,
+    super.demoId,
+    super.id,
     required super.firstName,
     required super.lastName,
     required super.email,

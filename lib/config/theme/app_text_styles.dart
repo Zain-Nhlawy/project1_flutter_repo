@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 
 class AppTextStyles {
-  AppTextStyles._(); 
+  AppTextStyles._();
 
   static const String fontFamily = 'PlusJakartaSans';
 
   static const TextStyle h1 = TextStyle(
     fontFamily: fontFamily,
     fontSize: 32,
-    fontWeight: FontWeight.w800, 
+    fontWeight: FontWeight.w800,
   );
 
   static const TextStyle h2 = TextStyle(
     fontFamily: fontFamily,
     fontSize: 28,
-    fontWeight: FontWeight.w700, 
+    fontWeight: FontWeight.w700,
   );
 
   static const TextStyle h3 = TextStyle(
     fontFamily: fontFamily,
     fontSize: 24,
-    fontWeight: FontWeight.w600, 
+    fontWeight: FontWeight.w600,
   );
 
   static const TextStyle titleLarge = TextStyle(

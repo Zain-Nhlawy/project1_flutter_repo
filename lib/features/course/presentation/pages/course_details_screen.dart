@@ -13,10 +13,7 @@ import 'package:project1/l10n/app_localizations.dart';
 class CourseDetailsScreen extends StatefulWidget {
   final String courseId;
 
-  const CourseDetailsScreen({
-    super.key,
-    required this.courseId,
-  });
+  const CourseDetailsScreen({super.key, required this.courseId});
 
   @override
   State<CourseDetailsScreen> createState() => _CourseDetailsScreenState();
@@ -36,10 +33,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.white,
-          ),
+          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
@@ -50,9 +44,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
           ),
         ),
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: AppColors.primaryGradient,
-          ),
+          decoration: const BoxDecoration(gradient: AppColors.primaryGradient),
         ),
       ),
       body: BlocBuilder<CourseCubit, CourseState>(
@@ -80,7 +72,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                   CourseHeader(
                     imageUrl: course.imagePath,
                     totalLessons: course.totalLessons,
-                    totalDuration: "${course.totalDuration} min",
+                    totalDurationSeconds: course.totalDuration,
                   ),
                   const SizedBox(height: 30),
                   Padding(
@@ -110,7 +102,9 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.surface,
                             borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: Colors.grey.withOpacity(0.2)),
+                            border: Border.all(
+                              color: Colors.grey.withOpacity(0.2),
+                            ),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black.withOpacity(0.05),
@@ -122,8 +116,9 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                           child: Row(
                             children: [
                               CircleAvatar(
-                                backgroundColor:
-                                    Theme.of(context).primaryColor.withOpacity(0.1),
+                                backgroundColor: Theme.of(
+                                  context,
+                                ).primaryColor.withOpacity(0.1),
                                 child: Icon(
                                   Icons.business,
                                   color: Theme.of(context).primaryColor,
@@ -135,7 +130,10 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                 children: [
                                   Text(
                                     localizations.producedBy,
-                                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey,
+                                    ),
                                   ),
                                   Text(
                                     course.demo?.name ?? '',
@@ -182,9 +180,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                           height: 400,
                           child: BlocProvider(
                             create: (context) => getIt<SectionCubit>(),
-                            child: CourseTabs(
-                              courseId: course.id,
-                            ),
+                            child: CourseTabs(courseId: course.id),
                           ),
                         ),
                       ],
@@ -194,7 +190,6 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
               ),
             );
           }
-
           return const SizedBox();
         },
       ),

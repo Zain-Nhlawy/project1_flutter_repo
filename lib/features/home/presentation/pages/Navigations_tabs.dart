@@ -37,17 +37,18 @@ class NavigationsTabs extends StatelessWidget {
             extendBody: true,
             body: PageTransitionSwitcher(
               duration: const Duration(milliseconds: 300),
-              transitionBuilder: (
-                Widget child,
-                Animation<double> animation,
-                Animation<double> secondaryAnimation,
-              ) {
-                return FadeThroughTransition(
-                  animation: animation,
-                  secondaryAnimation: secondaryAnimation,
-                  child: child,
-                );
-              },
+              transitionBuilder:
+                  (
+                    Widget child,
+                    Animation<double> animation,
+                    Animation<double> secondaryAnimation,
+                  ) {
+                    return FadeThroughTransition(
+                      animation: animation,
+                      secondaryAnimation: secondaryAnimation,
+                      child: child,
+                    );
+                  },
               child: cubit.pages[state.currentIndex],
             ),
             bottomNavigationBar: _buildModernNavBar(

@@ -1,4 +1,3 @@
-
 import 'package:project1/features/demo/domain/entities/user_entity.dart';
 
 abstract class DemoUsersState {}

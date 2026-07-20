@@ -4,6 +4,7 @@ import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20cubit/demo_cubit.dart';
 import 'package:project1/features/demo/presentation/widgets/add_demo_widgets/step_progress_indecator.dart';
+import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:project1/features/demo/data/models/demo_model.dart';
 import '../cubit/demo cubit/demo_state.dart';
@@ -37,18 +38,14 @@ class AddDemoScreen extends StatelessWidget {
               );
             } else if (demoState is AddDemoSuccess) {
               Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(AppLocalizations.of(context)!.demoCreatedSuccessfully)),
+              SnackbarTheme().newSnackBarSuccess(
+                context,
+                AppLocalizations.of(context)!.demoCreatedSuccessfully,
               );
               Navigator.pop(context);
             } else if (demoState is AddDemoError) {
               Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(demoState.message),
-                  backgroundColor: Colors.red,
-                ),
-              );
+              SnackbarTheme().newSnackBarError(context, demoState.message);
             }
           },
           child: SafeArea(
@@ -121,24 +118,16 @@ class AddDemoScreen extends StatelessWidget {
                         onTap: state.currentPage == 2
                             ? () {
                                 if (state.demoName.trim().isEmpty) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        localizations.nameRequiredError,
-                                      ),
-                                      backgroundColor: Colors.red,
-                                    ),
+                                  SnackbarTheme().newSnackBarError(
+                                    context,
+                                    localizations.nameRequiredError,
                                   );
                                   return;
                                 }
                                 if (state.demoDescription.trim().isEmpty) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        localizations.descriptionRequiredError,
-                                      ),
-                                      backgroundColor: Colors.red,
-                                    ),
+                                  SnackbarTheme().newSnackBarError(
+                                    context,
+                                    localizations.descriptionRequiredError,
                                   );
                                   return;
                                 }

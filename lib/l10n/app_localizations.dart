@@ -482,12 +482,6 @@ abstract class AppLocalizations {
   /// **'Your payment has been processed successfully. Your demo is now ready to use.'**
   String get paymentSuccessMessage;
 
-  /// No description provided for @backToHome.
-  ///
-  /// In en, this message translates to:
-  /// **'Back to Home'**
-  String get backToHome;
-
   /// No description provided for @processingPayment.
   ///
   /// In en, this message translates to:
@@ -559,6 +553,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remove from room'**
   String get removeFromRoom;
+
+  /// No description provided for @memberRemovedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'The Member removed successfully'**
+  String get memberRemovedSuccessfully;
 
   /// No description provided for @userNameHint.
   ///
@@ -863,7 +863,7 @@ abstract class AppLocalizations {
   /// No description provided for @enterPasswordToContinue.
   ///
   /// In en, this message translates to:
-  /// **'Enter password to continue'**
+  /// **'Enter your current and new password to continue'**
   String get enterPasswordToContinue;
 
   /// No description provided for @oldPassword.
@@ -878,23 +878,11 @@ abstract class AppLocalizations {
   /// **'Please fill all fields'**
   String get pleaseFillAllFields;
 
-  /// No description provided for @security.
-  ///
-  /// In en, this message translates to:
-  /// **'Security'**
-  String get security;
-
   /// No description provided for @twoFactorAuth.
   ///
   /// In en, this message translates to:
   /// **'Two-Factor Authentication'**
   String get twoFactorAuth;
-
-  /// No description provided for @extraSecurityLayer.
-  ///
-  /// In en, this message translates to:
-  /// **'Extra security layer for your account'**
-  String get extraSecurityLayer;
 
   /// No description provided for @resendVerificationEmail.
   ///
@@ -956,12 +944,6 @@ abstract class AppLocalizations {
   /// **'Both'**
   String get both;
 
-  /// No description provided for @cancel.
-  ///
-  /// In en, this message translates to:
-  /// **'Cancel'**
-  String get cancel;
-
   /// No description provided for @storagePermissionDenied.
   ///
   /// In en, this message translates to:
@@ -985,6 +967,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'PNG saved successfully'**
   String get pngSaved;
+
+  /// No description provided for @security.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get security;
+
+  /// No description provided for @extraSecurityLayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra security layer for your account'**
+  String get extraSecurityLayer;
 
   /// No description provided for @enableTwoFactorAuth.
   ///
@@ -1214,18 +1208,6 @@ abstract class AppLocalizations {
   /// **'Ongoing courses'**
   String get ongoingCourses;
 
-  /// No description provided for @lessons.
-  ///
-  /// In en, this message translates to:
-  /// **'Lessons'**
-  String get lessons;
-
-  /// No description provided for @duration.
-  ///
-  /// In en, this message translates to:
-  /// **'Duration'**
-  String get duration;
-
   /// No description provided for @courseManagement.
   ///
   /// In en, this message translates to:
@@ -1297,12 +1279,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Questions Bank'**
   String get questionsBank;
-
-  /// No description provided for @quiz.
-  ///
-  /// In en, this message translates to:
-  /// **'Quiz'**
-  String get quiz;
 
   /// No description provided for @renameSection.
   ///
@@ -1610,6 +1586,12 @@ abstract class AppLocalizations {
   /// **'Quiz Result'**
   String get quizResult;
 
+  /// No description provided for @backToHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Home'**
+  String get backToHome;
+
   /// No description provided for @confirmAnswer.
   ///
   /// In en, this message translates to:
@@ -1664,11 +1646,227 @@ abstract class AppLocalizations {
   /// **'No new notifications'**
   String get noNewNotifications;
 
+  /// No description provided for @selectVideoFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a video first.'**
+  String get selectVideoFirst;
+
+  /// No description provided for @operationInProgressTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Operation in Progress'**
+  String get operationInProgressTitle;
+
+  /// No description provided for @operationInProgressMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'A video upload or lesson creation is currently in progress. If you leave now, the video may finish uploading without being linked to the lesson. Are you sure you want to leave?'**
+  String get operationInProgressMessage;
+
+  /// No description provided for @stay.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay'**
+  String get stay;
+
+  /// No description provided for @leaveAnyway.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave Anyway'**
+  String get leaveAnyway;
+
+  /// No description provided for @deleteLesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Lesson'**
+  String get deleteLesson;
+
+  /// No description provided for @deleteLessonFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete the lesson.'**
+  String get deleteLessonFailed;
+
+  /// No description provided for @leaveWhileBusyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Operation in Progress'**
+  String get leaveWhileBusyTitle;
+
+  /// No description provided for @leaveWhileBusyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'An upload or save operation is currently in progress. If you leave now, your changes may be lost. Are you sure you want to leave?'**
+  String get leaveWhileBusyMessage;
+
+  /// No description provided for @lessonUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes saved successfully.'**
+  String get lessonUpdatedSuccessfully;
+
+  /// No description provided for @lessonUpdateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to save changes.'**
+  String get lessonUpdateFailed;
+
+  /// No description provided for @deleteLessonConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this lesson? This action cannot be undone.'**
+  String get deleteLessonConfirmation;
+
+  /// No description provided for @pressToSelectVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Press to select video'**
+  String get pressToSelectVideo;
+
+  /// No description provided for @preparingToUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing to upload...'**
+  String get preparingToUpload;
+
+  /// No description provided for @processingVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'processing video...'**
+  String get processingVideo;
+
+  /// No description provided for @uploadingVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploading video...'**
+  String get uploadingVideo;
+
   /// No description provided for @invitedBy.
   ///
   /// In en, this message translates to:
   /// **'Invited by {firstName} {lastName}'**
   String invitedBy(String firstName, String lastName);
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @quiz.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz'**
+  String get quiz;
+
+  /// No description provided for @lessons.
+  ///
+  /// In en, this message translates to:
+  /// **'Lessons'**
+  String get lessons;
+
+  /// No description provided for @duration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get duration;
+
+  /// No description provided for @lessonOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson overview'**
+  String get lessonOverview;
+
+  /// No description provided for @failedToOpenAttachment.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to open attachment'**
+  String get failedToOpenAttachment;
+
+  /// No description provided for @videoLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load video'**
+  String get videoLoadFailed;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @faq.
+  ///
+  /// In en, this message translates to:
+  /// **'FAQ'**
+  String get faq;
+
+  /// No description provided for @noFaqAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No FAQs available'**
+  String get noFaqAvailable;
+
+  /// No description provided for @addFaq.
+  ///
+  /// In en, this message translates to:
+  /// **'Add FAQ'**
+  String get addFaq;
+
+  /// No description provided for @question.
+  ///
+  /// In en, this message translates to:
+  /// **'Question'**
+  String get question;
+
+  /// No description provided for @questionIsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Question is required'**
+  String get questionIsRequired;
+
+  /// No description provided for @answer.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer'**
+  String get answer;
+
+  /// No description provided for @answerIsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer is required'**
+  String get answerIsRequired;
+
+  /// No description provided for @deleteFaq.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete FAQ'**
+  String get deleteFaq;
+
+  /// No description provided for @deleteFaqConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete \"{question}\"?'**
+  String deleteFaqConfirmation(Object question);
+
+  /// No description provided for @tapToAddFaq.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap \"Add FAQ\" to create the first one.'**
+  String get tapToAddFaq;
+
+  /// No description provided for @noFaqsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No FAQs yet'**
+  String get noFaqsYet;
+
+  /// No description provided for @faqs.
+  ///
+  /// In en, this message translates to:
+  /// **'FAQs'**
+  String get faqs;
 }
 
 class _AppLocalizationsDelegate
