@@ -10,10 +10,32 @@ import 'package:project1/features/course/presentation/widgets/course_tag.dart';
 import 'package:project1/features/section/presentation/cubit/section_cubit.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
-class CourseDetailsScreen extends StatefulWidget {
-  final String courseId;
 
-  const CourseDetailsScreen({super.key, required this.courseId});
+enum CourseDetailsMode {
+  library,
+  demo,
+}
+
+class CourseDetailsScreen extends StatefulWidget {
+  final CourseDetailsMode mode;
+
+  final String? courseId;
+  final String? demoId;
+  final String? assetId;
+
+  const CourseDetailsScreen.fromLibrary({
+    super.key,
+    required this.courseId,
+  })  : mode = CourseDetailsMode.library,
+        demoId = null,
+        assetId = null;
+
+  const CourseDetailsScreen.fromDemo({
+    super.key,
+    required this.demoId,
+    required this.assetId,
+  })  : mode = CourseDetailsMode.demo,
+        courseId = null;
 
   @override
   State<CourseDetailsScreen> createState() => _CourseDetailsScreenState();
@@ -23,7 +45,17 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<CourseCubit>().getCourse(widget.courseId);
+
+    final cubit = context.read<CourseCubit>();
+
+    if (widget.mode == CourseDetailsMode.library) {
+      cubit.getCourse(widget.courseId!);
+    } else {
+      cubit.getDemoCourse(
+        demoId: widget.demoId!,
+        assetId: widget.assetId!,
+      );
+    }
   }
 
   @override
@@ -33,7 +65,10 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.white,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
@@ -44,26 +79,43 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
           ),
         ),
         flexibleSpace: Container(
-          decoration: const BoxDecoration(gradient: AppColors.primaryGradient),
+          decoration: const BoxDecoration(
+            gradient: AppColors.primaryGradient,
+          ),
         ),
       ),
       body: BlocBuilder<CourseCubit, CourseState>(
         builder: (context, state) {
-          if (state is CourseDetailsLoading) {
-            return const Center(child: CircularProgressIndicator());
+          if (state is CourseDetailsLoading ||
+              state is CourseAssetLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           }
 
           if (state is CourseDetailsError) {
             return Center(
               child: Text(
-                state.errors.isNotEmpty ? state.errors.first : '',
+                state.errors.first,
                 style: const TextStyle(color: Colors.red),
               ),
             );
           }
 
-          if (state is CourseDetailsLoaded) {
-            final course = state.course;
+          if (state is CourseAssetError) {
+            return Center(
+              child: Text(
+                state.errors.first,
+                style: const TextStyle(color: Colors.red),
+              ),
+            );
+          }
+
+          if (state is CourseDetailsLoaded ||
+              state is CourseAssetLoaded) {
+            final course = state is CourseDetailsLoaded
+                ? state.course
+                : (state as CourseAssetLoaded).course;
 
             return SingleChildScrollView(
               child: Column(
@@ -88,6 +140,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                           ),
                         ),
                         const SizedBox(height: 15),
+
                         if (course.tags.isNotEmpty)
                           Wrap(
                             spacing: 8,
@@ -96,7 +149,9 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                 .map((tag) => CourseTag(text: tag))
                                 .toList(),
                           ),
+
                         const SizedBox(height: 20),
+
                         Container(
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
@@ -116,9 +171,10 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                           child: Row(
                             children: [
                               CircleAvatar(
-                                backgroundColor: Theme.of(
-                                  context,
-                                ).primaryColor.withOpacity(0.1),
+                                backgroundColor:
+                                    Theme.of(context)
+                                        .primaryColor
+                                        .withOpacity(0.1),
                                 child: Icon(
                                   Icons.business,
                                   color: Theme.of(context).primaryColor,
@@ -126,7 +182,8 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                               ),
                               const SizedBox(width: 15),
                               Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment:
+                                    CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     localizations.producedBy,
@@ -140,7 +197,8 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
-                                      color: Theme.of(context).primaryColor,
+                                      color:
+                                          Theme.of(context).primaryColor,
                                     ),
                                   ),
                                 ],
@@ -148,7 +206,9 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                             ],
                           ),
                         ),
+
                         const SizedBox(height: 30),
+
                         Text(
                           localizations.aboutThisCourse,
                           style: TextStyle(
@@ -157,7 +217,9 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                             color: Theme.of(context).primaryColor,
                           ),
                         ),
+
                         const SizedBox(height: 12),
+
                         Text(
                           course.description,
                           style: TextStyle(
@@ -166,23 +228,31 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                             fontSize: 16,
                           ),
                         ),
-                        const SizedBox(height: 30),
-                        Text(
-                          localizations.courseContent,
-                          style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).primaryColor,
+
+                        if (widget.mode == CourseDetailsMode.demo) ...[
+                          const SizedBox(height: 30),
+
+                          Text(
+                            localizations.courseContent,
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).primaryColor,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 15),
-                        SizedBox(
-                          height: 400,
-                          child: BlocProvider(
-                            create: (context) => getIt<SectionCubit>(),
-                            child: CourseTabs(courseId: course.id),
+
+                          const SizedBox(height: 15),
+
+                          SizedBox(
+                            height: 400,
+                            child: BlocProvider(
+                              create: (_) => getIt<SectionCubit>(),
+                              child: CourseTabs(
+                                courseId: course.id,
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ],
                     ),
                   ),
@@ -190,6 +260,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
               ),
             );
           }
+
           return const SizedBox();
         },
       ),
