@@ -5,7 +5,7 @@ import 'package:project1/features/department/domain/entities/department_entity.d
 
 abstract class DepartmentRemoteDataSource {
   Future<List<DepartmentModel>> getDepartment(String demoId);
-  Future<void> createDepartment(DepartmentModel department , String demoId);
+  Future<void> createDepartment(DepartmentModel department, String demoId);
 }
 
 class DepartmentRemoteDataSourcImpl implements DepartmentRemoteDataSource {
@@ -15,7 +15,10 @@ class DepartmentRemoteDataSourcImpl implements DepartmentRemoteDataSource {
   @override
   Future<List<DepartmentModel>> getDepartment(String demoId) async {
     try {
-      final response = await dio.get('/demos/$demoId/departments');
+      final response = await dio.get(
+        '/departments',
+        options: Options(headers: {'x-demo-id': demoId}),
+      );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final List<dynamic> dataList = response.data['data'];
@@ -29,11 +32,15 @@ class DepartmentRemoteDataSourcImpl implements DepartmentRemoteDataSource {
   }
 
   @override
-  Future<void> createDepartment(DepartmentModel department, String demoId) async {
+  Future<void> createDepartment(
+    DepartmentModel department,
+    String demoId,
+  ) async {
     try {
       final response = await dio.post(
-        '/demos/$demoId/departments',
+        '/departments',
         data: department.toJson(),
+        options: Options(headers: {'x-demo-id': demoId}),
       );
 
       if (response.statusCode != 200 && response.statusCode != 201) {

@@ -20,7 +20,7 @@ class StatCard extends StatelessWidget {
     final textScale = MediaQuery.textScalerOf(context).scale(1);
 
     return Container(
-      padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
+      padding: const EdgeInsets.symmetric(vertical: 16),
       decoration: BoxDecoration(
         color: AppColors.surface.withOpacity(0.2),
         borderRadius: BorderRadius.circular(20),
@@ -28,14 +28,14 @@ class StatCard extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            padding: EdgeInsets.all(size.width * 0.02),
+            padding: const EdgeInsets.all(12),
             decoration: const BoxDecoration(
               color: AppColors.surface,
               shape: BoxShape.circle,
             ),
             child: Icon(icon, color: AppColors.primary, size: 20 * textScale),
           ),
-          SizedBox(height: size.height * 0.01),
+          const SizedBox(height: 12),
           Text(
             count,
             style: AppTextStyles.h2.copyWith(
@@ -44,7 +44,7 @@ class StatCard extends StatelessWidget {
               fontSize: 22 * textScale,
             ),
           ),
-          SizedBox(height: size.height * 0.005),
+          const SizedBox(height: 6),
           Text(
             label,
             style: AppTextStyles.label.copyWith(

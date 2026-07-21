@@ -372,5 +372,10 @@
 "selectManager": "Select manager",
 "pleaseSelectManager": "Please select a manager",
 "departmentAddedSuccessfully": "Section added successfully",
-"requiredField": "Fields is required"
+"requiredField": "Fields is required",
+"departmentMainPage": "Main Page",
+"departmentCourses": "Courses",
+"departmentLeaderboard": "Leaderboard",
+"departmentSendReport": "Send Report",
+"departmentChat": "Chat"
 }

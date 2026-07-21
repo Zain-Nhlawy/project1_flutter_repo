@@ -26,7 +26,7 @@ class DemoSidePanel extends StatelessWidget {
   Widget build(BuildContext context) {
     final currentPlan = demo.plan?.toLowerCase() ?? 'starter';
     final isFreePlan = currentPlan == 'free';
-    final avatarSize = size.width * 0.18;
+    final avatarSize = 72.0;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -65,11 +65,11 @@ class DemoSidePanel extends StatelessWidget {
           ),
         ),
         if (demo.isOwner) ...[
-          SizedBox(height: size.height * 0.01),
+          const SizedBox(height: 8),
           Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: size.width * 0.02,
-              vertical: size.height * 0.005,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 8,
+              vertical: 4,
             ),
             decoration: BoxDecoration(
               color: AppColors.primary.withOpacity(0.1),
@@ -83,7 +83,7 @@ class DemoSidePanel extends StatelessWidget {
                   color: AppColors.primary,
                   size: 11 * textScale,
                 ),
-                SizedBox(width: size.width * 0.008),
+                const SizedBox(width: 4),
                 Text(
                   demo.plan ?? 'Starter',
                   style: AppTextStyles.label.copyWith(
@@ -96,11 +96,11 @@ class DemoSidePanel extends StatelessWidget {
             ),
           ),
           if (!isRestricted && isFreePlan) ...[
-            SizedBox(height: size.height * 0.006),
+            const SizedBox(height: 6),
             Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: size.width * 0.018,
-                vertical: size.height * 0.004,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 6,
+                vertical: 3,
               ),
               decoration: BoxDecoration(
                 color: Colors.orange.withOpacity(0.1),
@@ -114,7 +114,7 @@ class DemoSidePanel extends StatelessWidget {
                     color: Colors.orange.shade700,
                     size: 10 * textScale,
                   ),
-                  SizedBox(width: size.width * 0.006),
+                  const SizedBox(width: 4),
                   Text(
                     localizations.daysLeftText(daysLeft),
                     style: AppTextStyles.label.copyWith(

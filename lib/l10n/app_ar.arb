@@ -341,5 +341,10 @@
 "selectManager": "اختر المدير",
 "pleaseSelectManager": "الرجاء اختيار مدير",
 "departmentAddedSuccessfully": "تم إضافة القسم بنجاح",
-"requiredField": "قسم مطلوب "
+"requiredField": "قسم مطلوب ",
+"departmentMainPage": "الرئيسية",
+"departmentCourses": "الدورات",
+"departmentLeaderboard": "لوحة الصدارة",
+"departmentSendReport": "إرسال تقرير",
+"departmentChat": "المحادثة"
 }

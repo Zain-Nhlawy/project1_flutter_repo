@@ -1915,6 +1915,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Fields is required'**
   String get requiredField;
+
+  /// No description provided for @departmentMainPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Main Page'**
+  String get departmentMainPage;
+
+  /// No description provided for @departmentCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Courses'**
+  String get departmentCourses;
+
+  /// No description provided for @departmentLeaderboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Leaderboard'**
+  String get departmentLeaderboard;
+
+  /// No description provided for @departmentSendReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Report'**
+  String get departmentSendReport;
+
+  /// No description provided for @departmentChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat'**
+  String get departmentChat;
 }
 
 class _AppLocalizationsDelegate

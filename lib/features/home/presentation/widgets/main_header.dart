@@ -31,11 +31,11 @@ class MainHeader extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.only(
-        top: size.height * 0.08,
-        left: size.width * 0.06,
-        right: size.width * 0.06,
-        bottom: size.height * 0.04,
+      padding: const EdgeInsets.only(
+        top: 60,
+        left: 24,
+        right: 24,
+        bottom: 32,
       ),
       decoration: const BoxDecoration(
         gradient: AppColors.headerGradient,
@@ -58,7 +58,7 @@ class MainHeader extends StatelessWidget {
                       fontSize: 16 * textScale,
                     ),
                   ),
-                  SizedBox(height: size.height * 0.005),
+                  const SizedBox(height: 4),
                   BlocBuilder<UserCubit, UserState>(
                     builder: (context, state) {
                       String name = "";
@@ -75,7 +75,7 @@ class MainHeader extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(width: size.width * 0.02),
+                          const SizedBox(width: 8),
                         ],
                       );
                     },
@@ -115,9 +115,9 @@ class MainHeader extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.04,
-                        vertical: size.height * 0.015,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
                       ),
                     ),
                     child: Text(
@@ -129,7 +129,7 @@ class MainHeader extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(width: size.width * 0.02),
+                  const SizedBox(width: 8),
                   Container(
                     decoration: BoxDecoration(
                       color: AppColors.surface.withOpacity(0.3),
@@ -148,9 +148,9 @@ class MainHeader extends StatelessWidget {
                           ),
                         );
                       },
-                      padding: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.02,
-                        vertical: size.height * 0.015,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 12,
                       ),
                       constraints: const BoxConstraints(),
                       icon: Icon(
@@ -164,7 +164,7 @@ class MainHeader extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: size.height * 0.04),
+          const SizedBox(height: 32),
           Row(
             children: [
               Expanded(
@@ -174,7 +174,7 @@ class MainHeader extends StatelessWidget {
                   label: localizations.statMyDemos,
                 ),
               ),
-              SizedBox(width: size.width * 0.04),
+              const SizedBox(width: 16),
               Expanded(
                 child: StatCard(
                   icon: Icons.star_border_rounded,

@@ -21,7 +21,10 @@ class DemoUsersRemoteDataSourceImpl implements DemoUsersRemoteDataSource {
   @override
   Future<List<MembersModel>> getDemoUsers(String demoId) async {
     try {
-      final response = await dio.get('/demos/$demoId/members');
+      final response = await dio.get(
+        '/members',
+        options: Options(headers: {'x-demo-id': demoId}),
+      );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final List<dynamic> dataList = response.data['data'];
@@ -56,7 +59,10 @@ class DemoUsersRemoteDataSourceImpl implements DemoUsersRemoteDataSource {
   @override
   Future<bool> removeUserFromDemo(String demoId, String userId) async {
     try {
-      final response = await dio.delete('/demos/$demoId/members/$userId');
+      final response = await dio.delete(
+        '/members/$userId',
+        options: Options(headers: {'x-demo-id': demoId}),
+      );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return true;
@@ -73,7 +79,8 @@ class DemoUsersRemoteDataSourceImpl implements DemoUsersRemoteDataSource {
     try {
       final response = await dio.post(
         '/invitations',
-        data: {'receiverId': userId, 'demoId': demoId, 'role': "MEMBER"},
+        data: {'receiverId': userId, 'role': "MEMBER"},
+        options: Options(headers: {'x-demo-id': demoId}),
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {

@@ -951,4 +951,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get requiredField => 'قسم مطلوب ';
+
+  @override
+  String get departmentMainPage => 'الرئيسية';
+
+  @override
+  String get departmentCourses => 'الدورات';
+
+  @override
+  String get departmentLeaderboard => 'لوحة الصدارة';
+
+  @override
+  String get departmentSendReport => 'إرسال تقرير';
+
+  @override
+  String get departmentChat => 'المحادثة';
 }

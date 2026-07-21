@@ -57,7 +57,8 @@ class ManagerSelectionField extends StatelessWidget {
               previous.selectedManager != current.selectedManager ||
               previous.showValidationErrors != current.showValidationErrors,
           builder: (context, state) {
-            final hasError = state.showValidationErrors && state.selectedManager == null;
+            final hasError =
+                state.showValidationErrors && state.selectedManager == null;
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -74,8 +75,8 @@ class ManagerSelectionField extends StatelessWidget {
                         color: hasError
                             ? colors.error
                             : (state.selectedManager == null
-                                ? colors.outline.withOpacity(0.5)
-                                : colors.primary.withOpacity(0.5)),
+                                  ? colors.outline.withOpacity(0.5)
+                                  : colors.primary.withOpacity(0.5)),
                       ),
                     ),
                     child: Row(
@@ -85,8 +86,8 @@ class ManagerSelectionField extends StatelessWidget {
                           color: hasError
                               ? colors.error
                               : (state.selectedManager == null
-                                  ? colors.onSurfaceVariant
-                                  : colors.primary),
+                                    ? colors.onSurfaceVariant
+                                    : colors.primary),
                         ),
                         const SizedBox(width: 12),
                         Expanded(

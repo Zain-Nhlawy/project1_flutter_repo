@@ -19,7 +19,7 @@ class SnackbarTheme {
             title: 'success',
             message: message,
             messageTextStyle: AppTextStyles.bodyMedium.copyWith(
-              color: theme.colorScheme.error,
+              color: Colors.white,
             ),
             contentType: ContentType.success,
             color: colors.tertiary,

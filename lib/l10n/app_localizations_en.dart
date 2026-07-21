@@ -954,4 +954,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get requiredField => 'Fields is required';
+
+  @override
+  String get departmentMainPage => 'Main Page';
+
+  @override
+  String get departmentCourses => 'Courses';
+
+  @override
+  String get departmentLeaderboard => 'Leaderboard';
+
+  @override
+  String get departmentSendReport => 'Send Report';
+
+  @override
+  String get departmentChat => 'Chat';
 }

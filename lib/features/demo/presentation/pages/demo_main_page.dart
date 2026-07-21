@@ -7,7 +7,7 @@ import 'package:project1/features/department/presentation/cubit/department%20cub
 import 'package:project1/features/department/presentation/cubit/department%20cubit/department_state.dart';
 import 'package:project1/features/demo/presentation/cubit/main_page_switch_cubit.dart';
 import 'package:project1/features/demo/presentation/widgets/demo_main_page_widget/header_widget.dart';
-import 'package:project1/features/demo/presentation/widgets/demo_main_page_widget/item_card_widget.dart';
+import 'package:project1/features/department/presentation/widgets/item_card_widget.dart';
 import 'package:project1/features/demo/presentation/widgets/demo_main_page_widget/main_action_sheet.dart';
 import 'package:project1/features/demo/presentation/widgets/demo_main_page_widget/toggle_switch_widget.dart';
 import 'package:project1/features/department/presentation/pages/add_department_screen.dart';
@@ -181,13 +181,16 @@ class DemoMainPage extends StatelessWidget {
                               );
                             }
                           : () {
-                              final departmentCubit = context.read<DepartmentCubit>();
+                              final departmentCubit = context
+                                  .read<DepartmentCubit>();
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => BlocProvider.value(
                                     value: departmentCubit,
-                                    child: AddDepartmentScreen(demoId: demo.id!),
+                                    child: AddDepartmentScreen(
+                                      demoId: demo.id!,
+                                    ),
                                   ),
                                 ),
                               );
@@ -253,6 +256,7 @@ class DemoMainPage extends StatelessWidget {
                     icon: Icons.layers,
                   ),
                 ),
+              const SizedBox(height: 80),
             ],
           );
         }

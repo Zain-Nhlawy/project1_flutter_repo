@@ -23,7 +23,7 @@ class DemoCard extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.only(bottom: size.height * 0.02),
+      margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(22),
@@ -47,7 +47,7 @@ class DemoCard extends StatelessWidget {
               Container(width: 4, color: Colors.red.withOpacity(0.6)),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.all(size.width * 0.045),
+                padding: const EdgeInsets.all(16),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -59,7 +59,7 @@ class DemoCard extends StatelessWidget {
                       isRestricted: isRestricted,
                       daysLeft: daysLeft,
                     ),
-                    SizedBox(width: size.width * 0.04),
+                    const SizedBox(width: 16),
                     DemoMainContent(
                       demo: demo,
                       size: size,
