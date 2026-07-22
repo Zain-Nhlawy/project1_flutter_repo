@@ -153,7 +153,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
           ),
         ),
         body: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 65),
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 60),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

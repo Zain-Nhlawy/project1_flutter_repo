@@ -46,39 +46,53 @@ class CourseRemoteDataSource {
   }
 
   Future<List<CourseModel>> getDemoCourses(String demoId) async {
-    try {
-      final res = await dioClient.dio.get('/demos/$demoId/assets/cursor');
-      final List<dynamic>? data = res.data?['data'];
-      if (data == null) {
-        throw const ServerException('Failed to load demo courses.');
-      }
-      return data
-          .map((asset) {
-            if (asset['course'] == null) return null;
-            return CourseModel.fromAssetJson(Map<String, dynamic>.from(asset));
-          })
-          .whereType<CourseModel>()
-          .toList();
-    } on DioException catch (e) {
-      throw mapDioException(e);
+  try {
+    final res = await dioClient.dio.get(
+      '/assets/cursor',
+      options: Options(
+        headers: {
+          'x-demo-id': demoId,
+        },
+      ),
+    );
+    final List<dynamic>? data = res.data?['data'];
+    if (data == null) {
+      throw const ServerException('Failed to load demo courses.');
     }
+    return data
+        .map((asset) {
+          if (asset['course'] == null) return null;
+          return CourseModel.fromAssetJson(Map<String, dynamic>.from(asset));
+        })
+        .whereType<CourseModel>()
+        .toList();
+  } on DioException catch (e) {
+    throw mapDioException(e);
   }
+}
 
   Future<CourseModel> getDemoCourse({
-    required String demoId,
-    required String assetId,
-  }) async {
-    try {
-      final res = await dioClient.dio.get('/demos/$demoId/assets/$assetId');
-      final data = res.data?['data'];
-      if (data == null) {
-        throw const ServerException('Failed to load course.');
-      }
-      return CourseModel.fromAssetJson(Map<String, dynamic>.from(data));
-    } on DioException catch (e) {
-      throw mapDioException(e);
+  required String demoId,
+  required String assetId,
+}) async {
+  try {
+    final res = await dioClient.dio.get(
+      '/assets/$assetId',
+      options: Options(
+        headers: {
+          'x-demo-id': demoId,
+        },
+      ),
+    );
+    final data = res.data?['data'];
+    if (data == null) {
+      throw const ServerException('Failed to load course.');
     }
+    return CourseModel.fromAssetJson(Map<String, dynamic>.from(data));
+  } on DioException catch (e) {
+    throw mapDioException(e);
   }
+}
 
   Future<CourseModel> updateCourse({
     required String courseId,

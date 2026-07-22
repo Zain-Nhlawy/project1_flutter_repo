@@ -259,7 +259,7 @@ class CourseCard extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerRight,
                     child: SizedBox(
-                      width: 125,
+                      width: 126,
                       child: isPublished
                           ? CustomButton(
                               text: localizations.seeMore,

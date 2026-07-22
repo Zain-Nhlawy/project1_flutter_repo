@@ -192,20 +192,6 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 12),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: [
-                        CourseTag(
-                          text: _formatDuration(_currentLesson.duration),
-                        ),
-                        CourseTag(
-                          text:
-                              '${localizations.lessons} ${_currentLesson.order}',
-                        ),
-                      ],
-                    ),
                     const SizedBox(height: 24),
                     Text(
                       localizations.lessonOverview,

@@ -96,12 +96,17 @@ class DioClient extends Api {
           } else {
             print('➡️ [${options.path}] noAuth=true, skipping token logic');
           }
+          print('➡️ Headers:');
+          options.headers.forEach((key, value) {
+            print('   $key: $value');
+          });
           return handler.next(options);
         },
         onError: (DioException error, handler) async {
           print(
             '🔴 ERROR: ${error.requestOptions.path} -> status=${error.response?.statusCode}',
           );
+          print('🔴 Response body: ${error.response?.data}');
 
           final is401 = error.response?.statusCode == 401;
           final retried = error.requestOptions.extra['retried'] == true;

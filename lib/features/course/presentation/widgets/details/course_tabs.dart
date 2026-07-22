@@ -90,16 +90,24 @@ class _CourseTabsState extends State<CourseTabs> {
 
                       return ListView(
                         padding: const EdgeInsets.symmetric(vertical: 10),
-                        children: state.sections.map((section) {
-                          return Column(
-                            children: [
-                              _SectionLessonsExpansionTile(section: section),
-                              Divider(
-                                height: 1,
-                                thickness: 1,
-                                color: Colors.grey.shade300,
-                              ),
-                            ],
+                        children: state.sections.asMap().entries.map((entry) {
+                        final index = entry.key;
+                        final section = entry.value;
+                        final isLastSection = index == state.sections.length - 1;
+                          return Padding(
+                            padding: EdgeInsets.only(
+                              bottom: isLastSection ? 50 : 0,
+                            ),
+                            child: Column(
+                              children: [
+                                _SectionLessonsExpansionTile(section: section),
+                                Divider(
+                                  height: 1,
+                                  thickness: 1,
+                                  color: Colors.grey.shade300,
+                                ),
+                              ],
+                            ),
                           );
                         }).toList(),
                       );
@@ -248,7 +256,6 @@ class _SectionLessonsExpansionTileState
                 final index = entry.key;
                 final lesson = entry.value;
                 final isLast = index == _lessons.length - 1;
-
                 return LessonConnector(
                   num: index + 1,
                   isLast: isLast,
