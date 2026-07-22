@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/demo/domain/entities/demo_entity.dart';
+import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/main_page_switch_cubit.dart';
 import 'package:project1/features/demo/presentation/widgets/demo_main_page_widget/demo_fab_widget.dart';
 import 'package:project1/features/demo/presentation/widgets/demo_main_page_widget/groups_content_widget.dart';
@@ -24,6 +25,10 @@ class DemoMainPage extends StatelessWidget {
         BlocProvider(
           create: (context) =>
               getIt<DepartmentCubit>()..fetchDepartments(demo.id!),
+        ),
+        BlocProvider(
+          create: (context) =>
+              getIt<DemoUserCubit>()..fetchUsers(demo.id!),
         ),
       ],
       child: Scaffold(

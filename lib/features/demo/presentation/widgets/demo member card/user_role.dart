@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:project1/config/theme/app_text_styles.dart';
 
 class UserRoleBadge extends StatelessWidget {
   const UserRoleBadge({super.key, required this.role});

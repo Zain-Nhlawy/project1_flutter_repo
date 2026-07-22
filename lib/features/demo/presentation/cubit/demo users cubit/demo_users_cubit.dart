@@ -22,6 +22,18 @@ class DemoUserCubit extends Cubit<DemoUsersState> {
     }
   }
 
+  String? getMyMemberId(String currentUserEmail) {
+  final currentState = state;
+  if (currentState is! GetDemoUsersLoaded) return null;
+  try {
+    return currentState.users
+        .firstWhere((member) => member.email == currentUserEmail)
+        .memberIdInDemo;
+  } catch (_) {
+    return null;
+  }
+}
+
   Future<void> searchUsers(String query) async {
     emit(GetDemoUsersLoading());
 

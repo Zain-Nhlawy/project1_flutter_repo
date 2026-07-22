@@ -91,7 +91,7 @@ class DemoMainContent extends StatelessWidget {
                     ? localizations.upgradePlan
                     : localizations.see,
                 onPressed: canOpen
-                    ? () {
+                    ? () async {  
                         Navigator.push(
                           context,
                           PageRouteBuilder(
@@ -100,7 +100,7 @@ class DemoMainContent extends StatelessWidget {
                             ),
                             pageBuilder:
                                 (context, animation, secondaryAnimation) =>
-                                    DemoMainPage(demo: demo),
+                                    DemoMainPage(demo:demo),
                             transitionsBuilder:
                                 (
                                   context,

@@ -3,7 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
+import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
+import 'package:project1/features/auth/presentation/cubit/user_state.dart';
 import 'package:project1/features/demo/domain/entities/demo_entity.dart';
+import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_cubit.dart';
 import 'package:project1/features/department/domain/entities/department_entity.dart';
 import 'package:project1/features/department/presentation/cubit/department%20cubit/department_cubit.dart';
 import 'package:project1/features/department/presentation/cubit/department%20cubit/department_state.dart';
@@ -218,11 +222,20 @@ class SectionsContentWidget extends StatelessWidget {
                   itemCount: departments.length,
                   itemBuilder: (context, index) {
                     final department = departments[index];
+                    final userState = getIt<UserCubit>().state;
+                    final myMemberId = userState is UserLoaded
+                        ? context.watch<DemoUserCubit>().getMyMemberId(
+                            userState.user.email,
+                          )
+                        : null;
+                    final isManager = department.managerId == myMemberId;
                     final departmentCubit = context.read<DepartmentCubit>();
                     return ItemCardWidget(
                       departmentEntity: department,
                       icon: Icons.layers_rounded,
                       isOwner: demo.isOwner,
+                      isManager: isManager,
+                      demoId: demo.id!,
                       onEdit: () {
                         Navigator.push(
                           context,

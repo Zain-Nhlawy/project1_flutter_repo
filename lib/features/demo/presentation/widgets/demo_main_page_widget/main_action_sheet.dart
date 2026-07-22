@@ -22,30 +22,30 @@ class MainActionsSheet extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _CircleActionButton(
-              icon: Icons.menu_book_outlined,
-              label: l10n.courses,
-              theme: theme,
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                    transitionDuration: const Duration(milliseconds: 300),
-                    pageBuilder: (context, animation, secondaryAnimation) =>
-                        CoursesSelectionScreen(demoId: demoId),
-                    transitionsBuilder:
-                        (context, animation, secondaryAnimation, child) {
-                      return FadeThroughTransition(
-                        animation: animation,
-                        secondaryAnimation: secondaryAnimation,
-                        child: child,
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
+              _CircleActionButton(
+                icon: Icons.menu_book_outlined,
+                label: l10n.courses,
+                theme: theme,
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      transitionDuration: const Duration(milliseconds: 300),
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          CoursesSelectionScreen(demoId: demoId),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        return FadeThroughTransition(
+                          animation: animation,
+                          secondaryAnimation: secondaryAnimation,
+                          child: child,
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
             _CircleActionButton(
               icon: Icons.people_alt_outlined,
               label: l10n.usersTab,

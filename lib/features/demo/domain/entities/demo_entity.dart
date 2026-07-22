@@ -20,4 +20,5 @@ class DemoEntity {
     this.membersCount = 0,
     this.createdAt,
   });
+
 }

@@ -6,6 +6,7 @@ import 'package:project1/features/demo/data/models/demo_model.dart';
 abstract class DemoRemoteDataSource {
   Future<List<DemoModel>> getDemos();
   Future<void> addDemo(DemoModel demo);
+  
 }
 
 class DemoRemoteDataSourceImpl implements DemoRemoteDataSource {

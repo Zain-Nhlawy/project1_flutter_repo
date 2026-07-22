@@ -13,14 +13,20 @@ class ItemCardWidget extends StatelessWidget {
   final bool isOwner;
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
+  final String demoId;
+  final bool isManager;
+  final bool canManage;
 
   const ItemCardWidget({
     super.key,
     required this.icon,
     required this.departmentEntity,
     this.isOwner = false,
+    this.isManager = false,
+    this.canManage = false,
     this.onEdit,
     this.onDelete,
+    required this.demoId, 
   });
 
   @override
@@ -48,7 +54,7 @@ class ItemCardWidget extends StatelessWidget {
                 PageRouteBuilder(
                   transitionDuration: const Duration(milliseconds: 300),
                   pageBuilder: (context, animation, secondaryAnimation) =>
-                      DepartmentMainPage(department: departmentEntity),
+                      DepartmentMainPage(department: departmentEntity,demoId: demoId,canManage: isOwner || isManager,),
                   transitionsBuilder:
                       (context, animation, secondaryAnimation, child) {
                         return SharedAxisTransition(

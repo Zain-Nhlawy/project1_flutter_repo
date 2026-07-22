@@ -80,8 +80,7 @@ class _CoursesSelectionScreenState extends State<CoursesSelectionScreen>
           controller: _tabController,
 
           children: [
-            DemoCoursesScreen(demoId: widget.demoId),
-
+            DemoCoursesScreen(demoId: widget.demoId, showAppBar: true,),
             CoursesInProgressScreen(demoId: widget.demoId),
           ],
         ),

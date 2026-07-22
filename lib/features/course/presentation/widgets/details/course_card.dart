@@ -3,6 +3,13 @@ import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/features/course/presentation/widgets/custom_button.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
+enum CourseCardMode {
+  ongoing,
+  demoView,
+  demoSelection,
+  library,
+}
+
 class CourseCard extends StatelessWidget {
   final String id;
   final String title;
@@ -13,8 +20,12 @@ class CourseCard extends StatelessWidget {
   final List<String> tags;
   final String? visibility;
   final bool isPublished;
+  final CourseCardMode mode;
+  final bool isSelected;
   final VoidCallback? onTap;
   final VoidCallback? onSeeMore;
+  final VoidCallback? onSelect;
+  final VoidCallback? onBuy;
 
   const CourseCard({
     super.key,
@@ -27,9 +38,38 @@ class CourseCard extends StatelessWidget {
     this.tags = const [],
     this.visibility,
     this.isPublished = false,
+    this.mode = CourseCardMode.demoView,
+    this.isSelected = false,
     this.onTap,
     this.onSeeMore,
+    this.onSelect,
+    this.onBuy,
   });
+
+  String _buttonText(AppLocalizations localizations) {
+    switch (mode) {
+      case CourseCardMode.ongoing:
+        return "Manage";
+      case CourseCardMode.demoView:
+        return localizations.seeMore;
+      case CourseCardMode.demoSelection:
+      return localizations.seeMore;
+      case CourseCardMode.library:
+        return price == null || price == 0 ? localizations.seeMore : "Buy";
+    }
+  }
+
+  VoidCallback? _buttonAction() {
+  switch (mode) {
+    case CourseCardMode.ongoing:
+      return onTap;
+    case CourseCardMode.demoView:
+    case CourseCardMode.demoSelection:
+      return onSeeMore;
+    case CourseCardMode.library:
+      return price == null || price == 0 ? onSeeMore : onBuy;
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -105,35 +145,6 @@ class CourseCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Positioned(
-                      top: 12,
-                      right: 12,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 7,
-                        ),
-                        decoration: BoxDecoration(
-                          gradient: isFree
-                              ? LinearGradient(
-                                  colors: [
-                                    Colors.green.shade500,
-                                    Colors.green.shade700,
-                                  ],
-                                )
-                              : AppColors.buttonGradient,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          displayPrice,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                    ),
                     if (visibility != null)
                       Positioned(
                         top: 12,
@@ -166,6 +177,35 @@ class CourseCard extends StatelessWidget {
                                 ),
                               ),
                             ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 12,
+                        right: 12,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 7,
+                          ),
+                          decoration: BoxDecoration(
+                            gradient: isFree
+                                ? LinearGradient(
+                                    colors: [
+                                      Colors.green.shade500,
+                                      Colors.green.shade700,
+                                    ],
+                                  )
+                                : AppColors.buttonGradient,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            displayPrice,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
                           ),
                         ),
                       ),
@@ -256,26 +296,47 @@ class CourseCard extends StatelessWidget {
                     ),
                   ],
                   const SizedBox(height: 18),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: SizedBox(
-                      width: 126,
-                      child: isPublished
-                          ? CustomButton(
-                              text: localizations.seeMore,
-                              height: 38,
-                              onPressed: onSeeMore,
-                              gradient: AppColors.buttonGradient,
-                              expand: false,
-                            )
-                          : CustomButton(
-                              text: "Manage",
-                              height: 38,
-                              onPressed: onTap,
-                              gradient: AppColors.buttonGradient,
-                              expand: false,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      if (mode == CourseCardMode.demoSelection)
+                        GestureDetector(
+                          onTap: onSelect,
+                          child: Container(
+                            padding: const EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(.1),
+                                  blurRadius: 6,
+                                ),
+                              ],
                             ),
-                    ),
+                            child: Icon(
+                              isSelected
+                                  ? Icons.check_circle
+                                  : Icons.add_circle_outline,
+                              size: 30,
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        )
+                      else
+                        const SizedBox(),
+
+                      SizedBox(
+                        width: 126,
+                        child: CustomButton(
+                          text: _buttonText(localizations),
+                          height: 38,
+                          onPressed: _buttonAction(),
+                          gradient: AppColors.buttonGradient,
+                          expand: false,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
