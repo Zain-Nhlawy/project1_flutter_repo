@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/demo/domain/entities/user_entity.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_cubit.dart';
@@ -38,20 +40,22 @@ class ManagerSelectionField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final size = MediaQuery.sizeOf(context);
+    final textScale = MediaQuery.textScalerOf(context).scale(1);
     final l10n = AppLocalizations.of(context)!;
-    final colors = theme.colorScheme;
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           l10n.manager,
-          style: theme.textTheme.titleMedium?.copyWith(
+          style: AppTextStyles.titleMedium.copyWith(
+            color: AppColors.textPrimary,
             fontWeight: FontWeight.w600,
+            fontSize: 14 * textScale,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: size.height * 0.01),
         BlocBuilder<AddDepartmentCubit, AddDepartmentState>(
           buildWhen: (previous, current) =>
               previous.selectedManager != current.selectedManager ||
@@ -61,62 +65,75 @@ class ManagerSelectionField extends StatelessWidget {
                 state.showValidationErrors && state.selectedManager == null;
 
             return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                InkWell(
-                  onTap: () => _selectManager(context),
-                  borderRadius: BorderRadius.circular(12),
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: colors.surface,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: hasError
-                            ? colors.error
-                            : (state.selectedManager == null
-                                  ? colors.outline.withOpacity(0.5)
-                                  : colors.primary.withOpacity(0.5)),
+                Material(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(16),
+                  child: InkWell(
+                    onTap: () => _selectManager(context),
+                    borderRadius: BorderRadius.circular(16),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: size.width * 0.04,
+                        vertical: size.height * 0.02,
                       ),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.person_outline,
-                          color: hasError
-                              ? colors.error
-                              : (state.selectedManager == null
-                                    ? colors.onSurfaceVariant
-                                    : colors.primary),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            state.selectedManager == null
-                                ? l10n.selectManager
-                                : '${state.selectedManager!.firstName} ${state.selectedManager!.lastName}',
-                            style: theme.textTheme.bodyLarge?.copyWith(
-                              color: state.selectedManager == null
-                                  ? colors.onSurfaceVariant
-                                  : colors.onSurface,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.textSecondary.withValues(
+                              alpha: 0.05,
+                            ),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.person_outline_rounded,
+                            color: AppColors.primary,
+                            size: 20 * textScale,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              state.selectedManager == null
+                                  ? l10n.selectManager
+                                  : '${state.selectedManager!.firstName} ${state.selectedManager!.lastName}',
+                              style: AppTextStyles.bodyMedium.copyWith(
+                                color: state.selectedManager == null
+                                    ? AppColors.textSecondary.withValues(
+                                        alpha: 0.6,
+                                      )
+                                    : AppColors.textPrimary,
+                                fontSize: 14 * textScale,
+                              ),
                             ),
                           ),
-                        ),
-                        Icon(
-                          Icons.chevron_right,
-                          color: colors.onSurfaceVariant,
-                        ),
-                      ],
+                          Icon(
+                            Icons.chevron_right_rounded,
+                            color: AppColors.textSecondary.withValues(
+                              alpha: 0.6,
+                            ),
+                            size: 22 * textScale,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
                 if (hasError)
                   Padding(
-                    padding: const EdgeInsets.only(top: 8, left: 16),
+                    padding: const EdgeInsets.only(top: 6, left: 8, right: 8),
                     child: Text(
                       l10n.pleaseSelectManager,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: colors.error,
+                      style: AppTextStyles.caption.copyWith(
+                        color: AppColors.error,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),

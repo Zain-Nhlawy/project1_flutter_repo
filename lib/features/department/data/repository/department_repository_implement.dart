@@ -24,6 +24,8 @@ class DepartmentRepositoryImplement implements DepartmentRepository {
       return Left(e.toString());
     }
   }
+
+
   @override   
   Future<Either<String, void>> createDepartment(  
     DepartmentEntity department,
@@ -31,6 +33,39 @@ class DepartmentRepositoryImplement implements DepartmentRepository {
   ) async {
     try {
       await remoteDataSource.createDepartment(department as DepartmentModel, demoId);
+      return const Right(null);
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+
+  @override
+  Future<Either<String, void>> deleteDepartment(
+    String departmentId,
+    String demoId,
+  ) async {
+    try {
+      await remoteDataSource.deleteDepartment(departmentId, demoId);
+      return const Right(null);
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  
+  @override
+  Future<Either<String, void>> updateDepartment(  
+    String departmentId,
+    DepartmentEntity department,
+    String demoId,
+  ) async {
+    try {
+      await remoteDataSource.updateDepartment(
+        departmentId,
+        department as DepartmentModel,
+        demoId,
+      );
       return const Right(null);
     } catch (e) {
       return Left(e.toString());

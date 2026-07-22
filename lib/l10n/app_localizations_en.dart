@@ -969,4 +969,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get departmentChat => 'Chat';
+
+  @override
+  String get editDepartment => 'Edit Department';
+
+  @override
+  String get removeDepartment => 'Remove Department';
+
+  @override
+  String get departmentUpdatedSuccessfully => 'Section updated successfully';
+
+  @override
+  String get departmentDeletedSuccessfully => 'Section deleted successfully';
 }

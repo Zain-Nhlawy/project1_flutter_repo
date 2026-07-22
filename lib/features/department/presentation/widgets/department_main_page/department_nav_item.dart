@@ -22,7 +22,7 @@ class SidebarItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final primary = AppColors.primaryOf(context);
+    final theme = Theme.of(context).colorScheme;
     final textSecondary = AppColors.textSecondaryOf(context);
 
     return GestureDetector(
@@ -35,7 +35,7 @@ class SidebarItemWidget extends StatelessWidget {
             duration: const Duration(milliseconds: 200),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: isSelected ? primary : Colors.transparent,
+              color: isSelected ? theme.tertiary : Colors.transparent,
               borderRadius: BorderRadius.circular(16),
             ),
             child: Icon(
@@ -55,7 +55,9 @@ class SidebarItemWidget extends StatelessWidget {
               style: TextStyle(
                 fontSize: 10,
                 fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                color: isSelected ? primary : textSecondary.withOpacity(0.5),
+                color: isSelected
+                    ? theme.onTertiary
+                    : textSecondary.withOpacity(0.5),
               ),
             ),
           ),

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:project1/core/errors/dio_exception_mapper.dart';
 import 'package:project1/features/demo/data/models/invitation_model.dart';
 import 'package:project1/features/demo/data/models/search_user_model.dart';
 import 'package:project1/features/demo/data/models/user_model.dart';
@@ -32,8 +33,8 @@ class DemoUsersRemoteDataSourceImpl implements DemoUsersRemoteDataSource {
       } else {
         throw Exception(response.data['message']);
       }
-    } catch (e) {
-      throw Exception(e.toString());
+    } on DioException catch (e) {
+      throw mapDioException(e);
     }
   }
 
@@ -51,8 +52,8 @@ class DemoUsersRemoteDataSourceImpl implements DemoUsersRemoteDataSource {
       } else {
         throw Exception(response.data['message']);
       }
-    } catch (e) {
-      throw Exception(e.toString());
+    } on DioException catch (e) {
+      throw mapDioException(e);
     }
   }
 
@@ -69,8 +70,8 @@ class DemoUsersRemoteDataSourceImpl implements DemoUsersRemoteDataSource {
       } else {
         throw Exception(response.data['message']);
       }
-    } catch (e) {
-      throw Exception(e.toString());
+    } on DioException catch (e) {
+      throw mapDioException(e);
     }
   }
 
@@ -92,9 +93,7 @@ class DemoUsersRemoteDataSourceImpl implements DemoUsersRemoteDataSource {
       if (e.response?.statusCode == 409) {
         throw Exception('user_already_invited');
       }
-      throw Exception(e.response?.data?['message'] ?? e.toString());
-    } catch (e) {
-      throw Exception(e.toString());
+      throw mapDioException(e);
     }
   }
 
@@ -109,8 +108,8 @@ class DemoUsersRemoteDataSourceImpl implements DemoUsersRemoteDataSource {
       } else {
         throw Exception(response.data['message']);
       }
-    } catch (e) {
-      throw Exception(e.toString());
+    } on DioException catch (e) {
+      throw mapDioException(e);
     }
   }
 
@@ -121,8 +120,8 @@ class DemoUsersRemoteDataSourceImpl implements DemoUsersRemoteDataSource {
       if (response.statusCode != 200 && response.statusCode != 201) {
         throw Exception(response.data['message']);
       }
-    } catch (e) {
-      throw Exception(e.toString());
+    } on DioException catch (e) {
+      throw mapDioException(e);
     }
   }
 
@@ -133,8 +132,8 @@ class DemoUsersRemoteDataSourceImpl implements DemoUsersRemoteDataSource {
       if (response.statusCode != 200 && response.statusCode != 201) {
         throw Exception(response.data['message']);
       }
-    } catch (e) {
-      throw Exception(e.toString());
+    } on DioException catch (e) {
+      throw mapDioException(e);
     }
   }
 }

@@ -19,3 +19,5 @@ class DepartmentError extends DepartmentState {
 }
 
 class DepartmentCreated extends DepartmentState {}
+class DepartmentDeleted extends DepartmentState {}
+class DepartmentUpdated extends DepartmentState {}

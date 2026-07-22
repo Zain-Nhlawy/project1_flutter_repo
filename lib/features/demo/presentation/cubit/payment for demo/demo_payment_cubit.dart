@@ -14,10 +14,25 @@ class PaymentWebViewCubit extends Cubit<PaymentWebViewState> {
 
   Future<String> requestPayment(String demoId, String plan) async {
     emit(PaymentWebViewState(isLoading: true));
-    final result = await requestPaymentUseCase.requestPayment(demoId, plan);
-    emit(PaymentWebViewState(isLoading: false));
+    try {
+      final result = await requestPaymentUseCase.requestPayment(demoId, plan);
 
-    return result.fold((error) => throw Exception(error), (url) => url);
+      return result.fold(
+        (error) {
+          emit(PaymentWebViewState(isLoading: false, errorMessage: error));
+          throw Exception(error);
+        },
+        (url) {
+          emit(PaymentWebViewState(isLoading: false));
+          return url;
+        },
+      );
+    } catch (e) {
+      if (!isClosed) {
+        emit(PaymentWebViewState(isLoading: false, errorMessage: e.toString()));
+      }
+      rethrow;
+    }
   }
 
   Future<void> handlePaymentSuccess(String sessionId) async {
@@ -36,19 +51,21 @@ class PaymentWebViewCubit extends Cubit<PaymentWebViewState> {
 
       await result.fold(
         (error) async {
-          if (!isClosed)
+          if (!isClosed) {
             emit(
               PaymentWebViewState(
                 isLoading: false,
                 errorMessage: error.toString(),
               ),
             );
+          }
           isConfirmed = true;
         },
         (status) async {
           if (status.toLowerCase() == 'complete') {
-            if (!isClosed)
+            if (!isClosed) {
               emit(PaymentWebViewState(isLoading: false, status: status));
+            }
             isConfirmed = true;
           } else {
             await Future.delayed(const Duration(seconds: 3));

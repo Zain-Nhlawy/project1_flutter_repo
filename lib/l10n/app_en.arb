@@ -377,5 +377,9 @@
 "departmentCourses": "Courses",
 "departmentLeaderboard": "Leaderboard",
 "departmentSendReport": "Send Report",
-"departmentChat": "Chat"
+"departmentChat": "Chat",
+"editDepartment": "Edit Department",
+"removeDepartment": "Remove Department",
+"departmentUpdatedSuccessfully": "Section updated successfully",
+"departmentDeletedSuccessfully": "Section deleted successfully"
 }

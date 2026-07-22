@@ -346,5 +346,9 @@
 "departmentCourses": "الدورات",
 "departmentLeaderboard": "لوحة الصدارة",
 "departmentSendReport": "إرسال تقرير",
-"departmentChat": "المحادثة"
+"departmentChat": "المحادثة",
+"editDepartment": "تعديل القسم",
+"removeDepartment": "حذف القسم",
+"departmentUpdatedSuccessfully": "تم تحديث القسم بنجاح",
+"departmentDeletedSuccessfully": "تم حذف القسم بنجاح"
 }

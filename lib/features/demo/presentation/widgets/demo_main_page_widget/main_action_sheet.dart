@@ -36,12 +36,12 @@ class MainActionsSheet extends StatelessWidget {
                         CoursesSelectionScreen(demoId: demoId),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
-                          return FadeThroughTransition(
-                            animation: animation,
-                            secondaryAnimation: secondaryAnimation,
-                            child: child,
-                          );
-                        },
+                      return FadeThroughTransition(
+                        animation: animation,
+                        secondaryAnimation: secondaryAnimation,
+                        child: child,
+                      );
+                    },
                   ),
                 );
               },
@@ -59,18 +59,18 @@ class MainActionsSheet extends StatelessWidget {
                     transitionDuration: const Duration(milliseconds: 300),
                     pageBuilder: (context, animation, secondaryAnimation) =>
                         BlocProvider(
-                          create: (_) =>
-                              getIt<DemoUserCubit>()..fetchUsers(demoId),
-                          child: DemoUsersScreen(demoId: demoId),
-                        ),
+                      create: (_) =>
+                          getIt<DemoUserCubit>()..fetchUsers(demoId),
+                      child: DemoUsersScreen(demoId: demoId),
+                    ),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
-                          return FadeThroughTransition(
-                            animation: animation,
-                            secondaryAnimation: secondaryAnimation,
-                            child: child,
-                          );
-                        },
+                      return FadeThroughTransition(
+                        animation: animation,
+                        secondaryAnimation: secondaryAnimation,
+                        child: child,
+                      );
+                    },
                   ),
                 );
               },

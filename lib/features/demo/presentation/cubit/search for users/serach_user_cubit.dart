@@ -15,14 +15,18 @@ class SearchUserCubit extends Cubit<SearchUserState> {
 
     emit(SearchUserLoading());
 
-    final result = await usecase.search(query);
+    try {
+      final result = await usecase.search(query);
 
-    result.fold((error) => emit(SearchUserError(error)), (users) {
-      if (users.isEmpty) {
-        emit(SearchUserEmpty());
-      } else {
-        emit(SearchUserLoaded(users));
-      }
-    });
+      result.fold((error) => emit(SearchUserError(error)), (users) {
+        if (users.isEmpty) {
+          emit(SearchUserEmpty());
+        } else {
+          emit(SearchUserLoaded(users));
+        }
+      });
+    } catch (e) {
+      emit(SearchUserError(e.toString()));
+    }
   }
 }

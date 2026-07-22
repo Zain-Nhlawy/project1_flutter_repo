@@ -966,4 +966,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get departmentChat => 'المحادثة';
+
+  @override
+  String get editDepartment => 'تعديل القسم';
+
+  @override
+  String get removeDepartment => 'حذف القسم';
+
+  @override
+  String get departmentUpdatedSuccessfully => 'تم تحديث القسم بنجاح';
+
+  @override
+  String get departmentDeletedSuccessfully => 'تم حذف القسم بنجاح';
 }

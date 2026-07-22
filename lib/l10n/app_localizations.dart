@@ -1945,6 +1945,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Chat'**
   String get departmentChat;
+
+  /// No description provided for @editDepartment.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Department'**
+  String get editDepartment;
+
+  /// No description provided for @removeDepartment.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove Department'**
+  String get removeDepartment;
+
+  /// No description provided for @departmentUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Section updated successfully'**
+  String get departmentUpdatedSuccessfully;
+
+  /// No description provided for @departmentDeletedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Section deleted successfully'**
+  String get departmentDeletedSuccessfully;
 }
 
 class _AppLocalizationsDelegate

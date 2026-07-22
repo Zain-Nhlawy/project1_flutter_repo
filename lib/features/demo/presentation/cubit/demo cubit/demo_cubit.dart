@@ -11,22 +11,30 @@ class DemoCubit extends Cubit<DemoState> {
   Future<void> fetchDemos() async {
     emit(GetDemosLoading());
 
-    final result = await getDemosUseCase.getDemos();
+    try {
+      final result = await getDemosUseCase.getDemos();
 
-    result.fold(
-      (error) => emit(GetDemosError(error)),
-      (demos) => emit(GetDemosLoaded(demos)),
-    );
+      result.fold(
+        (error) => emit(GetDemosError(error)),
+        (demos) => emit(GetDemosLoaded(demos)),
+      );
+    } catch (e) {
+      emit(GetDemosError(e.toString()));
+    }
   }
 
   Future<void> addDemo(DemoModel demo) async {
     emit(AddDemoLoading());
 
-    final result = await getDemosUseCase.addDemo(demo);
+    try {
+      final result = await getDemosUseCase.addDemo(demo);
 
-    result.fold((error) => emit(AddDemoError(error)), (_) {
-      emit(AddDemoSuccess());
-      fetchDemos();
-    });
+      result.fold((error) => emit(AddDemoError(error)), (_) {
+        emit(AddDemoSuccess());
+        fetchDemos();
+      });
+    } catch (e) {
+      emit(AddDemoError(e.toString()));
+    }
   }
 }

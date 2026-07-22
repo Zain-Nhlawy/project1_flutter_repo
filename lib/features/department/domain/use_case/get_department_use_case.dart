@@ -11,10 +11,28 @@ class GetDepartmentUseCase {
     return await repository.getDepartment(demoId);
   }
 
+
   Future<Either<String, void>> createDepartment(
     DepartmentModel department,
     String demoId,
   ) async {
     return await repository.createDepartment(department, demoId);
+  }
+
+
+  Future<Either<String, void>> deleteDepartment(
+    String departmentId,
+    String demoId,
+  ) async {
+    return await repository.deleteDepartment(departmentId, demoId);
+  }
+
+  
+  Future<Either<String, void>> updateDepartment(
+    String departmentId,
+    DepartmentModel department,
+    String demoId,
+  ) async {
+    return await repository.updateDepartment(departmentId, department, demoId);
   }
 }

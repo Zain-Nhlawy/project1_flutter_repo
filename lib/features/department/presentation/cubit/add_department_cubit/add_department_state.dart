@@ -9,6 +9,8 @@ class AddDepartmentState {
   final AddDepartmentStatus status;
   final String? errorMessage;
   final bool showValidationErrors;
+  final bool isEditMode;
+  final String? departmentId;
 
   const AddDepartmentState({
     this.name = '',
@@ -17,6 +19,8 @@ class AddDepartmentState {
     this.status = AddDepartmentStatus.initial,
     this.errorMessage,
     this.showValidationErrors = false,
+    this.isEditMode = false,
+    this.departmentId,
   });
 
   AddDepartmentState copyWith({
@@ -26,6 +30,8 @@ class AddDepartmentState {
     AddDepartmentStatus? status,
     String? errorMessage,
     bool? showValidationErrors,
+    bool? isEditMode,
+    String? departmentId,
   }) {
     return AddDepartmentState(
       name: name ?? this.name,
@@ -34,6 +40,8 @@ class AddDepartmentState {
       status: status ?? this.status,
       errorMessage: errorMessage,
       showValidationErrors: showValidationErrors ?? this.showValidationErrors,
+      isEditMode: isEditMode ?? this.isEditMode,
+      departmentId: departmentId ?? this.departmentId,
     );
   }
 }

@@ -7,4 +7,17 @@ abstract class DepartmentRepository {
     DepartmentEntity department,
     String demoId,
   );
+
+  
+  Future<Either<String, void>> deleteDepartment(
+    String departmentId,
+    String demoId,
+  );
+
+
+  Future<Either<String, void>> updateDepartment(
+    String departmentId,
+    DepartmentEntity department,
+    String demoId,
+  );
 }
