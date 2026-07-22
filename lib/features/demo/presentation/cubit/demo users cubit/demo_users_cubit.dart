@@ -10,57 +10,74 @@ class DemoUserCubit extends Cubit<DemoUsersState> {
   Future<void> fetchUsers(String demoId) async {
     emit(GetDemoUsersLoading());
 
-    final result = await getUsersUseCase(demoId);
+    try {
+      final result = await getUsersUseCase(demoId);
 
-    result.fold(
-      (error) => emit(GetDemoUsersError(error)),
-      (users) => emit(GetDemoUsersLoaded(users)),
-    );
+      result.fold(
+        (error) => emit(GetDemoUsersError(error)),
+        (users) => emit(GetDemoUsersLoaded(users)),
+      );
+    } catch (e) {
+      emit(GetDemoUsersError(e.toString()));
+    }
   }
 
   Future<void> searchUsers(String query) async {
     emit(GetDemoUsersLoading());
 
-    final result = await getUsersUseCase.search(query);
+    try {
+      final result = await getUsersUseCase.search(query);
 
-    result.fold(
-      (error) => emit(GetDemoUsersError(error)),
-      (users) => emit(GetDemoUsersLoaded(users)),
-    );
+      result.fold(
+        (error) => emit(GetDemoUsersError(error)),
+        (users) => emit(GetDemoUsersLoaded(users)),
+      );
+    } catch (e) {
+      emit(GetDemoUsersError(e.toString()));
+    }
   }
 
   Future<bool> removeUser(String demoId, String userId) async {
     emit(GetDemoUsersLoading());
 
-    final result = await getUsersUseCase.removeUserFromDemo(demoId, userId);
+    try {
+      final result = await getUsersUseCase.removeUserFromDemo(demoId, userId);
 
-    return result.fold(
-      (error) {
-        emit(GetDemoUsersError(error));
-        return false;
-      },
-      (success) {
-        if (success) {
-          fetchUsers(demoId);
-          return true;
-        } else {
-          emit(GetDemoUsersError('Failed to remove user.'));
+      return result.fold(
+        (error) {
+          emit(GetDemoUsersError(error));
           return false;
-        }
-      },
-    );
+        },
+        (success) {
+          if (success) {
+            fetchUsers(demoId);
+            return true;
+          } else {
+            emit(GetDemoUsersError('Failed to remove user.'));
+            return false;
+          }
+        },
+      );
+    } catch (e) {
+      emit(GetDemoUsersError(e.toString()));
+      return false;
+    }
   }
 
   Future<String?> sendInvitation(String demoId, String userId) async {
-    final result = await getUsersUseCase.sendInvitation(demoId, userId);
+    try {
+      final result = await getUsersUseCase.sendInvitation(demoId, userId);
 
-    return result.fold((error) => error, (success) {
-      if (success) {
-        fetchUsers(demoId);
-        return null; // success
-      } else {
-        return 'Failed to send invitation.';
-      }
-    });
+      return result.fold((error) => error, (success) {
+        if (success) {
+          fetchUsers(demoId);
+          return null; // success
+        } else {
+          return 'Failed to send invitation.';
+        }
+      });
+    } catch (e) {
+      return e.toString();
+    }
   }
 }

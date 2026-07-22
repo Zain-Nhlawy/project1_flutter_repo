@@ -5,9 +5,10 @@ import 'user_avatar.dart';
 import 'user_options_menu.dart';
 
 class UserCard extends StatelessWidget {
-  const UserCard({super.key, required this.user});
+  const UserCard({super.key, required this.user, this.onTap});
 
   final MembersEntity user;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class UserCard extends StatelessWidget {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {},
+            onTap: onTap ?? () {},
             child: Padding(
               padding: const EdgeInsets.only(
                 left: 16,

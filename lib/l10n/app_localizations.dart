@@ -1867,6 +1867,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'FAQs'**
   String get faqs;
+
+  /// No description provided for @enterSectionName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter section name'**
+  String get enterSectionName;
+
+  /// No description provided for @sectionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Section Description'**
+  String get sectionDescription;
+
+  /// No description provided for @enterSectionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter section description'**
+  String get enterSectionDescription;
+
+  /// No description provided for @manager.
+  ///
+  /// In en, this message translates to:
+  /// **'Manager'**
+  String get manager;
+
+  /// No description provided for @selectManager.
+  ///
+  /// In en, this message translates to:
+  /// **'Select manager'**
+  String get selectManager;
+
+  /// No description provided for @pleaseSelectManager.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a manager'**
+  String get pleaseSelectManager;
+
+  /// No description provided for @departmentAddedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Section added successfully'**
+  String get departmentAddedSuccessfully;
+
+  /// No description provided for @requiredField.
+  ///
+  /// In en, this message translates to:
+  /// **'Fields is required'**
+  String get requiredField;
+
+  /// No description provided for @departmentMainPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Main Page'**
+  String get departmentMainPage;
+
+  /// No description provided for @departmentCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Courses'**
+  String get departmentCourses;
+
+  /// No description provided for @departmentLeaderboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Leaderboard'**
+  String get departmentLeaderboard;
+
+  /// No description provided for @departmentSendReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Report'**
+  String get departmentSendReport;
+
+  /// No description provided for @departmentChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat'**
+  String get departmentChat;
+
+  /// No description provided for @editDepartment.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Department'**
+  String get editDepartment;
+
+  /// No description provided for @removeDepartment.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove Department'**
+  String get removeDepartment;
+
+  /// No description provided for @departmentUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Section updated successfully'**
+  String get departmentUpdatedSuccessfully;
+
+  /// No description provided for @departmentDeletedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Section deleted successfully'**
+  String get departmentDeletedSuccessfully;
 }
 
 class _AppLocalizationsDelegate

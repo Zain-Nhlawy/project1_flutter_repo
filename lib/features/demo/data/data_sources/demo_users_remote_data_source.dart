@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:project1/core/errors/dio_exception_mapper.dart';
 import 'package:project1/features/demo/data/models/invitation_model.dart';
 import 'package:project1/features/demo/data/models/search_user_model.dart';
 import 'package:project1/features/demo/data/models/user_model.dart';
@@ -21,7 +22,10 @@ class DemoUsersRemoteDataSourceImpl implements DemoUsersRemoteDataSource {
   @override
   Future<List<MembersModel>> getDemoUsers(String demoId) async {
     try {
-      final response = await dio.get('/demos/$demoId/members');
+      final response = await dio.get(
+        '/members',
+        options: Options(headers: {'x-demo-id': demoId}),
+      );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final List<dynamic> dataList = response.data['data'];
@@ -29,8 +33,8 @@ class DemoUsersRemoteDataSourceImpl implements DemoUsersRemoteDataSource {
       } else {
         throw Exception(response.data['message']);
       }
-    } catch (e) {
-      throw Exception(e.toString());
+    } on DioException catch (e) {
+      throw mapDioException(e);
     }
   }
 
@@ -48,23 +52,26 @@ class DemoUsersRemoteDataSourceImpl implements DemoUsersRemoteDataSource {
       } else {
         throw Exception(response.data['message']);
       }
-    } catch (e) {
-      throw Exception(e.toString());
+    } on DioException catch (e) {
+      throw mapDioException(e);
     }
   }
 
   @override
   Future<bool> removeUserFromDemo(String demoId, String userId) async {
     try {
-      final response = await dio.delete('/demos/$demoId/members/$userId');
+      final response = await dio.delete(
+        '/members/$userId',
+        options: Options(headers: {'x-demo-id': demoId}),
+      );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return true;
       } else {
         throw Exception(response.data['message']);
       }
-    } catch (e) {
-      throw Exception(e.toString());
+    } on DioException catch (e) {
+      throw mapDioException(e);
     }
   }
 
@@ -73,7 +80,8 @@ class DemoUsersRemoteDataSourceImpl implements DemoUsersRemoteDataSource {
     try {
       final response = await dio.post(
         '/invitations',
-        data: {'receiverId': userId, 'demoId': demoId, 'role': "MEMBER"},
+        data: {'receiverId': userId, 'role': "MEMBER"},
+        options: Options(headers: {'x-demo-id': demoId}),
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -85,9 +93,7 @@ class DemoUsersRemoteDataSourceImpl implements DemoUsersRemoteDataSource {
       if (e.response?.statusCode == 409) {
         throw Exception('user_already_invited');
       }
-      throw Exception(e.response?.data?['message'] ?? e.toString());
-    } catch (e) {
-      throw Exception(e.toString());
+      throw mapDioException(e);
     }
   }
 
@@ -102,8 +108,8 @@ class DemoUsersRemoteDataSourceImpl implements DemoUsersRemoteDataSource {
       } else {
         throw Exception(response.data['message']);
       }
-    } catch (e) {
-      throw Exception(e.toString());
+    } on DioException catch (e) {
+      throw mapDioException(e);
     }
   }
 
@@ -114,8 +120,8 @@ class DemoUsersRemoteDataSourceImpl implements DemoUsersRemoteDataSource {
       if (response.statusCode != 200 && response.statusCode != 201) {
         throw Exception(response.data['message']);
       }
-    } catch (e) {
-      throw Exception(e.toString());
+    } on DioException catch (e) {
+      throw mapDioException(e);
     }
   }
 
@@ -126,8 +132,8 @@ class DemoUsersRemoteDataSourceImpl implements DemoUsersRemoteDataSource {
       if (response.statusCode != 200 && response.statusCode != 201) {
         throw Exception(response.data['message']);
       }
-    } catch (e) {
-      throw Exception(e.toString());
+    } on DioException catch (e) {
+      throw mapDioException(e);
     }
   }
 }

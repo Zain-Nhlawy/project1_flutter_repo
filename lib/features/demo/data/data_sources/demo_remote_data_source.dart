@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:project1/core/errors/dio_exception_mapper.dart';
 import 'package:project1/core/network/dio_client.dart';
 import 'package:project1/features/demo/data/models/demo_model.dart';
 
@@ -24,7 +25,7 @@ class DemoRemoteDataSourceImpl implements DemoRemoteDataSource {
         throw Exception(response.data['message']);
       }
     } on DioException catch (e) {
-      throw Exception(e.message);
+      throw mapDioException(e);
     }
   }
 
@@ -37,7 +38,7 @@ class DemoRemoteDataSourceImpl implements DemoRemoteDataSource {
         throw Exception(response.data['message']);
       }
     } on DioException catch (e) {
-      throw Exception(e.message);
+      throw mapDioException(e);
     }
   }
 }

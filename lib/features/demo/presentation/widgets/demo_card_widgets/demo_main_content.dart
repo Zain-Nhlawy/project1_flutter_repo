@@ -42,7 +42,7 @@ class DemoMainContent extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
-          SizedBox(height: size.height * 0.008),
+          const SizedBox(height: 8),
           Text(
             demo.description,
             style: AppTextStyles.bodyMedium.copyWith(
@@ -53,13 +53,13 @@ class DemoMainContent extends StatelessWidget {
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
-          SizedBox(height: size.height * 0.014),
+          const SizedBox(height: 12),
           Divider(
             height: 1,
             thickness: 1,
             color: AppColors.textSecondary.withOpacity(0.08),
           ),
-          SizedBox(height: size.height * 0.014),
+          const SizedBox(height: 12),
           Row(
             children: [
               Icon(
@@ -67,7 +67,7 @@ class DemoMainContent extends StatelessWidget {
                 size: 13 * textScale,
                 color: AppColors.textSecondary.withOpacity(0.6),
               ),
-              SizedBox(width: size.width * 0.01),
+              const SizedBox(width: 4),
               Expanded(
                 child: Text(
                   localizations.byAuthor(demo.ownerName),
@@ -79,7 +79,7 @@ class DemoMainContent extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              SizedBox(width: size.width * 0.02),
+              const SizedBox(width: 8),
               _ActionButton(
                 size: size,
                 textScale: textScale,
@@ -184,9 +184,9 @@ class _ActionButton extends StatelessWidget {
       onTap: onPressed,
       borderRadius: BorderRadius.circular(20),
       child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: size.width * 0.032,
-          vertical: size.height * 0.009,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 8,
         ),
         decoration: BoxDecoration(
           gradient: isDisabled ? null : AppColors.buttonGradient,
@@ -215,7 +215,7 @@ class _ActionButton extends StatelessWidget {
                 fontSize: 12 * textScale,
               ),
             ),
-            SizedBox(width: size.width * 0.008),
+            const SizedBox(width: 4),
             Icon(
               icon,
               color: isDisabled

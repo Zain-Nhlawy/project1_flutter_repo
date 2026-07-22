@@ -73,7 +73,7 @@ import 'package:project1/features/demo/domain/use%20case/demo_users_usecase.dart
 import 'package:project1/features/demo/domain/use%20case/demos_usecase.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20cubit/demo_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_cubit.dart';
-import 'package:project1/features/demo/presentation/cubit/department%20cubit/department_cubit.dart';
+import 'package:project1/features/department/presentation/cubit/department%20cubit/department_cubit.dart';
 import 'package:project1/features/department/data/data_sources/department_data_source.dart';
 import 'package:project1/features/department/domain/repository/department_repository.dart';
 import 'package:project1/features/department/data/repository/department_repository_implement.dart';

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
+import 'app_text_styles.dart';
 
 class AppTheme {
-  static ThemeData lightTheme = ThemeData(
+  static ThemeData lightTheme([String? fontFamily]) => ThemeData(
+    fontFamily: fontFamily ?? AppTextStyles.fontFamily,
     useMaterial3: true,
     brightness: Brightness.light,
     scaffoldBackgroundColor: AppColors.background,
@@ -28,7 +30,8 @@ class AppTheme {
     ),
   );
 
-  static ThemeData darkTheme = ThemeData(
+  static ThemeData darkTheme([String? fontFamily]) => ThemeData(
+    fontFamily: fontFamily ?? AppTextStyles.fontFamily,
     useMaterial3: true,
     brightness: Brightness.dark,
     scaffoldBackgroundColor: AppColors.darkBackground,

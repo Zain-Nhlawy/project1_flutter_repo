@@ -927,4 +927,55 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get faqs => 'الأسئلة الشائعة';
+
+  @override
+  String get enterSectionName => 'أدخل اسم القسم';
+
+  @override
+  String get sectionDescription => 'وصف القسم';
+
+  @override
+  String get enterSectionDescription => 'أدخل وصف القسم';
+
+  @override
+  String get manager => 'المدير';
+
+  @override
+  String get selectManager => 'اختر المدير';
+
+  @override
+  String get pleaseSelectManager => 'الرجاء اختيار مدير';
+
+  @override
+  String get departmentAddedSuccessfully => 'تم إضافة القسم بنجاح';
+
+  @override
+  String get requiredField => 'قسم مطلوب ';
+
+  @override
+  String get departmentMainPage => 'الرئيسية';
+
+  @override
+  String get departmentCourses => 'الدورات';
+
+  @override
+  String get departmentLeaderboard => 'لوحة الصدارة';
+
+  @override
+  String get departmentSendReport => 'إرسال تقرير';
+
+  @override
+  String get departmentChat => 'المحادثة';
+
+  @override
+  String get editDepartment => 'تعديل القسم';
+
+  @override
+  String get removeDepartment => 'حذف القسم';
+
+  @override
+  String get departmentUpdatedSuccessfully => 'تم تحديث القسم بنجاح';
+
+  @override
+  String get departmentDeletedSuccessfully => 'تم حذف القسم بنجاح';
 }
