@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/features/course/domain/entities/course_entity.dart';
 import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
 import 'package:project1/features/course/presentation/cubit/course_state.dart';
@@ -120,24 +121,19 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
 
   String formatDuration(int totalSeconds) {
     final duration = Duration(seconds: totalSeconds);
-
     String twoDigits(int value) => value.toString().padLeft(2, '0');
-
     final hours = twoDigits(duration.inHours);
     final minutes = twoDigits(duration.inMinutes.remainder(60));
     final seconds = twoDigits(duration.inSeconds.remainder(60));
-
     return '$hours:$minutes:$seconds';
   }
 
   void toggleEditOrSave() async {
     final localizations = AppLocalizations.of(context)!;
     if (isEditing && !isValid) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(localizations.fillAllFieldsWarning),
-          backgroundColor: Colors.red.shade400,
-        ),
+      SnackbarTheme().newSnackBarError(
+        context,
+        localizations.fillAllFieldsWarning,
       );
       return;
     }
@@ -152,11 +148,9 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
           .uploadPhoto(selectedImage!);
       if (uploadedUrl == null) {
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(localizations.failedToUploadImage),
-              backgroundColor: Colors.red,
-            ),
+          SnackbarTheme().newSnackBarError(
+            context,
+            localizations.failedToUploadImage,
           );
         }
         return;
@@ -213,23 +207,15 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
             Navigator.pop(context, true);
           }
           if (state is CourseUpdateError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  state.errors.isNotEmpty ? state.errors.first : '',
-                ),
-                backgroundColor: Colors.red,
-              ),
+            SnackbarTheme().newSnackBarError(
+              context,
+              state.errors.isNotEmpty ? state.errors.first : '',
             );
           }
           if (state is CourseDeleteError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  state.errors.isNotEmpty ? state.errors.first : '',
-                ),
-                backgroundColor: Colors.red,
-              ),
+            SnackbarTheme().newSnackBarError(
+              context,
+              state.errors.isNotEmpty ? state.errors.first : '',
             );
           }
           if (state is CoursePublished) {
@@ -237,13 +223,9 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
             Navigator.pop(context, true);
           }
           if (state is CoursePublishError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  state.errors.isNotEmpty ? state.errors.first : '',
-                ),
-                backgroundColor: Colors.red,
-              ),
+            SnackbarTheme().newSnackBarError(
+              context,
+              state.errors.isNotEmpty ? state.errors.first : '',
             );
           }
           if (state is CourseAssetLoaded) {

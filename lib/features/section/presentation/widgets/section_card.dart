@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/lesson/domain/entities/lesson_entity.dart';
 import 'package:project1/features/lesson/presentation/cubit/lesson_cubit.dart';
@@ -148,9 +149,10 @@ class _SectionCardState extends State<SectionCard> {
         widget.onLessonsChanged?.call();
       });
     } else {
-      ScaffoldMessenger.of(
+      SnackbarTheme().newSnackBarError(
         context,
-      ).showSnackBar(SnackBar(content: Text(localizations.deleteLessonFailed)));
+        localizations.deleteLessonFailed,
+      );
     }
   }
 

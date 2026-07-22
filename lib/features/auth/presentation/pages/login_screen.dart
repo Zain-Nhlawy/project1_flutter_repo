@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_state.dart';
 import 'package:project1/features/auth/presentation/pages/forgot_password_screen.dart';
@@ -31,11 +32,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _handleLogin(AppLocalizations localizations) {
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(localizations.pleaseEnterEmailPassword),
-          backgroundColor: AppColors.error,
-        ),
+      SnackbarTheme().newSnackBarError(
+        context,
+        localizations.pleaseEnterEmailPassword,
       );
       return;
     }
@@ -67,16 +66,11 @@ class _LoginScreenState extends State<LoginScreen> {
           return;
         }
         if (state is LoginSuccess) {
-          final messenger = ScaffoldMessenger.of(context);
-          messenger.showSnackBar(
-            SnackBar(
-              content: Text(localizations.loginSuccessful),
-              backgroundColor: AppColors.success,
-              duration: const Duration(milliseconds: 500),
-            ),
+          SnackbarTheme().newSnackBarSuccess(
+            context,
+            localizations.loginSuccessful,
           );
           Future.delayed(const Duration(milliseconds: 500), () {
-            messenger.clearSnackBars();
             if (mounted) {
               Navigator.pushReplacement(
                 context,
@@ -85,15 +79,9 @@ class _LoginScreenState extends State<LoginScreen> {
             }
           });
         } else if (state is AuthError && state.errors.isNotEmpty) {
-          final messenger = ScaffoldMessenger.of(context);
-
-          messenger.clearSnackBars();
-
-          messenger.showSnackBar(
-            SnackBar(
-              content: Text(state.errors.first),
-              backgroundColor: AppColors.error,
-            ),
+          SnackbarTheme().newSnackBarError(
+            context,
+            state.errors.first,
           );
         }
       },

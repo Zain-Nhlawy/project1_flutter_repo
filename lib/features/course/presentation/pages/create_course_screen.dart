@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/features/course/presentation/widgets/course_tags_section.dart';
 import 'package:project1/features/course/upload_photo/presentation/cubit/upload_photo_course_cubit.dart';
 import 'package:project1/features/course/domain/entities/course_entity.dart';
@@ -48,11 +49,9 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
 
   Future<void> handleCreateCourse() async {
     if (!isValid) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.pleaseFillAllFields),
-          backgroundColor: Colors.red,
-        ),
+      SnackbarTheme().newSnackBarError(
+        context,
+        AppLocalizations.of(context)!.pleaseFillAllFields,
       );
       return;
     }
@@ -65,15 +64,12 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
           .uploadPhoto(selectedImage!);
 
       if (uploadedUrl == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.failedToUploadImage),
-            backgroundColor: Colors.red,
-          ),
+        SnackbarTheme().newSnackBarError(
+          context,
+          AppLocalizations.of(context)!.failedToUploadImage,
         );
         return;
       }
-
       imagePath = uploadedUrl;
     }
 
@@ -123,21 +119,16 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
     return BlocListener<CourseCubit, CourseState>(
       listener: (context, state) {
         if (state is CourseCreated) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(localizations.courseCreatedSuccessfully),
-              backgroundColor: Colors.green,
-            ),
+          SnackbarTheme().newSnackBarSuccess(
+            context,
+            localizations.courseCreatedSuccessfully,
           );
           Navigator.pop(context, true);
         }
-
         if (state is CourseCreateError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errors.isNotEmpty ? state.errors.first : ''),
-              backgroundColor: Colors.red,
-            ),
+          SnackbarTheme().newSnackBarError(
+            context,
+            state.errors.isNotEmpty ? state.errors.first : '',
           );
         }
       },

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/faq/domain/entities/course_faq_entity.dart';
 import 'package:project1/features/faq/presentation/cubit/course_faq_cubit.dart';
@@ -250,16 +251,15 @@ class _CourseFaqManagementViewState extends State<_CourseFaqManagementView> {
         body: BlocConsumer<CourseFaqCubit, CourseFaqState>(
           listener: (context, state) {
             if (state is CourseFaqActionSuccess) {
-              ScaffoldMessenger.of(
+              SnackbarTheme().newSnackBarInfo(
                 context,
-              ).showSnackBar(SnackBar(content: Text(state.message)));
+                state.message,
+              );
               _refresh();
             } else if (state is CourseFaqError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                  backgroundColor: Colors.red,
-                ),
+              SnackbarTheme().newSnackBarError(
+                context,
+                state.message,
               );
             }
           },

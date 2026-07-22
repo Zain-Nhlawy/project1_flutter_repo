@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:media_kit/media_kit.dart';
+import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/features/lesson/presentation/widgets/management/lesson_management_view.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:project1/core/di/service_locator.dart';
@@ -220,8 +221,9 @@ class _LessonManagementScreenState extends State<LessonManagementScreen> {
             ? state.errors.first
             : 'Upload failed';
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(message), backgroundColor: Colors.red),
+          SnackbarTheme().newSnackBarError(
+            context,
+            message,
           );
         }
         completer.complete(null);
@@ -237,16 +239,9 @@ class _LessonManagementScreenState extends State<LessonManagementScreen> {
     if (isEditing) {
       if (!isValid) {
         final localizations = AppLocalizations.of(context)!;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(localizations.fillAllFieldsWarning),
-            backgroundColor: Colors.red.shade400,
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            margin: const EdgeInsets.all(12),
-          ),
+        SnackbarTheme().newSnackBarError(
+          context,
+          localizations.fillAllFieldsWarning,
         );
         return;
       }

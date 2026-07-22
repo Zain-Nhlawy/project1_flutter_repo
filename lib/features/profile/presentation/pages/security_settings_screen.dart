@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_state.dart';
 import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
@@ -58,20 +59,15 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
               ? state.message
               : (state as TurnOff2FASuccess).message;
 
-          ScaffoldMessenger.of(
+          SnackbarTheme().newSnackBarInfo(
             context,
-          ).showSnackBar(SnackBar(content: Text(msg)));
+            msg,
+          );
         }
         if (state is AuthError && state.errors.isNotEmpty) {
-          final messenger = ScaffoldMessenger.of(context);
-
-          messenger.clearSnackBars();
-
-          messenger.showSnackBar(
-            SnackBar(
-              content: Text(state.errors.first),
-              backgroundColor: AppColors.error,
-            ),
+          SnackbarTheme().newSnackBarError(
+            context,
+            state.errors.first,
           );
         }
       },

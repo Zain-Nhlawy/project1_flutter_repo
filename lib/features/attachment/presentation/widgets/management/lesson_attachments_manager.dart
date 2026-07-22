@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/features/attachment/domain/entities/lesson_attachment_entity.dart';
 import 'package:project1/features/attachment/presentation/cubit/lesson_attachment_cubit.dart';
 import 'package:project1/features/attachment/presentation/cubit/lesson_attachment_state.dart';
@@ -260,8 +261,9 @@ class LessonAttachmentsManagerState extends State<LessonAttachmentsManager> {
       final message = state.errors.isNotEmpty
           ? state.errors.first
           : 'Upload failed';
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message), backgroundColor: Colors.red),
+      SnackbarTheme().newSnackBarError(
+        context,
+        message,
       );
       context.read<AttachmentUploadCubit>().reset();
     }
@@ -288,8 +290,9 @@ class LessonAttachmentsManagerState extends State<LessonAttachmentsManager> {
       final message = state.errors.isNotEmpty
           ? state.errors.first
           : 'حدث خطأ غير متوقع';
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message), backgroundColor: Colors.red),
+      SnackbarTheme().newSnackBarError(
+        context,
+        message,
       );
     }
   }

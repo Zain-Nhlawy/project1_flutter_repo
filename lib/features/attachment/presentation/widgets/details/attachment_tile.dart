@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/l10n/app_localizations.dart';
@@ -40,8 +41,9 @@ class AttachmentTile extends StatelessWidget {
 
     if (uri == null || !await canLaunchUrl(uri)) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(localizations.failedToOpenAttachment)),
+        SnackbarTheme().newSnackBarError(
+          context,
+          localizations.failedToOpenAttachment,
         );
       }
       return;

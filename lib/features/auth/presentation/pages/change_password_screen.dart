@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_state.dart';
 import 'package:project1/features/auth/presentation/widgets/custom_text_field.dart';
@@ -31,21 +32,17 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     if (oldPasswordController.text.isEmpty ||
         newPasswordController.text.isEmpty ||
         confirmPasswordController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(localizations.pleaseFillAllFields),
-          backgroundColor: AppColors.error,
-        ),
+      SnackbarTheme().newSnackBarError(
+        context,
+        localizations.pleaseFillAllFields,
       );
       return;
     }
 
     if (newPasswordController.text != confirmPasswordController.text) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(localizations.passwordsDoNotMatch),
-          backgroundColor: AppColors.error,
-        ),
+      SnackbarTheme().newSnackBarError(
+        context,
+        localizations.passwordsDoNotMatch,
       );
       return;
     }
@@ -65,23 +62,15 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthChangePasswordSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.green,
-            ),
+          SnackbarTheme().newSnackBarSuccess(
+            context,
+            state.message,
           );
           Navigator.pop(context);
         } else if (state is AuthError && state.errors.isNotEmpty) {
-          final messenger = ScaffoldMessenger.of(context);
-
-          messenger.clearSnackBars();
-
-          messenger.showSnackBar(
-            SnackBar(
-              content: Text(state.errors.first),
-              backgroundColor: AppColors.error,
-            ),
+          SnackbarTheme().newSnackBarError(
+            context,
+            state.errors.first,
           );
         }
       },

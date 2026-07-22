@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_state.dart';
 import 'package:project1/features/auth/presentation/pages/login_screen.dart';
@@ -31,9 +32,10 @@ class SignupScreen extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is RegisterSuccess) {
-          ScaffoldMessenger.of(
+          SnackbarTheme().newSnackBarSuccess(
             context,
-          ).showSnackBar(SnackBar(content: Text(state.message)));
+            state.message,
+          );
 
           Navigator.push(
             context,
@@ -43,15 +45,9 @@ class SignupScreen extends StatelessWidget {
           );
         }
         if (state is AuthError && state.errors.isNotEmpty) {
-          final messenger = ScaffoldMessenger.of(context);
-
-          messenger.clearSnackBars();
-
-          messenger.showSnackBar(
-            SnackBar(
-              content: Text(state.errors.first),
-              backgroundColor: AppColors.error,
-            ),
+          SnackbarTheme().newSnackBarError(
+            context,
+            state.errors.first,
           );
         }
       },
@@ -191,19 +187,12 @@ class SignupScreen extends StatelessWidget {
                                         onPressed: () {
                                           if (passwordController.text !=
                                               confirmPasswordController.text) {
-                                            ScaffoldMessenger.of(
+                                            SnackbarTheme().newSnackBarError(
                                               context,
-                                            ).showSnackBar(
-                                              SnackBar(
-                                                content: Text(
-                                                  localizations
-                                                      .passwordsDoNotMatch,
-                                                ),
-                                              ),
+                                              localizations.passwordsDoNotMatch,
                                             );
                                             return;
                                           }
-
                                           context.read<AuthCubit>().register({
                                             "firstName":
                                                 firstNameController.text,

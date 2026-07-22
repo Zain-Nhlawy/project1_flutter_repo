@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/attachment/presentation/cubit/lesson_attachment_cubit.dart';
 import 'package:project1/features/attachment/presentation/widgets/management/lesson_attachments_manager.dart';
@@ -113,11 +114,9 @@ class _CreateLessonScreenState extends State<CreateLessonScreen> {
   Future<void> saveLesson(BuildContext context) async {
     final l = AppLocalizations.of(context)!;
     if (!isValid) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l.fillAllFieldsWarning),
-          backgroundColor: Colors.red,
-        ),
+      SnackbarTheme().newSnackBarError(
+        context,
+        l.fillAllFieldsWarning,
       );
       return;
     }
@@ -146,7 +145,6 @@ class _CreateLessonScreenState extends State<CreateLessonScreen> {
         BlocProvider(create: (_) => getIt<LessonVideoUploadCubit>()),
         BlocProvider(create: (_) => getIt<LessonCubit>()),
         BlocProvider(create: (_) => getIt<AttachmentUploadCubit>()),
-
         BlocProvider(create: (_) => getIt<LessonAttachmentCubit>()),
       ],
       child: Builder(
@@ -242,8 +240,9 @@ class _CreateLessonScreenState extends State<CreateLessonScreen> {
       final message = state.errors.isNotEmpty
           ? state.errors.first
           : "Upload failed";
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message), backgroundColor: Colors.red),
+      SnackbarTheme().newSnackBarError(
+        context,
+        message,
       );
     }
   }
@@ -262,11 +261,9 @@ class _CreateLessonScreenState extends State<CreateLessonScreen> {
 
       Navigator.pop(context, true);
     } else if (state is LessonError) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(state.errors.isNotEmpty ? state.errors.first : "Error"),
-          backgroundColor: Colors.red,
-        ),
+      SnackbarTheme().newSnackBarError(
+        context,
+        state.errors.isNotEmpty ? state.errors.first : "Error",
       );
     }
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_state.dart';
 import 'package:project1/l10n/app_localizations.dart';
@@ -40,23 +41,17 @@ class _Enable2FAScreenState extends State<Enable2FAScreen> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is TurnOn2FASuccess) {
-          ScaffoldMessenger.of(
+          SnackbarTheme().newSnackBarInfo(
             context,
-          ).showSnackBar(SnackBar(content: Text(state.message)));
-
+            state.message,
+          );
           Navigator.pop(context, true);
         }
 
         if (state is AuthError && state.errors.isNotEmpty) {
-          final messenger = ScaffoldMessenger.of(context);
-
-          messenger.clearSnackBars();
-
-          messenger.showSnackBar(
-            SnackBar(
-              content: Text(state.errors.first),
-              backgroundColor: AppColors.error,
-            ),
+          SnackbarTheme().newSnackBarError(
+            context,
+            state.errors.first,
           );
         }
       },
