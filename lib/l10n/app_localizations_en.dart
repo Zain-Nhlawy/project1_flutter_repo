@@ -983,6 +983,111 @@ class AppLocalizationsEn extends AppLocalizations {
   String get departmentDeletedSuccessfully => 'Section deleted successfully';
 
   @override
+  String get departmentLearningPath => 'Learning Path';
+
+  @override
+  String get departmentJourney => 'DEPARTMENT JOURNEY';
+
+  @override
+  String get learningPath => 'Learning Path';
+
+  @override
+  String get addCourseToPath => 'Add Course to Path';
+
+  @override
+  String get replace => 'Replace';
+
+  @override
+  String get remove => 'Remove';
+
+  @override
+  String get fetchDataPrompt => 'Request data to view the path';
+
+  @override
+  String errorOccurred(Object error) {
+    return 'Error: $error';
+  }
+
+  @override
+  String get departmentRoadmap => 'Department Roadmap';
+
+  @override
+  String get roadmapSubtitle =>
+      'Step-by-step career path, skills, and projects.';
+
+  @override
+  String get newRoadmap => 'New';
+
+  @override
+  String get generateRoadmap => 'Generate Roadmap';
+
+  @override
+  String get generateRoadmapDesc =>
+      'Enter a title or career role (e.g. Flutter Engineer, Data Scientist) to generate a customized learning path:';
+
+  @override
+  String get roadmapTitleOrRole => 'Roadmap Title / Role';
+
+  @override
+  String get roadmapTitleHint => 'e.g. Mobile Developer';
+
+  @override
+  String get generate => 'Generate';
+
+  @override
+  String get noRoadmapYet => 'No Learning Roadmap Yet';
+
+  @override
+  String get emptyRoadmapDesc =>
+      'Create a structured weekly learning roadmap with skills, projects, and deliverables for this department.';
+
+  @override
+  String get generatingRoadmap => 'Generating Learning Roadmap...';
+
+  @override
+  String get generatingRoadmapSub => 'Organizing topics, skills, and projects';
+
+  @override
+  String get failedToLoadRoadmap => 'Failed to Load Roadmap';
+
+  @override
+  String get tryAgain => 'Try Again';
+
+  @override
+  String get stepsLabel => 'Steps';
+
+  @override
+  String get durationLabel => 'Duration';
+
+  @override
+  String weeksCount(Object count) {
+    return '$count Weeks';
+  }
+
+  @override
+  String get skillsCovered => 'Skills Covered';
+
+  @override
+  String get practicalProjects => 'Practical Projects';
+
+  @override
+  String get deliverables => 'Deliverables';
+
+  @override
+  String get resources => 'Resources';
+
+  @override
+  String weekPrefix(Object week) {
+    return 'W$week';
+  }
+
+  @override
+  String get exportPdf => 'Export PDF';
+
+  @override
+  String get exportingPdf => 'Generating PDF...';
+
+  @override
   String get deleteCourse => 'Delete Course';
 
   @override

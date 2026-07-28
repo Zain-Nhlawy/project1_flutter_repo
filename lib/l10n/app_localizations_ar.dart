@@ -980,6 +980,110 @@ class AppLocalizationsAr extends AppLocalizations {
   String get departmentDeletedSuccessfully => 'تم حذف القسم بنجاح';
 
   @override
+  String get departmentLearningPath => 'مسار التعلم';
+
+  @override
+  String get departmentJourney => 'رحلة القسم';
+
+  @override
+  String get learningPath => 'المسار التعليمي';
+
+  @override
+  String get addCourseToPath => 'إضافة دورة للمسار';
+
+  @override
+  String get replace => 'استبدال';
+
+  @override
+  String get remove => 'إزالة';
+
+  @override
+  String get fetchDataPrompt => 'قم بطلب البيانات لعرض المسار';
+
+  @override
+  String errorOccurred(Object error) {
+    return 'حدث خطأ: $error';
+  }
+
+  @override
+  String get departmentRoadmap => 'خارطة طريق القسم';
+
+  @override
+  String get roadmapSubtitle => 'مسار مهني خطوة بخطوة، مع المهارات والمشاريع.';
+
+  @override
+  String get newRoadmap => 'جديد';
+
+  @override
+  String get generateRoadmap => 'إنشاء خارطة الطريق';
+
+  @override
+  String get generateRoadmapDesc =>
+      'أدخل عنواناً أو مساراً مهنياً (مثل: مهندس Flutter، عالم بيانات) لإنشاء مسار تعليمي مخصص:';
+
+  @override
+  String get roadmapTitleOrRole => 'عنوان خارطة الطريق / المسمى الوظيفي';
+
+  @override
+  String get roadmapTitleHint => 'مثال: مطور تطبيقات الهاتف';
+
+  @override
+  String get generate => 'إنشاء';
+
+  @override
+  String get noRoadmapYet => 'لا توجد خارطة طريق تعليمية بعد';
+
+  @override
+  String get emptyRoadmapDesc =>
+      'قم بإنشاء خارطة طريق تعليمية أسبوعية منظمة تتضمن المهارات والمشاريع والمخرجات لهذا القسم.';
+
+  @override
+  String get generatingRoadmap => 'جاري إنشاء خارطة الطريق التعليمية...';
+
+  @override
+  String get generatingRoadmapSub => 'جاري تنظيم المواضيع والمهارات والمشاريع';
+
+  @override
+  String get failedToLoadRoadmap => 'فشل في تحميل خارطة الطريق';
+
+  @override
+  String get tryAgain => 'حاول مرة أخرى';
+
+  @override
+  String get stepsLabel => 'الخطوات';
+
+  @override
+  String get durationLabel => 'المدة';
+
+  @override
+  String weeksCount(Object count) {
+    return '$count أسابيع';
+  }
+
+  @override
+  String get skillsCovered => 'المهارات المغطاة';
+
+  @override
+  String get practicalProjects => 'المشاريع العملية';
+
+  @override
+  String get deliverables => 'المخرجات';
+
+  @override
+  String get resources => 'المصادر';
+
+  @override
+  String weekPrefix(Object week) {
+    return 'أ$week';
+  }
+
+  @override
+  String get exportPdf => 'تصدير PDF';
+
+  @override
+  String get exportingPdf => 'جاري إنشاء ملف PDF...';
+
+  @override
   String get deleteCourse => 'حذف الكورس';
 
   @override

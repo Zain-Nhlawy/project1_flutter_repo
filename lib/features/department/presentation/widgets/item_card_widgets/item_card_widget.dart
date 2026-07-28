@@ -9,7 +9,7 @@ import 'package:project1/features/department/presentation/widgets/item_card_widg
 import 'package:project1/features/department/presentation/widgets/item_card_widgets/item_card_member_badge.dart';
 import 'package:animations/animations.dart';
 
-class ItemCardWidget extends StatelessWidget {
+class ItemCardWidget extends StatefulWidget {
   final IconData icon;
   final DepartmentEntity departmentEntity;
   final bool isOwner;
@@ -26,8 +26,40 @@ class ItemCardWidget extends StatelessWidget {
     this.isManager = false,
     this.onEdit,
     this.onDelete,
-    required this.demoId, 
+    required this.demoId,
   });
+
+  @override
+  State<ItemCardWidget> createState() => _ItemCardWidgetState();
+}
+
+class _ItemCardWidgetState extends State<ItemCardWidget> {
+  bool _isPressed = false;
+
+  void _navigateToDepartment() {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 200),
+        reverseTransitionDuration: const Duration(milliseconds: 150),
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            DepartmentMainPage(
+          department: widget.departmentEntity,
+          demoId: widget.demoId,
+          canManage: widget.isOwner || widget.isManager,
+        ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeOut,
+            ),
+            child: child,
+          );
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,12 +90,12 @@ class ItemCardWidget extends StatelessWidget {
                   BlocProvider.value(
                     value: demoUserCubit,
                     child: DepartmentMainPage(
-                      department: departmentEntity,
-                      demoId: demoId,
-                      canManage: isOwner || isManager,
+                      department: widget.departmentEntity,
+                      demoId: widget.demoId,
+                      canManage: widget.isOwner || widget.isManager,
                     ),
                   ),
-                  transitionsBuilder:
+                      transitionsBuilder:
                       (context, animation, secondaryAnimation, child) {
                         return SharedAxisTransition(
                           animation: animation,
@@ -83,7 +115,7 @@ class ItemCardWidget extends StatelessWidget {
                   child: Transform.rotate(
                     angle: -0.2,
                     child: Icon(
-                      icon,
+                      widget.icon,
                       size: 90,
                       color: Colors.white.withValues(alpha: 0.1),
                     ),
@@ -96,17 +128,17 @@ class ItemCardWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       ItemCardHeader(
-                        icon: icon,
-                        isOwner: isOwner,
-                        onEdit: onEdit,
-                        onDelete: onDelete,
-                      ),
+                          icon: widget.icon,
+                          isOwner: widget.isOwner,
+                          onEdit: widget.onEdit,
+                          onDelete: widget.onDelete,
+                        ),
                       ItemCardInfo(
-                        name: departmentEntity.name,
-                        description: departmentEntity.description,
-                      ),
+                          name: widget.departmentEntity.name,
+                          description: widget.departmentEntity.description,
+                        ),
                       ItemCardMemberBadge(
-                        memberCount: departmentEntity.memberCount ?? 0,
+                        memberCount: widget.departmentEntity.memberCount ?? 0,
                       ),
                     ],
                   ),

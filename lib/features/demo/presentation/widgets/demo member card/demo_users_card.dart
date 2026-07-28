@@ -5,9 +5,15 @@ import 'user_avatar.dart';
 import 'user_options_menu.dart';
 
 class UserCard extends StatelessWidget {
-  const UserCard({super.key, required this.user, this.onTap});
+  const UserCard({
+    super.key,
+    required this.user,
+    required this.isOwner,
+    this.onTap,
+  });
 
   final MembersEntity user;
+  final bool isOwner;
   final VoidCallback? onTap;
 
   @override
@@ -73,11 +79,14 @@ class UserCard extends StatelessWidget {
                   const SizedBox(width: 8),
                   UserRoleBadge(role: user.role!),
                   const SizedBox(width: 4),
-                  
-                  UserOptionsMenu(
-                    demoId: user.demoId!,
-                    userIdInDemo: user.memberIdInDemo!,
-                  ),
+
+                  user.role == 'OWNER'
+                      ? UserOptionsMenu(
+                          demoId: user.demoId!,
+                          userIdInDemo: user.memberIdInDemo!,
+                          role: user.role!,
+                        )
+                      : const SizedBox.shrink(),
                 ],
               ),
             ),

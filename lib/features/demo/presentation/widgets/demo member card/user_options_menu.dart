@@ -7,10 +7,12 @@ import 'package:project1/config/theme/snackbar_theme.dart';
 class UserOptionsMenu extends StatelessWidget {
   final String demoId;
   final String userIdInDemo;
+  final String role;
   const UserOptionsMenu({
     super.key,
     required this.demoId,
     required this.userIdInDemo,
+    required this.role,
   });
 
   @override
@@ -59,63 +61,69 @@ class UserOptionsMenu extends StatelessWidget {
             ],
           ),
         ),
-        PopupMenuItem(
-          onTap: () {
-            final cubit = context.read<DemoUserCubit>();
-            showDialog(
-              context: context,
-              builder: (dialogContext) {
-                return BlocProvider.value(
-                  value: cubit,
-                  child: AlertDialog(
-                    title: Text(l10n.removeUserPrompt),
-                    content: Text(l10n.areYouSureRemoveUser),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(dialogContext).pop(),
-                        child: Text(l10n.cancel),
-                      ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          final successMessage = l10n.memberRemovedSuccessfully;
+        if (role != 'OWNER')
+          PopupMenuItem(
+            onTap: () {
+              final cubit = context.read<DemoUserCubit>();
+              showDialog(
+                context: context,
+                builder: (dialogContext) {
+                  return BlocProvider.value(
+                    value: cubit,
+                    child: AlertDialog(
+                      title: Text(l10n.removeUserPrompt),
+                      content: Text(l10n.areYouSureRemoveUser),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(dialogContext).pop(),
+                          child: Text(l10n.cancel),
+                        ),
+                        ElevatedButton(
+                          onPressed: () async {
+                            final successMessage =
+                                l10n.memberRemovedSuccessfully;
 
-                          final success = await cubit.removeUser(
-                            demoId,
-                            userIdInDemo,
-                          );
-                          if (success && dialogContext.mounted) {
-                            SnackbarTheme().newSnackBarSuccess(
-                              dialogContext,
-                              successMessage,
+                            final success = await cubit.removeUser(
+                              demoId,
+                              userIdInDemo,
                             );
-                          }
-                          if (dialogContext.mounted) {
-                            Navigator.of(dialogContext).pop();
-                          }
-                        },
-                        child: Text(l10n.confirm),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            );
-          },
-          value: 2,
-          child: Row(
-            children: [
-              Icon(Icons.person_remove_rounded, size: 20, color: colors.error),
-              const SizedBox(width: 12),
-              Text(
-                l10n.removeFromRoom,
-                style: TextStyle(
+                            if (success && dialogContext.mounted) {
+                              SnackbarTheme().newSnackBarSuccess(
+                                dialogContext,
+                                successMessage,
+                              );
+                            }
+                            if (dialogContext.mounted) {
+                              Navigator.of(dialogContext).pop();
+                            }
+                          },
+                          child: Text(l10n.confirm),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
+            value: 2,
+            child: Row(
+              children: [
+                Icon(
+                  Icons.person_remove_rounded,
+                  size: 20,
                   color: colors.error,
-                  fontWeight: FontWeight.w600,
                 ),
-              ),
-            ],
+                const SizedBox(width: 12),
+                Text(
+                  l10n.removeFromRoom,
+                  style: TextStyle(
+                    color: colors.error,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
       ],
     );
   }

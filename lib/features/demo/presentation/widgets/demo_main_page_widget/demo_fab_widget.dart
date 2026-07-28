@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/features/demo/domain/entities/demo_entity.dart';
 import 'package:project1/features/demo/presentation/widgets/demo_main_page_widget/main_action_sheet.dart';
 
@@ -11,28 +12,46 @@ class DemoFabWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     if (demo.isOwner != true) return const SizedBox.shrink();
 
-    final theme = Theme.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final gradient = AppColors.buttonGradientOf(context);
 
-    return FloatingActionButton.extended(
-      backgroundColor: theme.colorScheme.tertiary,
-      elevation: 6,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(32),
+    return Container(
+      decoration: BoxDecoration(
+        gradient: gradient,
+        borderRadius: BorderRadius.circular(30),
+        boxShadow: [
+          BoxShadow(
+            color: (isDark ? AppColors.darkSecondary : AppColors.primary)
+                .withOpacity(0.35),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
+          ),
+        ],
       ),
-      onPressed: () {
-        showModalBottomSheet(
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(24),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(30),
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              backgroundColor: Colors.transparent,
+              isScrollControlled: true,
+              builder: (BuildContext context) {
+                return MainActionsSheet(demoId: demo.id! , isOwner: demo.isOwner);
+              },
+            );
+          },
+          child: const Padding(
+            padding: EdgeInsets.all(16),
+            child: Icon(
+              Icons.tune_rounded,
+              color: Colors.white,
+              size: 24,
             ),
           ),
-          context: context,
-          builder: (BuildContext context) {
-            return MainActionsSheet(demoId: demo.id!);
-          },
-        );
-      },
-      label: const Icon(Icons.adjust_outlined, color: Colors.white),
+        ),
+      ),
     );
   }
 }

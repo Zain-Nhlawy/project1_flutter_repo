@@ -1970,6 +1970,198 @@ abstract class AppLocalizations {
   /// **'Section deleted successfully'**
   String get departmentDeletedSuccessfully;
 
+  /// No description provided for @departmentLearningPath.
+  ///
+  /// In en, this message translates to:
+  /// **'Learning Path'**
+  String get departmentLearningPath;
+
+  /// No description provided for @departmentJourney.
+  ///
+  /// In en, this message translates to:
+  /// **'DEPARTMENT JOURNEY'**
+  String get departmentJourney;
+
+  /// No description provided for @learningPath.
+  ///
+  /// In en, this message translates to:
+  /// **'Learning Path'**
+  String get learningPath;
+
+  /// No description provided for @addCourseToPath.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Course to Path'**
+  String get addCourseToPath;
+
+  /// No description provided for @replace.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace'**
+  String get replace;
+
+  /// No description provided for @remove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get remove;
+
+  /// No description provided for @fetchDataPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Request data to view the path'**
+  String get fetchDataPrompt;
+
+  /// No description provided for @errorOccurred.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {error}'**
+  String errorOccurred(Object error);
+
+  /// No description provided for @departmentRoadmap.
+  ///
+  /// In en, this message translates to:
+  /// **'Department Roadmap'**
+  String get departmentRoadmap;
+
+  /// No description provided for @roadmapSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Step-by-step career path, skills, and projects.'**
+  String get roadmapSubtitle;
+
+  /// No description provided for @newRoadmap.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get newRoadmap;
+
+  /// No description provided for @generateRoadmap.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Roadmap'**
+  String get generateRoadmap;
+
+  /// No description provided for @generateRoadmapDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a title or career role (e.g. Flutter Engineer, Data Scientist) to generate a customized learning path:'**
+  String get generateRoadmapDesc;
+
+  /// No description provided for @roadmapTitleOrRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Roadmap Title / Role'**
+  String get roadmapTitleOrRole;
+
+  /// No description provided for @roadmapTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Mobile Developer'**
+  String get roadmapTitleHint;
+
+  /// No description provided for @generate.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate'**
+  String get generate;
+
+  /// No description provided for @noRoadmapYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No Learning Roadmap Yet'**
+  String get noRoadmapYet;
+
+  /// No description provided for @emptyRoadmapDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a structured weekly learning roadmap with skills, projects, and deliverables for this department.'**
+  String get emptyRoadmapDesc;
+
+  /// No description provided for @generatingRoadmap.
+  ///
+  /// In en, this message translates to:
+  /// **'Generating Learning Roadmap...'**
+  String get generatingRoadmap;
+
+  /// No description provided for @generatingRoadmapSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Organizing topics, skills, and projects'**
+  String get generatingRoadmapSub;
+
+  /// No description provided for @failedToLoadRoadmap.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to Load Roadmap'**
+  String get failedToLoadRoadmap;
+
+  /// No description provided for @tryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get tryAgain;
+
+  /// No description provided for @stepsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Steps'**
+  String get stepsLabel;
+
+  /// No description provided for @durationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get durationLabel;
+
+  /// No description provided for @weeksCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Weeks'**
+  String weeksCount(Object count);
+
+  /// No description provided for @skillsCovered.
+  ///
+  /// In en, this message translates to:
+  /// **'Skills Covered'**
+  String get skillsCovered;
+
+  /// No description provided for @practicalProjects.
+  ///
+  /// In en, this message translates to:
+  /// **'Practical Projects'**
+  String get practicalProjects;
+
+  /// No description provided for @deliverables.
+  ///
+  /// In en, this message translates to:
+  /// **'Deliverables'**
+  String get deliverables;
+
+  /// No description provided for @resources.
+  ///
+  /// In en, this message translates to:
+  /// **'Resources'**
+  String get resources;
+
+  /// No description provided for @weekPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'W{week}'**
+  String weekPrefix(Object week);
+
+  /// No description provided for @exportPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Export PDF'**
+  String get exportPdf;
+
+  /// No description provided for @exportingPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Generating PDF...'**
+  String get exportingPdf;
+
   /// No description provided for @deleteCourse.
   ///
   /// In en, this message translates to:
