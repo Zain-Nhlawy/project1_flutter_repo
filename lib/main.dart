@@ -11,6 +11,7 @@ import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/auth/domain/use_case/verify_email_usecase.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:project1/features/auth/presentation/pages/login_screen.dart';
 import 'package:project1/features/auth/presentation/pages/reset_password_screen.dart';
 import 'package:project1/features/profile/presentation/cubit/locale_cubit.dart';
@@ -52,20 +53,25 @@ void main() async {
 
   runApp(
     MultiBlocProvider(
-      providers: [
-        BlocProvider<AuthCubit>(
-          create: (_) {
-            print("creating auth cubit");
-            return getIt<AuthCubit>();
-          },
-        ),
-        BlocProvider<LocaleCubit>(create: (_) => LocaleCubit()),
-        BlocProvider<ThemeCubit>(create: (_) => ThemeCubit()),
-      ],
+  providers: [
+    BlocProvider<AuthCubit>(
+      create: (_) {
+        return getIt<AuthCubit>();
+      },
+    ),
+
+    BlocProvider<UserCubit>(
+      create: (_) => getIt<UserCubit>()..getMe(),
+    ),
+
+    BlocProvider<LocaleCubit>(create: (_) => LocaleCubit()),
+    BlocProvider<ThemeCubit>(create: (_) => ThemeCubit()),
+  ],
       child: MyApp(initialResetToken: initialResetToken),
     ),
   );
 }
+
 
 class MyApp extends StatefulWidget {
   final String? initialResetToken;

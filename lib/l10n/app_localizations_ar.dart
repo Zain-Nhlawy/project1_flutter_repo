@@ -978,4 +978,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get departmentDeletedSuccessfully => 'تم حذف القسم بنجاح';
+
+  @override
+  String get deleteCourse => 'حذف الكورس';
+
+  @override
+  String get noCoursesInDepartment => 'لا يوجد كورسات في هذا القسم.';
 }

@@ -350,5 +350,7 @@
 "editDepartment": "تعديل القسم",
 "removeDepartment": "حذف القسم",
 "departmentUpdatedSuccessfully": "تم تحديث القسم بنجاح",
-"departmentDeletedSuccessfully": "تم حذف القسم بنجاح"
+"departmentDeletedSuccessfully": "تم حذف القسم بنجاح",
+"deleteCourse": "حذف الكورس",
+"noCoursesInDepartment": "لا يوجد كورسات في هذا القسم."
 }

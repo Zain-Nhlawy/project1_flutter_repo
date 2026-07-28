@@ -27,8 +27,10 @@ class DemoMainPage extends StatelessWidget {
               getIt<DepartmentCubit>()..fetchDepartments(demo.id!),
         ),
         BlocProvider(
-          create: (context) =>
-              getIt<DemoUserCubit>()..fetchUsers(demo.id!),
+          create: (context) {
+            return getIt<DemoUserCubit>()
+              ..fetchUsers(demo.id!);
+          },
         ),
       ],
       child: Scaffold(

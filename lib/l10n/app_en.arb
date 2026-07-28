@@ -381,5 +381,7 @@
 "editDepartment": "Edit Department",
 "removeDepartment": "Remove Department",
 "departmentUpdatedSuccessfully": "Section updated successfully",
-"departmentDeletedSuccessfully": "Section deleted successfully"
+"departmentDeletedSuccessfully": "Section deleted successfully",
+"deleteCourse": "Delete Course",
+"noCoursesInDepartment": "No courses in this department."
 }

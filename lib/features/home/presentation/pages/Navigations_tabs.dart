@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/core/di/service_locator.dart';
-import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20cubit/demo_cubit.dart';
 import 'package:project1/features/home/presentation/cubit/navigation_tabs_cubit.dart';
 import 'package:project1/features/home/presentation/cubit/navigation_tabs_state.dart';
@@ -26,7 +25,6 @@ class NavigationsTabs extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => NavigationTabsCubit()),
         BlocProvider(create: (_) => getIt<DemoCubit>()..fetchDemos()),
-        BlocProvider(create: (_) => getIt<UserCubit>()..getMe()),
       ],
       child: BlocBuilder<NavigationTabsCubit, NavigationTabsState>(
         builder: (context, state) {

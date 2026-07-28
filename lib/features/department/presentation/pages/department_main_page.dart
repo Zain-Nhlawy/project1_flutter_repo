@@ -152,6 +152,7 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
         return DepartmentCoursesPage(
           key: const ValueKey(1),
           demoId: widget.demoId!,
+          departmentId: widget.department!.id!,
           canManage: widget.canManage,
         );
       case 2:

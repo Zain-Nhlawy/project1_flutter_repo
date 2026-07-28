@@ -1969,6 +1969,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Section deleted successfully'**
   String get departmentDeletedSuccessfully;
+
+  /// No description provided for @deleteCourse.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Course'**
+  String get deleteCourse;
+
+  /// No description provided for @noCoursesInDepartment.
+  ///
+  /// In en, this message translates to:
+  /// **'No courses in this department.'**
+  String get noCoursesInDepartment;
 }
 
 class _AppLocalizationsDelegate

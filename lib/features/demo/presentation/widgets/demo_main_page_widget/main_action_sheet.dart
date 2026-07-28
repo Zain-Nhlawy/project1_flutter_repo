@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/course/presentation/pages/courses_selection_screen.dart';
 import 'package:project1/features/demo/presentation/cubit/demo users cubit/demo_users_cubit.dart';
 import 'package:project1/features/demo/presentation/pages/demo_users_page.dart';
@@ -58,11 +57,12 @@ class MainActionsSheet extends StatelessWidget {
                   PageRouteBuilder(
                     transitionDuration: const Duration(milliseconds: 300),
                     pageBuilder: (context, animation, secondaryAnimation) =>
-                        BlocProvider(
-                      create: (_) =>
-                          getIt<DemoUserCubit>()..fetchUsers(demoId),
-                      child: DemoUsersScreen(demoId: demoId),
-                    ),
+                        BlocProvider.value(
+                          value: context.read<DemoUserCubit>(),
+                          child: DemoUsersScreen(
+                            demoId: demoId,
+                          ),
+                          ),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
                       return FadeThroughTransition(

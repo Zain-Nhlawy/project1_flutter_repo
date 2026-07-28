@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
-import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/demo/domain/entities/user_entity.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_cubit.dart';
 import 'package:project1/features/demo/presentation/pages/demo_users_page.dart';
@@ -22,7 +21,7 @@ class ManagerSelectionField extends StatelessWidget {
       context,
       MaterialPageRoute(
         builder: (_) => BlocProvider.value(
-          value: getIt<DemoUserCubit>()..fetchUsers(demoId),
+          value: context.read<DemoUserCubit>(),
           child: DemoUsersScreen(
             demoId: demoId,
             onUserTap: (user) {

@@ -981,4 +981,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get departmentDeletedSuccessfully => 'Section deleted successfully';
+
+  @override
+  String get deleteCourse => 'Delete Course';
+
+  @override
+  String get noCoursesInDepartment => 'No courses in this department.';
 }

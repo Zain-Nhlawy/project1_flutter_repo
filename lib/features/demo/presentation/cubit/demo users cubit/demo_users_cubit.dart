@@ -8,26 +8,30 @@ class DemoUserCubit extends Cubit<DemoUsersState> {
   DemoUserCubit({required this.getUsersUseCase}) : super(DemoUserInitial());
 
   Future<void> fetchUsers(String demoId) async {
-    emit(GetDemoUsersLoading());
-
-    try {
-      final result = await getUsersUseCase(demoId);
-
-      result.fold(
-        (error) => emit(GetDemoUsersError(error)),
-        (users) => emit(GetDemoUsersLoaded(users)),
-      );
-    } catch (e) {
-      emit(GetDemoUsersError(e.toString()));
-    }
+  emit(GetDemoUsersLoading());
+  try {
+    final result = await getUsersUseCase(demoId);
+    result.fold(
+      (error) {
+        emit(GetDemoUsersError(error));
+      },
+      (users) {
+        emit(GetDemoUsersLoaded(users));
+      },
+    );
+  } catch (e) {
+    emit(GetDemoUsersError(e.toString()));
   }
+}
 
-  String? getMyMemberId(String currentUserEmail) {
+  String? getMyMemberId(String currentUserId) {
   final currentState = state;
   if (currentState is! GetDemoUsersLoaded) return null;
   try {
     return currentState.users
-        .firstWhere((member) => member.email == currentUserEmail)
+        .firstWhere(
+          (member) => member.id == currentUserId,
+        )
         .memberIdInDemo;
   } catch (_) {
     return null;

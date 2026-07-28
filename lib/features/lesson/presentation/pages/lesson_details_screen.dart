@@ -8,7 +8,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/attachment/presentation/cubit/lesson_attachment_cubit.dart';
-import 'package:project1/features/course/presentation/widgets/course_tag.dart';
 import 'package:project1/features/lesson/domain/entities/lesson_entity.dart';
 import 'package:project1/features/lesson/presentation/widgets/datails/lesson_tabs.dart';
 import 'package:project1/features/lesson/presentation/widgets/datails/video_controls.dart';
@@ -129,11 +128,6 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
     if (!_hasPrevious) return;
     setState(() => _currentIndex--);
     _loadCurrentVideo();
-  }
-
-  String _formatDuration(int totalSeconds) {
-    final duration = Duration(seconds: totalSeconds);
-    return '${duration.inMinutes} min';
   }
 
   @override

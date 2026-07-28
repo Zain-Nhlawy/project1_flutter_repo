@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/features/course/domain/use_case/create_department_course_usecase.dart';
+import 'package:project1/features/course/domain/use_case/delete_department_course_usecase.dart';
 import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
 import 'package:project1/features/course/presentation/cubit/course_state.dart';
 import 'package:project1/features/course/presentation/pages/course_details_screen.dart';
@@ -11,11 +14,15 @@ import 'package:project1/l10n/app_localizations.dart';
 class DemoCoursesScreen extends StatefulWidget {
   final String demoId;
   final bool showAppBar;
+  final String? departmentId;
+  final Map<String, String> initialAssetIdToDepartmentCourseId;
 
   const DemoCoursesScreen({
     super.key,
     required this.demoId,
     this.showAppBar = false,
+    this.departmentId,
+    this.initialAssetIdToDepartmentCourseId = const {},
   });
 
   @override
@@ -23,7 +30,98 @@ class DemoCoursesScreen extends StatefulWidget {
 }
 
 class _DemoCoursesScreenState extends State<DemoCoursesScreen> {
-  final Set<String> _selectedCourses = <String>{};
+  late Set<String> _selectedAssetIds;
+  late Map<String, String> _assetIdToDepartmentCourseId;
+  final Set<String> _pendingAssetIds = <String>{};
+
+  late final CreateDepartmentCourseUseCase _createUseCase;
+  late final DeleteDepartmentCourseUseCase _deleteUseCase;
+
+  bool _hasChanges = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedAssetIds = {...widget.initialAssetIdToDepartmentCourseId.keys};
+    _assetIdToDepartmentCourseId = {...widget.initialAssetIdToDepartmentCourseId};
+    _createUseCase = getIt<CreateDepartmentCourseUseCase>();
+    _deleteUseCase = getIt<DeleteDepartmentCourseUseCase>();
+  }
+
+  bool get _isSelectionMode => widget.departmentId != null;
+
+  Future<void> _toggleCourse(String assetId) async {
+  if (widget.departmentId == null) return;
+  if (_pendingAssetIds.contains(assetId)) return;
+  final isSelected = _selectedAssetIds.contains(assetId);
+  setState(() {
+    _pendingAssetIds.add(assetId);
+    if (isSelected) {
+      _selectedAssetIds.remove(assetId);
+    } else {
+      _selectedAssetIds.add(assetId);
+    }
+  });
+
+
+  if (isSelected) {
+    final departmentCourseId =
+        _assetIdToDepartmentCourseId[assetId];
+    if (departmentCourseId == null) {
+      setState(() {
+        _pendingAssetIds.remove(assetId);
+        _selectedAssetIds.add(assetId);
+      });
+      return;
+    }
+    final result = await _deleteUseCase(
+      demoId: widget.demoId,
+      departmentId: widget.departmentId!,
+      departmentCourseId: departmentCourseId,
+    );
+    result.fold(
+      (failure) {
+        if (!mounted) return;
+        setState(() {
+          _selectedAssetIds.add(assetId);
+        });
+        SnackbarTheme()
+            .newSnackBarError(context, failure.message);
+      },
+      (_) {
+        _assetIdToDepartmentCourseId.remove(assetId);
+        _hasChanges = true;
+      },
+    );
+  }
+  else {
+    final result = await _createUseCase(
+      demoId: widget.demoId,
+      departmentId: widget.departmentId!,
+      assetId: assetId,
+    );
+    result.fold(
+      (failure) {
+        if (!mounted) return;
+        setState(() {
+          _selectedAssetIds.remove(assetId);
+        });
+        SnackbarTheme()
+            .newSnackBarError(context, failure.message);
+      },
+      (departmentCourse) {
+        _assetIdToDepartmentCourseId[assetId] =
+            departmentCourse.id;
+        _hasChanges = true;
+      },
+    );
+  }
+  if (mounted) {
+    setState(() {
+      _pendingAssetIds.remove(assetId);
+    });
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -74,15 +172,19 @@ class _DemoCoursesScreenState extends State<DemoCoursesScreen> {
                     const SizedBox(width: 10),
                     Text(
                       "${demoCourses.length} ${localizations.availableCourses}",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ],
                 ),
               ),
               const SizedBox(height: 20),
               ...demoCourses.map((course) {
+                final assetId = course.assetId;
+                final isSelected =
+                    assetId != null && _selectedAssetIds.contains(assetId);
+                final isPending =
+                    assetId != null && _pendingAssetIds.contains(assetId);
+
                 return CourseCard(
                   id: course.id,
                   title: course.title,
@@ -96,17 +198,9 @@ class _DemoCoursesScreenState extends State<DemoCoursesScreen> {
                   mode: widget.showAppBar
                       ? CourseCardMode.demoView
                       : CourseCardMode.demoSelection,
-                  isSelected: _selectedCourses.contains(course.id),
-                  onSelect: !widget.showAppBar
-                      ? () {
-                          setState(() {
-                            if (_selectedCourses.contains(course.id)) {
-                              _selectedCourses.remove(course.id);
-                            } else {
-                              _selectedCourses.add(course.id);
-                            }
-                          });
-                        }
+                  isSelected: isSelected,
+                  onSelect: (!widget.showAppBar && _isSelectionMode && assetId != null && !isPending)
+                      ? () => _toggleCourse(assetId)
                       : null,
                   onSeeMore: () {
                     Navigator.push(
@@ -129,9 +223,7 @@ class _DemoCoursesScreenState extends State<DemoCoursesScreen> {
         }
 
         if (state is CourseError) {
-          return Center(
-            child: Text(state.errors.first),
-          );
+          return Center(child: Text(state.errors.first));
         }
 
         return const SizedBox();
@@ -142,30 +234,29 @@ class _DemoCoursesScreenState extends State<DemoCoursesScreen> {
       return body;
     }
 
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.white,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        Navigator.pop(context, _hasChanges);
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
+            onPressed: () => Navigator.pop(context, _hasChanges),
           ),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          localizations.demoCourses,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
+          title: Text(
+            localizations.demoCourses,
+            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(gradient: AppColors.primaryGradient),
           ),
         ),
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: AppColors.primaryGradient,
-          ),
-        ),
+        body: body,
       ),
-      body: body,
     );
   }
 }

@@ -42,17 +42,25 @@ import 'package:project1/features/auth/upload_photo/data/repository/upload_photo
 import 'package:project1/features/auth/upload_photo/domain/repository/upload_photo_repository.dart';
 import 'package:project1/features/auth/upload_photo/domain/use_case/upload_photo_usecase.dart';
 import 'package:project1/features/course/data/data_sources/course_remote_datasource.dart';
+import 'package:project1/features/course/data/data_sources/department_course_remote_data_source.dart';
 import 'package:project1/features/course/data/repository/course_repository_impl.dart';
+import 'package:project1/features/course/data/repository/department_course_repository_impl.dart';
 import 'package:project1/features/course/domain/repository/course_repository.dart';
+import 'package:project1/features/course/domain/repository/department_course_repository.dart';
 import 'package:project1/features/course/domain/use_case/create_course_usecase.dart';
+import 'package:project1/features/course/domain/use_case/create_department_course_usecase.dart';
 import 'package:project1/features/course/domain/use_case/delete_course_usecase.dart';
+import 'package:project1/features/course/domain/use_case/delete_department_course_usecase.dart';
 import 'package:project1/features/course/domain/use_case/get_course_usecase.dart';
 import 'package:project1/features/course/domain/use_case/get_demo_course_usecase.dart';
 import 'package:project1/features/course/domain/use_case/get_demo_courses_usecase.dart';
+import 'package:project1/features/course/domain/use_case/get_department_course_usecase.dart';
+import 'package:project1/features/course/domain/use_case/get_department_courses_usecase.dart';
 import 'package:project1/features/course/domain/use_case/get_tags_usecase.dart';
 import 'package:project1/features/course/domain/use_case/publish_course_usecase.dart';
 import 'package:project1/features/course/domain/use_case/update_course_usecase.dart';
 import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
+import 'package:project1/features/course/presentation/cubit/department_course_cubit.dart';
 import 'package:project1/features/course/presentation/cubit/tags_cubit.dart';
 import 'package:project1/features/course/upload_photo/data/data_sources/upload_photo_course_remote_datasource.dart';
 import 'package:project1/features/course/upload_photo/data/repository/upload_photo_course_repositpry_impl.dart';
@@ -213,12 +221,12 @@ void setupDI() {
   getIt.registerLazySingleton(() => TurnOff2FAUseCase(getIt<AuthRepository>()));
 
   //cubit
-  getIt.registerFactory(
-    () => UserCubit(
-      getMeUseCase: getIt<GetMeUseCase>(),
-      updateProfileImageUseCase: getIt<UpdateProfileImageUseCase>(),
-    ),
-  );
+  getIt.registerLazySingleton(
+  () => UserCubit(
+    getMeUseCase: getIt<GetMeUseCase>(),
+    updateProfileImageUseCase: getIt<UpdateProfileImageUseCase>(),
+  ),
+);
   getIt.registerFactory(
     () => AuthCubit(
       registerUseCase: getIt<RegisterUseCase>(),
@@ -622,4 +630,42 @@ void setupDI() {
   );
 
   //////////////////////// Course FAQ ////////////////////////
+  ///
+
+  //////////////////////// Department Course ////////////////////////
+
+//Data Sources
+getIt.registerLazySingleton<DepartmentCourseRemoteDataSource>(
+  () => DepartmentCourseRemoteDataSource(getIt<DioClient>()),
+);
+
+//Repositories
+getIt.registerLazySingleton<DepartmentCourseRepository>(
+  () => DepartmentCourseRepositoryImpl(getIt<DepartmentCourseRemoteDataSource>()),
+);
+
+//Use Cases
+getIt.registerLazySingleton<GetDepartmentCoursesUseCase>(
+  () => GetDepartmentCoursesUseCase(getIt<DepartmentCourseRepository>()),
+);
+getIt.registerLazySingleton<GetDepartmentCourseUseCase>(
+  () => GetDepartmentCourseUseCase(getIt<DepartmentCourseRepository>()),
+);
+getIt.registerLazySingleton<CreateDepartmentCourseUseCase>(
+  () => CreateDepartmentCourseUseCase(getIt<DepartmentCourseRepository>()),
+);
+getIt.registerLazySingleton<DeleteDepartmentCourseUseCase>(
+  () => DeleteDepartmentCourseUseCase(getIt<DepartmentCourseRepository>()),
+);
+
+//Cubits
+getIt.registerFactory<DepartmentCourseCubit>(
+  () => DepartmentCourseCubit(
+    getDepartmentCoursesUseCase: getIt<GetDepartmentCoursesUseCase>(),
+    createDepartmentCourseUseCase: getIt<CreateDepartmentCourseUseCase>(),
+    deleteDepartmentCourseUseCase: getIt<DeleteDepartmentCourseUseCase>(),
+  ),
+);
+
+//////////////////////// Department Course ////////////////////////
 }

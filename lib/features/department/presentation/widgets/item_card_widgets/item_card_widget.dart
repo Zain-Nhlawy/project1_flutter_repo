@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_cubit.dart';
 import 'package:project1/features/department/domain/entities/department_entity.dart';
 import 'package:project1/features/department/presentation/pages/department_main_page.dart';
 import 'package:project1/features/department/presentation/widgets/item_card_widgets/item_card_header.dart';
@@ -15,7 +17,6 @@ class ItemCardWidget extends StatelessWidget {
   final VoidCallback? onDelete;
   final String demoId;
   final bool isManager;
-  final bool canManage;
 
   const ItemCardWidget({
     super.key,
@@ -23,7 +24,6 @@ class ItemCardWidget extends StatelessWidget {
     required this.departmentEntity,
     this.isOwner = false,
     this.isManager = false,
-    this.canManage = false,
     this.onEdit,
     this.onDelete,
     required this.demoId, 
@@ -49,12 +49,20 @@ class ItemCardWidget extends StatelessWidget {
           color: Colors.transparent,
           child: InkWell(
             onTap: () {
+              final demoUserCubit = context.read<DemoUserCubit>();
               Navigator.push(
                 context,
                 PageRouteBuilder(
                   transitionDuration: const Duration(milliseconds: 300),
                   pageBuilder: (context, animation, secondaryAnimation) =>
-                      DepartmentMainPage(department: departmentEntity,demoId: demoId,canManage: isOwner || isManager,),
+                  BlocProvider.value(
+                    value: demoUserCubit,
+                    child: DepartmentMainPage(
+                      department: departmentEntity,
+                      demoId: demoId,
+                      canManage: isOwner || isManager,
+                    ),
+                  ),
                   transitionsBuilder:
                       (context, animation, secondaryAnimation, child) {
                         return SharedAxisTransition(
