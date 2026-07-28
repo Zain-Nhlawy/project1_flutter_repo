@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/demo/domain/use%20case/demo_users_usecase.dart';
 import 'package:project1/features/demo/presentation/cubit/search%20for%20users/serach_user_cubit.dart';
@@ -11,14 +12,16 @@ import 'package:project1/features/demo/presentation/widgets/demo%20member%20card
 import 'package:project1/l10n/app_localizations.dart';
 
 class DemoUsersScreen extends StatelessWidget {
-  const DemoUsersScreen({super.key, required this.demoId, this.onUserTap});
-
+  const DemoUsersScreen({super.key, required this.demoId, this.onUserTap , this.isOwner = true});
+  final bool isOwner;
   final String demoId;
   final ValueChanged<MembersEntity>? onUserTap;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       appBar: AppBar(
         shape: const RoundedRectangleBorder(
@@ -28,28 +31,51 @@ class DemoUsersScreen extends StatelessWidget {
         title: Text(l10n.demoMembers),
         scrolledUnderElevation: 0,
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Theme.of(context).colorScheme.tertiary,
-        elevation: 6,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
-        onPressed: () {
-          final demoUserCubit = context.read<DemoUserCubit>();
-          showDialog(
-            context: context,
-            builder: (dialogContext) {
-              return MultiBlocProvider(
-                providers: [
-                  BlocProvider.value(value: demoUserCubit),
-                  BlocProvider(
-                    create: (_) => SearchUserCubit(getIt<DemoUsersUsecase>()),
-                  ),
-                ],
-                child: SearchUserDialog(demoId: demoId),
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+          gradient: AppColors.buttonGradientOf(context),
+          borderRadius: BorderRadius.circular(30),
+          boxShadow: [
+            BoxShadow(
+              color: (isDark ? AppColors.darkSecondary : AppColors.primary)
+                  .withOpacity(0.35),
+              blurRadius: 16,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(30),
+            onTap: () {
+              final demoUserCubit = context.read<DemoUserCubit>();
+              showDialog(
+                context: context,
+                builder: (dialogContext) {
+                  return MultiBlocProvider(
+                    providers: [
+                      BlocProvider.value(value: demoUserCubit),
+                      BlocProvider(
+                        create: (_) =>
+                            SearchUserCubit(getIt<DemoUsersUsecase>()),
+                      ),
+                    ],
+                    child: SearchUserDialog(demoId: demoId),
+                  );
+                },
               );
             },
-          );
-        },
-        label: const Icon(Icons.person_add_alt_1_rounded, color: Colors.white),
+            child: const Padding(
+              padding: EdgeInsets.all(16),
+              child: Icon(
+                Icons.person_add_alt_1_rounded,
+                color: Colors.white,
+                size: 24,
+              ),
+            ),
+          ),
+        ),
       ),
       body: BlocBuilder<DemoUserCubit, DemoUsersState>(
         builder: (context, state) {
@@ -73,6 +99,7 @@ class DemoUsersScreen extends StatelessWidget {
                 final user = state.users[index];
                 return UserCard(
                   user: user,
+                  isOwner: isOwner,
                   onTap: onUserTap != null ? () => onUserTap!(user) : null,
                 );
               },

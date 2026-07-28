@@ -78,6 +78,11 @@ import 'package:project1/features/department/data/data_sources/department_data_s
 import 'package:project1/features/department/domain/repository/department_repository.dart';
 import 'package:project1/features/department/data/repository/department_repository_implement.dart';
 import 'package:project1/features/department/domain/use_case/get_department_use_case.dart';
+import 'package:project1/features/department/data/data_sources/roadmap_datasource.dart';
+import 'package:project1/features/department/data/repository/roadmap_repository_implement.dart';
+import 'package:project1/features/department/domain/repository/roadmap_repository.dart';
+import 'package:project1/features/department/domain/use_case/roadmap_usecase.dart';
+import 'package:project1/features/department/presentation/cubit/roadmap_cubit/roadmap_cubit.dart';
 import 'package:project1/features/faq/data/data_sources/course_faq_remote_data_source.dart';
 import 'package:project1/features/faq/data/repository/course_faq_repository_impl.dart';
 import 'package:project1/features/faq/domain/repository/course_faq_repository.dart';
@@ -339,6 +344,30 @@ void setupDI() {
 
   getIt.registerFactory<DepartmentCubit>(
     () => DepartmentCubit(getIt<GetDepartmentUseCase>()),
+  );
+
+  // Roadmap
+  getIt.registerLazySingleton<RoadmapRemoteDataSource>(
+    () => RoadmapRemoteDataSourceImpl(
+      getIt<DioClient>(),
+      dio: getIt<DioClient>().dio,
+    ),
+  );
+
+  getIt.registerLazySingleton<RoadmapRepository>(
+    () => RoadmapRepositoryImpl(
+      remoteDataSource: getIt<RoadmapRemoteDataSource>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<RoadmapUseCase>(
+    () => RoadmapUseCase(
+      roadmapRepository: getIt<RoadmapRepository>(),
+    ),
+  );
+
+  getIt.registerFactory<RoadmapCubit>(
+    () => RoadmapCubit(getIt<RoadmapUseCase>()),
   );
 
   //////////////// department //////////////////////////

@@ -7,7 +7,7 @@ import 'package:project1/features/department/presentation/widgets/item_card_widg
 import 'package:project1/features/department/presentation/widgets/item_card_widgets/item_card_member_badge.dart';
 import 'package:animations/animations.dart';
 
-class ItemCardWidget extends StatelessWidget {
+class ItemCardWidget extends StatefulWidget {
   final IconData icon;
   final DepartmentEntity departmentEntity;
   final bool isOwner;
@@ -26,84 +26,108 @@ class ItemCardWidget extends StatelessWidget {
     this.canManage = false,
     this.onEdit,
     this.onDelete,
-    required this.demoId, 
+    required this.demoId,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: AppColors.headerGradientOf(context),
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primaryOf(context).withValues(alpha: 0.25),
-            blurRadius: 12,
-            offset: const Offset(0, 6),
-          ),
-        ],
+  State<ItemCardWidget> createState() => _ItemCardWidgetState();
+}
+
+class _ItemCardWidgetState extends State<ItemCardWidget> {
+  bool _isPressed = false;
+
+  void _navigateToDepartment() {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 200),
+        reverseTransitionDuration: const Duration(milliseconds: 150),
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            DepartmentMainPage(
+          department: widget.departmentEntity,
+          demoId: widget.demoId,
+          canManage: widget.isOwner || widget.isManager,
+        ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeOut,
+            ),
+            child: child,
+          );
+        },
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                PageRouteBuilder(
-                  transitionDuration: const Duration(milliseconds: 300),
-                  pageBuilder: (context, animation, secondaryAnimation) =>
-                      DepartmentMainPage(department: departmentEntity,demoId: demoId,canManage: isOwner || isManager,),
-                  transitionsBuilder:
-                      (context, animation, secondaryAnimation, child) {
-                        return SharedAxisTransition(
-                          animation: animation,
-                          secondaryAnimation: secondaryAnimation,
-                          transitionType: SharedAxisTransitionType.horizontal,
-                          child: child,
-                        );
-                      },
-                ),
-              );
-            },
-            child: Stack(
-              children: [
-                Positioned(
-                  right: -16,
-                  bottom: -16,
-                  child: Transform.rotate(
-                    angle: -0.2,
-                    child: Icon(
-                      icon,
-                      size: 90,
-                      color: Colors.white.withValues(alpha: 0.1),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedScale(
+      scale: _isPressed ? 0.96 : 1.0,
+      duration: const Duration(milliseconds: 150),
+      curve: Curves.easeOutCubic,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: AppColors.headerGradientOf(context),
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.primaryOf(context).withValues(alpha: 0.25),
+              blurRadius: 12,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTapDown: (_) => setState(() => _isPressed = true),
+              onTapCancel: () => setState(() => _isPressed = false),
+              onTap: () {
+                setState(() => _isPressed = false);
+                _navigateToDepartment();
+              },
+              child: Stack(
+                children: [
+                  Positioned(
+                    right: -16,
+                    bottom: -16,
+                    child: Transform.rotate(
+                      angle: -0.2,
+                      child: Icon(
+                        widget.icon,
+                        size: 90,
+                        color: Colors.white.withValues(alpha: 0.1),
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ItemCardHeader(
-                        icon: icon,
-                        isOwner: isOwner,
-                        onEdit: onEdit,
-                        onDelete: onDelete,
-                      ),
-                      ItemCardInfo(
-                        name: departmentEntity.name,
-                        description: departmentEntity.description,
-                      ),
-                      ItemCardMemberBadge(
-                        memberCount: departmentEntity.memberCount ?? 0,
-                      ),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ItemCardHeader(
+                          icon: widget.icon,
+                          isOwner: widget.isOwner,
+                          onEdit: widget.onEdit,
+                          onDelete: widget.onDelete,
+                        ),
+                        ItemCardInfo(
+                          name: widget.departmentEntity.name,
+                          description: widget.departmentEntity.description,
+                        ),
+                        ItemCardMemberBadge(
+                          memberCount: widget.departmentEntity.memberCount ?? 0,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
