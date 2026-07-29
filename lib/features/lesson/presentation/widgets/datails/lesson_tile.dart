@@ -3,8 +3,14 @@ import 'package:flutter/material.dart';
 class LessonTile extends StatelessWidget {
   final int num;
   final String title;
+  final bool locked;
 
-  const LessonTile({super.key, required this.num, required this.title});
+  const LessonTile({
+    super.key,
+    required this.num,
+    required this.title,
+    this.locked = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +27,19 @@ class LessonTile extends StatelessWidget {
           Expanded(
             child: Text(
               title,
-              style: const TextStyle(fontWeight: FontWeight.w500),
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: locked ? Colors.grey : null,
+              ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          const Icon(Icons.play_circle_outline, size: 20),
+          Icon(
+            locked ? Icons.lock_outline : Icons.play_circle_outline,
+            size: 20,
+            color: locked ? Colors.grey : null,
+          ),
         ],
       ),
     );

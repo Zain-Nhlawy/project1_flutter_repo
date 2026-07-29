@@ -4,6 +4,7 @@ import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
 import 'package:project1/features/course/presentation/cubit/course_state.dart';
+import 'package:project1/features/course/presentation/widgets/custom_button.dart';
 import 'package:project1/features/course/presentation/widgets/details/course_header.dart';
 import 'package:project1/features/course/presentation/widgets/details/course_tabs.dart';
 import 'package:project1/features/course/presentation/widgets/course_tag.dart';
@@ -117,7 +118,12 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                 ? state.course
                 : (state as CourseAssetLoaded).course;
 
+            final bool isFree = course.price == null || course.price == 0;
+            final bool showEnrollBar =
+                widget.mode == CourseDetailsMode.library;
+
             return SingleChildScrollView(
+              padding: EdgeInsets.only(bottom: showEnrollBar ? 90 : 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -132,12 +138,43 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          course.title,
-                          style: const TextStyle(
-                            fontSize: 26,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                course.title,
+                                style: const TextStyle(
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            if (isFree) ...[
+                              const SizedBox(width: 10),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 6,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.green.shade50,
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                    color: Colors.green.shade400,
+                                  ),
+                                ),
+                                child: Text(
+                                  localizations.free,
+                                  style: TextStyle(
+                                    color: Colors.green.shade700,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ],
                         ),
                         const SizedBox(height: 15),
 
@@ -229,30 +266,30 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                           ),
                         ),
 
-                        if (widget.mode == CourseDetailsMode.demo) ...[
-                          const SizedBox(height: 30),
+                        const SizedBox(height: 30),
 
-                          Text(
-                            localizations.courseContent,
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColor,
+                        Text(
+                          localizations.courseContent,
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+
+                        const SizedBox(height: 15),
+
+                        SizedBox(
+                          height: 400,
+                          child: BlocProvider(
+                            create: (_) => getIt<SectionCubit>(),
+                            child: CourseTabs(
+                              courseId: course.id,
+                              lessonsLocked:
+                                  widget.mode == CourseDetailsMode.library,
                             ),
                           ),
-
-                          const SizedBox(height: 15),
-
-                          SizedBox(
-                            height: 400,
-                            child: BlocProvider(
-                              create: (_) => getIt<SectionCubit>(),
-                              child: CourseTabs(
-                                courseId: course.id,
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ],
                     ),
                   ),
@@ -262,6 +299,84 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
           }
 
           return const SizedBox();
+        },
+      ),
+      bottomNavigationBar: BlocBuilder<CourseCubit, CourseState>(
+        builder: (context, state) {
+          if (widget.mode != CourseDetailsMode.library) {
+            return const SizedBox.shrink();
+          }
+
+          if (state is! CourseDetailsLoaded) {
+            return const SizedBox.shrink();
+          }
+
+          final course = state.course;
+          final bool isFree = course.price == null || course.price == 0;
+
+          return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            decoration: BoxDecoration(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(.08),
+                  blurRadius: 10,
+                  offset: const Offset(0, -3),
+                ),
+              ],
+            ),
+            child: SafeArea(
+              top: false,
+              child: Row(
+                children: [
+                  if (isFree)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.green.shade50,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Colors.green.shade400),
+                      ),
+                      child: Text(
+                        localizations.free,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green.shade700,
+                        ),
+                      ),
+                    )
+                  else
+                    Text(
+                      '\$${course.price!.toStringAsFixed(2)}',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: SizedBox(
+                      height: 46,
+                      child: CustomButton(
+                        text: localizations.enrollNow,
+                        height: 46,
+                        gradient: AppColors.buttonGradient,
+                        expand: true,
+                        onPressed: () {
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
         },
       ),
     );

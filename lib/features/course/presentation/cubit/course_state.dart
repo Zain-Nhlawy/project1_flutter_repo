@@ -121,3 +121,19 @@ class CourseAssetError extends CourseState {
   final List<String> errors;
   const CourseAssetError(this.errors);
 }
+
+class PublicCoursesLoading extends CourseState {
+  const PublicCoursesLoading();
+}
+
+class PublicCoursesLoaded extends CourseState {
+  final List<CourseEntity> courses;
+
+  const PublicCoursesLoaded(this.courses);
+}
+
+class PublicCoursesError extends CourseState {
+  final List<String> errors;
+
+  const PublicCoursesError(this.errors);
+}

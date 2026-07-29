@@ -26,6 +26,7 @@ class CourseCard extends StatelessWidget {
   final VoidCallback? onSeeMore;
   final VoidCallback? onSelect;
   final VoidCallback? onBuy;
+  
 
   const CourseCard({
     super.key,
@@ -53,23 +54,23 @@ class CourseCard extends StatelessWidget {
       case CourseCardMode.demoView:
         return localizations.seeMore;
       case CourseCardMode.demoSelection:
-      return localizations.seeMore;
+        return localizations.seeMore;
       case CourseCardMode.library:
-        return price == null || price == 0 ? localizations.seeMore : "Buy";
+        return localizations.seeMore;
     }
   }
 
   VoidCallback? _buttonAction() {
-  switch (mode) {
-    case CourseCardMode.ongoing:
-      return onTap;
-    case CourseCardMode.demoView:
-    case CourseCardMode.demoSelection:
-      return onSeeMore;
-    case CourseCardMode.library:
-      return price == null || price == 0 ? onSeeMore : onBuy;
+    switch (mode) {
+      case CourseCardMode.ongoing:
+        return onTap;
+      case CourseCardMode.demoView:
+      case CourseCardMode.demoSelection:
+        return onSeeMore;
+      case CourseCardMode.library:
+        return onSeeMore;
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +101,7 @@ class CourseCard extends StatelessWidget {
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(20),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
@@ -145,7 +147,7 @@ class CourseCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    if (visibility != null)
+                    if (visibility != null && mode != CourseCardMode.library)
                       Positioned(
                         top: 12,
                         left: 12,
@@ -180,42 +182,43 @@ class CourseCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Positioned(
-                        top: 12,
-                        right: 12,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 14,
-                            vertical: 7,
-                          ),
-                          decoration: BoxDecoration(
-                            gradient: isFree
-                                ? LinearGradient(
-                                    colors: [
-                                      Colors.green.shade500,
-                                      Colors.green.shade700,
-                                    ],
-                                  )
-                                : AppColors.buttonGradient,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            displayPrice,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                            ),
+                    Positioned(
+                      top: 12,
+                      right: 12,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 7,
+                        ),
+                        decoration: BoxDecoration(
+                          gradient: isFree
+                              ? LinearGradient(
+                                  colors: [
+                                    Colors.green.shade500,
+                                    Colors.green.shade700,
+                                  ],
+                                )
+                              : AppColors.buttonGradient,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          displayPrice,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
                           ),
                         ),
                       ),
+                    ),
                   ],
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(

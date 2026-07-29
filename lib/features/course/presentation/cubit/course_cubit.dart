@@ -4,6 +4,7 @@ import 'package:project1/features/course/domain/entities/course_entity.dart';
 import 'package:project1/features/course/domain/use_case/delete_course_usecase.dart';
 import 'package:project1/features/course/domain/use_case/create_course_usecase.dart';
 import 'package:project1/features/course/domain/use_case/get_course_usecase.dart';
+import 'package:project1/features/course/domain/use_case/get_courses_usecase.dart';
 import 'package:project1/features/course/domain/use_case/get_demo_course_usecase.dart';
 import 'package:project1/features/course/domain/use_case/get_demo_courses_usecase.dart';
 import 'package:project1/features/course/domain/use_case/publish_course_usecase.dart';
@@ -13,6 +14,7 @@ import 'package:project1/features/course/presentation/cubit/course_state.dart';
 class CourseCubit extends Cubit<CourseState> {
   final CreateCourseUseCase createCourseUseCase;
   final GetCourseUseCase getCourseUseCase;
+  final GetCoursesUseCase getCoursesUseCase;
   final GetDemoCoursesUseCase getDemoCoursesUseCase;
   final GetDemoCourseUseCase getDemoCourseUseCase;
   final UpdateCourseUseCase updateCourseUseCase;
@@ -22,6 +24,7 @@ class CourseCubit extends Cubit<CourseState> {
   CourseCubit({
     required this.createCourseUseCase,
     required this.getCourseUseCase,
+    required this.getCoursesUseCase,
     required this.getDemoCoursesUseCase,
     required this.getDemoCourseUseCase,
     required this.updateCourseUseCase,
@@ -41,6 +44,26 @@ class CourseCubit extends Cubit<CourseState> {
       (createdCourse) => emit(CourseCreated(createdCourse)),
     );
   }
+
+  Future<void> getCourses({
+  String? search,
+  List<String>? tagIds,
+}) async {
+  emit(const PublicCoursesLoading());
+  final result = await getCoursesUseCase(
+    search: search,
+    tagIds: tagIds,
+  );
+  result.fold(
+    (failure) {
+      emit(PublicCoursesError(_errorsOf(failure)));
+    },
+    (courses) {
+      emit(PublicCoursesLoaded(courses));
+    },
+
+  );
+}
 
   Future<void> getCourse(String courseId) async {
     emit(const CourseDetailsLoading());

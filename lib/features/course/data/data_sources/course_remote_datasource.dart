@@ -139,4 +139,26 @@ class CourseRemoteDataSource {
       throw mapDioException(e);
     }
   }
+
+    Future<List<CourseModel>> getCourses({
+    String? search,
+    List<String>? tagIds,
+  }) async {
+    try {
+      final res = await dioClient.dio.get(
+        '/courses/cursor',
+        queryParameters: {
+          if (search != null && search.isNotEmpty) 'search': search,
+          if (tagIds != null && tagIds.isNotEmpty) 'tagIds': tagIds.join(','),
+        },
+      );
+      final List<dynamic>? data = res.data?['data'];
+      if (data == null) {
+        throw const ServerException('Failed to load courses.');
+      }
+      return data.map((courseJson) => CourseModel.fromJson(courseJson)).toList();
+    } on DioException catch (e) {
+      throw mapDioException(e);
+    }
+  }
 }

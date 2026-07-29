@@ -1088,4 +1088,45 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get noCoursesInDepartment => 'لا يوجد كورسات في هذا القسم.';
+
+  @override
+  String get publicLibrary => 'المكتبة العامة';
+
+  @override
+  String get searchCourses => '..ابحث عن الكورسات أو المهارات';
+
+  @override
+  String get allFilters => 'كل الفلاتر';
+
+  @override
+  String get beginner => 'مبتدئ';
+
+  @override
+  String get intermediate => 'متوسط';
+
+  @override
+  String get advanced => 'متقدم';
+
+  @override
+  String showingResults(Object count) {
+    return 'عرض $count نتيجة للبحث';
+  }
+
+  @override
+  String get sortBy => 'ترتيب حسب';
+
+  @override
+  String get popularity => 'الأكثر شعبية';
+
+  @override
+  String get enrollNow => 'سجل الآن';
+
+  @override
+  String get enrollToWatchLesson => 'سجل للتمكن من مشاهدة الدرس';
+
+  @override
+  String get exploreNewSkills => 'اكتشف شغفك وتعلّم مهارات جديدة';
+
+  @override
+  String get expandYourKnowledge => 'مئات الدورات التدريبية في انتظارك';
 }

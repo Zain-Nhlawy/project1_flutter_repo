@@ -384,5 +384,20 @@
   "exportPdf": "تصدير PDF",
   "exportingPdf": "جاري إنشاء ملف PDF...",
   "deleteCourse": "حذف الكورس",
-"noCoursesInDepartment": "لا يوجد كورسات في هذا القسم."
+"noCoursesInDepartment": "لا يوجد كورسات في هذا القسم.",
+"publicLibrary": "المكتبة العامة",
+  "searchCourses": "..ابحث عن الكورسات أو المهارات",
+  "allFilters": "كل الفلاتر",
+  "beginner": "مبتدئ",
+  "intermediate": "متوسط",
+  "advanced": "متقدم",
+  "showingResults": "عرض {count} نتيجة للبحث",
+  "sortBy": "ترتيب حسب",
+  "popularity": "الأكثر شعبية",
+  "price": "السعر",
+  "free": "مجاني",
+  "enrollNow": "سجل الآن",
+  "enrollToWatchLesson":"سجل للتمكن من مشاهدة الدرس",
+  "exploreNewSkills": "اكتشف شغفك وتعلّم مهارات جديدة",
+  "expandYourKnowledge": "مئات الدورات التدريبية في انتظارك"
 }

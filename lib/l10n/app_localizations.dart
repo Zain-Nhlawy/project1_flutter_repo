@@ -2173,6 +2173,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No courses in this department.'**
   String get noCoursesInDepartment;
+
+  /// No description provided for @publicLibrary.
+  ///
+  /// In en, this message translates to:
+  /// **'Public Library'**
+  String get publicLibrary;
+
+  /// No description provided for @searchCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Search courses, or skills..'**
+  String get searchCourses;
+
+  /// No description provided for @allFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'All Filters'**
+  String get allFilters;
+
+  /// No description provided for @beginner.
+  ///
+  /// In en, this message translates to:
+  /// **'Beginner'**
+  String get beginner;
+
+  /// No description provided for @intermediate.
+  ///
+  /// In en, this message translates to:
+  /// **'Intermediate'**
+  String get intermediate;
+
+  /// No description provided for @advanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced'**
+  String get advanced;
+
+  /// No description provided for @showingResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Showing {count} results for your search'**
+  String showingResults(Object count);
+
+  /// No description provided for @sortBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by'**
+  String get sortBy;
+
+  /// No description provided for @popularity.
+  ///
+  /// In en, this message translates to:
+  /// **'Popularity'**
+  String get popularity;
+
+  /// No description provided for @enrollNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Enroll Now'**
+  String get enrollNow;
+
+  /// No description provided for @enrollToWatchLesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Enroll to Watch Lesson'**
+  String get enrollToWatchLesson;
+
+  /// No description provided for @exploreNewSkills.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover Your Passion & Learn New Skills'**
+  String get exploreNewSkills;
+
+  /// No description provided for @expandYourKnowledge.
+  ///
+  /// In en, this message translates to:
+  /// **'Hundreds of courses waiting for you'**
+  String get expandYourKnowledge;
 }
 
 class _AppLocalizationsDelegate

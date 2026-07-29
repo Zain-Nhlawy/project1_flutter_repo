@@ -50,6 +50,24 @@ class CourseRepositoryImpl implements CourseRepository {
   }
 
   @override
+Future<Either<Failure, List<CourseEntity>>> getCourses({
+  String? search,
+  List<String>? tagIds,
+}) {
+  return _handle(
+    () async {
+      final courses = await remoteDataSource.getCourses(
+        search: search,
+        tagIds: tagIds,
+      );
+      return courses
+          .map<CourseEntity>((course) => course)
+          .toList();
+    },
+  );
+}
+
+  @override
   Future<Either<Failure, CourseEntity>> getCourse(String courseId) {
     return _handle(() => remoteDataSource.getCourse(courseId));
   }

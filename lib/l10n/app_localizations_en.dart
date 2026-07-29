@@ -1092,4 +1092,45 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noCoursesInDepartment => 'No courses in this department.';
+
+  @override
+  String get publicLibrary => 'Public Library';
+
+  @override
+  String get searchCourses => 'Search courses, or skills..';
+
+  @override
+  String get allFilters => 'All Filters';
+
+  @override
+  String get beginner => 'Beginner';
+
+  @override
+  String get intermediate => 'Intermediate';
+
+  @override
+  String get advanced => 'Advanced';
+
+  @override
+  String showingResults(Object count) {
+    return 'Showing $count results for your search';
+  }
+
+  @override
+  String get sortBy => 'Sort by';
+
+  @override
+  String get popularity => 'Popularity';
+
+  @override
+  String get enrollNow => 'Enroll Now';
+
+  @override
+  String get enrollToWatchLesson => 'Enroll to Watch Lesson';
+
+  @override
+  String get exploreNewSkills => 'Discover Your Passion & Learn New Skills';
+
+  @override
+  String get expandYourKnowledge => 'Hundreds of courses waiting for you';
 }

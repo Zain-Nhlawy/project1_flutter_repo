@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/features/course/presentation/pages/courses_selection_screen.dart';
+import 'package:project1/features/course/presentation/pages/public_library_screen.dart';
 import 'package:project1/features/demo/presentation/cubit/demo users cubit/demo_users_cubit.dart';
 import 'package:project1/features/demo/presentation/pages/demo_users_page.dart';
 import 'package:project1/l10n/app_localizations.dart';
@@ -77,6 +78,35 @@ class MainActionsSheet extends StatelessWidget {
                   );
                 },
               ),
+
+              const SizedBox(height: 12),
+
+            _ActionTile(
+              icon: Icons.local_library_rounded,
+              title: l10n.publicLibrary,
+              gradient: gradient,
+              colors: colors,
+              onTap: () {
+                Navigator.pop(context);
+
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    transitionDuration: const Duration(milliseconds: 300),
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        const PublicLibraryScreen(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return FadeThroughTransition(
+                        animation: animation,
+                        secondaryAnimation: secondaryAnimation,
+                        child: child,
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
 
               const SizedBox(height: 12),
 

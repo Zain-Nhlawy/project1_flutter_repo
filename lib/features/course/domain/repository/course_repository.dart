@@ -6,6 +6,10 @@ import 'package:project1/features/course/domain/entities/tag_entity.dart';
 abstract class CourseRepository {
   Future<Either<Failure, List<TagEntity>>> getTags();
   Future<Either<Failure, CourseEntity>> createCourse(CourseEntity course);
+  Future<Either<Failure, List<CourseEntity>>> getCourses({
+    String? search,
+    List<String>? tagIds,
+  });
   Future<Either<Failure, CourseEntity>> getCourse(String courseId);
   Future<Either<Failure, List<CourseEntity>>> getDemoCourses(String demoId);
   Future<Either<Failure, CourseEntity>> getDemoCourse({

@@ -415,5 +415,20 @@
   "exportPdf": "Export PDF",
   "exportingPdf": "Generating PDF...",
   "deleteCourse": "Delete Course",
-"noCoursesInDepartment": "No courses in this department."
+"noCoursesInDepartment": "No courses in this department.",
+"publicLibrary": "Public Library",
+  "searchCourses": "Search courses, or skills..",
+  "allFilters": "All Filters",
+  "beginner": "Beginner",
+  "intermediate": "Intermediate",
+  "advanced": "Advanced",
+  "showingResults": "Showing {count} results for your search",
+  "sortBy": "Sort by",
+  "popularity": "Popularity",
+  "price": "Price",
+  "free": "Free",
+  "enrollNow": "Enroll Now",
+  "enrollToWatchLesson":"Enroll to Watch Lesson",
+  "exploreNewSkills": "Discover Your Passion & Learn New Skills",
+  "expandYourKnowledge": "Hundreds of courses waiting for you"
 }

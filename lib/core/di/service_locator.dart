@@ -52,6 +52,7 @@ import 'package:project1/features/course/domain/use_case/create_department_cours
 import 'package:project1/features/course/domain/use_case/delete_course_usecase.dart';
 import 'package:project1/features/course/domain/use_case/delete_department_course_usecase.dart';
 import 'package:project1/features/course/domain/use_case/get_course_usecase.dart';
+import 'package:project1/features/course/domain/use_case/get_courses_usecase.dart';
 import 'package:project1/features/course/domain/use_case/get_demo_course_usecase.dart';
 import 'package:project1/features/course/domain/use_case/get_demo_courses_usecase.dart';
 import 'package:project1/features/course/domain/use_case/get_department_course_usecase.dart';
@@ -114,6 +115,11 @@ import 'package:project1/features/lesson/upload_video/domain/repository/lesson_v
 import 'package:project1/features/lesson/upload_video/domain/use_case/generate_video_upload_url_usecase.dart';
 import 'package:project1/features/lesson/upload_video/domain/use_case/upload_video_file_usecase.dart';
 import 'package:project1/features/lesson/upload_video/presentation/cubit/lesson_video_upload_cubit.dart';
+import 'package:project1/features/course/data/data_sources/payment_remote_data_source.dart';
+import 'package:project1/features/course/data/repository/payment_repository_impl.dart';
+import 'package:project1/features/course/domain/repository/payment_repository.dart';
+import 'package:project1/features/course/domain/use_case/checkout_course_usecase.dart';
+import 'package:project1/features/course/presentation/cubit/payment_cubit.dart';
 import 'package:project1/features/profile/data/data_sources/profile_remote_datasource.dart';
 import 'package:project1/features/profile/data/repository/profile_repository_impl.dart';
 import 'package:project1/features/profile/domain/repository/profile_repository.dart';
@@ -421,6 +427,9 @@ void setupDI() {
   getIt.registerLazySingleton<GetCourseUseCase>(
     () => GetCourseUseCase(getIt<CourseRepository>()),
   );
+  getIt.registerLazySingleton<GetCoursesUseCase>(
+    () => GetCoursesUseCase(getIt<CourseRepository>()),
+  );
   getIt.registerLazySingleton<GetDemoCourseUseCase>(
     () => GetDemoCourseUseCase(getIt<CourseRepository>()),
   );
@@ -436,6 +445,7 @@ void setupDI() {
     () => CourseCubit(
       createCourseUseCase: getIt<CreateCourseUseCase>(),
       getCourseUseCase: getIt<GetCourseUseCase>(),
+      getCoursesUseCase: getIt<GetCoursesUseCase>(),
       getDemoCoursesUseCase: getIt<GetDemoCoursesUseCase>(),
       getDemoCourseUseCase: getIt<GetDemoCourseUseCase>(),
       updateCourseUseCase: getIt<UpdateCourseUseCase>(),
@@ -697,4 +707,30 @@ getIt.registerFactory<DepartmentCourseCubit>(
 );
 
 //////////////////////// Department Course ////////////////////////
+
+
+
+//////////////////////// Payment ////////////////////////
+
+//Data Sources
+getIt.registerLazySingleton<PaymentRemoteDataSource>(
+  () => PaymentRemoteDataSource(getIt<DioClient>()),
+);
+
+//Repositories
+getIt.registerLazySingleton<PaymentRepository>(
+  () => PaymentRepositoryImpl(getIt<PaymentRemoteDataSource>()),
+);
+
+//Use Cases
+getIt.registerLazySingleton<CheckoutCourseUseCase>(
+  () => CheckoutCourseUseCase(getIt<PaymentRepository>()),
+);
+
+//Cubits
+getIt.registerFactory<PaymentCubit>(
+  () => PaymentCubit(checkoutCourseUseCase: getIt<CheckoutCourseUseCase>()),
+);
+
+//////////////////////// Payment Course ////////////////////////
 }

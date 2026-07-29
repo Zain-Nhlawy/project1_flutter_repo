@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/faq/domain/entities/course_faq_entity.dart';
 import 'package:project1/features/faq/presentation/cubit/course_faq_cubit.dart';
@@ -18,8 +19,13 @@ import 'package:project1/l10n/app_localizations.dart';
 
 class CourseTabs extends StatefulWidget {
   final String courseId;
+  final bool lessonsLocked;
 
-  const CourseTabs({super.key, required this.courseId});
+  const CourseTabs({
+    super.key,
+    required this.courseId,
+    this.lessonsLocked = false,
+  });
 
   @override
   State<CourseTabs> createState() => _CourseTabsState();
@@ -100,7 +106,10 @@ class _CourseTabsState extends State<CourseTabs> {
                             ),
                             child: Column(
                               children: [
-                                _SectionLessonsExpansionTile(section: section),
+                                _SectionLessonsExpansionTile(
+                                  section: section,
+                                  lessonsLocked: widget.lessonsLocked,
+                                ),
                                 Divider(
                                   height: 1,
                                   thickness: 1,
@@ -170,8 +179,12 @@ class _CourseTabsState extends State<CourseTabs> {
 
 class _SectionLessonsExpansionTile extends StatefulWidget {
   final SectionEntity section;
+  final bool lessonsLocked;
 
-  const _SectionLessonsExpansionTile({required this.section});
+  const _SectionLessonsExpansionTile({
+    required this.section,
+    this.lessonsLocked = false,
+  });
 
   @override
   State<_SectionLessonsExpansionTile> createState() =>
@@ -211,6 +224,14 @@ class _SectionLessonsExpansionTileState
   }
 
   void _openLesson(LessonEntity lesson) {
+    if (widget.lessonsLocked) {
+      SnackbarTheme().newSnackBarInfo(
+        context,
+        AppLocalizations.of(context)!.enrollToWatchLesson,
+      );
+      return;
+    }
+
     final index = _lessons.indexWhere((l) => l.id == lesson.id);
 
     Navigator.push(
@@ -262,7 +283,11 @@ class _SectionLessonsExpansionTileState
                   showTopLine: index != 0,
                   child: GestureDetector(
                     onTap: () => _openLesson(lesson),
-                    child: LessonTile(num: index + 1, title: lesson.title),
+                    child: LessonTile(
+                      num: index + 1,
+                      title: lesson.title,
+                      locked: widget.lessonsLocked,
+                    ),
                   ),
                 );
               }).toList(),
