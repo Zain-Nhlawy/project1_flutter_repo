@@ -42,17 +42,12 @@ class _LessonTabsState extends State<LessonTabs> {
       length: 2,
       child: Column(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const TabBar(
-              tabs: [
-                Tab(text: "Q&A"),
-                Tab(text: "Attachments"),
-              ],
-            ),
+          const TabBar(
+            indicatorSize: TabBarIndicatorSize.tab,
+            tabs: [
+              Tab(text: "Q&A"),
+              Tab(text: "Attachments"),
+            ],
           ),
           const SizedBox(height: 20),
           Expanded(
