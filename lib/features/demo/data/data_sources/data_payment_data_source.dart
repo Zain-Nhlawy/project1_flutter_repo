@@ -15,7 +15,8 @@ class DemoPaymentDataSourceImpl implements DemoPaymentDataSource {
   Future<String> requestPayment(String demoId, String plan) async {
     final response = await dio.post(
       '/payments/checkout/demo',
-      data: {'demoId': demoId, 'plan': plan},
+      options: Options(headers: {'x-demo-id': demoId}),
+      data: {'plan': plan},
     );
 
     final statusCode = response.statusCode ?? 0;
