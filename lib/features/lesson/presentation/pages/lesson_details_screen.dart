@@ -1,10 +1,8 @@
-import 'dart:io';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/attachment/presentation/cubit/lesson_attachment_cubit.dart';
@@ -33,8 +31,8 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
   late int _currentIndex;
 
   bool _isDownloadingVideo = false;
-  double _downloadProgress = 0;
   bool _hasVideoError = false;
+  bool _isFullscreen = false;
 
   LessonEntity get _currentLesson => widget.lessons[_currentIndex];
   bool get _hasNext => _currentIndex < widget.lessons.length - 1;
@@ -51,6 +49,9 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
 
   @override
   void dispose() {
+    if (_isFullscreen) {
+      _restoreSystemUi();
+    }
     _player.dispose();
     super.dispose();
   }
@@ -60,22 +61,11 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
 
     setState(() {
       _isDownloadingVideo = true;
-      _downloadProgress = 0;
       _hasVideoError = false;
     });
 
     try {
-      final localPath = await _downloadVideoLocally(
-        lesson.videoUrl,
-        onProgress: (progress) {
-          if (!mounted) return;
-          setState(() => _downloadProgress = progress);
-        },
-      );
-
-      if (!mounted) return;
-
-      await _player.open(Media(localPath));
+      await _player.open(Media(lesson.videoUrl));
 
       if (!mounted) return;
       setState(() => _isDownloadingVideo = false);
@@ -88,34 +78,26 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
     }
   }
 
-  Future<String> _downloadVideoLocally(
-    String url, {
-    required void Function(double progress) onProgress,
-  }) async {
-    final tempDir = await getTemporaryDirectory();
-    final fileName = url.split('/').last.split('?').first;
-    final localPath = '${tempDir.path}/lesson_video_$fileName';
-    final localFile = File(localPath);
+  Future<void> _toggleFullscreen() async {
+    setState(() => _isFullscreen = !_isFullscreen);
 
-    if (await localFile.exists()) {
-      final length = await localFile.length();
-      if (length > 0) {
-        onProgress(1.0);
-        return localPath;
-      }
+    if (_isFullscreen) {
+      await SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
+      await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    } else {
+      await _restoreSystemUi();
     }
+  }
 
-    await Dio().download(
-      url,
-      localPath,
-      onReceiveProgress: (received, total) {
-        if (total > 0) {
-          onProgress(received / total);
-        }
-      },
-    );
-
-    return localPath;
+  Future<void> _restoreSystemUi() async {
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   }
 
   void _goToNext() {
@@ -133,6 +115,22 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
+
+    if (_isFullscreen) {
+      return PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, result) async {
+          if (didPop) return;
+          await _toggleFullscreen();
+        },
+        child: Scaffold(
+          backgroundColor: Colors.black,
+          body: SafeArea(
+            child: _buildVideoArea(localizations),
+          ),
+        ),
+      );
+    }
 
     return BlocProvider(
       create: (_) => getIt<LessonAttachmentCubit>(),
@@ -167,15 +165,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
                 child: _buildVideoArea(localizations),
               ),
               Padding(
-                padding: const EdgeInsets.all(16),
-                child: VideoControls(
-                  player: _player,
-                  onNext: _hasNext ? _goToNext : null,
-                  onPrevious: _hasPrevious ? _goToPrevious : null,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -245,25 +235,31 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
     }
 
     if (_isDownloadingVideo) {
-      return Container(
-        color: Colors.black,
-        child: Center(
-          child: SizedBox(
-            width: 48,
-            height: 48,
-            child: CircularProgressIndicator(
-              value: _downloadProgress > 0 ? _downloadProgress : null,
-              color: AppColors.primary,
-            ),
-          ),
+      return const Center(
+        child: SizedBox(
+          width: 48,
+          height: 48,
+          child: CircularProgressIndicator(color: AppColors.primary),
         ),
       );
     }
 
-    return Video(
-      key: ValueKey(_currentLesson.id),
-      controller: _videoController,
-      controls: NoVideoControls,
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        Video(
+          key: ValueKey(_currentLesson.id),
+          controller: _videoController,
+          controls: NoVideoControls,
+        ),
+        VideoControls(
+          player: _player,
+          onNext: _hasNext ? _goToNext : null,
+          onPrevious: _hasPrevious ? _goToPrevious : null,
+          onFullscreen: _toggleFullscreen,
+          isFullscreen: _isFullscreen,
+        ),
+      ],
     );
   }
 }
