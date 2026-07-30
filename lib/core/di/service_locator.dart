@@ -92,6 +92,10 @@ import 'package:project1/features/department/data/repository/roadmap_repository_
 import 'package:project1/features/department/domain/repository/roadmap_repository.dart';
 import 'package:project1/features/department/domain/use_case/roadmap_usecase.dart';
 import 'package:project1/features/department/presentation/cubit/roadmap_cubit/roadmap_cubit.dart';
+import 'package:project1/features/department/data/data_sources/department_member_datasource.dart';
+import 'package:project1/features/department/data/repository/department_member_repo_impl.dart';
+import 'package:project1/features/department/domain/repository/department_member_repository.dart';
+import 'package:project1/features/department/presentation/cubit/department%20members%20cubit/department_member_cubit.dart';
 import 'package:project1/features/faq/data/data_sources/course_faq_remote_data_source.dart';
 import 'package:project1/features/faq/data/repository/course_faq_repository_impl.dart';
 import 'package:project1/features/faq/domain/repository/course_faq_repository.dart';
@@ -233,11 +237,11 @@ void setupDI() {
 
   //cubit
   getIt.registerLazySingleton(
-  () => UserCubit(
-    getMeUseCase: getIt<GetMeUseCase>(),
-    updateProfileImageUseCase: getIt<UpdateProfileImageUseCase>(),
-  ),
-);
+    () => UserCubit(
+      getMeUseCase: getIt<GetMeUseCase>(),
+      updateProfileImageUseCase: getIt<UpdateProfileImageUseCase>(),
+    ),
+  );
   getIt.registerFactory(
     () => AuthCubit(
       registerUseCase: getIt<RegisterUseCase>(),
@@ -360,6 +364,24 @@ void setupDI() {
     () => DepartmentCubit(getIt<GetDepartmentUseCase>()),
   );
 
+  // Department Member
+  getIt.registerLazySingleton<DepartmentMemberDataSource>(
+    () => DepartmentMemberDataSourceImpl(
+      getIt<DioClient>(),
+      dio: getIt<DioClient>().dio,
+    ),
+  );
+
+  getIt.registerLazySingleton<DepartmentMemberRepository>(
+    () => DepartmentMemberRepositoryImpl(
+      dataSource: getIt<DepartmentMemberDataSource>(),
+    ),
+  );
+
+  getIt.registerFactory<DepartmentMemberCubit>(
+    () => DepartmentMemberCubit(getIt<DepartmentMemberRepository>()),
+  );
+
   // Roadmap
   getIt.registerLazySingleton<RoadmapRemoteDataSource>(
     () => RoadmapRemoteDataSourceImpl(
@@ -375,14 +397,13 @@ void setupDI() {
   );
 
   getIt.registerLazySingleton<RoadmapUseCase>(
-    () => RoadmapUseCase(
-      roadmapRepository: getIt<RoadmapRepository>(),
-    ),
+    () => RoadmapUseCase(roadmapRepository: getIt<RoadmapRepository>()),
   );
 
   getIt.registerFactory<RoadmapCubit>(
     () => RoadmapCubit(getIt<RoadmapUseCase>()),
   );
+
 
   //////////////// department //////////////////////////
 
@@ -673,64 +694,64 @@ void setupDI() {
 
   //////////////////////// Department Course ////////////////////////
 
-//Data Sources
-getIt.registerLazySingleton<DepartmentCourseRemoteDataSource>(
-  () => DepartmentCourseRemoteDataSource(getIt<DioClient>()),
-);
+  //Data Sources
+  getIt.registerLazySingleton<DepartmentCourseRemoteDataSource>(
+    () => DepartmentCourseRemoteDataSource(getIt<DioClient>()),
+  );
 
-//Repositories
-getIt.registerLazySingleton<DepartmentCourseRepository>(
-  () => DepartmentCourseRepositoryImpl(getIt<DepartmentCourseRemoteDataSource>()),
-);
+  //Repositories
+  getIt.registerLazySingleton<DepartmentCourseRepository>(
+    () => DepartmentCourseRepositoryImpl(
+      getIt<DepartmentCourseRemoteDataSource>(),
+    ),
+  );
 
-//Use Cases
-getIt.registerLazySingleton<GetDepartmentCoursesUseCase>(
-  () => GetDepartmentCoursesUseCase(getIt<DepartmentCourseRepository>()),
-);
-getIt.registerLazySingleton<GetDepartmentCourseUseCase>(
-  () => GetDepartmentCourseUseCase(getIt<DepartmentCourseRepository>()),
-);
-getIt.registerLazySingleton<CreateDepartmentCourseUseCase>(
-  () => CreateDepartmentCourseUseCase(getIt<DepartmentCourseRepository>()),
-);
-getIt.registerLazySingleton<DeleteDepartmentCourseUseCase>(
-  () => DeleteDepartmentCourseUseCase(getIt<DepartmentCourseRepository>()),
-);
+  //Use Cases
+  getIt.registerLazySingleton<GetDepartmentCoursesUseCase>(
+    () => GetDepartmentCoursesUseCase(getIt<DepartmentCourseRepository>()),
+  );
+  getIt.registerLazySingleton<GetDepartmentCourseUseCase>(
+    () => GetDepartmentCourseUseCase(getIt<DepartmentCourseRepository>()),
+  );
+  getIt.registerLazySingleton<CreateDepartmentCourseUseCase>(
+    () => CreateDepartmentCourseUseCase(getIt<DepartmentCourseRepository>()),
+  );
+  getIt.registerLazySingleton<DeleteDepartmentCourseUseCase>(
+    () => DeleteDepartmentCourseUseCase(getIt<DepartmentCourseRepository>()),
+  );
 
-//Cubits
-getIt.registerFactory<DepartmentCourseCubit>(
-  () => DepartmentCourseCubit(
-    getDepartmentCoursesUseCase: getIt<GetDepartmentCoursesUseCase>(),
-    createDepartmentCourseUseCase: getIt<CreateDepartmentCourseUseCase>(),
-    deleteDepartmentCourseUseCase: getIt<DeleteDepartmentCourseUseCase>(),
-  ),
-);
+  //Cubits
+  getIt.registerFactory<DepartmentCourseCubit>(
+    () => DepartmentCourseCubit(
+      getDepartmentCoursesUseCase: getIt<GetDepartmentCoursesUseCase>(),
+      createDepartmentCourseUseCase: getIt<CreateDepartmentCourseUseCase>(),
+      deleteDepartmentCourseUseCase: getIt<DeleteDepartmentCourseUseCase>(),
+    ),
+  );
 
-//////////////////////// Department Course ////////////////////////
+  //////////////////////// Department Course ////////////////////////
 
+  //////////////////////// Payment ////////////////////////
 
+  //Data Sources
+  getIt.registerLazySingleton<PaymentRemoteDataSource>(
+    () => PaymentRemoteDataSource(getIt<DioClient>()),
+  );
 
-//////////////////////// Payment ////////////////////////
+  //Repositories
+  getIt.registerLazySingleton<PaymentRepository>(
+    () => PaymentRepositoryImpl(getIt<PaymentRemoteDataSource>()),
+  );
 
-//Data Sources
-getIt.registerLazySingleton<PaymentRemoteDataSource>(
-  () => PaymentRemoteDataSource(getIt<DioClient>()),
-);
+  //Use Cases
+  getIt.registerLazySingleton<CheckoutCourseUseCase>(
+    () => CheckoutCourseUseCase(getIt<PaymentRepository>()),
+  );
 
-//Repositories
-getIt.registerLazySingleton<PaymentRepository>(
-  () => PaymentRepositoryImpl(getIt<PaymentRemoteDataSource>()),
-);
+  //Cubits
+  getIt.registerFactory<PaymentCubit>(
+    () => PaymentCubit(checkoutCourseUseCase: getIt<CheckoutCourseUseCase>()),
+  );
 
-//Use Cases
-getIt.registerLazySingleton<CheckoutCourseUseCase>(
-  () => CheckoutCourseUseCase(getIt<PaymentRepository>()),
-);
-
-//Cubits
-getIt.registerFactory<PaymentCubit>(
-  () => PaymentCubit(checkoutCourseUseCase: getIt<CheckoutCourseUseCase>()),
-);
-
-//////////////////////// Payment Course ////////////////////////
+  //////////////////////// Payment Course ////////////////////////
 }

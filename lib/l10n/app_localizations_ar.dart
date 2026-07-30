@@ -968,6 +968,49 @@ class AppLocalizationsAr extends AppLocalizations {
   String get departmentChat => 'المحادثة';
 
   @override
+  String get departmentMembers => 'الأعضاء';
+
+  @override
+  String get noMembersInDepartment => 'لا يوجد أعضاء في هذا القسم بعد.';
+
+  @override
+  String get selectJobTitle => 'اختر المسمى الوظيفي';
+
+  @override
+  String get jobTitle => 'المسمى الوظيفي';
+
+  @override
+  String get intern => 'متدرب';
+
+  @override
+  String get junior => 'مبتدئ';
+
+  @override
+  String get senior => 'خبير';
+
+  @override
+  String get addMember => 'إضافة عضو';
+
+  @override
+  String get memberAddedSuccessfully => 'تمت إضافة العضو بنجاح';
+
+  @override
+  String get searchDemoMembers => 'البحث عن أعضاء الغرفة';
+
+  @override
+  String get searchMembersHint => '...البحث بالاسم أو البريد الإلكتروني';
+
+  @override
+  String get noMembersFound => 'لم يتم العثور على أعضاء';
+
+  @override
+  String get removeMemberPrompt => 'إزالة العضو';
+
+  @override
+  String get areYouSureRemoveMember =>
+      'هل أنت تأكد من رغبتك في إزالة هذا العضو من القسم؟';
+
+  @override
   String get editDepartment => 'تعديل القسم';
 
   @override

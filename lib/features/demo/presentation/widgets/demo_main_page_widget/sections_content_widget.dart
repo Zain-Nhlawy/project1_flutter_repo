@@ -138,11 +138,16 @@ class SectionsContentWidget extends StatelessWidget {
                           : () {
                               final departmentCubit = context
                                   .read<DepartmentCubit>();
+                              final demoUserCubit = context
+                                  .read<DemoUserCubit>();
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => BlocProvider.value(
-                                    value: departmentCubit,
+                                  builder: (context) => MultiBlocProvider(
+                                    providers: [
+                                      BlocProvider.value(value: departmentCubit),
+                                      BlocProvider.value(value: demoUserCubit),
+                                    ],
                                     child: AddDepartmentScreen(
                                       demoId: demo.id!,
                                     ),
@@ -234,6 +239,7 @@ class SectionsContentWidget extends StatelessWidget {
                     final isManager = myMemberId != null &&
                         department.managerId == myMemberId;
                     final departmentCubit = context.read<DepartmentCubit>();
+                    final demoUserCubit = context.read<DemoUserCubit>();
                     return ItemCardWidget(
                       departmentEntity: department,
                       icon: Icons.layers_rounded,
@@ -244,8 +250,11 @@ class SectionsContentWidget extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => BlocProvider.value(
-                              value: departmentCubit,
+                            builder: (context) => MultiBlocProvider(
+                              providers: [
+                                BlocProvider.value(value: departmentCubit),
+                                BlocProvider.value(value: demoUserCubit),
+                              ],
                               child: AddDepartmentScreen(
                                 demoId: demo.id!,
                                 departmentToEdit: department,
@@ -419,11 +428,15 @@ class _SectionsEmptyState extends StatelessWidget {
               ),
               onPressed: () {
                 final departmentCubit = context.read<DepartmentCubit>();
+                final demoUserCubit = context.read<DemoUserCubit>();
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => BlocProvider.value(
-                      value: departmentCubit,
+                    builder: (context) => MultiBlocProvider(
+                      providers: [
+                        BlocProvider.value(value: departmentCubit),
+                        BlocProvider.value(value: demoUserCubit),
+                      ],
                       child: AddDepartmentScreen(demoId: demo.id!),
                     ),
                   ),

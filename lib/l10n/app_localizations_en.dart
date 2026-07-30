@@ -971,6 +971,49 @@ class AppLocalizationsEn extends AppLocalizations {
   String get departmentChat => 'Chat';
 
   @override
+  String get departmentMembers => 'Members';
+
+  @override
+  String get noMembersInDepartment => 'No members in this department yet.';
+
+  @override
+  String get selectJobTitle => 'Select Job Title';
+
+  @override
+  String get jobTitle => 'Job Title';
+
+  @override
+  String get intern => 'Intern';
+
+  @override
+  String get junior => 'Junior';
+
+  @override
+  String get senior => 'Senior';
+
+  @override
+  String get addMember => 'Add Member';
+
+  @override
+  String get memberAddedSuccessfully => 'Member added successfully';
+
+  @override
+  String get searchDemoMembers => 'Search Demo Members';
+
+  @override
+  String get searchMembersHint => 'Search by name or email...';
+
+  @override
+  String get noMembersFound => 'No members found';
+
+  @override
+  String get removeMemberPrompt => 'Remove Member';
+
+  @override
+  String get areYouSureRemoveMember =>
+      'Are you sure you want to remove this member from the department?';
+
+  @override
   String get editDepartment => 'Edit Department';
 
   @override

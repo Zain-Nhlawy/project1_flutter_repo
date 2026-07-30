@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/features/demo/domain/entities/demo_entity.dart';
+import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_cubit.dart';
 import 'package:project1/features/demo/presentation/widgets/demo_main_page_widget/main_action_sheet.dart';
 
 class DemoFabWidget extends StatelessWidget {
@@ -33,12 +35,16 @@ class DemoFabWidget extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(30),
           onTap: () {
+            final demoUserCubit = context.read<DemoUserCubit>();
             showModalBottomSheet(
               context: context,
               backgroundColor: Colors.transparent,
               isScrollControlled: true,
-              builder: (BuildContext context) {
-                return MainActionsSheet(demoId: demo.id! , isOwner: demo.isOwner);
+              builder: (BuildContext sheetContext) {
+                return BlocProvider.value(
+                  value: demoUserCubit,
+                  child: MainActionsSheet(demoId: demo.id!, isOwner: demo.isOwner),
+                );
               },
             );
           },

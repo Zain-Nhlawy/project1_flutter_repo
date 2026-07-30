@@ -4,6 +4,7 @@ import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/features/course/presentation/pages/department_courses_screen.dart';
 import 'package:project1/features/department/domain/entities/department_entity.dart';
 import 'package:project1/features/department/presentation/cubit/department_navigation_cubit.dart';
+import 'package:project1/features/department/presentation/pages/sidebar%20screens/department_members_screen.dart';
 import 'package:project1/features/department/presentation/pages/sidebar%20screens/roadmap_screen.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:animations/animations.dart';
@@ -77,6 +78,10 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
       DepartmentNavItem(
         Icons.alt_route_rounded,
         localizations.departmentLearningPath,
+      ),
+      DepartmentNavItem(
+        Icons.people_alt_rounded,
+        localizations.departmentMembers,
       ),
       DepartmentNavItem(
         Icons.leaderboard_rounded,
@@ -181,9 +186,7 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
               opacity: _isSidebarVisible ? 1.0 : 0.0,
               child: GestureDetector(
                 onTap: _toggleSidebar,
-                child: Container(
-                  color: Colors.black.withValues(alpha: 0.35),
-                ),
+                child: Container(color: Colors.black.withValues(alpha: 0.35)),
               ),
             ),
           ),
@@ -237,18 +240,25 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
           demoId: widget.demoId,
         );
       case 3:
-        return DepartmentEmptyPage(
+        return DepartmentMembersPage(
           key: const ValueKey(3),
-          title: localizations.departmentLeaderboard,
+          demoId: widget.demoId ?? '',
+          departmentId: widget.department?.id ?? '',
+          canManage: widget.canManage,
         );
       case 4:
         return DepartmentEmptyPage(
           key: const ValueKey(4),
-          title: localizations.departmentChat,
+          title: localizations.departmentLeaderboard,
         );
       case 5:
         return DepartmentEmptyPage(
           key: const ValueKey(5),
+          title: localizations.departmentChat,
+        );
+      case 6:
+        return DepartmentEmptyPage(
+          key: const ValueKey(6),
           title: localizations.departmentSendReport,
         );
       default:

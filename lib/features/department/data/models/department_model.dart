@@ -7,6 +7,7 @@ class DepartmentModel extends DepartmentEntity {
     required super.managerId,
     required super.description,
     super.memberCount,
+    super.isJoined,
   });
 
   factory DepartmentModel.fromJson(Map<String, dynamic> json) {
@@ -16,6 +17,7 @@ class DepartmentModel extends DepartmentEntity {
       managerId: json['managerId'] as String,
       description: json['description'] as String,
       memberCount: json['membersCount'] as int,
+      isJoined: json['isJoind'] as bool?,
     );
   }
 

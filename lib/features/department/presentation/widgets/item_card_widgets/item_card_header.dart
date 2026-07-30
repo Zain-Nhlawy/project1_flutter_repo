@@ -4,6 +4,7 @@ import 'package:project1/features/department/presentation/widgets/item_card_widg
 class ItemCardHeader extends StatelessWidget {
   final IconData icon;
   final bool isOwner;
+  final bool isRestricted;
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
 
@@ -11,6 +12,7 @@ class ItemCardHeader extends StatelessWidget {
     super.key,
     required this.icon,
     required this.isOwner,
+    this.isRestricted = false,
     this.onEdit,
     this.onDelete,
   });
@@ -34,7 +36,7 @@ class ItemCardHeader extends StatelessWidget {
         ),
         Row(
           children: [
-            if (isOwner) ...[
+            if (isOwner && !isRestricted) ...[
               ItemCardOptionsMenu(
                 onEdit: onEdit,
                 onDelete: onDelete,
@@ -46,11 +48,15 @@ class ItemCardHeader extends StatelessWidget {
               width: 32,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.2),
+                color: isRestricted
+                    ? Colors.black.withValues(alpha: 0.25)
+                    : Colors.white.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Icon(
-                Icons.arrow_outward_rounded,
+              child: Icon(
+                isRestricted
+                    ? Icons.lock_rounded
+                    : Icons.arrow_outward_rounded,
                 color: Colors.white,
                 size: 18,
               ),

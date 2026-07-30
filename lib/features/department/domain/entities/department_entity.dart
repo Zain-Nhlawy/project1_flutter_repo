@@ -4,6 +4,7 @@ class DepartmentEntity {
   final String managerId;
   final String description;
   final int? memberCount;
+  final bool? isJoined;
 
   DepartmentEntity({
     this.id,
@@ -11,5 +12,6 @@ class DepartmentEntity {
     required this.managerId,
     required this.description,
     this.memberCount,
+    this.isJoined,
   });
 }

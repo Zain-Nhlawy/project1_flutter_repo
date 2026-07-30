@@ -26,7 +26,7 @@ class DemoRemoteDataSourceImpl implements DemoRemoteDataSource {
         throw Exception(response.data['message']);
       }
     } on DioException catch (e) {
-      throw mapDioException(e);
+      throw mapDioException(e); 
     }
   }
 

@@ -12,7 +12,12 @@ import 'package:project1/features/demo/presentation/widgets/demo%20member%20card
 import 'package:project1/l10n/app_localizations.dart';
 
 class DemoUsersScreen extends StatelessWidget {
-  const DemoUsersScreen({super.key, required this.demoId, this.onUserTap , this.isOwner = true});
+  const DemoUsersScreen({
+    super.key,
+    required this.demoId,
+    this.onUserTap,
+    this.isOwner = true,
+  });
   final bool isOwner;
   final String demoId;
   final ValueChanged<MembersEntity>? onUserTap;

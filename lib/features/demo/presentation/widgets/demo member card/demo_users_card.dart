@@ -80,7 +80,7 @@ class UserCard extends StatelessWidget {
                   UserRoleBadge(role: user.role!),
                   const SizedBox(width: 4),
 
-                  user.role == 'OWNER'
+                  user.role != 'OWNER'
                       ? UserOptionsMenu(
                           demoId: user.demoId!,
                           userIdInDemo: user.memberIdInDemo!,

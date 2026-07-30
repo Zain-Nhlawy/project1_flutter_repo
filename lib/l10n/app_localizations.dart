@@ -1946,6 +1946,90 @@ abstract class AppLocalizations {
   /// **'Chat'**
   String get departmentChat;
 
+  /// No description provided for @departmentMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get departmentMembers;
+
+  /// No description provided for @noMembersInDepartment.
+  ///
+  /// In en, this message translates to:
+  /// **'No members in this department yet.'**
+  String get noMembersInDepartment;
+
+  /// No description provided for @selectJobTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Job Title'**
+  String get selectJobTitle;
+
+  /// No description provided for @jobTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Job Title'**
+  String get jobTitle;
+
+  /// No description provided for @intern.
+  ///
+  /// In en, this message translates to:
+  /// **'Intern'**
+  String get intern;
+
+  /// No description provided for @junior.
+  ///
+  /// In en, this message translates to:
+  /// **'Junior'**
+  String get junior;
+
+  /// No description provided for @senior.
+  ///
+  /// In en, this message translates to:
+  /// **'Senior'**
+  String get senior;
+
+  /// No description provided for @addMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Member'**
+  String get addMember;
+
+  /// No description provided for @memberAddedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Member added successfully'**
+  String get memberAddedSuccessfully;
+
+  /// No description provided for @searchDemoMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Search Demo Members'**
+  String get searchDemoMembers;
+
+  /// No description provided for @searchMembersHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by name or email...'**
+  String get searchMembersHint;
+
+  /// No description provided for @noMembersFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No members found'**
+  String get noMembersFound;
+
+  /// No description provided for @removeMemberPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove Member'**
+  String get removeMemberPrompt;
+
+  /// No description provided for @areYouSureRemoveMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to remove this member from the department?'**
+  String get areYouSureRemoveMember;
+
   /// No description provided for @editDepartment.
   ///
   /// In en, this message translates to:

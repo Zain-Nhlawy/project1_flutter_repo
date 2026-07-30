@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/course/presentation/pages/courses_selection_screen.dart';
 import 'package:project1/features/course/presentation/pages/public_library_screen.dart';
-import 'package:project1/features/demo/presentation/cubit/demo users cubit/demo_users_cubit.dart';
+import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_cubit.dart';
 import 'package:project1/features/demo/presentation/pages/demo_users_page.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:animations/animations.dart';
@@ -59,9 +60,9 @@ class MainActionsSheet extends StatelessWidget {
                 gradient: gradient,
                 colors: colors,
                 onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
+                  final navigator = Navigator.of(context);
+                  navigator.pop();
+                  navigator.push(
                     PageRouteBuilder(
                       transitionDuration: const Duration(milliseconds: 300),
                       pageBuilder: (context, animation, secondaryAnimation) =>
@@ -87,10 +88,10 @@ class MainActionsSheet extends StatelessWidget {
               gradient: gradient,
               colors: colors,
               onTap: () {
-                Navigator.pop(context);
+                final navigator = Navigator.of(context);
+                navigator.pop();
 
-                Navigator.push(
-                  context,
+                navigator.push(
                   PageRouteBuilder(
                     transitionDuration: const Duration(milliseconds: 300),
                     pageBuilder: (context, animation, secondaryAnimation) =>
@@ -116,19 +117,26 @@ class MainActionsSheet extends StatelessWidget {
                 gradient: gradient,
                 colors: colors,
                 onTap: () {
-                  Navigator.pop(context);
+                  DemoUserCubit demoUserCubit;
+                  try {
+                    demoUserCubit = context.read<DemoUserCubit>();
+                  } catch (_) {
+                    demoUserCubit = getIt<DemoUserCubit>()..fetchUsers(demoId);
+                  }
 
-                  Navigator.push(
-                    context,
+                  final navigator = Navigator.of(context);
+                  navigator.pop();
+
+                  navigator.push(
                     PageRouteBuilder(
-                    transitionDuration: const Duration(milliseconds: 300),
-                    pageBuilder: (context, animation, secondaryAnimation) =>
-                        BlocProvider.value(
-                          value: context.read<DemoUserCubit>(),
-                          child: DemoUsersScreen(
-                            demoId: demoId,
-                          ),
-                          ),
+                      transitionDuration: const Duration(milliseconds: 300),
+                      pageBuilder: (routeContext, animation, secondaryAnimation) =>
+                          BlocProvider.value(
+                        value: demoUserCubit,
+                        child: DemoUsersScreen(
+                          demoId: demoId,
+                        ),
+                      ),
                       transitionsBuilder:
                           (context, animation, secondaryAnimation, child) {
                         return FadeThroughTransition(
