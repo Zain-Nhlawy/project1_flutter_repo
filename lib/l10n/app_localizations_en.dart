@@ -207,14 +207,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get continueToPayment => 'Continue to Payment';
 
   @override
-  String get paymentSuccessful => 'Payment Successful!';
+  String get paymentSuccessful => 'Payment Successful';
 
   @override
   String get paymentSuccessMessage =>
-      'Your payment has been processed successfully. Your demo is now ready to use.';
+      'Your payment has been completed successfully. Enjoy your course!';
 
   @override
-  String get processingPayment => 'processing payment';
+  String get processingPayment => 'Processing your payment...';
 
   @override
   String get limitReachedMessage => 'Limit Reached';
@@ -1176,4 +1176,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get expandYourKnowledge => 'Hundreds of courses waiting for you';
+
+  @override
+  String get checkoutError =>
+      'An error occurred while creating the payment session';
+
+  @override
+  String coursePurchaseSuccessMessage(String courseTitle) {
+    return 'You have successfully purchased \"$courseTitle\". Start learning now!';
+  }
+
+  @override
+  String get alreadyEnrolled => 'Already Enrolled';
+
+  @override
+  String get backToLibrary => 'Back to Library';
 }

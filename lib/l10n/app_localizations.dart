@@ -473,19 +473,19 @@ abstract class AppLocalizations {
   /// No description provided for @paymentSuccessful.
   ///
   /// In en, this message translates to:
-  /// **'Payment Successful!'**
+  /// **'Payment Successful'**
   String get paymentSuccessful;
 
   /// No description provided for @paymentSuccessMessage.
   ///
   /// In en, this message translates to:
-  /// **'Your payment has been processed successfully. Your demo is now ready to use.'**
+  /// **'Your payment has been completed successfully. Enjoy your course!'**
   String get paymentSuccessMessage;
 
   /// No description provided for @processingPayment.
   ///
   /// In en, this message translates to:
-  /// **'processing payment'**
+  /// **'Processing your payment...'**
   String get processingPayment;
 
   /// No description provided for @limitReachedMessage.
@@ -2335,6 +2335,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hundreds of courses waiting for you'**
   String get expandYourKnowledge;
+
+  /// No description provided for @checkoutError.
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred while creating the payment session'**
+  String get checkoutError;
+
+  /// No description provided for @coursePurchaseSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You have successfully purchased \"{courseTitle}\". Start learning now!'**
+  String coursePurchaseSuccessMessage(String courseTitle);
+
+  /// No description provided for @alreadyEnrolled.
+  ///
+  /// In en, this message translates to:
+  /// **'Already Enrolled'**
+  String get alreadyEnrolled;
+
+  /// No description provided for @backToLibrary.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Library'**
+  String get backToLibrary;
 }
 
 class _AppLocalizationsDelegate

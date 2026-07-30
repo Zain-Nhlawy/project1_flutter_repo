@@ -206,14 +206,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get continueToPayment => 'المتابعة للدفع';
 
   @override
-  String get paymentSuccessful => 'تم الدفع بنجاح!';
+  String get paymentSuccessful => 'تمت عملية الدفع بنجاح';
 
   @override
-  String get paymentSuccessMessage =>
-      'تمت معالجة الدفع الخاص بك بنجاح. الديمو جاهز الآن للاستخدام.';
+  String get paymentSuccessMessage => 'تمت عملية الدفع بنجاح، استمتع بكورسك!';
 
   @override
-  String get processingPayment => 'جاري تأكيد الدفع ...';
+  String get processingPayment => 'جاري معالجة الدفع...';
 
   @override
   String get limitReachedMessage => 'تم تجاوز الحد';
@@ -1172,4 +1171,18 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get expandYourKnowledge => 'مئات الدورات التدريبية في انتظارك';
+
+  @override
+  String get checkoutError => 'حدث خطأ أثناء إنشاء عملية الدفع';
+
+  @override
+  String coursePurchaseSuccessMessage(String courseTitle) {
+    return 'لقد قمت بشراء كورس \"$courseTitle\" بنجاح، ابدأ تعلمك الآن!';
+  }
+
+  @override
+  String get alreadyEnrolled => 'مسجّل بالفعل';
+
+  @override
+  String get backToLibrary => 'العودة للمكتبة';
 }

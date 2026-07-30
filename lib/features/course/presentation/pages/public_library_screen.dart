@@ -13,7 +13,9 @@ import 'package:project1/features/course/presentation/widgets/library/library_se
 import 'package:project1/l10n/app_localizations.dart';
 
 class PublicLibraryScreen extends StatelessWidget {
-  const PublicLibraryScreen({super.key});
+  final String demoId;
+
+  const PublicLibraryScreen({super.key, required this.demoId});
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +28,15 @@ class PublicLibraryScreen extends StatelessWidget {
           create: (_) => getIt<TagsCubit>(),
         ),
       ],
-      child: const _PublicLibraryView(),
+      child: _PublicLibraryView(demoId: demoId),
     );
   }
 }
 
 class _PublicLibraryView extends StatefulWidget {
-  const _PublicLibraryView();
+  final String demoId;
+
+  const _PublicLibraryView({required this.demoId});
 
   @override
   State<_PublicLibraryView> createState() => _PublicLibraryViewState();
@@ -130,6 +134,7 @@ class _PublicLibraryViewState extends State<_PublicLibraryView> {
                       Expanded(
                         child: LibraryCoursesGrid(
                           courses: state.courses,
+                          userDemoId: widget.demoId,
                         ),
                       ),
                     ],
