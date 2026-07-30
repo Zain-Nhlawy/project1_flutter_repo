@@ -399,5 +399,18 @@
   "enrollNow": "سجل الآن",
   "enrollToWatchLesson":"سجل للتمكن من مشاهدة الدرس",
   "exploreNewSkills": "اكتشف شغفك وتعلّم مهارات جديدة",
-  "expandYourKnowledge": "مئات الدورات التدريبية في انتظارك"
+  "expandYourKnowledge": "مئات الدورات التدريبية في انتظارك",
+  "checkoutError": "حدث خطأ أثناء إنشاء عملية الدفع",
+  "processingPayment": "جاري معالجة الدفع...",
+  "paymentSuccessful": "تمت عملية الدفع بنجاح",
+  "paymentSuccessMessage": "تمت عملية الدفع بنجاح، استمتع بكورسك!",
+  "coursePurchaseSuccessMessage": "لقد قمت بشراء كورس \"{courseTitle}\" بنجاح، ابدأ تعلمك الآن!",
+  "@coursePurchaseSuccessMessage": {
+    "placeholders": {
+      "courseTitle": { "type": "String" }
+    }
+  },
+  "backToHome": "العودة للرئيسية",
+  "alreadyEnrolled": "مسجّل بالفعل",
+  "backToLibrary": "العودة للمكتبة"
 }

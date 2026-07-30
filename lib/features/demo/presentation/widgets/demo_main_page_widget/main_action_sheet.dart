@@ -94,7 +94,7 @@ class MainActionsSheet extends StatelessWidget {
                   PageRouteBuilder(
                     transitionDuration: const Duration(milliseconds: 300),
                     pageBuilder: (context, animation, secondaryAnimation) =>
-                        const PublicLibraryScreen(),
+                        PublicLibraryScreen(demoId:demoId),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
                       return FadeThroughTransition(

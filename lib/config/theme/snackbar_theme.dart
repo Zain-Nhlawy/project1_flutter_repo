@@ -6,7 +6,6 @@ class SnackbarTheme {
   void newSnackBarSuccess(BuildContext context, String message) {
     final messenger = ScaffoldMessenger.of(context);
     final colors = Theme.of(context).colorScheme;
-    final theme = Theme.of(context);
 
     messenger
       ..hideCurrentSnackBar()

@@ -8,10 +8,12 @@ import 'package:project1/features/course/presentation/widgets/details/course_car
 
 class LibraryCoursesGrid extends StatelessWidget {
   final List<CourseEntity> courses;
+  final String userDemoId;
 
   const LibraryCoursesGrid({
     super.key,
     required this.courses,
+    required this.userDemoId,
   });
 
   @override
@@ -39,6 +41,7 @@ class LibraryCoursesGrid extends StatelessWidget {
                   create: (_) => getIt<CourseCubit>(),
                   child: CourseDetailsScreen.fromLibrary(
                     courseId: course.id,
+                    userDemoId: userDemoId,
                   ),
                 ),
               ),

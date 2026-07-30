@@ -430,5 +430,18 @@
   "enrollNow": "Enroll Now",
   "enrollToWatchLesson":"Enroll to Watch Lesson",
   "exploreNewSkills": "Discover Your Passion & Learn New Skills",
-  "expandYourKnowledge": "Hundreds of courses waiting for you"
+  "expandYourKnowledge": "Hundreds of courses waiting for you",
+  "checkoutError": "An error occurred while creating the payment session",
+  "processingPayment": "Processing your payment...",
+  "paymentSuccessful": "Payment Successful",
+  "paymentSuccessMessage": "Your payment has been completed successfully. Enjoy your course!",
+  "coursePurchaseSuccessMessage": "You have successfully purchased \"{courseTitle}\". Start learning now!",
+  "@coursePurchaseSuccessMessage": {
+    "placeholders": {
+      "courseTitle": { "type": "String" }
+    }
+  },
+  "backToHome": "Back to Home",
+  "alreadyEnrolled": "Already Enrolled",
+  "backToLibrary": "Back to Library"
 }

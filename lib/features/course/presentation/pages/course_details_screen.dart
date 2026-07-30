@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/features/course/data/data_sources/payment_remote_data_source.dart';
+import 'package:project1/features/course/domain/use_case/get_demo_courses_usecase.dart';
 import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
 import 'package:project1/features/course/presentation/cubit/course_state.dart';
+import 'package:project1/features/course/presentation/pages/checkout_webview_screen.dart';
+import 'package:project1/features/course/presentation/pages/course_purchase_success_screen.dart';
 import 'package:project1/features/course/presentation/widgets/custom_button.dart';
 import 'package:project1/features/course/presentation/widgets/details/course_header.dart';
 import 'package:project1/features/course/presentation/widgets/details/course_tabs.dart';
@@ -23,10 +28,12 @@ class CourseDetailsScreen extends StatefulWidget {
   final String? courseId;
   final String? demoId;
   final String? assetId;
+  final String? userDemoId;
 
   const CourseDetailsScreen.fromLibrary({
     super.key,
     required this.courseId,
+    required this.userDemoId,
   })  : mode = CourseDetailsMode.library,
         demoId = null,
         assetId = null;
@@ -36,13 +43,18 @@ class CourseDetailsScreen extends StatefulWidget {
     required this.demoId,
     required this.assetId,
   })  : mode = CourseDetailsMode.demo,
-        courseId = null;
+        courseId = null,
+        userDemoId = null;
 
   @override
   State<CourseDetailsScreen> createState() => _CourseDetailsScreenState();
 }
 
 class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
+  bool _checkingOwnership = false;
+  bool _ownershipChecked = false;
+  bool _alreadyOwned = false;
+
   @override
   void initState() {
     super.initState();
@@ -55,6 +67,97 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
       cubit.getDemoCourse(
         demoId: widget.demoId!,
         assetId: widget.assetId!,
+      );
+    }
+  }
+
+  Future<void> _checkIfAlreadyOwned(String demoId, String courseId) async {
+    if (_checkingOwnership || _ownershipChecked) return;
+    _checkingOwnership = true;
+
+    try {
+      final demoCoursesUseCase = getIt<GetDemoCoursesUseCase>();
+      final result = await demoCoursesUseCase(demoId);
+
+      result.fold(
+        (failure) {
+          if (mounted) {
+            setState(() {
+              _alreadyOwned = false;
+              _checkingOwnership = false;
+              _ownershipChecked = true;
+            });
+          }
+        },
+        (demoCourses) {
+          if (mounted) {
+            setState(() {
+              _alreadyOwned = demoCourses.any((c) => c.id == courseId);
+              _checkingOwnership = false;
+              _ownershipChecked = true;
+            });
+          }
+        },
+      );
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _alreadyOwned = false;
+          _checkingOwnership = false;
+          _ownershipChecked = true;
+        });
+      }
+    }
+  }
+
+  Future<void> _handleEnroll(dynamic course) async {
+    final localizations = AppLocalizations.of(context)!;
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const Center(child: CircularProgressIndicator()),
+    );
+
+    try {
+      final session = await getIt<PaymentRemoteDataSource>().checkoutCourse(
+        demoId: widget.userDemoId ?? '',
+        courseId: course.id,
+      );
+
+      if (!context.mounted) return;
+      Navigator.pop(context); 
+
+      final bool isFreeCourse = course.price == null || course.price == 0;
+      final bool hasCheckoutUrl = session.url.isNotEmpty;
+
+      if (isFreeCourse && !hasCheckoutUrl) {
+        await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => CoursePurchaseSuccessScreen(
+              courseTitle: course.title,
+            ),
+          ),
+        );
+        return;
+      }
+
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => CheckoutWebViewScreen(
+            checkoutUrl: session.url,
+            courseTitle: course.title,
+          ),
+        ),
+      );
+    } catch (e) {
+      if (!context.mounted) return;
+      Navigator.pop(context);
+      SnackbarTheme().newSnackBarError(
+        context,
+        localizations.checkoutError,
       );
     }
   }
@@ -117,6 +220,21 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
             final course = state is CourseDetailsLoaded
                 ? state.course
                 : (state as CourseAssetLoaded).course;
+
+            final bool needsOwnershipCheck =
+                widget.mode == CourseDetailsMode.library &&
+                    widget.userDemoId != null;
+
+            if (needsOwnershipCheck && !_ownershipChecked) {
+              if (!_checkingOwnership) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  _checkIfAlreadyOwned(widget.userDemoId!, course.id);
+                });
+              }
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
 
             final bool isFree = course.price == null || course.price == 0;
             final bool showEnrollBar =
@@ -286,7 +404,8 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                             child: CourseTabs(
                               courseId: course.id,
                               lessonsLocked:
-                                  widget.mode == CourseDetailsMode.library,
+                                  widget.mode == CourseDetailsMode.library &&
+                                      !_alreadyOwned,
                             ),
                           ),
                         ),
@@ -308,6 +427,10 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
           }
 
           if (state is! CourseDetailsLoaded) {
+            return const SizedBox.shrink();
+          }
+
+          if (!_ownershipChecked) {
             return const SizedBox.shrink();
           }
 
@@ -364,12 +487,22 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                     child: SizedBox(
                       height: 46,
                       child: CustomButton(
-                        text: localizations.enrollNow,
+                        text: _alreadyOwned
+                            ? localizations.alreadyEnrolled
+                            : localizations.enrollNow,
                         height: 46,
-                        gradient: AppColors.buttonGradient,
+                        gradient: _alreadyOwned
+                            ? LinearGradient(
+                                colors: [
+                                  Colors.grey.shade400,
+                                  Colors.grey.shade500,
+                                ],
+                              )
+                            : AppColors.buttonGradient,
                         expand: true,
-                        onPressed: () {
-                        },
+                        onPressed: _alreadyOwned
+                            ? null
+                            : () => _handleEnroll(course),
                       ),
                     ),
                   ),
