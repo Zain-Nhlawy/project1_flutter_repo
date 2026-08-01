@@ -1191,4 +1191,45 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get backToLibrary => 'Back to Library';
+
+  @override
+  String get aiAssistantTitle => 'AI Study Assistant';
+
+  @override
+  String get askQuestionSection => 'Ask a Question';
+
+  @override
+  String get askQuestionHint =>
+      'e.g., What is the difference between Dependency Injection and Singleton?';
+
+  @override
+  String get askButton => 'Ask Assistant';
+
+  @override
+  String get topicQuizSection => 'Topic-Specific Quiz';
+
+  @override
+  String get topicHint => 'e.g., Clean Architecture';
+
+  @override
+  String get questionCountHint => 'Number of questions';
+
+  @override
+  String get generateTopicQuizButton => 'Generate Topic Quiz';
+
+  @override
+  String get randomQuizSection => 'Random Course Quiz';
+
+  @override
+  String get generateRandomQuizButton => 'Generate Random Quiz';
+
+  @override
+  String get aiResponseTitle => 'AI Response';
+
+  @override
+  String get noDataYet =>
+      'Ask a question or generate a quiz to see the AI insights here.';
+
+  @override
+  String get errorPrefix => 'Error occurred: ';
 }

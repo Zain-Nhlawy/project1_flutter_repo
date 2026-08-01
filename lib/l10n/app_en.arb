@@ -457,5 +457,21 @@
   },
   "backToHome": "Back to Home",
   "alreadyEnrolled": "Already Enrolled",
-  "backToLibrary": "Back to Library"
+  "backToLibrary": "Back to Library",
+  "aiAssistantTitle": "AI Study Assistant",
+  "askQuestionSection": "Ask a Question",
+"askQuestionHint": "e.g., What is the difference between Dependency Injection and Singleton?",
+  "askButton": "Ask Assistant",
+  
+  "topicQuizSection": "Topic-Specific Quiz",
+"topicHint": "e.g., Clean Architecture",
+  "questionCountHint": "Number of questions",
+  "generateTopicQuizButton": "Generate Topic Quiz",
+  
+  "randomQuizSection": "Random Course Quiz",
+  "generateRandomQuizButton": "Generate Random Quiz",
+  
+  "aiResponseTitle": "AI Response",
+  "noDataYet": "Ask a question or generate a quiz to see the AI insights here.",
+  "errorPrefix": "Error occurred: "
 }

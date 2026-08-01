@@ -2359,6 +2359,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Back to Library'**
   String get backToLibrary;
+
+  /// No description provided for @aiAssistantTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Study Assistant'**
+  String get aiAssistantTitle;
+
+  /// No description provided for @askQuestionSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask a Question'**
+  String get askQuestionSection;
+
+  /// No description provided for @askQuestionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., What is the difference between Dependency Injection and Singleton?'**
+  String get askQuestionHint;
+
+  /// No description provided for @askButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask Assistant'**
+  String get askButton;
+
+  /// No description provided for @topicQuizSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Topic-Specific Quiz'**
+  String get topicQuizSection;
+
+  /// No description provided for @topicHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., Clean Architecture'**
+  String get topicHint;
+
+  /// No description provided for @questionCountHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of questions'**
+  String get questionCountHint;
+
+  /// No description provided for @generateTopicQuizButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Topic Quiz'**
+  String get generateTopicQuizButton;
+
+  /// No description provided for @randomQuizSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Random Course Quiz'**
+  String get randomQuizSection;
+
+  /// No description provided for @generateRandomQuizButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Random Quiz'**
+  String get generateRandomQuizButton;
+
+  /// No description provided for @aiResponseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Response'**
+  String get aiResponseTitle;
+
+  /// No description provided for @noDataYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask a question or generate a quiz to see the AI insights here.'**
+  String get noDataYet;
+
+  /// No description provided for @errorPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Error occurred: '**
+  String get errorPrefix;
 }
 
 class _AppLocalizationsDelegate

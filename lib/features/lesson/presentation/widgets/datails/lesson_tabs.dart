@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project1/features/Q&A/presentation/widgets/qa_card.dart';
+import 'package:project1/features/q&a/presentation/widgets/qa_card.dart';
 import 'package:project1/features/attachment/domain/entities/lesson_attachment_entity.dart';
 import 'package:project1/features/attachment/presentation/cubit/lesson_attachment_cubit.dart';
 import 'package:project1/features/attachment/presentation/widgets/details/attachments_tab.dart';

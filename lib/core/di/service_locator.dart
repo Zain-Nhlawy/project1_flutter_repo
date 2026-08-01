@@ -128,6 +128,13 @@ import 'package:project1/features/profile/data/data_sources/profile_remote_datas
 import 'package:project1/features/profile/data/repository/profile_repository_impl.dart';
 import 'package:project1/features/profile/domain/repository/profile_repository.dart';
 import 'package:project1/features/profile/domain/use_case/update_profile_image_usecase.dart';
+import 'package:project1/features/rag/data/data_sources/rag_remote_data_source.dart';
+import 'package:project1/features/rag/data/repositories/rag_repository_impl.dart';
+import 'package:project1/features/rag/domain/repositories/rag_repository.dart';
+import 'package:project1/features/rag/domain/use_case/ask_question_usecase.dart';
+import 'package:project1/features/rag/domain/use_case/generate_random_quiz_usecase.dart';
+import 'package:project1/features/rag/domain/use_case/generate_topic_quiz_usecase.dart';
+import 'package:project1/features/rag/presentation/cubit/rag_cubit.dart';
 import 'package:project1/features/section/data/data_sources/section_remote_datasource.dart';
 import 'package:project1/features/section/data/repository/section_repository_impl.dart';
 import 'package:project1/features/section/domain/repository/section_repository.dart';
@@ -690,7 +697,7 @@ void setupDI() {
   );
 
   //////////////////////// Course FAQ ////////////////////////
-  ///
+  
 
   //////////////////////// Department Course ////////////////////////
 
@@ -731,7 +738,7 @@ void setupDI() {
 
   //////////////////////// Department Course ////////////////////////
 
-  //////////////////////// Payment ////////////////////////
+  //////////////////////// Payment Course ////////////////////////
 
   //Data Sources
   getIt.registerLazySingleton<PaymentRemoteDataSource>(
@@ -754,4 +761,37 @@ void setupDI() {
   );
 
   //////////////////////// Payment Course ////////////////////////
+  
+
+  //////////////////////// Rag ////////////////////////
+  // Data Source
+getIt.registerLazySingleton<RagRemoteDataSource>(
+  () => RagRemoteDataSource(getIt<DioClient>()),
+);
+
+// Repository
+getIt.registerLazySingleton<RagRepository>(
+  () => RagRepositoryImpl(getIt<RagRemoteDataSource>()),
+);
+
+// Use Cases
+getIt.registerLazySingleton<AskQuestionUseCase>(
+  () => AskQuestionUseCase(getIt<RagRepository>()),
+);
+getIt.registerLazySingleton<GenerateTopicQuizUseCase>(
+  () => GenerateTopicQuizUseCase(getIt<RagRepository>()),
+);
+getIt.registerLazySingleton<GenerateRandomQuizUseCase>(
+  () => GenerateRandomQuizUseCase(getIt<RagRepository>()),
+);
+
+// Cubit 
+getIt.registerFactory<RagCubit>(
+  () => RagCubit(
+    askQuestionUseCase: getIt<AskQuestionUseCase>(),
+    generateTopicQuizUseCase: getIt<GenerateTopicQuizUseCase>(),
+    generateRandomQuizUseCase: getIt<GenerateRandomQuizUseCase>(),
+  ),
+);
+//////////////////////// RAG ////////////////////////
 }
