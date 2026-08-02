@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:project1/core/errors/dio_exception_mapper.dart';
 import 'package:project1/core/network/dio_client.dart';
-import 'package:project1/features/question_bank/data/models/paginated_question_banks.dart';
-import 'package:project1/features/question_bank/data/models/question_bank_model.dart';
-import 'package:project1/features/question_bank/data/models/question_choice_model.dart';
+import 'package:project1/features/questions_bank/data/models/paginated_question_banks.dart';
+import 'package:project1/features/questions_bank/data/models/question_bank_model.dart';
+import 'package:project1/features/questions_bank/data/models/question_choice_model.dart';
 
 class QuestionBankRemoteDataSource {
   final DioClient dioClient;

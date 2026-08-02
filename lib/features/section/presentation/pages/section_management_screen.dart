@@ -5,7 +5,7 @@ import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/lesson/presentation/cubit/lesson_cubit.dart';
 import 'package:project1/features/lesson/presentation/pages/create_lesson_screen.dart';
-import 'package:project1/features/question_bank/presentation/pages/question_bank_management_screen.dart';
+import 'package:project1/features/questions_bank/presentation/pages/question_bank_management_screen.dart';
 import 'package:project1/features/section/domain/entities/section_entity.dart';
 import 'package:project1/features/section/presentation/cubit/section_cubit.dart';
 import 'package:project1/features/section/presentation/cubit/section_state.dart';

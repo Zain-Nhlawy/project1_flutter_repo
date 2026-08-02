@@ -1,11 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:project1/core/errors/error_mapper.dart';
 import 'package:project1/core/errors/failures.dart';
-import 'package:project1/features/question_bank/data/data_sources/question_bank_remote_data_source.dart';
-import 'package:project1/features/question_bank/data/models/paginated_question_banks.dart';
-import 'package:project1/features/question_bank/data/models/question_bank_model.dart';
-import 'package:project1/features/question_bank/data/models/question_choice_model.dart';
-import 'package:project1/features/question_bank/domain/repository/question_bank_repository.dart';
+import 'package:project1/features/questions_bank/data/data_sources/question_bank_remote_data_source.dart';
+import 'package:project1/features/questions_bank/data/models/paginated_question_banks.dart';
+import 'package:project1/features/questions_bank/data/models/question_bank_model.dart';
+import 'package:project1/features/questions_bank/data/models/question_choice_model.dart';
+import 'package:project1/features/questions_bank/domain/repository/question_bank_repository.dart';
 
 class QuestionBankRepositoryImpl implements QuestionBankRepository {
   final QuestionBankRemoteDataSource remoteDataSource;

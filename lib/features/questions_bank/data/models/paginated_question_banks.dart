@@ -1,4 +1,4 @@
-import 'package:project1/features/question_bank/data/models/question_bank_model.dart';
+import 'package:project1/features/questions_bank/data/models/question_bank_model.dart';
 
 class PaginatedQuestionBanks {
   final List<QuestionBankModel> data;

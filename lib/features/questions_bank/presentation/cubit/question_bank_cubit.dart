@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project1/features/question_bank/data/models/question_choice_model.dart';
-import 'package:project1/features/question_bank/domain/use_case/create_question_bank_usecase.dart';
-import 'package:project1/features/question_bank/domain/use_case/delete_question_bank_usecase.dart';
-import 'package:project1/features/question_bank/domain/use_case/get_question_banks_usecase.dart';
-import 'package:project1/features/question_bank/presentation/cubit/question_bank_state.dart';
+import 'package:project1/features/questions_bank/data/models/question_choice_model.dart';
+import 'package:project1/features/questions_bank/domain/use_case/create_question_bank_usecase.dart';
+import 'package:project1/features/questions_bank/domain/use_case/delete_question_bank_usecase.dart';
+import 'package:project1/features/questions_bank/domain/use_case/get_question_banks_usecase.dart';
+import 'package:project1/features/questions_bank/presentation/cubit/question_bank_state.dart';
 
 class QuestionBankCubit extends Cubit<QuestionBankState> {
   final GetQuestionBanksUseCase getQuestionBanksUseCase;

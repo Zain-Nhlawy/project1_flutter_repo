@@ -1,5 +1,5 @@
-import 'package:project1/features/question_bank/data/models/question_choice_model.dart';
-import 'package:project1/features/question_bank/domain/entities/question_bank_entity.dart';
+import 'package:project1/features/questions_bank/data/models/question_choice_model.dart';
+import 'package:project1/features/questions_bank/domain/entities/question_bank_entity.dart';
 
 class QuestionBankModel extends QuestionBankEntity {
   const QuestionBankModel({

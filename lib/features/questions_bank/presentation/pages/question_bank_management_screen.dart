@@ -4,12 +4,12 @@ import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
-import 'package:project1/features/question_bank/data/models/question_bank_model.dart';
-import 'package:project1/features/question_bank/data/models/question_choice_model.dart';
-import 'package:project1/features/question_bank/presentation/cubit/question_bank_cubit.dart';
-import 'package:project1/features/question_bank/presentation/cubit/question_bank_state.dart';
-import 'package:project1/features/question_bank/presentation/widgets/question_bank_header.dart';
-import 'package:project1/features/question_bank/presentation/widgets/question_card.dart';
+import 'package:project1/features/questions_bank/data/models/question_bank_model.dart';
+import 'package:project1/features/questions_bank/data/models/question_choice_model.dart';
+import 'package:project1/features/questions_bank/presentation/cubit/question_bank_cubit.dart';
+import 'package:project1/features/questions_bank/presentation/cubit/question_bank_state.dart';
+import 'package:project1/features/questions_bank/presentation/widgets/question_bank_header.dart';
+import 'package:project1/features/questions_bank/presentation/widgets/question_card.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class QuestionBankManagementScreen extends StatefulWidget {
