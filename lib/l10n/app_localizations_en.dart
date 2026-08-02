@@ -1290,4 +1290,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chatFailedToLoadHistory => 'Failed to load message history';
+
+  @override
+  String get deleteQuestion => 'Delete Question';
+
+  @override
+  String get deleteQuestionConfirmation =>
+      'Are you sure you want to delete this question?';
+
+  @override
+  String get deleteQuestionFailed => 'Failed to delete question';
+
+  @override
+  String get addQuestion => 'Add Question';
+
+  @override
+  String get questionHint => 'Enter your question';
+
+  @override
+  String get choicesLabel => 'Choices';
+
+  @override
+  String get choiceHint => 'Choice';
+
+  @override
+  String get fillAllFields => 'Please fill all fields';
+
+  @override
+  String get selectCorrectAnswer => 'Please select at least one correct answer';
+
+  @override
+  String get createQuestionFailed => 'Failed to create question';
+
+  @override
+  String get noQuestionsYet => 'No questions yet';
+
+  @override
+  String get enterQuestionFirst => 'Please enter the question first';
+
+  @override
+  String get choicesMustBeUnique =>
+      'Each choice must be different from the others';
+
+  @override
+  String get questionsBankDescription =>
+      'Manage and review all questions in this section\'s question bank';
+
+  @override
+  String get questionsCount => 'Questions';
 }
