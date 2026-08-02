@@ -1225,4 +1225,50 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get errorPrefix => 'حدث خطأ: ';
+
+  @override
+  String get deleteQuestion => 'حذف السؤال';
+
+  @override
+  String get deleteQuestionConfirmation => 'هل أنت متأكد من حذف هذا السؤال؟';
+
+  @override
+  String get deleteQuestionFailed => 'فشل حذف السؤال';
+
+  @override
+  String get addQuestion => 'إضافة سؤال';
+
+  @override
+  String get questionHint => 'أدخل نص السؤال';
+
+  @override
+  String get choicesLabel => 'الخيارات';
+
+  @override
+  String get choiceHint => 'خيار';
+
+  @override
+  String get fillAllFields => 'الرجاء تعبئة جميع الحقول';
+
+  @override
+  String get selectCorrectAnswer => 'الرجاء تحديد إجابة صحيحة واحدة على الأقل';
+
+  @override
+  String get createQuestionFailed => 'فشل إنشاء السؤال';
+
+  @override
+  String get noQuestionsYet => 'لا توجد أسئلة بعد';
+
+  @override
+  String get enterQuestionFirst => 'الرجاء إدخال السؤال أولاً';
+
+  @override
+  String get choicesMustBeUnique => 'يجب أن يكون كل خيار مختلفاً عن البقية';
+
+  @override
+  String get questionsBankDescription =>
+      'إدارة ومراجعة جميع الأسئلة في بنك أسئلة هذا القسم';
+
+  @override
+  String get questionsCount => 'سؤال';
 }

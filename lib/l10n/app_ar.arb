@@ -442,5 +442,21 @@
   
   "aiResponseTitle": "استجابة الذكاء الاصطناعي",
   "noDataYet": "اطرح سؤالاً أو أنشئ اختباراً لرؤية النتائج هنا.",
-  "errorPrefix": "حدث خطأ: "  
+  "errorPrefix": "حدث خطأ: ",
+
+  "deleteQuestion": "حذف السؤال",
+"deleteQuestionConfirmation": "هل أنت متأكد من حذف هذا السؤال؟",
+"deleteQuestionFailed": "فشل حذف السؤال",
+"addQuestion": "إضافة سؤال",
+"questionHint": "أدخل نص السؤال",
+"choicesLabel": "الخيارات",
+"choiceHint": "خيار",
+"fillAllFields": "الرجاء تعبئة جميع الحقول",
+"selectCorrectAnswer": "الرجاء تحديد إجابة صحيحة واحدة على الأقل",
+"createQuestionFailed": "فشل إنشاء السؤال",
+"noQuestionsYet": "لا توجد أسئلة بعد",
+"enterQuestionFirst": "الرجاء إدخال السؤال أولاً",
+"choicesMustBeUnique": "يجب أن يكون كل خيار مختلفاً عن البقية" ,
+"questionsBankDescription": "إدارة ومراجعة جميع الأسئلة في بنك أسئلة هذا القسم",
+"questionsCount": "سؤال"
 }

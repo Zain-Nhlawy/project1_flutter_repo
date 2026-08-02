@@ -2437,6 +2437,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error occurred: '**
   String get errorPrefix;
+
+  /// No description provided for @deleteQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Question'**
+  String get deleteQuestion;
+
+  /// No description provided for @deleteQuestionConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this question?'**
+  String get deleteQuestionConfirmation;
+
+  /// No description provided for @deleteQuestionFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete question'**
+  String get deleteQuestionFailed;
+
+  /// No description provided for @addQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Question'**
+  String get addQuestion;
+
+  /// No description provided for @questionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your question'**
+  String get questionHint;
+
+  /// No description provided for @choicesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Choices'**
+  String get choicesLabel;
+
+  /// No description provided for @choiceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choice'**
+  String get choiceHint;
+
+  /// No description provided for @fillAllFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill all fields'**
+  String get fillAllFields;
+
+  /// No description provided for @selectCorrectAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select at least one correct answer'**
+  String get selectCorrectAnswer;
+
+  /// No description provided for @createQuestionFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to create question'**
+  String get createQuestionFailed;
+
+  /// No description provided for @noQuestionsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No questions yet'**
+  String get noQuestionsYet;
+
+  /// No description provided for @enterQuestionFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter the question first'**
+  String get enterQuestionFirst;
+
+  /// No description provided for @choicesMustBeUnique.
+  ///
+  /// In en, this message translates to:
+  /// **'Each choice must be different from the others'**
+  String get choicesMustBeUnique;
+
+  /// No description provided for @questionsBankDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage and review all questions in this section\'s question bank'**
+  String get questionsBankDescription;
+
+  /// No description provided for @questionsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Questions'**
+  String get questionsCount;
 }
 
 class _AppLocalizationsDelegate

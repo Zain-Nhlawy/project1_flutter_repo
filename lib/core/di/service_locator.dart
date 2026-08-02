@@ -128,6 +128,14 @@ import 'package:project1/features/profile/data/data_sources/profile_remote_datas
 import 'package:project1/features/profile/data/repository/profile_repository_impl.dart';
 import 'package:project1/features/profile/domain/repository/profile_repository.dart';
 import 'package:project1/features/profile/domain/use_case/update_profile_image_usecase.dart';
+import 'package:project1/features/question_bank/data/data_sources/question_bank_remote_data_source.dart';
+import 'package:project1/features/question_bank/data/repository/question_bank_repository_impl.dart';
+import 'package:project1/features/question_bank/domain/repository/question_bank_repository.dart';
+import 'package:project1/features/question_bank/domain/use_case/create_question_bank_usecase.dart';
+import 'package:project1/features/question_bank/domain/use_case/delete_question_bank_usecase.dart';
+import 'package:project1/features/question_bank/domain/use_case/get_question_bank_usecase.dart';
+import 'package:project1/features/question_bank/domain/use_case/get_question_banks_usecase.dart';
+import 'package:project1/features/question_bank/presentation/cubit/question_bank_cubit.dart';
 import 'package:project1/features/rag/data/data_sources/rag_remote_data_source.dart';
 import 'package:project1/features/rag/data/repositories/rag_repository_impl.dart';
 import 'package:project1/features/rag/domain/repositories/rag_repository.dart';
@@ -794,4 +802,27 @@ getIt.registerFactory<RagCubit>(
   ),
 );
 //////////////////////// RAG ////////////////////////
+
+//////////////////////// Question Bank ////////////////////////
+
+getIt.registerLazySingleton<QuestionBankRemoteDataSource>(
+  () => QuestionBankRemoteDataSource(getIt<DioClient>()),
+);
+getIt.registerLazySingleton<QuestionBankRepository>(
+  () => QuestionBankRepositoryImpl(getIt<QuestionBankRemoteDataSource>()),
+);
+getIt.registerLazySingleton(() => CreateQuestionBankUseCase(getIt<QuestionBankRepository>()));
+getIt.registerLazySingleton(() => GetQuestionBanksUseCase(getIt<QuestionBankRepository>()));
+getIt.registerLazySingleton(() => GetQuestionBankUseCase(getIt<QuestionBankRepository>()));
+getIt.registerLazySingleton(() => DeleteQuestionBankUseCase(getIt<QuestionBankRepository>()));
+
+getIt.registerFactory(
+  () => QuestionBankCubit(
+    getQuestionBanksUseCase: getIt(),
+    createQuestionBankUseCase: getIt(),
+    deleteQuestionBankUseCase: getIt(),
+  ),
+);
+//////////////////////// Question Bank ////////////////////////
+
 }
