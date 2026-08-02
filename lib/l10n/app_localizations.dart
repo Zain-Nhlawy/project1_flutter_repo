@@ -2359,6 +2359,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Back to Library'**
   String get backToLibrary;
+
+  /// No description provided for @aiAssistantTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Study Assistant'**
+  String get aiAssistantTitle;
+
+  /// No description provided for @askQuestionSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask a Question'**
+  String get askQuestionSection;
+
+  /// No description provided for @askQuestionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., What is the difference between Dependency Injection and Singleton?'**
+  String get askQuestionHint;
+
+  /// No description provided for @askButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask Assistant'**
+  String get askButton;
+
+  /// No description provided for @topicQuizSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Topic-Specific Quiz'**
+  String get topicQuizSection;
+
+  /// No description provided for @topicHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., Clean Architecture'**
+  String get topicHint;
+
+  /// No description provided for @questionCountHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of questions'**
+  String get questionCountHint;
+
+  /// No description provided for @generateTopicQuizButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Topic Quiz'**
+  String get generateTopicQuizButton;
+
+  /// No description provided for @randomQuizSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Random Course Quiz'**
+  String get randomQuizSection;
+
+  /// No description provided for @generateRandomQuizButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Random Quiz'**
+  String get generateRandomQuizButton;
+
+  /// No description provided for @aiResponseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Response'**
+  String get aiResponseTitle;
+
+  /// No description provided for @noDataYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask a question or generate a quiz to see the AI insights here.'**
+  String get noDataYet;
+
+  /// No description provided for @errorPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Error occurred: '**
+  String get errorPrefix;
+
+  /// No description provided for @chatConnecting.
+  ///
+  /// In en, this message translates to:
+  /// **'Connecting...'**
+  String get chatConnecting;
+
+  /// No description provided for @chatReconnecting.
+  ///
+  /// In en, this message translates to:
+  /// **'Reconnecting to chat...'**
+  String get chatReconnecting;
+
+  /// No description provided for @chatConnectionLost.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection lost. Retrying...'**
+  String get chatConnectionLost;
+
+  /// No description provided for @chatNoMessagesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No messages yet'**
+  String get chatNoMessagesYet;
+
+  /// No description provided for @chatFirstMessagePrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Be the first to start the conversation!'**
+  String get chatFirstMessagePrompt;
+
+  /// No description provided for @chatMessageDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'This message was deleted'**
+  String get chatMessageDeleted;
+
+  /// No description provided for @chatEditedTag.
+  ///
+  /// In en, this message translates to:
+  /// **'edited'**
+  String get chatEditedTag;
+
+  /// No description provided for @chatReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply'**
+  String get chatReply;
+
+  /// No description provided for @chatEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get chatEdit;
+
+  /// No description provided for @chatDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get chatDelete;
+
+  /// No description provided for @chatTypeMessageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type a message...'**
+  String get chatTypeMessageHint;
+
+  /// No description provided for @chatEditMessageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit message...'**
+  String get chatEditMessageHint;
+
+  /// No description provided for @chatReplyingTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Replying to {name}'**
+  String chatReplyingTo(String name);
+
+  /// No description provided for @chatEditingMessageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Editing Message'**
+  String get chatEditingMessageTitle;
+
+  /// No description provided for @chatMemberIsTyping.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is typing...'**
+  String chatMemberIsTyping(String name);
+
+  /// No description provided for @chatMembersAreTyping.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} members are typing...'**
+  String chatMembersAreTyping(int count);
+
+  /// No description provided for @chatFailedToLoadHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load message history'**
+  String get chatFailedToLoadHistory;
 }
 
 class _AppLocalizationsDelegate

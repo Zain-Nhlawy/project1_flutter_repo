@@ -457,5 +457,53 @@
   },
   "backToHome": "Back to Home",
   "alreadyEnrolled": "Already Enrolled",
-  "backToLibrary": "Back to Library"
+  "backToLibrary": "Back to Library",
+  "aiAssistantTitle": "AI Study Assistant",
+  "askQuestionSection": "Ask a Question",
+"askQuestionHint": "e.g., What is the difference between Dependency Injection and Singleton?",
+  "askButton": "Ask Assistant",
+  
+  "topicQuizSection": "Topic-Specific Quiz",
+"topicHint": "e.g., Clean Architecture",
+  "questionCountHint": "Number of questions",
+  "generateTopicQuizButton": "Generate Topic Quiz",
+  
+  "randomQuizSection": "Random Course Quiz",
+  "generateRandomQuizButton": "Generate Random Quiz",
+  
+  "aiResponseTitle": "AI Response",
+  "noDataYet": "Ask a question or generate a quiz to see the AI insights here.",
+  "errorPrefix": "Error occurred: ",
+  "chatConnecting": "Connecting...",
+  "chatReconnecting": "Reconnecting to chat...",
+  "chatConnectionLost": "Connection lost. Retrying...",
+  "chatNoMessagesYet": "No messages yet",
+  "chatFirstMessagePrompt": "Be the first to start the conversation!",
+  "chatMessageDeleted": "This message was deleted",
+  "chatEditedTag": "edited",
+  "chatReply": "Reply",
+  "chatEdit": "Edit",
+  "chatDelete": "Delete",
+  "chatTypeMessageHint": "Type a message...",
+  "chatEditMessageHint": "Edit message...",
+  "chatReplyingTo": "Replying to {name}",
+  "@chatReplyingTo": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "chatEditingMessageTitle": "Editing Message",
+  "chatMemberIsTyping": "{name} is typing...",
+  "@chatMemberIsTyping": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "chatMembersAreTyping": "{count} members are typing...",
+  "@chatMembersAreTyping": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "chatFailedToLoadHistory": "Failed to load message history"
 }

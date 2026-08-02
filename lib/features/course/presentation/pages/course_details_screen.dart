@@ -13,6 +13,8 @@ import 'package:project1/features/course/presentation/widgets/custom_button.dart
 import 'package:project1/features/course/presentation/widgets/details/course_header.dart';
 import 'package:project1/features/course/presentation/widgets/details/course_tabs.dart';
 import 'package:project1/features/course/presentation/widgets/course_tag.dart';
+import 'package:project1/features/rag/presentation/cubit/rag_cubit.dart';
+import 'package:project1/features/rag/presentation/pages/rag_screen.dart';
 import 'package:project1/features/section/presentation/cubit/section_cubit.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
@@ -126,7 +128,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
       );
 
       if (!context.mounted) return;
-      Navigator.pop(context); 
+      Navigator.pop(context);
 
       final bool isFreeCourse = course.price == null || course.price == 0;
       final bool hasCheckoutUrl = session.url.isNotEmpty;
@@ -160,6 +162,18 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
         localizations.checkoutError,
       );
     }
+  }
+
+  void _openRagScreen(String courseId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => BlocProvider(
+          create: (_) => getIt<RagCubit>(),
+          child: RagScreen(courseId: courseId),
+        ),
+      ),
+    );
   }
 
   @override
@@ -420,6 +434,26 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
           return const SizedBox();
         },
       ),
+      floatingActionButton: widget.mode == CourseDetailsMode.demo
+          ? BlocBuilder<CourseCubit, CourseState>(
+              builder: (context, state) {
+                if (state is! CourseAssetLoaded) {
+                  return const SizedBox.shrink();
+                }
+                final course = state.course;
+                return FloatingActionButton(
+                  heroTag: 'rag_fab',
+                  backgroundColor: AppColors.primary,
+                  onPressed: () => _openRagScreen(course.id),
+                  child: const Icon(
+                    Icons.auto_awesome,
+                    color: Colors.white,
+                  ),
+                );
+              },
+            )
+          : null,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: BlocBuilder<CourseCubit, CourseState>(
         builder: (context, state) {
           if (widget.mode != CourseDetailsMode.library) {

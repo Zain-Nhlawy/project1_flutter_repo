@@ -53,25 +53,22 @@ void main() async {
 
   runApp(
     MultiBlocProvider(
-  providers: [
-    BlocProvider<AuthCubit>(
-      create: (_) {
-        return getIt<AuthCubit>();
-      },
-    ),
+      providers: [
+        BlocProvider<AuthCubit>(
+          create: (_) {
+            return getIt<AuthCubit>();
+          },
+        ),
 
-    BlocProvider<UserCubit>(
-      create: (_) => getIt<UserCubit>()..getMe(),
-    ),
+        BlocProvider<UserCubit>(create: (_) => getIt<UserCubit>()..getMe()),
 
-    BlocProvider<LocaleCubit>(create: (_) => LocaleCubit()),
-    BlocProvider<ThemeCubit>(create: (_) => ThemeCubit()),
-  ],
+        BlocProvider<LocaleCubit>(create: (_) => LocaleCubit()),
+        BlocProvider<ThemeCubit>(create: (_) => ThemeCubit()),
+      ],
       child: MyApp(initialResetToken: initialResetToken),
     ),
   );
 }
-
 
 class MyApp extends StatefulWidget {
   final String? initialResetToken;

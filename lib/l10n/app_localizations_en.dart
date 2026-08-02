@@ -1191,4 +1191,103 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get backToLibrary => 'Back to Library';
+
+  @override
+  String get aiAssistantTitle => 'AI Study Assistant';
+
+  @override
+  String get askQuestionSection => 'Ask a Question';
+
+  @override
+  String get askQuestionHint =>
+      'e.g., What is the difference between Dependency Injection and Singleton?';
+
+  @override
+  String get askButton => 'Ask Assistant';
+
+  @override
+  String get topicQuizSection => 'Topic-Specific Quiz';
+
+  @override
+  String get topicHint => 'e.g., Clean Architecture';
+
+  @override
+  String get questionCountHint => 'Number of questions';
+
+  @override
+  String get generateTopicQuizButton => 'Generate Topic Quiz';
+
+  @override
+  String get randomQuizSection => 'Random Course Quiz';
+
+  @override
+  String get generateRandomQuizButton => 'Generate Random Quiz';
+
+  @override
+  String get aiResponseTitle => 'AI Response';
+
+  @override
+  String get noDataYet =>
+      'Ask a question or generate a quiz to see the AI insights here.';
+
+  @override
+  String get errorPrefix => 'Error occurred: ';
+
+  @override
+  String get chatConnecting => 'Connecting...';
+
+  @override
+  String get chatReconnecting => 'Reconnecting to chat...';
+
+  @override
+  String get chatConnectionLost => 'Connection lost. Retrying...';
+
+  @override
+  String get chatNoMessagesYet => 'No messages yet';
+
+  @override
+  String get chatFirstMessagePrompt =>
+      'Be the first to start the conversation!';
+
+  @override
+  String get chatMessageDeleted => 'This message was deleted';
+
+  @override
+  String get chatEditedTag => 'edited';
+
+  @override
+  String get chatReply => 'Reply';
+
+  @override
+  String get chatEdit => 'Edit';
+
+  @override
+  String get chatDelete => 'Delete';
+
+  @override
+  String get chatTypeMessageHint => 'Type a message...';
+
+  @override
+  String get chatEditMessageHint => 'Edit message...';
+
+  @override
+  String chatReplyingTo(String name) {
+    return 'Replying to $name';
+  }
+
+  @override
+  String get chatEditingMessageTitle => 'Editing Message';
+
+  @override
+  String chatMemberIsTyping(String name) {
+    return '$name is typing...';
+  }
+
+  @override
+  String chatMembersAreTyping(int count) {
+    return '$count members are typing...';
+  }
+
+  @override
+  String get chatFailedToLoadHistory => 'Failed to load message history';
 }

@@ -69,6 +69,7 @@ class DioClient extends Api {
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           print('➡️ REQUEST: ${options.method} ${options.path}');
+          print('➡️ BODY: ${options.data}');
           options.headers.addAll({
             'User-Agent': 'Flutter-Mobile-App',
             'X-Platform': 'mobile',

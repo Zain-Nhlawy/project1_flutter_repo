@@ -711,10 +711,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get failedToUploadImage => 'فشل رفع الصورة';
 
   @override
-  String get demoCourses => 'كورسات الديمو';
+  String get demoCourses => 'كورسات الغرفة';
 
   @override
-  String get demoCoursesDescription => 'الكورسات المتاحة في الديمو الخاص بك';
+  String get demoCoursesDescription => 'الكورسات المتاحة في الغرفة الخاص بك';
 
   @override
   String get availableCourses => 'كورسات متاحة';
@@ -733,7 +733,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'هل أنت متأكد من نشر هذا الكورس؟ بعد النشر لن تتمكن من تعديله.';
 
   @override
-  String get seeMore => 'عرض المزيد';
+  String get seeMore => 'عرض';
 
   @override
   String get producedBy => 'تم إعداده بواسطة';
@@ -1185,4 +1185,101 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get backToLibrary => 'العودة للمكتبة';
+
+  @override
+  String get aiAssistantTitle => 'مساعد الذكاء الاصطناعي';
+
+  @override
+  String get askQuestionSection => 'اطرح سؤالاً';
+
+  @override
+  String get askQuestionHint =>
+      'مثال: ما هو الفرق بين Dependency Injection و Singleton؟';
+
+  @override
+  String get askButton => 'اسأل المساعد';
+
+  @override
+  String get topicQuizSection => 'اختبار لموضوع محدد';
+
+  @override
+  String get topicHint => 'مثال: Clean Architecture';
+
+  @override
+  String get questionCountHint => 'عدد الأسئلة';
+
+  @override
+  String get generateTopicQuizButton => 'إنشاء اختبار للموضوع';
+
+  @override
+  String get randomQuizSection => 'اختبار عشوائي للمقرر';
+
+  @override
+  String get generateRandomQuizButton => 'إنشاء اختبار عشوائي';
+
+  @override
+  String get aiResponseTitle => 'استجابة الذكاء الاصطناعي';
+
+  @override
+  String get noDataYet => 'اطرح سؤالاً أو أنشئ اختباراً لرؤية النتائج هنا.';
+
+  @override
+  String get errorPrefix => 'حدث خطأ: ';
+
+  @override
+  String get chatConnecting => 'جاري الاتصال...';
+
+  @override
+  String get chatReconnecting => 'جاري إعادة الاتصال بالمحادثة...';
+
+  @override
+  String get chatConnectionLost => 'تم فقدان الاتصال. جاري إعادة المحاولة...';
+
+  @override
+  String get chatNoMessagesYet => 'لا توجد رسائل بعد';
+
+  @override
+  String get chatFirstMessagePrompt => 'كن أول من يبدأ المحادثة!';
+
+  @override
+  String get chatMessageDeleted => 'تم حذف هذه الرسالة';
+
+  @override
+  String get chatEditedTag => 'معدلة';
+
+  @override
+  String get chatReply => 'رد';
+
+  @override
+  String get chatEdit => 'تعديل';
+
+  @override
+  String get chatDelete => 'حذف';
+
+  @override
+  String get chatTypeMessageHint => 'اكتب رسالة...';
+
+  @override
+  String get chatEditMessageHint => 'تعديل الرسالة...';
+
+  @override
+  String chatReplyingTo(String name) {
+    return 'الرد على $name';
+  }
+
+  @override
+  String get chatEditingMessageTitle => 'تعديل الرسالة';
+
+  @override
+  String chatMemberIsTyping(String name) {
+    return '$name يكتب الآن...';
+  }
+
+  @override
+  String chatMembersAreTyping(int count) {
+    return '$count أعضاء يكتبون الآن...';
+  }
+
+  @override
+  String get chatFailedToLoadHistory => 'فشل في تحميل سجل الرسائل';
 }

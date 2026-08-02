@@ -8,6 +8,7 @@ import 'package:project1/features/department/presentation/pages/sidebar%20screen
 import 'package:project1/features/department/presentation/pages/sidebar%20screens/roadmap_screen.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:animations/animations.dart';
+import 'package:project1/features/department_chat/presentation/pages/department_chat_screen.dart';
 import '../widgets/department_main_page/department_nav_item.dart';
 import '../widgets/department_main_page/department_sidebar.dart';
 import '../widgets/department_main_page/department_empty_page.dart';
@@ -101,7 +102,6 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
       backgroundColor: AppColors.backgroundOf(context),
       body: Stack(
         children: [
-          // Main Screen Content (full width)
           SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,7 +177,6 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
             ),
           ),
 
-          // Smooth Fading Backdrop Dimming
           IgnorePointer(
             ignoring: !_isSidebarVisible,
             child: AnimatedOpacity(
@@ -191,7 +190,6 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
             ),
           ),
 
-          // Smooth Sliding Sidebar Drawer (slides between -95 and 0)
           AnimatedPositioned(
             duration: const Duration(milliseconds: 300),
             curve: Curves.fastOutSlowIn,
@@ -252,9 +250,10 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
           title: localizations.departmentLeaderboard,
         );
       case 5:
-        return DepartmentEmptyPage(
+        return DepartmentChatScreen(
           key: const ValueKey(5),
-          title: localizations.departmentChat,
+          departmentId: widget.department?.id ?? '',
+          demoId: widget.demoId ?? '',
         );
       case 6:
         return DepartmentEmptyPage(

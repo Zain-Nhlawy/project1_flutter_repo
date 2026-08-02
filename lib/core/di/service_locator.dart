@@ -128,6 +128,13 @@ import 'package:project1/features/profile/data/data_sources/profile_remote_datas
 import 'package:project1/features/profile/data/repository/profile_repository_impl.dart';
 import 'package:project1/features/profile/domain/repository/profile_repository.dart';
 import 'package:project1/features/profile/domain/use_case/update_profile_image_usecase.dart';
+import 'package:project1/features/rag/data/data_sources/rag_remote_data_source.dart';
+import 'package:project1/features/rag/data/repositories/rag_repository_impl.dart';
+import 'package:project1/features/rag/domain/repositories/rag_repository.dart';
+import 'package:project1/features/rag/domain/use_case/ask_question_usecase.dart';
+import 'package:project1/features/rag/domain/use_case/generate_random_quiz_usecase.dart';
+import 'package:project1/features/rag/domain/use_case/generate_topic_quiz_usecase.dart';
+import 'package:project1/features/rag/presentation/cubit/rag_cubit.dart';
 import 'package:project1/features/section/data/data_sources/section_remote_datasource.dart';
 import 'package:project1/features/section/data/repository/section_repository_impl.dart';
 import 'package:project1/features/section/domain/repository/section_repository.dart';
@@ -138,7 +145,21 @@ import 'package:project1/features/section/domain/use_case/get_sections_usecase.d
 import 'package:project1/features/section/domain/use_case/update_section_usecase.dart';
 import 'package:project1/features/section/presentation/cubit/section_cubit.dart';
 
+import 'package:project1/features/department_chat/data/data_sources/department_chat_remote_datasource.dart';
+import 'package:project1/features/department_chat/data/data_sources/department_chat_socket_datasource.dart';
+import 'package:project1/features/department_chat/data/repository/department_chat_repository_impl.dart';
+import 'package:project1/features/department_chat/domain/repository/department_chat_repository.dart';
+import 'package:project1/features/department_chat/domain/use_case/connect_department_chat_usecase.dart';
+import 'package:project1/features/department_chat/domain/use_case/delete_department_message_usecase.dart';
+import 'package:project1/features/department_chat/domain/use_case/disconnect_department_chat_usecase.dart';
+import 'package:project1/features/department_chat/domain/use_case/edit_department_message_usecase.dart';
+import 'package:project1/features/department_chat/domain/use_case/get_message_history_usecase.dart';
+import 'package:project1/features/department_chat/domain/use_case/send_department_message_usecase.dart';
+import 'package:project1/features/department_chat/domain/use_case/set_typing_status_usecase.dart';
+import 'package:project1/features/department_chat/presentation/cubit/department_chat_cubit.dart';
+
 final getIt = GetIt.instance;
+final sl = getIt;
 
 final String baseUrl = dotenv.env['BASE_URL'] ?? '';
 
@@ -690,7 +711,7 @@ void setupDI() {
   );
 
   //////////////////////// Course FAQ ////////////////////////
-  ///
+  
 
   //////////////////////// Department Course ////////////////////////
 
@@ -731,7 +752,7 @@ void setupDI() {
 
   //////////////////////// Department Course ////////////////////////
 
-  //////////////////////// Payment ////////////////////////
+  //////////////////////// Payment Course ////////////////////////
 
   //Data Sources
   getIt.registerLazySingleton<PaymentRemoteDataSource>(
@@ -754,4 +775,94 @@ void setupDI() {
   );
 
   //////////////////////// Payment Course ////////////////////////
+  
+
+  //////////////////////// Rag ////////////////////////
+  // Data Source
+getIt.registerLazySingleton<RagRemoteDataSource>(
+  () => RagRemoteDataSource(getIt<DioClient>()),
+);
+
+// Repository
+getIt.registerLazySingleton<RagRepository>(
+  () => RagRepositoryImpl(getIt<RagRemoteDataSource>()),
+);
+
+// Use Cases
+getIt.registerLazySingleton<AskQuestionUseCase>(
+  () => AskQuestionUseCase(getIt<RagRepository>()),
+);
+getIt.registerLazySingleton<GenerateTopicQuizUseCase>(
+  () => GenerateTopicQuizUseCase(getIt<RagRepository>()),
+);
+getIt.registerLazySingleton<GenerateRandomQuizUseCase>(
+  () => GenerateRandomQuizUseCase(getIt<RagRepository>()),
+);
+
+// Cubit 
+getIt.registerFactory<RagCubit>(
+  () => RagCubit(
+    askQuestionUseCase: getIt<AskQuestionUseCase>(),
+    generateTopicQuizUseCase: getIt<GenerateTopicQuizUseCase>(),
+    generateRandomQuizUseCase: getIt<GenerateRandomQuizUseCase>(),
+  ),
+);
+//////////////////////// RAG ////////////////////////
+
+  //////////////////////// Department Chat ////////////////////////
+  getIt.registerLazySingleton<DepartmentChatRemoteDataSource>(
+    () => DepartmentChatRemoteDataSourceImpl(
+      getIt<DioClient>(),
+      dio: getIt<DioClient>().dio,
+    ),
+  );
+  getIt.registerLazySingleton<DepartmentChatSocketDataSource>(
+    () => DepartmentChatSocketDataSourceImpl(),
+  );
+
+  getIt.registerLazySingleton<DepartmentChatRepository>(
+    () => DepartmentChatRepositoryImpl(
+      remoteDataSource: getIt<DepartmentChatRemoteDataSource>(),
+      socketDataSource: getIt<DepartmentChatSocketDataSource>(),
+      storage: getIt<AppSecureStorage>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<GetMessageHistoryUseCase>(
+    () => GetMessageHistoryUseCase(getIt<DepartmentChatRepository>()),
+  );
+  getIt.registerLazySingleton<ConnectDepartmentChatUseCase>(
+    () => ConnectDepartmentChatUseCase(getIt<DepartmentChatRepository>()),
+  );
+  getIt.registerLazySingleton<DisconnectDepartmentChatUseCase>(
+    () => DisconnectDepartmentChatUseCase(getIt<DepartmentChatRepository>()),
+  );
+  getIt.registerLazySingleton<SendDepartmentMessageUseCase>(
+    () => SendDepartmentMessageUseCase(getIt<DepartmentChatRepository>()),
+  );
+  getIt.registerLazySingleton<EditDepartmentMessageUseCase>(
+    () => EditDepartmentMessageUseCase(getIt<DepartmentChatRepository>()),
+  );
+  getIt.registerLazySingleton<DeleteDepartmentMessageUseCase>(
+    () => DeleteDepartmentMessageUseCase(getIt<DepartmentChatRepository>()),
+  );
+  getIt.registerLazySingleton<SetTypingStatusUseCase>(
+    () => SetTypingStatusUseCase(getIt<DepartmentChatRepository>()),
+  );
+
+  getIt.registerFactory<DepartmentChatCubit>(
+    () => DepartmentChatCubit(
+      getMessageHistoryUseCase: getIt<GetMessageHistoryUseCase>(),
+      connectDepartmentChatUseCase: getIt<ConnectDepartmentChatUseCase>(),
+      disconnectDepartmentChatUseCase: getIt<DisconnectDepartmentChatUseCase>(),
+      sendDepartmentMessageUseCase: getIt<SendDepartmentMessageUseCase>(),
+      editDepartmentMessageUseCase: getIt<EditDepartmentMessageUseCase>(),
+      deleteDepartmentMessageUseCase: getIt<DeleteDepartmentMessageUseCase>(),
+      setTypingStatusUseCase: getIt<SetTypingStatusUseCase>(),
+      repository: getIt<DepartmentChatRepository>(),
+      getMeUseCase: getIt<GetMeUseCase>(),
+      departmentMemberRepository: getIt<DepartmentMemberRepository>(),
+    ),
+  );
+  //////////////////////// Department Chat ////////////////////////
 }

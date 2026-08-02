@@ -261,14 +261,14 @@
 "deleteCourseTitle": "حذف الكورس",
 "deleteCourseConfirmation": "هل أنت متأكد من حذف هذا الكورس؟",
 "failedToUploadImage": "فشل رفع الصورة",
-"demoCourses": "كورسات الديمو",
-  "demoCoursesDescription": "الكورسات المتاحة في الديمو الخاص بك",
+"demoCourses": "كورسات الغرفة",
+  "demoCoursesDescription": "الكورسات المتاحة في الغرفة الخاص بك",
   "availableCourses": "كورسات متاحة",
   "courses": "الكورسات",
   "publish":"نشر",
 "publishCourse":"نشر الكورس",
 "publishCourseConfirmation":"هل أنت متأكد من نشر هذا الكورس؟ بعد النشر لن تتمكن من تعديله.",
-"seeMore": "عرض المزيد",
+"seeMore": "عرض",
   "producedBy": "تم إعداده بواسطة",
   "aboutThisCourse": "عن هذا الكورس",
   "courseContent": "محتوى الكورس",
@@ -426,5 +426,53 @@
   },
   "backToHome": "العودة للرئيسية",
   "alreadyEnrolled": "مسجّل بالفعل",
-  "backToLibrary": "العودة للمكتبة"
+  "backToLibrary": "العودة للمكتبة",
+  "aiAssistantTitle": "مساعد الذكاء الاصطناعي",
+  "askQuestionSection": "اطرح سؤالاً",
+"askQuestionHint": "مثال: ما هو الفرق بين Dependency Injection و Singleton؟",
+  "askButton": "اسأل المساعد",
+  
+  "topicQuizSection": "اختبار لموضوع محدد",
+"topicHint": "مثال: Clean Architecture",
+  "questionCountHint": "عدد الأسئلة",
+  "generateTopicQuizButton": "إنشاء اختبار للموضوع",
+  
+  "randomQuizSection": "اختبار عشوائي للمقرر",
+  "generateRandomQuizButton": "إنشاء اختبار عشوائي",
+  
+  "aiResponseTitle": "استجابة الذكاء الاصطناعي",
+  "noDataYet": "اطرح سؤالاً أو أنشئ اختباراً لرؤية النتائج هنا.",
+  "errorPrefix": "حدث خطأ: ",
+  "chatConnecting": "جاري الاتصال...",
+  "chatReconnecting": "جاري إعادة الاتصال بالمحادثة...",
+  "chatConnectionLost": "تم فقدان الاتصال. جاري إعادة المحاولة...",
+  "chatNoMessagesYet": "لا توجد رسائل بعد",
+  "chatFirstMessagePrompt": "كن أول من يبدأ المحادثة!",
+  "chatMessageDeleted": "تم حذف هذه الرسالة",
+  "chatEditedTag": "معدلة",
+  "chatReply": "رد",
+  "chatEdit": "تعديل",
+  "chatDelete": "حذف",
+  "chatTypeMessageHint": "اكتب رسالة...",
+  "chatEditMessageHint": "تعديل الرسالة...",
+  "chatReplyingTo": "الرد على {name}",
+  "@chatReplyingTo": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "chatEditingMessageTitle": "تعديل الرسالة",
+  "chatMemberIsTyping": "{name} يكتب الآن...",
+  "@chatMemberIsTyping": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "chatMembersAreTyping": "{count} أعضاء يكتبون الآن...",
+  "@chatMembersAreTyping": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "chatFailedToLoadHistory": "فشل في تحميل سجل الرسائل"
 }
