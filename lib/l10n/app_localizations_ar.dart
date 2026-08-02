@@ -1227,6 +1227,63 @@ class AppLocalizationsAr extends AppLocalizations {
   String get errorPrefix => 'حدث خطأ: ';
 
   @override
+  String get chatConnecting => 'جاري الاتصال...';
+
+  @override
+  String get chatReconnecting => 'جاري إعادة الاتصال بالمحادثة...';
+
+  @override
+  String get chatConnectionLost => 'تم فقدان الاتصال. جاري إعادة المحاولة...';
+
+  @override
+  String get chatNoMessagesYet => 'لا توجد رسائل بعد';
+
+  @override
+  String get chatFirstMessagePrompt => 'كن أول من يبدأ المحادثة!';
+
+  @override
+  String get chatMessageDeleted => 'تم حذف هذه الرسالة';
+
+  @override
+  String get chatEditedTag => 'معدلة';
+
+  @override
+  String get chatReply => 'رد';
+
+  @override
+  String get chatEdit => 'تعديل';
+
+  @override
+  String get chatDelete => 'حذف';
+
+  @override
+  String get chatTypeMessageHint => 'اكتب رسالة...';
+
+  @override
+  String get chatEditMessageHint => 'تعديل الرسالة...';
+
+  @override
+  String chatReplyingTo(String name) {
+    return 'الرد على $name';
+  }
+
+  @override
+  String get chatEditingMessageTitle => 'تعديل الرسالة';
+
+  @override
+  String chatMemberIsTyping(String name) {
+    return '$name يكتب الآن...';
+  }
+
+  @override
+  String chatMembersAreTyping(int count) {
+    return '$count أعضاء يكتبون الآن...';
+  }
+
+  @override
+  String get chatFailedToLoadHistory => 'فشل في تحميل سجل الرسائل';
+
+  @override
   String get deleteQuestion => 'حذف السؤال';
 
   @override

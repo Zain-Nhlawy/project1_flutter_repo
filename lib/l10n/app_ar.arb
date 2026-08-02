@@ -443,20 +443,52 @@
   "aiResponseTitle": "استجابة الذكاء الاصطناعي",
   "noDataYet": "اطرح سؤالاً أو أنشئ اختباراً لرؤية النتائج هنا.",
   "errorPrefix": "حدث خطأ: ",
+  "chatConnecting": "جاري الاتصال...",
+  "chatReconnecting": "جاري إعادة الاتصال بالمحادثة...",
+  "chatConnectionLost": "تم فقدان الاتصال. جاري إعادة المحاولة...",
+  "chatNoMessagesYet": "لا توجد رسائل بعد",
+  "chatFirstMessagePrompt": "كن أول من يبدأ المحادثة!",
+  "chatMessageDeleted": "تم حذف هذه الرسالة",
+  "chatEditedTag": "معدلة",
+  "chatReply": "رد",
+  "chatEdit": "تعديل",
+  "chatDelete": "حذف",
+  "chatTypeMessageHint": "اكتب رسالة...",
+  "chatEditMessageHint": "تعديل الرسالة...",
+  "chatReplyingTo": "الرد على {name}",
+  "@chatReplyingTo": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "chatEditingMessageTitle": "تعديل الرسالة",
+  "chatMemberIsTyping": "{name} يكتب الآن...",
+  "@chatMemberIsTyping": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "chatMembersAreTyping": "{count} أعضاء يكتبون الآن...",
+  "@chatMembersAreTyping": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "chatFailedToLoadHistory": "فشل في تحميل سجل الرسائل",
 
   "deleteQuestion": "حذف السؤال",
-"deleteQuestionConfirmation": "هل أنت متأكد من حذف هذا السؤال؟",
-"deleteQuestionFailed": "فشل حذف السؤال",
-"addQuestion": "إضافة سؤال",
-"questionHint": "أدخل نص السؤال",
-"choicesLabel": "الخيارات",
-"choiceHint": "خيار",
-"fillAllFields": "الرجاء تعبئة جميع الحقول",
-"selectCorrectAnswer": "الرجاء تحديد إجابة صحيحة واحدة على الأقل",
-"createQuestionFailed": "فشل إنشاء السؤال",
-"noQuestionsYet": "لا توجد أسئلة بعد",
-"enterQuestionFirst": "الرجاء إدخال السؤال أولاً",
-"choicesMustBeUnique": "يجب أن يكون كل خيار مختلفاً عن البقية" ,
-"questionsBankDescription": "إدارة ومراجعة جميع الأسئلة في بنك أسئلة هذا القسم",
-"questionsCount": "سؤال"
+  "deleteQuestionConfirmation": "هل أنت متأكد من حذف هذا السؤال؟",
+  "deleteQuestionFailed": "فشل حذف السؤال",
+  "addQuestion": "إضافة سؤال",
+  "questionHint": "أدخل نص السؤال",
+  "choicesLabel": "الخيارات",
+  "choiceHint": "خيار",
+  "fillAllFields": "الرجاء تعبئة جميع الحقول",
+  "selectCorrectAnswer": "الرجاء تحديد إجابة صحيحة واحدة على الأقل",
+  "createQuestionFailed": "فشل إنشاء السؤال",
+  "noQuestionsYet": "لا توجد أسئلة بعد",
+  "enterQuestionFirst": "الرجاء إدخال السؤال أولاً",
+  "choicesMustBeUnique": "يجب أن يكون كل خيار مختلفاً عن البقية" ,
+  "questionsBankDescription": "إدارة ومراجعة جميع الأسئلة في بنك أسئلة هذا القسم",
+  "questionsCount": "سؤال"
 }

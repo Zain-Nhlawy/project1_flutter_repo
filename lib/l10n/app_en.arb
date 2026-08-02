@@ -474,20 +474,52 @@
   "aiResponseTitle": "AI Response",
   "noDataYet": "Ask a question or generate a quiz to see the AI insights here.",
   "errorPrefix": "Error occurred: ",
+  "chatConnecting": "Connecting...",
+  "chatReconnecting": "Reconnecting to chat...",
+  "chatConnectionLost": "Connection lost. Retrying...",
+  "chatNoMessagesYet": "No messages yet",
+  "chatFirstMessagePrompt": "Be the first to start the conversation!",
+  "chatMessageDeleted": "This message was deleted",
+  "chatEditedTag": "edited",
+  "chatReply": "Reply",
+  "chatEdit": "Edit",
+  "chatDelete": "Delete",
+  "chatTypeMessageHint": "Type a message...",
+  "chatEditMessageHint": "Edit message...",
+  "chatReplyingTo": "Replying to {name}",
+  "@chatReplyingTo": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "chatEditingMessageTitle": "Editing Message",
+  "chatMemberIsTyping": "{name} is typing...",
+  "@chatMemberIsTyping": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "chatMembersAreTyping": "{count} members are typing...",
+  "@chatMembersAreTyping": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "chatFailedToLoadHistory": "Failed to load message history",
 
   "deleteQuestion": "Delete Question",
-"deleteQuestionConfirmation": "Are you sure you want to delete this question?",
-"deleteQuestionFailed": "Failed to delete question",
-"addQuestion": "Add Question",
-"questionHint": "Enter your question",
-"choicesLabel": "Choices",
-"choiceHint": "Choice",
-"fillAllFields": "Please fill all fields",
-"selectCorrectAnswer": "Please select at least one correct answer",
-"createQuestionFailed": "Failed to create question",
-"noQuestionsYet": "No questions yet",
-"enterQuestionFirst": "Please enter the question first",
-"choicesMustBeUnique": "Each choice must be different from the others",
-"questionsBankDescription": "Manage and review all questions in this section's question bank",
-"questionsCount": "Questions"
+  "deleteQuestionConfirmation": "Are you sure you want to delete this question?",
+  "deleteQuestionFailed": "Failed to delete question",
+  "addQuestion": "Add Question",
+  "questionHint": "Enter your question",
+  "choicesLabel": "Choices",
+  "choiceHint": "Choice",
+  "fillAllFields": "Please fill all fields",
+  "selectCorrectAnswer": "Please select at least one correct answer",
+  "createQuestionFailed": "Failed to create question",
+  "noQuestionsYet": "No questions yet",
+  "enterQuestionFirst": "Please enter the question first",
+  "choicesMustBeUnique": "Each choice must be different from the others",
+  "questionsBankDescription": "Manage and review all questions in this section's question bank",
+  "questionsCount": "Questions"
 }

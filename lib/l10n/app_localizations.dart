@@ -2438,6 +2438,108 @@ abstract class AppLocalizations {
   /// **'Error occurred: '**
   String get errorPrefix;
 
+  /// No description provided for @chatConnecting.
+  ///
+  /// In en, this message translates to:
+  /// **'Connecting...'**
+  String get chatConnecting;
+
+  /// No description provided for @chatReconnecting.
+  ///
+  /// In en, this message translates to:
+  /// **'Reconnecting to chat...'**
+  String get chatReconnecting;
+
+  /// No description provided for @chatConnectionLost.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection lost. Retrying...'**
+  String get chatConnectionLost;
+
+  /// No description provided for @chatNoMessagesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No messages yet'**
+  String get chatNoMessagesYet;
+
+  /// No description provided for @chatFirstMessagePrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Be the first to start the conversation!'**
+  String get chatFirstMessagePrompt;
+
+  /// No description provided for @chatMessageDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'This message was deleted'**
+  String get chatMessageDeleted;
+
+  /// No description provided for @chatEditedTag.
+  ///
+  /// In en, this message translates to:
+  /// **'edited'**
+  String get chatEditedTag;
+
+  /// No description provided for @chatReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply'**
+  String get chatReply;
+
+  /// No description provided for @chatEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get chatEdit;
+
+  /// No description provided for @chatDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get chatDelete;
+
+  /// No description provided for @chatTypeMessageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type a message...'**
+  String get chatTypeMessageHint;
+
+  /// No description provided for @chatEditMessageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit message...'**
+  String get chatEditMessageHint;
+
+  /// No description provided for @chatReplyingTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Replying to {name}'**
+  String chatReplyingTo(String name);
+
+  /// No description provided for @chatEditingMessageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Editing Message'**
+  String get chatEditingMessageTitle;
+
+  /// No description provided for @chatMemberIsTyping.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is typing...'**
+  String chatMemberIsTyping(String name);
+
+  /// No description provided for @chatMembersAreTyping.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} members are typing...'**
+  String chatMembersAreTyping(int count);
+
+  /// No description provided for @chatFailedToLoadHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load message history'**
+  String get chatFailedToLoadHistory;
+
   /// No description provided for @deleteQuestion.
   ///
   /// In en, this message translates to:

@@ -153,7 +153,21 @@ import 'package:project1/features/section/domain/use_case/get_sections_usecase.d
 import 'package:project1/features/section/domain/use_case/update_section_usecase.dart';
 import 'package:project1/features/section/presentation/cubit/section_cubit.dart';
 
+import 'package:project1/features/department_chat/data/data_sources/department_chat_remote_datasource.dart';
+import 'package:project1/features/department_chat/data/data_sources/department_chat_socket_datasource.dart';
+import 'package:project1/features/department_chat/data/repository/department_chat_repository_impl.dart';
+import 'package:project1/features/department_chat/domain/repository/department_chat_repository.dart';
+import 'package:project1/features/department_chat/domain/use_case/connect_department_chat_usecase.dart';
+import 'package:project1/features/department_chat/domain/use_case/delete_department_message_usecase.dart';
+import 'package:project1/features/department_chat/domain/use_case/disconnect_department_chat_usecase.dart';
+import 'package:project1/features/department_chat/domain/use_case/edit_department_message_usecase.dart';
+import 'package:project1/features/department_chat/domain/use_case/get_message_history_usecase.dart';
+import 'package:project1/features/department_chat/domain/use_case/send_department_message_usecase.dart';
+import 'package:project1/features/department_chat/domain/use_case/set_typing_status_usecase.dart';
+import 'package:project1/features/department_chat/presentation/cubit/department_chat_cubit.dart';
+
 final getIt = GetIt.instance;
+final sl = getIt;
 
 final String baseUrl = dotenv.env['BASE_URL'] ?? '';
 
@@ -803,26 +817,82 @@ getIt.registerFactory<RagCubit>(
 );
 //////////////////////// RAG ////////////////////////
 
-//////////////////////// Question Bank ////////////////////////
+  //////////////////////// Department Chat ////////////////////////
+  getIt.registerLazySingleton<DepartmentChatRemoteDataSource>(
+    () => DepartmentChatRemoteDataSourceImpl(
+      getIt<DioClient>(),
+      dio: getIt<DioClient>().dio,
+    ),
+  );
+  getIt.registerLazySingleton<DepartmentChatSocketDataSource>(
+    () => DepartmentChatSocketDataSourceImpl(),
+  );
 
-getIt.registerLazySingleton<QuestionBankRemoteDataSource>(
-  () => QuestionBankRemoteDataSource(getIt<DioClient>()),
-);
-getIt.registerLazySingleton<QuestionBankRepository>(
-  () => QuestionBankRepositoryImpl(getIt<QuestionBankRemoteDataSource>()),
-);
-getIt.registerLazySingleton(() => CreateQuestionBankUseCase(getIt<QuestionBankRepository>()));
-getIt.registerLazySingleton(() => GetQuestionBanksUseCase(getIt<QuestionBankRepository>()));
-getIt.registerLazySingleton(() => GetQuestionBankUseCase(getIt<QuestionBankRepository>()));
-getIt.registerLazySingleton(() => DeleteQuestionBankUseCase(getIt<QuestionBankRepository>()));
+  getIt.registerLazySingleton<DepartmentChatRepository>(
+    () => DepartmentChatRepositoryImpl(
+      remoteDataSource: getIt<DepartmentChatRemoteDataSource>(),
+      socketDataSource: getIt<DepartmentChatSocketDataSource>(),
+      storage: getIt<AppSecureStorage>(),
+    ),
+  );
 
-getIt.registerFactory(
-  () => QuestionBankCubit(
-    getQuestionBanksUseCase: getIt(),
-    createQuestionBankUseCase: getIt(),
-    deleteQuestionBankUseCase: getIt(),
-  ),
-);
-//////////////////////// Question Bank ////////////////////////
+  getIt.registerLazySingleton<GetMessageHistoryUseCase>(
+    () => GetMessageHistoryUseCase(getIt<DepartmentChatRepository>()),
+  );
+  getIt.registerLazySingleton<ConnectDepartmentChatUseCase>(
+    () => ConnectDepartmentChatUseCase(getIt<DepartmentChatRepository>()),
+  );
+  getIt.registerLazySingleton<DisconnectDepartmentChatUseCase>(
+    () => DisconnectDepartmentChatUseCase(getIt<DepartmentChatRepository>()),
+  );
+  getIt.registerLazySingleton<SendDepartmentMessageUseCase>(
+    () => SendDepartmentMessageUseCase(getIt<DepartmentChatRepository>()),
+  );
+  getIt.registerLazySingleton<EditDepartmentMessageUseCase>(
+    () => EditDepartmentMessageUseCase(getIt<DepartmentChatRepository>()),
+  );
+  getIt.registerLazySingleton<DeleteDepartmentMessageUseCase>(
+    () => DeleteDepartmentMessageUseCase(getIt<DepartmentChatRepository>()),
+  );
+  getIt.registerLazySingleton<SetTypingStatusUseCase>(
+    () => SetTypingStatusUseCase(getIt<DepartmentChatRepository>()),
+  );
 
+  getIt.registerFactory<DepartmentChatCubit>(
+    () => DepartmentChatCubit(
+      getMessageHistoryUseCase: getIt<GetMessageHistoryUseCase>(),
+      connectDepartmentChatUseCase: getIt<ConnectDepartmentChatUseCase>(),
+      disconnectDepartmentChatUseCase: getIt<DisconnectDepartmentChatUseCase>(),
+      sendDepartmentMessageUseCase: getIt<SendDepartmentMessageUseCase>(),
+      editDepartmentMessageUseCase: getIt<EditDepartmentMessageUseCase>(),
+      deleteDepartmentMessageUseCase: getIt<DeleteDepartmentMessageUseCase>(),
+      setTypingStatusUseCase: getIt<SetTypingStatusUseCase>(),
+      repository: getIt<DepartmentChatRepository>(),
+      getMeUseCase: getIt<GetMeUseCase>(),
+      departmentMemberRepository: getIt<DepartmentMemberRepository>(),
+    ),
+  );
+  //////////////////////// Department Chat ////////////////////////
+
+  //////////////////////// Question Bank ////////////////////////
+
+  getIt.registerLazySingleton<QuestionBankRemoteDataSource>(
+    () => QuestionBankRemoteDataSource(getIt<DioClient>()),
+  );
+  getIt.registerLazySingleton<QuestionBankRepository>(
+    () => QuestionBankRepositoryImpl(getIt<QuestionBankRemoteDataSource>()),
+  );
+  getIt.registerLazySingleton(() => CreateQuestionBankUseCase(getIt<QuestionBankRepository>()));
+  getIt.registerLazySingleton(() => GetQuestionBanksUseCase(getIt<QuestionBankRepository>()));
+  getIt.registerLazySingleton(() => GetQuestionBankUseCase(getIt<QuestionBankRepository>()));
+  getIt.registerLazySingleton(() => DeleteQuestionBankUseCase(getIt<QuestionBankRepository>()));
+
+  getIt.registerFactory(
+    () => QuestionBankCubit(
+      getQuestionBanksUseCase: getIt(),
+      createQuestionBankUseCase: getIt(),
+      deleteQuestionBankUseCase: getIt(),
+    ),
+  );
+  //////////////////////// Question Bank ////////////////////////
 }

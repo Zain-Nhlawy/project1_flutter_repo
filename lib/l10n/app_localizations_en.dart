@@ -1234,6 +1234,64 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorPrefix => 'Error occurred: ';
 
   @override
+  String get chatConnecting => 'Connecting...';
+
+  @override
+  String get chatReconnecting => 'Reconnecting to chat...';
+
+  @override
+  String get chatConnectionLost => 'Connection lost. Retrying...';
+
+  @override
+  String get chatNoMessagesYet => 'No messages yet';
+
+  @override
+  String get chatFirstMessagePrompt =>
+      'Be the first to start the conversation!';
+
+  @override
+  String get chatMessageDeleted => 'This message was deleted';
+
+  @override
+  String get chatEditedTag => 'edited';
+
+  @override
+  String get chatReply => 'Reply';
+
+  @override
+  String get chatEdit => 'Edit';
+
+  @override
+  String get chatDelete => 'Delete';
+
+  @override
+  String get chatTypeMessageHint => 'Type a message...';
+
+  @override
+  String get chatEditMessageHint => 'Edit message...';
+
+  @override
+  String chatReplyingTo(String name) {
+    return 'Replying to $name';
+  }
+
+  @override
+  String get chatEditingMessageTitle => 'Editing Message';
+
+  @override
+  String chatMemberIsTyping(String name) {
+    return '$name is typing...';
+  }
+
+  @override
+  String chatMembersAreTyping(int count) {
+    return '$count members are typing...';
+  }
+
+  @override
+  String get chatFailedToLoadHistory => 'Failed to load message history';
+
+  @override
   String get deleteQuestion => 'Delete Question';
 
   @override
