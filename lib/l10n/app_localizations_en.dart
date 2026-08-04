@@ -1338,4 +1338,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get questionsCount => 'Questions';
+
+  @override
+  String get checkAnswer => 'Check Answer';
+
+  @override
+  String get correctAnswerFeedback => 'Correct answer!';
+
+  @override
+  String get incorrectAnswerFeedback => 'Incorrect answer';
 }

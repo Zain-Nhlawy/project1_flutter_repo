@@ -47,6 +47,7 @@ import 'package:project1/features/course/data/repository/course_repository_impl.
 import 'package:project1/features/course/data/repository/department_course_repository_impl.dart';
 import 'package:project1/features/course/domain/repository/course_repository.dart';
 import 'package:project1/features/course/domain/repository/department_course_repository.dart';
+import 'package:project1/features/course/domain/use_case/confirm_payment_usecase.dart';
 import 'package:project1/features/course/domain/use_case/create_course_usecase.dart';
 import 'package:project1/features/course/domain/use_case/create_department_course_usecase.dart';
 import 'package:project1/features/course/domain/use_case/delete_course_usecase.dart';
@@ -776,10 +777,16 @@ void setupDI() {
   getIt.registerLazySingleton<CheckoutCourseUseCase>(
     () => CheckoutCourseUseCase(getIt<PaymentRepository>()),
   );
+  getIt.registerLazySingleton<ConfirmPaymentUseCase>(
+    () => ConfirmPaymentUseCase(getIt<PaymentRepository>()),
+  );
 
   //Cubits
   getIt.registerFactory<PaymentCubit>(
-    () => PaymentCubit(checkoutCourseUseCase: getIt<CheckoutCourseUseCase>()),
+    () => PaymentCubit(
+      checkoutCourseUseCase: getIt<CheckoutCourseUseCase>(),
+      confirmPaymentUseCase: getIt<ConfirmPaymentUseCase>(),
+    ),
   );
 
   //////////////////////// Payment Course ////////////////////////

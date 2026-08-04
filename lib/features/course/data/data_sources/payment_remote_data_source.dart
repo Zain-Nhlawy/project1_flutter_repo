@@ -36,4 +36,35 @@ class PaymentRemoteDataSource {
     throw mapDioException(e);
   }
 }
+
+
+
+  Future<String> confirmPayment(String sessionId) async {
+  try {
+    final response = await dioClient.dio.get(
+      '/payments/checkout/status',
+      queryParameters: {'session_id': sessionId},
+    );
+
+    final body = response.data;
+
+    if (body is! Map) {
+      throw Exception('Unexpected response type: ${body.runtimeType}');
+    }
+
+    final data = body['data'];
+    if (data is! Map) {
+      throw Exception('Missing or invalid "data" field. Full body: $body');
+    }
+
+    final paymentStatus = data['paymentStatus'];
+    if (paymentStatus is! String || paymentStatus.isEmpty) {
+      throw Exception('Missing or invalid "paymentStatus" field. Full body: $body');
+    }
+
+    return paymentStatus; 
+  } on DioException catch (e) {
+    throw mapDioException(e);
+  }
+}
 }

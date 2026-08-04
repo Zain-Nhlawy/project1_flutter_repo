@@ -21,6 +21,15 @@ class PaymentRepositoryImpl implements PaymentRepository {
     );
   }
 
+  @override
+  Future<Either<Failure, String>> confirmPayment({
+    required String sessionId,
+  }) {
+    return _handle(
+      () => remoteDataSource.confirmPayment(sessionId),
+    );
+  }
+
   Future<Either<Failure, T>> _handle<T>(Future<T> Function() action) async {
     try {
       final result = await action();

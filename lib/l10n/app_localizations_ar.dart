@@ -1328,4 +1328,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get questionsCount => 'سؤال';
+
+  @override
+  String get checkAnswer => 'تحقق من الإجابة';
+
+  @override
+  String get correctAnswerFeedback => 'إجابة صحيحة!';
+
+  @override
+  String get incorrectAnswerFeedback => 'إجابة خاطئة';
 }

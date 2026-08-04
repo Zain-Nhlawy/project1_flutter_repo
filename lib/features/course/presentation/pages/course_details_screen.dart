@@ -7,6 +7,7 @@ import 'package:project1/features/course/data/data_sources/payment_remote_data_s
 import 'package:project1/features/course/domain/use_case/get_demo_courses_usecase.dart';
 import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
 import 'package:project1/features/course/presentation/cubit/course_state.dart';
+import 'package:project1/features/course/presentation/cubit/payment_cubit.dart';
 import 'package:project1/features/course/presentation/pages/checkout_webview_screen.dart';
 import 'package:project1/features/course/presentation/pages/course_purchase_success_screen.dart';
 import 'package:project1/features/course/presentation/widgets/custom_button.dart';
@@ -148,9 +149,12 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
       await Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => CheckoutWebViewScreen(
-            checkoutUrl: session.url,
-            courseTitle: course.title,
+          builder: (_) => BlocProvider(
+            create: (_) => getIt<PaymentCubit>(),
+            child: CheckoutWebViewScreen(
+              checkoutUrl: session.url,
+              courseTitle: course.title,
+            ),
           ),
         ),
       );

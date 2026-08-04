@@ -2629,6 +2629,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Questions'**
   String get questionsCount;
+
+  /// No description provided for @checkAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Check Answer'**
+  String get checkAnswer;
+
+  /// No description provided for @correctAnswerFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct answer!'**
+  String get correctAnswerFeedback;
+
+  /// No description provided for @incorrectAnswerFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect answer'**
+  String get incorrectAnswerFeedback;
 }
 
 class _AppLocalizationsDelegate

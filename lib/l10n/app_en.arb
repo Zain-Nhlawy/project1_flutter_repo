@@ -521,5 +521,9 @@
   "enterQuestionFirst": "Please enter the question first",
   "choicesMustBeUnique": "Each choice must be different from the others",
   "questionsBankDescription": "Manage and review all questions in this section's question bank",
-  "questionsCount": "Questions"
+  "questionsCount": "Questions",
+  "checkAnswer": "Check Answer",
+"correctAnswerFeedback": "Correct answer!",
+"incorrectAnswerFeedback": "Incorrect answer",
+"tryAgain": "Try Again"
 }

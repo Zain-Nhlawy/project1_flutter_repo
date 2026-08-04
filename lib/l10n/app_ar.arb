@@ -490,5 +490,9 @@
   "enterQuestionFirst": "الرجاء إدخال السؤال أولاً",
   "choicesMustBeUnique": "يجب أن يكون كل خيار مختلفاً عن البقية" ,
   "questionsBankDescription": "إدارة ومراجعة جميع الأسئلة في بنك أسئلة هذا القسم",
-  "questionsCount": "سؤال"
+  "questionsCount": "سؤال",
+  "checkAnswer": "تحقق من الإجابة",
+"correctAnswerFeedback": "إجابة صحيحة!",
+"incorrectAnswerFeedback": "إجابة خاطئة",
+"tryAgain": "حاول مرة أخرى"
 }

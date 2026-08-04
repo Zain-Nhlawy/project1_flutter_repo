@@ -7,4 +7,7 @@ abstract class PaymentRepository {
     required String demoId,
     required String courseId,
   });
+  Future<Either<Failure, String>> confirmPayment({
+    required String sessionId,
+  });
 }
