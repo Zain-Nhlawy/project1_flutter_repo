@@ -145,7 +145,9 @@ class SectionsContentWidget extends StatelessWidget {
                                 MaterialPageRoute(
                                   builder: (context) => MultiBlocProvider(
                                     providers: [
-                                      BlocProvider.value(value: departmentCubit),
+                                      BlocProvider.value(
+                                        value: departmentCubit,
+                                      ),
                                       BlocProvider.value(value: demoUserCubit),
                                     ],
                                     child: AddDepartmentScreen(
@@ -232,11 +234,12 @@ class SectionsContentWidget extends StatelessWidget {
                     String? myMemberId;
                     if (userState is UserLoaded &&
                         demoUsersState is GetDemoUsersLoaded) {
-                      myMemberId = context
-                          .read<DemoUserCubit>()
-                          .getMyMemberId(userState.user.id);
+                      myMemberId = context.read<DemoUserCubit>().getMyMemberId(
+                        userState.user.id,
+                      );
                     }
-                    final isManager = myMemberId != null &&
+                    final isManager =
+                        myMemberId != null &&
                         department.managerId == myMemberId;
                     final departmentCubit = context.read<DepartmentCubit>();
                     final demoUserCubit = context.read<DemoUserCubit>();
@@ -414,42 +417,42 @@ class _SectionsEmptyState extends StatelessWidget {
           ),
           if (demo.isOwner) ...[
             const SizedBox(height: 20),
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryOf(context),
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 12,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-              ),
-              onPressed: () {
-                final departmentCubit = context.read<DepartmentCubit>();
-                final demoUserCubit = context.read<DemoUserCubit>();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MultiBlocProvider(
-                      providers: [
-                        BlocProvider.value(value: departmentCubit),
-                        BlocProvider.value(value: demoUserCubit),
-                      ],
-                      child: AddDepartmentScreen(demoId: demo.id!),
-                    ),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.add_rounded, size: 18),
-              label: Text(
-                l10n.addSection,
-                style: AppTextStyles.label.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+            // ElevatedButton.icon(
+            //   style: ElevatedButton.styleFrom(
+            //     backgroundColor: AppColors.primaryOf(context),
+            //     foregroundColor: Colors.white,
+            //     padding: const EdgeInsets.symmetric(
+            //       horizontal: 20,
+            //       vertical: 12,
+            //     ),
+            //     shape: RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.circular(16),
+            //     ),
+            //   ),
+            //   onPressed: () {
+            //     final departmentCubit = context.read<DepartmentCubit>();
+            //     final demoUserCubit = context.read<DemoUserCubit>();
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //         builder: (context) => MultiBlocProvider(
+            //           providers: [
+            //             BlocProvider.value(value: departmentCubit),
+            //             BlocProvider.value(value: demoUserCubit),
+            //           ],
+            //           child: AddDepartmentScreen(demoId: demo.id!),
+            //         ),
+            //       ),
+            //     );
+            //   },
+            //   icon: const Icon(Icons.add_rounded, size: 18),
+            //   label: Text(
+            //     l10n.addSection,
+            //     style: AppTextStyles.label.copyWith(
+            //       fontWeight: FontWeight.bold,
+            //     ),
+            //   ),
+            // ),
           ],
         ],
       ),

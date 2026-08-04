@@ -19,7 +19,7 @@ class MainActionsSheet extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context)!;
-    final gradient = AppColors.buttonGradientOf(context);
+    final gradient = AppColors.headerGradientOf(context);
 
     return Container(
       decoration: BoxDecoration(

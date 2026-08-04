@@ -92,10 +92,6 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
         Icons.chat_bubble_outline_rounded,
         localizations.departmentChat,
       ),
-      DepartmentNavItem(
-        Icons.report_gmailerrorred_rounded,
-        localizations.departmentSendReport,
-      ),
     ];
 
     return Scaffold(
@@ -254,11 +250,6 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
           key: const ValueKey(5),
           departmentId: widget.department?.id ?? '',
           demoId: widget.demoId ?? '',
-        );
-      case 6:
-        return DepartmentEmptyPage(
-          key: const ValueKey(6),
-          title: localizations.departmentSendReport,
         );
       default:
         return const SizedBox.shrink();

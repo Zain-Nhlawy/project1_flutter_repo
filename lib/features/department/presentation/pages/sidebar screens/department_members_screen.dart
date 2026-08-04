@@ -62,12 +62,12 @@ class _DepartmentMembersView extends StatelessWidget {
       floatingActionButton: canManage
           ? Container(
               decoration: BoxDecoration(
-                gradient: AppColors.buttonGradientOf(context),
+                gradient: AppColors.headerGradientOf(context),
                 borderRadius: BorderRadius.circular(30),
                 boxShadow: [
                   BoxShadow(
                     color:
-                        (isDark ? AppColors.darkSecondary : AppColors.primary)
+                        (isDark ? AppColors.darkSecondary : AppColors.secondary)
                             .withValues(alpha: 0.35),
                     blurRadius: 16,
                     offset: const Offset(0, 6),

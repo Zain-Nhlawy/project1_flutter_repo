@@ -38,11 +38,11 @@ class DemoUsersScreen extends StatelessWidget {
       ),
       floatingActionButton: Container(
         decoration: BoxDecoration(
-          gradient: AppColors.buttonGradientOf(context),
+          gradient: AppColors.headerGradientOf(context),
           borderRadius: BorderRadius.circular(30),
           boxShadow: [
             BoxShadow(
-              color: (isDark ? AppColors.darkSecondary : AppColors.primary)
+              color: (isDark ? AppColors.darkSecondary : AppColors.secondary)
                   .withOpacity(0.35),
               blurRadius: 16,
               offset: const Offset(0, 6),
