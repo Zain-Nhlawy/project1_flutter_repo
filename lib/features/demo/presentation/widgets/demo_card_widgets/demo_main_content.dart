@@ -189,14 +189,17 @@ class _ActionButton extends StatelessWidget {
           vertical: 8,
         ),
         decoration: BoxDecoration(
-          gradient: isDisabled ? null : AppColors.buttonGradient,
+          gradient: isDisabled ? null : AppColors.headerGradientOf(context),
           color: isDisabled ? AppColors.textSecondary.withOpacity(0.15) : null,
           borderRadius: BorderRadius.circular(20),
           boxShadow: isDisabled
               ? []
               : [
                   BoxShadow(
-                    color: AppColors.primary.withOpacity(0.25),
+                    color: (Theme.of(context).brightness == Brightness.dark
+                            ? AppColors.darkSecondary
+                            : AppColors.secondary)
+                        .withOpacity(0.25),
                     blurRadius: 8,
                     offset: const Offset(0, 3),
                   ),

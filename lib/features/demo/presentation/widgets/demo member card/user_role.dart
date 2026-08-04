@@ -17,11 +17,11 @@ class UserRoleBadge extends StatelessWidget {
             ? colors.primary.withOpacity(0.1)
             : colors.secondary.withOpacity(0.1),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: isAdmin
-              ? colors.primary.withOpacity(0.2)
-              : colors.secondary.withOpacity(0.2),
-        ),
+        // border: Border.all(
+        //   color: isAdmin
+        //       ? colors.primary.withOpacity(0.2)
+        //       : colors.secondary.withOpacity(0.2),
+        // ),
       ),
       child: Text(
         role.toUpperCase(),

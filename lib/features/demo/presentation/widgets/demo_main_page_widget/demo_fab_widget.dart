@@ -15,7 +15,7 @@ class DemoFabWidget extends StatelessWidget {
     if (demo.isOwner != true) return const SizedBox.shrink();
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final gradient = AppColors.buttonGradientOf(context);
+    final gradient = AppColors.headerGradientOf(context);
 
     return Container(
       decoration: BoxDecoration(
@@ -23,7 +23,7 @@ class DemoFabWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(30),
         boxShadow: [
           BoxShadow(
-            color: (isDark ? AppColors.darkSecondary : AppColors.primary)
+            color: (isDark ? AppColors.darkSecondary : AppColors.secondary)
                 .withOpacity(0.35),
             blurRadius: 16,
             offset: const Offset(0, 6),
