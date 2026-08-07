@@ -137,6 +137,14 @@ import 'package:project1/features/questions_bank/domain/use_case/delete_question
 import 'package:project1/features/questions_bank/domain/use_case/get_question_bank_usecase.dart';
 import 'package:project1/features/questions_bank/domain/use_case/get_question_banks_usecase.dart';
 import 'package:project1/features/questions_bank/presentation/cubit/question_bank_cubit.dart';
+import 'package:project1/features/quiz/data/data_sources/exam_remote_data_source.dart';
+import 'package:project1/features/quiz/data/repositories/exam_repository_impl.dart';
+import 'package:project1/features/quiz/domain/repositories/exam_repository.dart';
+import 'package:project1/features/quiz/domain/use_case/create_exam_usecase.dart';
+import 'package:project1/features/quiz/domain/use_case/delete_exam_usecase.dart';
+import 'package:project1/features/quiz/domain/use_case/get_exams_usecase.dart';
+import 'package:project1/features/quiz/domain/use_case/update_exam_usecase.dart';
+import 'package:project1/features/quiz/presentation/cubit/exam_cubit.dart';
 import 'package:project1/features/rag/data/data_sources/rag_remote_data_source.dart';
 import 'package:project1/features/rag/data/repositories/rag_repository_impl.dart';
 import 'package:project1/features/rag/domain/repositories/rag_repository.dart';
@@ -901,5 +909,25 @@ getIt.registerFactory<RagCubit>(
       deleteQuestionBankUseCase: getIt(),
     ),
   );
-  //////////////////////// Question Bank ////////////////////////
+  //////////////////////// Quiz ////////////////////////
+  
+
+  getIt.registerLazySingleton<ExamRemoteDataSource>(() => ExamRemoteDataSource(getIt()));
+
+  getIt.registerLazySingleton<ExamRepository>(() => ExamRepositoryImpl(getIt()));
+
+  getIt.registerLazySingleton<CreateExamUseCase>(() => CreateExamUseCase(getIt()));
+  getIt.registerLazySingleton<GetExamsUseCase>(() => GetExamsUseCase(getIt()));
+  getIt.registerLazySingleton<UpdateExamUseCase>(() => UpdateExamUseCase(getIt()));
+  getIt.registerLazySingleton<DeleteExamUseCase>(() => DeleteExamUseCase(getIt()));
+
+  getIt.registerFactory<ExamCubit>(() => ExamCubit(
+  getExamsUseCase: getIt(),
+  createExamUseCase: getIt(),
+  updateExamUseCase: getIt(),
+  deleteExamUseCase: getIt(),
+));
+
+  //////////////////////// Quiz ////////////////////////
+
 }

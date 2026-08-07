@@ -598,7 +598,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get manageSections => 'إدارة الأقسام';
 
   @override
-  String get saveChanges => 'حفظ التعديلات';
+  String get saveChanges => 'حفظ التغييرات';
 
   @override
   String get editCourse => 'تعديل الكورس';
@@ -1368,4 +1368,47 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get demoStatsOptionDesc => 'عرض التحليلات والإحصائيات';
+
+  @override
+  String get quizInformation => 'معلومات الاختبار';
+
+  @override
+  String get addExam => 'إضافة امتحان';
+
+  @override
+  String get editExam => 'تعديل الامتحان';
+
+  @override
+  String get enterExamDetailsDescription =>
+      'يرجى إدخال وتعبئة البيانات أدناه لتهيئة إعدادات الامتحان.';
+
+  @override
+  String get examTitle => 'عنوان الامتحان';
+
+  @override
+  String get examTitleHint => 'مثال: امتحان منتصف الفصل';
+
+  @override
+  String get numberOfQuestions => 'عدد الأسئلة';
+
+  @override
+  String get numberOfQuestionsHint => 'مثال: 10';
+
+  @override
+  String get durationMinutes => 'المدة (بالدقائق)';
+
+  @override
+  String get durationMinutesHint => 'مثال: 30';
+
+  @override
+  String get examCreatedSuccessfully => 'تم إنشاء الامتحان بنجاح';
+
+  @override
+  String get examUpdatedSuccessfully => 'تم تحديث الامتحان بنجاح';
+
+  @override
+  String get failedToUpdateExam => 'فشل تحديث الامتحان';
+
+  @override
+  String get failedToCreateExam => 'فشل إنشاء الامتحان';
 }

@@ -2707,6 +2707,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'View analytics and statistics'**
   String get demoStatsOptionDesc;
+
+  /// No description provided for @quizInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz Information'**
+  String get quizInformation;
+
+  /// No description provided for @addExam.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Exam'**
+  String get addExam;
+
+  /// No description provided for @editExam.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Exam'**
+  String get editExam;
+
+  /// No description provided for @enterExamDetailsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill in the details below to configure the exam settings.'**
+  String get enterExamDetailsDescription;
+
+  /// No description provided for @examTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Exam Title'**
+  String get examTitle;
+
+  /// No description provided for @examTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Midterm Assessment'**
+  String get examTitleHint;
+
+  /// No description provided for @numberOfQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of Questions'**
+  String get numberOfQuestions;
+
+  /// No description provided for @numberOfQuestionsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 10'**
+  String get numberOfQuestionsHint;
+
+  /// No description provided for @durationMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration (Minutes)'**
+  String get durationMinutes;
+
+  /// No description provided for @durationMinutesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 30'**
+  String get durationMinutesHint;
+
+  /// No description provided for @examCreatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Exam created successfully'**
+  String get examCreatedSuccessfully;
+
+  /// No description provided for @examUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Exam updated successfully'**
+  String get examUpdatedSuccessfully;
+
+  /// No description provided for @failedToUpdateExam.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update exam'**
+  String get failedToUpdateExam;
+
+  /// No description provided for @failedToCreateExam.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to create exam'**
+  String get failedToCreateExam;
 }
 
 class _AppLocalizationsDelegate
