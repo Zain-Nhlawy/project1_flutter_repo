@@ -526,5 +526,14 @@
 "correctAnswerFeedback": "Correct answer!",
 "incorrectAnswerFeedback": "Incorrect answer",
 "tryAgain": "Try Again",
-"addChoice": "Add choice"
+"addChoice": "Add choice",
+  "inquiries": "Inquiries",
+  "sendInquiries": "Send Inquiries",
+  "inquiriesDescription": "Send complaints, questions, or feedback to owner",
+  "inquiriesComingSoon": "Inquiries feature coming soon",
+  "demoOptions": "Demo Options",
+  "coursesOptionDesc": "View and manage course selection",
+  "publicLibraryOptionDesc": "Access shared public resources",
+  "usersTabOptionDesc": "Manage demo members and roles",
+  "demoStatsOptionDesc": "View analytics and statistics"
 }

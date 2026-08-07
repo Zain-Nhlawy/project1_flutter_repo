@@ -120,7 +120,8 @@ class _ChatInputBarState extends State<ChatInputBar> {
         if (isReplying)
           _buildBanner(
             context,
-            title: localizations?.chatReplyingTo(
+            title:
+                localizations?.chatReplyingTo(
                   widget.replyingToMessage!.sender.firstName,
                 ) ??
                 'Replying to ${widget.replyingToMessage!.sender.firstName}',
@@ -140,15 +141,13 @@ class _ChatInputBarState extends State<ChatInputBar> {
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
             color: AppColors.surfaceOf(context),
-            border: Border(
-              top: BorderSide(color: AppColors.borderOf(context)),
-            ),
+            border: Border(top: BorderSide(color: AppColors.borderOf(context))),
           ),
           child: Row(
             children: [
               Expanded(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  padding: const EdgeInsets.symmetric(horizontal: 0),
                   decoration: BoxDecoration(
                     color: AppColors.backgroundOf(context),
                     borderRadius: BorderRadius.circular(24),
@@ -168,28 +167,35 @@ class _ChatInputBarState extends State<ChatInputBar> {
                     textInputAction: TextInputAction.send,
                     decoration: InputDecoration(
                       hintText: isEditing
-                          ? (localizations?.chatEditMessageHint ?? 'Edit message...')
-                          : (localizations?.chatTypeMessageHint ?? 'Type a message...'),
-                      border: InputBorder.none,
+                          ? (localizations?.chatEditMessageHint ??
+                                'Edit message...')
+                          : (localizations?.chatTypeMessageHint ??
+                                'Type a message...'),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                        borderSide: BorderSide.none,
+                      ),
                       hintStyle: TextStyle(
                         color: AppColors.textSecondaryOf(context),
                         fontSize: 14,
+                        height: 1.4,
                       ),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 4),
               Container(
                 decoration: BoxDecoration(
                   gradient: AppColors.headerGradientOf(context),
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: (Theme.of(context).brightness == Brightness.dark
-                              ? AppColors.darkSecondary
-                              : AppColors.secondary)
-                          .withValues(alpha: 0.35),
+                      color:
+                          (Theme.of(context).brightness == Brightness.dark
+                                  ? AppColors.darkSecondary
+                                  : AppColors.secondary)
+                              .withValues(alpha: 0.35),
                       blurRadius: 6,
                       offset: const Offset(0, 2),
                     ),
@@ -234,9 +240,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
         decoration: BoxDecoration(
           color: AppColors.backgroundOf(context),
           borderRadius: BorderRadius.circular(8),
-          border: Border(
-            left: BorderSide(color: AppColors.primary, width: 4),
-          ),
+          border: Border(left: BorderSide(color: AppColors.primary, width: 4)),
         ),
         child: Row(
           children: [

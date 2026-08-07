@@ -1340,4 +1340,32 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get addChoice => 'إضافة خيار';
+
+  @override
+  String get inquiries => 'الاستفسارات';
+
+  @override
+  String get sendInquiries => 'إرسال استفسار';
+
+  @override
+  String get inquiriesDescription =>
+      'إرسال الأسئلة أو الشكاوى أو الملاحظات للمالك';
+
+  @override
+  String get inquiriesComingSoon => 'ميزة الاستفسارات قادمة قريباً';
+
+  @override
+  String get demoOptions => 'خيارات الديمو';
+
+  @override
+  String get coursesOptionDesc => 'عرض وإدارة الكورسات المتاحة';
+
+  @override
+  String get publicLibraryOptionDesc => 'الوصول للموارد العامة المشتركة';
+
+  @override
+  String get usersTabOptionDesc => 'إدارة أعضاء الديمو والصلاحيات';
+
+  @override
+  String get demoStatsOptionDesc => 'عرض التحليلات والإحصائيات';
 }

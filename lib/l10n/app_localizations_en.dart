@@ -1350,4 +1350,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get addChoice => 'Add choice';
+
+  @override
+  String get inquiries => 'Inquiries';
+
+  @override
+  String get sendInquiries => 'Send Inquiries';
+
+  @override
+  String get inquiriesDescription =>
+      'Send complaints, questions, or feedback to owner';
+
+  @override
+  String get inquiriesComingSoon => 'Inquiries feature coming soon';
+
+  @override
+  String get demoOptions => 'Demo Options';
+
+  @override
+  String get coursesOptionDesc => 'View and manage course selection';
+
+  @override
+  String get publicLibraryOptionDesc => 'Access shared public resources';
+
+  @override
+  String get usersTabOptionDesc => 'Manage demo members and roles';
+
+  @override
+  String get demoStatsOptionDesc => 'View analytics and statistics';
 }

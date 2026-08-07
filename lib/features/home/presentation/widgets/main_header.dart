@@ -46,41 +46,42 @@ class MainHeader extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    localizations.goodMorning,
-                    style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.surface,
-                      fontSize: 16 * textScale,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      localizations.goodMorning,
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.surface,
+                        fontSize: 16 * textScale,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  BlocBuilder<UserCubit, UserState>(
-                    builder: (context, state) {
-                      String name = "";
-                      if (state is UserLoaded) {
-                        name = "${state.user.firstName} ${state.user.lastName}";
-                      }
-                      return Row(
-                        children: [
-                          Text(
-                            name,
-                            style: AppTextStyles.h2.copyWith(
-                              color: AppColors.surface,
-                              fontSize: 24 * textScale,
-                              fontWeight: FontWeight.bold,
-                            ),
+                    const SizedBox(height: 4),
+                    BlocBuilder<UserCubit, UserState>(
+                      builder: (context, state) {
+                        String name = "";
+                        if (state is UserLoaded) {
+                          name = "${state.user.firstName} ${state.user.lastName}";
+                        }
+                        return Text(
+                          name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTextStyles.h2.copyWith(
+                            color: AppColors.surface,
+                            fontSize: 24 * textScale,
+                            fontWeight: FontWeight.bold,
                           ),
-                          const SizedBox(width: 8),
-                        ],
-                      );
-                    },
-                  ),
-                ],
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
+              const SizedBox(width: 12),
               Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   ElevatedButton(
                     onPressed: () {
@@ -107,15 +108,15 @@ class MainHeader extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.surface.withOpacity(0.3),
+                      backgroundColor: AppColors.surface.withValues(alpha: 0.3),
                       elevation: 0,
                       shadowColor: Colors.transparent,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
+                        horizontal: 14,
+                        vertical: 10,
                       ),
                     ),
                     child: Text(
@@ -130,7 +131,7 @@ class MainHeader extends StatelessWidget {
                   const SizedBox(width: 8),
                   Container(
                     decoration: BoxDecoration(
-                      color: AppColors.surface.withOpacity(0.3),
+                      color: AppColors.surface.withValues(alpha: 0.3),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: IconButton(
@@ -146,10 +147,7 @@ class MainHeader extends StatelessWidget {
                           ),
                         );
                       },
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 12,
-                      ),
+                      padding: const EdgeInsets.all(10),
                       constraints: const BoxConstraints(),
                       icon: Icon(
                         Icons.notifications_none_rounded,

@@ -495,5 +495,14 @@
 "correctAnswerFeedback": "إجابة صحيحة!",
 "incorrectAnswerFeedback": "إجابة خاطئة",
 "tryAgain": "حاول مرة أخرى",
-"addChoice": "إضافة خيار"
+"addChoice": "إضافة خيار",
+  "inquiries": "الاستفسارات",
+  "sendInquiries": "إرسال استفسار",
+  "inquiriesDescription": "إرسال الأسئلة أو الشكاوى أو الملاحظات للمالك",
+  "inquiriesComingSoon": "ميزة الاستفسارات قادمة قريباً",
+  "demoOptions": "خيارات الديمو",
+  "coursesOptionDesc": "عرض وإدارة الكورسات المتاحة",
+  "publicLibraryOptionDesc": "الوصول للموارد العامة المشتركة",
+  "usersTabOptionDesc": "إدارة أعضاء الديمو والصلاحيات",
+  "demoStatsOptionDesc": "عرض التحليلات والإحصائيات"
 }

@@ -2653,6 +2653,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add choice'**
   String get addChoice;
+
+  /// No description provided for @inquiries.
+  ///
+  /// In en, this message translates to:
+  /// **'Inquiries'**
+  String get inquiries;
+
+  /// No description provided for @sendInquiries.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Inquiries'**
+  String get sendInquiries;
+
+  /// No description provided for @inquiriesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Send complaints, questions, or feedback to owner'**
+  String get inquiriesDescription;
+
+  /// No description provided for @inquiriesComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Inquiries feature coming soon'**
+  String get inquiriesComingSoon;
+
+  /// No description provided for @demoOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo Options'**
+  String get demoOptions;
+
+  /// No description provided for @coursesOptionDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'View and manage course selection'**
+  String get coursesOptionDesc;
+
+  /// No description provided for @publicLibraryOptionDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Access shared public resources'**
+  String get publicLibraryOptionDesc;
+
+  /// No description provided for @usersTabOptionDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage demo members and roles'**
+  String get usersTabOptionDesc;
+
+  /// No description provided for @demoStatsOptionDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'View analytics and statistics'**
+  String get demoStatsOptionDesc;
 }
 
 class _AppLocalizationsDelegate
