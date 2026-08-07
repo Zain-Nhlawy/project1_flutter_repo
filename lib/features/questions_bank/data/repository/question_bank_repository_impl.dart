@@ -16,12 +16,14 @@ class QuestionBankRepositoryImpl implements QuestionBankRepository {
   Future<Either<Failure, QuestionBankModel>> createQuestionBank({
     required String sectionId,
     required String question,
+    required String note,
     required List<QuestionChoiceModel> choices,
   }) async {
     try {
       final result = await remoteDataSource.createQuestionBank(
         sectionId: sectionId,
         question: question,
+        note: note,
         choices: choices,
       );
       return Right(result);

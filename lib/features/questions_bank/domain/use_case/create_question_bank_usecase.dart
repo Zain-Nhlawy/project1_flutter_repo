@@ -12,11 +12,13 @@ class CreateQuestionBankUseCase {
   Future<Either<Failure, QuestionBankModel>> call({
     required String sectionId,
     required String question,
+    required String note,
     required List<QuestionChoiceModel> choices,
   }) {
     return repository.createQuestionBank(
       sectionId: sectionId,
       question: question,
+      note: note,
       choices: choices,
     );
   }

@@ -1347,4 +1347,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get incorrectAnswerFeedback => 'Incorrect answer';
+
+  @override
+  String get addChoice => 'Add choice';
 }

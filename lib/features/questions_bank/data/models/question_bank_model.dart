@@ -6,6 +6,7 @@ class QuestionBankModel extends QuestionBankEntity {
     required super.id,
     required super.sectionId,
     required super.question,
+    required super.note,
     required List<QuestionChoiceModel> super.choices,
     required super.createdAt,
     required super.updatedAt,
@@ -16,6 +17,7 @@ class QuestionBankModel extends QuestionBankEntity {
       id: json['id'] as String? ?? '',
       sectionId: json['sectionId'] as String? ?? '',
       question: json['question'] as String? ?? '',
+      note: json['note'] as String? ?? '',
       choices: (json['choices'] as List<dynamic>? ?? [])
           .map((e) => QuestionChoiceModel.fromJson(e as Map<String, dynamic>))
           .toList(),

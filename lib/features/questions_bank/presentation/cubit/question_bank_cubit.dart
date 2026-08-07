@@ -61,11 +61,13 @@ class QuestionBankCubit extends Cubit<QuestionBankState> {
   Future<bool> createQuestionBank({
     required String sectionId,
     required String question,
+    required String note,
     required List<QuestionChoiceModel> choices,
   }) async {
     final result = await createQuestionBankUseCase(
       sectionId: sectionId,
       question: question,
+      note: note,
       choices: choices,
     );
 

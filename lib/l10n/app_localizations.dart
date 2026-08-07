@@ -2647,6 +2647,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Incorrect answer'**
   String get incorrectAnswerFeedback;
+
+  /// No description provided for @addChoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Add choice'**
+  String get addChoice;
 }
 
 class _AppLocalizationsDelegate

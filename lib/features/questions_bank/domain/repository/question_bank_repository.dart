@@ -8,6 +8,7 @@ abstract class QuestionBankRepository {
   Future<Either<Failure, QuestionBankModel>> createQuestionBank({
     required String sectionId,
     required String question,
+    required String note,
     required List<QuestionChoiceModel> choices,
   });
 

@@ -93,230 +93,12 @@ class _QuestionBankManagementScreenState
   }
 
   Future<void> _openAddQuestionSheet() async {
-    final localizations = AppLocalizations.of(context)!;
-    final questionController = TextEditingController();
-    final choiceControllers = List.generate(4, (_) => TextEditingController());
-    final isCorrectFlags = List.generate(4, (_) => false);
-
-    bool questionHasError = false;
-    final choiceErrors = List.generate(4, (_) => false);
-    bool correctAnswerError = false;
-
     await showModalBottomSheet<bool>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (sheetContext) {
-        return StatefulBuilder(
-          builder: (sheetContext, setSheetState) {
-            OutlineInputBorder buildBorder(bool hasError) {
-              return OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
-                  color: hasError ? Colors.red.shade400 : AppColors.border,
-                  width: hasError ? 1.4 : 1,
-                ),
-              );
-            }
-
-            return Padding(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(sheetContext).viewInsets.bottom,
-              ),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(sheetContext).size.height * 0.85,
-                ),
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: AppColors.surface,
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-                  ),
-                  child: SafeArea(
-                    top: false,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Center(
-                            child: Container(
-                              width: 40,
-                              height: 4,
-                              margin: const EdgeInsets.only(bottom: 16),
-                              decoration: BoxDecoration(
-                                color: AppColors.border,
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                            ),
-                          ),
-                          Text(
-                            localizations.addQuestion,
-                            style: AppTextStyles.titleMedium.copyWith(
-                              color: AppColors.textPrimary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          TextField(
-                            controller: questionController,
-                            maxLines: 2,
-                            style: const TextStyle(color: AppColors.textPrimary),
-                            onChanged: (_) {
-                              if (questionHasError) {
-                                setSheetState(() => questionHasError = false);
-                              }
-                            },
-                            decoration: InputDecoration(
-                              hintText: localizations.questionHint,
-                              hintStyle: TextStyle(color: AppColors.textSecondary.withOpacity(.7)),
-                              filled: true,
-                              fillColor: AppColors.background,
-                              border: buildBorder(questionHasError),
-                              enabledBorder: buildBorder(questionHasError),
-                              focusedBorder: buildBorder(questionHasError),
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            localizations.choicesLabel,
-                            style: AppTextStyles.bodyMedium.copyWith(
-                              color: AppColors.textPrimary,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          for (int i = 0; i < 4; i++)
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 10),
-                              child: Row(
-                                children: [
-                                  Checkbox(
-                                    value: isCorrectFlags[i],
-                                    activeColor: AppColors.success,
-                                    side: correctAnswerError
-                                        ? BorderSide(color: Colors.red.shade400, width: 1.6)
-                                        : null,
-                                    onChanged: (val) {
-                                      setSheetState(() {
-                                        isCorrectFlags[i] = val ?? false;
-                                        if (correctAnswerError) {
-                                          correctAnswerError = false;
-                                        }
-                                      });
-                                    },
-                                  ),
-                                  Expanded(
-                                    child: TextField(
-                                      controller: choiceControllers[i],
-                                      style: const TextStyle(color: AppColors.textPrimary),
-                                      onChanged: (_) {
-                                        if (choiceErrors[i]) {
-                                          setSheetState(() => choiceErrors[i] = false);
-                                        }
-                                      },
-                                      decoration: InputDecoration(
-                                        hintText: '${localizations.choiceHint} ${i + 1}',
-                                        hintStyle: TextStyle(
-                                          color: AppColors.textSecondary.withOpacity(.7),
-                                        ),
-                                        filled: true,
-                                        fillColor: AppColors.background,
-                                        contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                                        border: buildBorder(choiceErrors[i]),
-                                        enabledBorder: buildBorder(choiceErrors[i]),
-                                        focusedBorder: buildBorder(choiceErrors[i]),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          const SizedBox(height: 8),
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.primary,
-                                padding: const EdgeInsets.symmetric(vertical: 14),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                              onPressed: () async {
-                                final question = questionController.text.trim();
-                                final rawChoices =
-                                    choiceControllers.map((c) => c.text.trim()).toList();
-
-                                bool hasError = false;
-
-                                setSheetState(() {
-                                  questionHasError = question.isEmpty;
-                                  if (questionHasError) hasError = true;
-
-                                  for (int i = 0; i < 4; i++) {
-                                    choiceErrors[i] = rawChoices[i].isEmpty;
-                                  }
-
-                                  final seen = <String, int>{};
-                                  for (int i = 0; i < rawChoices.length; i++) {
-                                    final text = rawChoices[i];
-                                    if (text.isEmpty) continue;
-                                    if (seen.containsKey(text)) {
-                                      choiceErrors[i] = true;
-                                      choiceErrors[seen[text]!] = true;
-                                    } else {
-                                      seen[text] = i;
-                                    }
-                                  }
-
-                                  if (choiceErrors.any((e) => e)) hasError = true;
-
-                                  correctAnswerError = !isCorrectFlags.contains(true);
-                                  if (correctAnswerError) hasError = true;
-                                });
-
-                                if (hasError) return;
-
-                                final choices = List.generate(
-                                  4,
-                                  (i) => QuestionChoiceModel(
-                                    choice: rawChoices[i],
-                                    isCorrect: isCorrectFlags[i],
-                                  ),
-                                );
-
-                                final success = await _cubit.createQuestionBank(
-                                  sectionId: widget.sectionId,
-                                  question: question,
-                                  choices: choices,
-                                );
-
-                                if (!sheetContext.mounted) return;
-
-                                if (success) {
-                                  Navigator.pop(sheetContext, true);
-                                }
-                              },
-                              child: Text(
-                                localizations.save,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            );
-          },
-        );
+        return _AddQuestionSheet(cubit: _cubit, sectionId: widget.sectionId);
       },
     );
   }
@@ -411,6 +193,352 @@ class _QuestionBankManagementScreenState
 
               return const SizedBox.shrink();
             },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+const int kMinChoices = 2;
+const int kMaxChoices = 6;
+
+class _AddQuestionSheet extends StatefulWidget {
+  final QuestionBankCubit cubit;
+  final String sectionId;
+
+  const _AddQuestionSheet({required this.cubit, required this.sectionId});
+
+  @override
+  State<_AddQuestionSheet> createState() => _AddQuestionSheetState();
+}
+
+class _AddQuestionSheetState extends State<_AddQuestionSheet> {
+  final _questionController = TextEditingController();
+  final _noteController = TextEditingController();
+  final List<TextEditingController> _choiceControllers = List.generate(
+    kMinChoices,
+    (_) => TextEditingController(),
+  );
+  final List<bool> _isCorrectFlags = List.generate(kMinChoices, (_) => false);
+  final List<bool> _choiceErrors = List.generate(kMinChoices, (_) => false);
+
+  bool _questionHasError = false;
+  bool _correctAnswerError = false;
+  bool _isSaving = false;
+
+  @override
+  void dispose() {
+    _questionController.dispose();
+    _noteController.dispose();
+    for (final controller in _choiceControllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  OutlineInputBorder _buildBorder(bool hasError) {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(
+        color: hasError ? Colors.red.shade400 : AppColors.border,
+        width: hasError ? 1.4 : 1,
+      ),
+    );
+  }
+
+  void _addChoice() {
+    if (_choiceControllers.length >= kMaxChoices) return;
+    setState(() {
+      _choiceControllers.add(TextEditingController());
+      _isCorrectFlags.add(false);
+      _choiceErrors.add(false);
+    });
+  }
+
+  void _removeChoice(int index) {
+    if (_choiceControllers.length <= kMinChoices) return;
+    final removed = _choiceControllers.removeAt(index);
+    setState(() {
+      _isCorrectFlags.removeAt(index);
+      _choiceErrors.removeAt(index);
+    });
+    removed.dispose();
+  }
+
+  Future<void> _save() async {
+    final localizations = AppLocalizations.of(context)!;
+    final question = _questionController.text.trim();
+    final note = _noteController.text.trim();
+    final rawChoices = _choiceControllers.map((c) => c.text.trim()).toList();
+
+    bool hasError = false;
+
+    setState(() {
+      _questionHasError = question.isEmpty;
+      if (_questionHasError) hasError = true;
+
+      for (int i = 0; i < rawChoices.length; i++) {
+        _choiceErrors[i] = rawChoices[i].isEmpty;
+      }
+
+      final seen = <String, int>{};
+      for (int i = 0; i < rawChoices.length; i++) {
+        final text = rawChoices[i];
+        if (text.isEmpty) continue;
+        if (seen.containsKey(text)) {
+          _choiceErrors[i] = true;
+          _choiceErrors[seen[text]!] = true;
+        } else {
+          seen[text] = i;
+        }
+      }
+
+      if (_choiceErrors.any((e) => e)) hasError = true;
+
+      _correctAnswerError = !_isCorrectFlags.contains(true);
+      if (_correctAnswerError) hasError = true;
+    });
+
+    if (hasError) return;
+
+    setState(() => _isSaving = true);
+
+    final choices = List.generate(
+      rawChoices.length,
+      (i) => QuestionChoiceModel(
+        choice: rawChoices[i],
+        isCorrect: _isCorrectFlags[i],
+      ),
+    );
+
+    final success = await widget.cubit.createQuestionBank(
+      sectionId: widget.sectionId,
+      question: question,
+      note: note,
+      choices: choices,
+    );
+
+    if (!mounted) return;
+
+    setState(() => _isSaving = false);
+
+    if (success) {
+      Navigator.pop(context, true);
+    } else {
+      SnackbarTheme().newSnackBarError(context, localizations.deleteQuestionFailed);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
+    return Padding(
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.85,
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          child: SafeArea(
+            top: false,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Center(
+                    child: Container(
+                      width: 40,
+                      height: 4,
+                      margin: const EdgeInsets.only(bottom: 16),
+                      decoration: BoxDecoration(
+                        color: AppColors.border,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                  ),
+                  Text(
+                    localizations.addQuestion,
+                    style: AppTextStyles.titleMedium.copyWith(
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: _questionController,
+                    maxLines: 2,
+                    style: const TextStyle(color: AppColors.textPrimary),
+                    onChanged: (_) {
+                      if (_questionHasError) {
+                        setState(() => _questionHasError = false);
+                      }
+                    },
+                    decoration: InputDecoration(
+                      hintText: localizations.questionHint,
+                      hintStyle: TextStyle(color: AppColors.textSecondary.withOpacity(.7)),
+                      filled: true,
+                      fillColor: AppColors.background,
+                      border: _buildBorder(_questionHasError),
+                      enabledBorder: _buildBorder(_questionHasError),
+                      focusedBorder: _buildBorder(_questionHasError),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: _noteController,
+                    maxLines: 2,
+                    style: const TextStyle(color: AppColors.textPrimary),
+                    decoration: InputDecoration(
+                      hintText: 'Note',
+                      hintStyle: TextStyle(color: AppColors.textSecondary.withOpacity(.7)),
+                      filled: true,
+                      fillColor: AppColors.background,
+                      border: _buildBorder(false),
+                      enabledBorder: _buildBorder(false),
+                      focusedBorder: _buildBorder(false),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        localizations.choicesLabel,
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        '${_choiceControllers.length}/$kMaxChoices',
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          color: AppColors.textSecondary.withOpacity(.7),
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  for (int i = 0; i < _choiceControllers.length; i++)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Row(
+                        children: [
+                          Checkbox(
+                            value: _isCorrectFlags[i],
+                            activeColor: AppColors.success,
+                            side: _correctAnswerError
+                                ? BorderSide(color: Colors.red.shade400, width: 1.6)
+                                : null,
+                            onChanged: (val) {
+                              setState(() {
+                                _isCorrectFlags[i] = val ?? false;
+                                if (_correctAnswerError) {
+                                  _correctAnswerError = false;
+                                }
+                              });
+                            },
+                          ),
+                          Expanded(
+                            child: TextField(
+                              controller: _choiceControllers[i],
+                              style: const TextStyle(color: AppColors.textPrimary),
+                              onChanged: (_) {
+                                if (_choiceErrors[i]) {
+                                  setState(() => _choiceErrors[i] = false);
+                                }
+                              },
+                              decoration: InputDecoration(
+                                hintText: '${localizations.choiceHint} ${i + 1}',
+                                hintStyle: TextStyle(
+                                  color: AppColors.textSecondary.withOpacity(.7),
+                                ),
+                                filled: true,
+                                fillColor: AppColors.background,
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                                border: _buildBorder(_choiceErrors[i]),
+                                enabledBorder: _buildBorder(_choiceErrors[i]),
+                                focusedBorder: _buildBorder(_choiceErrors[i]),
+                              ),
+                            ),
+                          ),
+                          if (_choiceControllers.length > kMinChoices)
+                            IconButton(
+                              icon: Icon(
+                                Icons.remove_circle_outline_rounded,
+                                size: 20,
+                                color: Colors.red.shade400,
+                              ),
+                              onPressed: () => _removeChoice(i),
+                            )
+                          else
+                            const SizedBox(width: 48),
+                        ],
+                      ),
+                    ),
+                  if (_choiceControllers.length < kMaxChoices)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: OutlinedButton.icon(
+                        onPressed: _addChoice,
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(color: AppColors.border),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                        ),
+                        icon: Icon(Icons.add, size: 18, color: AppColors.primary),
+                        label: Text(
+                          localizations.addChoice,
+                          style: TextStyle(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  const SizedBox(height: 8),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onPressed: _isSaving ? null : _save,
+                      child: _isSaving
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation(Colors.white),
+                              ),
+                            )
+                          : Text(
+                              localizations.save,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),

@@ -1337,4 +1337,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get incorrectAnswerFeedback => 'إجابة خاطئة';
+
+  @override
+  String get addChoice => 'إضافة خيار';
 }

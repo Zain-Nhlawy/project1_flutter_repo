@@ -55,6 +55,16 @@ class QuestionCard extends StatelessWidget {
               ),
             ],
           ),
+          if (question.note.isNotEmpty) ...[
+            const SizedBox(height: 6),
+            Text(
+              question.note,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.textSecondary,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ],
           const SizedBox(height: 12),
           for (final choice in question.choices)
             Padding(

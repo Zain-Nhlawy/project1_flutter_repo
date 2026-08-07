@@ -13,6 +13,7 @@ class QuestionBankRemoteDataSource {
   Future<QuestionBankModel> createQuestionBank({
     required String sectionId,
     required String question,
+    required String note,
     required List<QuestionChoiceModel> choices,
   }) async {
     try {
@@ -20,6 +21,7 @@ class QuestionBankRemoteDataSource {
         '/sections/$sectionId/questionsBank',
         data: {
           'question': question,
+          'note': note,
           'choices': choices.map((c) => c.toRequestJson()).toList(),
         },
       );

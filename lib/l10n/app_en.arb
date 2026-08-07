@@ -525,5 +525,6 @@
   "checkAnswer": "Check Answer",
 "correctAnswerFeedback": "Correct answer!",
 "incorrectAnswerFeedback": "Incorrect answer",
-"tryAgain": "Try Again"
+"tryAgain": "Try Again",
+"addChoice": "Add choice"
 }

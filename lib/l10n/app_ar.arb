@@ -494,5 +494,6 @@
   "checkAnswer": "تحقق من الإجابة",
 "correctAnswerFeedback": "إجابة صحيحة!",
 "incorrectAnswerFeedback": "إجابة خاطئة",
-"tryAgain": "حاول مرة أخرى"
+"tryAgain": "حاول مرة أخرى",
+"addChoice": "إضافة خيار"
 }
