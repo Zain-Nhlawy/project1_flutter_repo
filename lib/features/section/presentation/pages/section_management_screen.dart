@@ -6,6 +6,7 @@ import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/lesson/presentation/cubit/lesson_cubit.dart';
 import 'package:project1/features/lesson/presentation/pages/create_lesson_screen.dart';
 import 'package:project1/features/questions_bank/presentation/pages/question_bank_management_screen.dart';
+import 'package:project1/features/quiz/presentation/pages/management/exam_management_screen.dart';
 import 'package:project1/features/section/domain/entities/section_entity.dart';
 import 'package:project1/features/section/presentation/cubit/section_cubit.dart';
 import 'package:project1/features/section/presentation/cubit/section_state.dart';
@@ -80,7 +81,16 @@ class _SectionManagementScreenState extends State<SectionManagementScreen> {
     );
   }
 
-  void manageQuiz(SectionEntity section) {}
+  void manageQuiz(SectionEntity section) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => ExamManagementScreen(
+        sectionId: section.id,
+      ),
+    ),
+  );
+}
 
   Future<void> renameSection(SectionEntity section) async {
     final localizations = AppLocalizations.of(context)!;

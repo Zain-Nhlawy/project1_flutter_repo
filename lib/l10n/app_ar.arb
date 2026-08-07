@@ -495,5 +495,20 @@
 "correctAnswerFeedback": "إجابة صحيحة!",
 "incorrectAnswerFeedback": "إجابة خاطئة",
 "tryAgain": "حاول مرة أخرى",
-"addChoice": "إضافة خيار"
+"addChoice": "إضافة خيار",
+"quizInformation": "معلومات الاختبار",
+  "addExam": "إضافة امتحان",
+  "editExam": "تعديل الامتحان",
+  "enterExamDetailsDescription": "يرجى إدخال وتعبئة البيانات أدناه لتهيئة إعدادات الامتحان.",
+  "examTitle": "عنوان الامتحان",
+  "examTitleHint": "مثال: امتحان منتصف الفصل",
+  "numberOfQuestions": "عدد الأسئلة",
+  "numberOfQuestionsHint": "مثال: 10",
+  "durationMinutes": "المدة (بالدقائق)",
+  "durationMinutesHint": "مثال: 30",
+  "saveChanges": "حفظ التغييرات",
+  "examCreatedSuccessfully": "تم إنشاء الامتحان بنجاح",
+  "examUpdatedSuccessfully": "تم تحديث الامتحان بنجاح",
+  "failedToUpdateExam": "فشل تحديث الامتحان",
+  "failedToCreateExam": "فشل إنشاء الامتحان"
 }

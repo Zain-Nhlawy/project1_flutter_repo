@@ -1350,4 +1350,47 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get addChoice => 'Add choice';
+
+  @override
+  String get quizInformation => 'Quiz Information';
+
+  @override
+  String get addExam => 'Add Exam';
+
+  @override
+  String get editExam => 'Edit Exam';
+
+  @override
+  String get enterExamDetailsDescription =>
+      'Please fill in the details below to configure the exam settings.';
+
+  @override
+  String get examTitle => 'Exam Title';
+
+  @override
+  String get examTitleHint => 'e.g. Midterm Assessment';
+
+  @override
+  String get numberOfQuestions => 'Number of Questions';
+
+  @override
+  String get numberOfQuestionsHint => 'e.g. 10';
+
+  @override
+  String get durationMinutes => 'Duration (Minutes)';
+
+  @override
+  String get durationMinutesHint => 'e.g. 30';
+
+  @override
+  String get examCreatedSuccessfully => 'Exam created successfully';
+
+  @override
+  String get examUpdatedSuccessfully => 'Exam updated successfully';
+
+  @override
+  String get failedToUpdateExam => 'Failed to update exam';
+
+  @override
+  String get failedToCreateExam => 'Failed to create exam';
 }
