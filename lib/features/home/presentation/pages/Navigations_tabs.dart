@@ -18,7 +18,7 @@ class NavigationsTabs extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
     final screenWidth = size.width;
     final screenHeight = size.height;
-    final textScale = MediaQuery.of(context).textScaleFactor;
+    final textScale = MediaQuery.textScalerOf(context).scale(1);
     final localizations = AppLocalizations.of(context)!;
 
     return MultiBlocProvider(
@@ -71,21 +71,23 @@ class NavigationsTabs extends StatelessWidget {
     double textScale,
     AppLocalizations localizations,
   ) {
+    final clampedTextScale = textScale.clamp(0.85, 1.25);
+
     return SafeArea(
       child: Container(
-        margin: EdgeInsets.symmetric(
-          horizontal: screenWidth * 0.12,
-          vertical: screenHeight * 0.01,
+        margin: const EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: 8,
         ),
-        height: screenHeight * 0.08,
+        padding: const EdgeInsets.symmetric(vertical: 4),
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(25),
           boxShadow: [
             BoxShadow(
-              color: AppColors.textSecondary.withOpacity(0.4),
+              color: AppColors.textSecondary.withValues(alpha: 0.25),
               blurRadius: 20,
-              offset: const Offset(0, 10),
+              offset: const Offset(0, 8),
             ),
           ],
         ),
@@ -100,9 +102,7 @@ class NavigationsTabs extends StatelessWidget {
                 state: state,
                 cubit: cubit,
                 sideWord: localizations.navMain,
-                screenWidth: screenWidth,
-                screenHeight: screenHeight,
-                textScale: textScale,
+                textScale: clampedTextScale,
               ),
             ),
             Expanded(
@@ -112,9 +112,7 @@ class NavigationsTabs extends StatelessWidget {
                 state: state,
                 cubit: cubit,
                 sideWord: localizations.navHistory,
-                screenWidth: screenWidth,
-                screenHeight: screenHeight,
-                textScale: textScale,
+                textScale: clampedTextScale,
               ),
             ),
             Expanded(
@@ -124,9 +122,7 @@ class NavigationsTabs extends StatelessWidget {
                 state: state,
                 cubit: cubit,
                 sideWord: localizations.navProfile,
-                screenWidth: screenWidth,
-                screenHeight: screenHeight,
-                textScale: textScale,
+                textScale: clampedTextScale,
               ),
             ),
           ],
@@ -141,53 +137,51 @@ class NavigationsTabs extends StatelessWidget {
     required NavigationTabsState state,
     required NavigationTabsCubit cubit,
     required String sideWord,
-    required double screenWidth,
-    required double screenHeight,
     required double textScale,
   }) {
     final isActive = state.currentIndex == index;
 
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: screenHeight * 0.005),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          InkWell(
-            onTap: () => cubit.changePage(index),
-            borderRadius: BorderRadius.circular(32),
-            splashColor: AppColors.primary.withOpacity(0.1),
-            child: AnimatedContainer(
+    return InkWell(
+      onTap: () => cubit.changePage(index),
+      borderRadius: BorderRadius.circular(24),
+      splashColor: AppColors.primary.withValues(alpha: 0.1),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AnimatedContainer(
               duration: const Duration(milliseconds: 250),
               curve: Curves.easeInOut,
-              padding: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
-              width: screenWidth * 0.125,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               decoration: BoxDecoration(
                 color: isActive
-                    ? AppColors.primary.withOpacity(0.1)
+                    ? AppColors.primary.withValues(alpha: 0.1)
                     : Colors.transparent,
-                borderRadius: BorderRadius.circular(32),
+                borderRadius: BorderRadius.circular(20),
               ),
               child: Icon(
                 icon,
-                size: 24 * textScale,
+                size: 22 * textScale,
                 color: isActive ? AppColors.primary : AppColors.textSecondary,
               ),
             ),
-          ),
-          SizedBox(height: screenHeight * 0.002),
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            child: AutoSizeText(
-              sideWord,
-              style: AppTextStyles.label.copyWith(
-                fontSize: 12 * textScale,
-                fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
-                color: isActive ? AppColors.primary : AppColors.textSecondary,
+            const SizedBox(height: 2),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: AutoSizeText(
+                sideWord,
+                maxLines: 1,
+                style: AppTextStyles.label.copyWith(
+                  fontSize: 11 * textScale,
+                  fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
+                  color: isActive ? AppColors.primary : AppColors.textSecondary,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
