@@ -1454,4 +1454,65 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noQuestionsAvailable => 'No questions are available.';
+
+  @override
+  String get noInquiriesYet => 'No inquiries found';
+
+  @override
+  String get createInquiry => 'New Inquiry';
+
+  @override
+  String get inquirySubject => 'Subject';
+
+  @override
+  String get inquirySubjectHint => 'Enter inquiry subject...';
+
+  @override
+  String get inquiryMessage => 'Message';
+
+  @override
+  String get inquiryMessageHint => 'Write your inquiry here...';
+
+  @override
+  String get reply => 'Reply';
+
+  @override
+  String get replyHint => 'Write your reply here...';
+
+  @override
+  String get sendReply => 'Send Reply';
+
+  @override
+  String get inquirySentSuccessfully => 'Inquiry submitted successfully';
+
+  @override
+  String get replySentSuccessfully => 'Reply sent successfully';
+
+  @override
+  String get inquiryDetails => 'Inquiry Details';
+
+  @override
+  String get senderDetails => 'Sender Details';
+
+  @override
+  String get statusPending => 'Pending';
+
+  @override
+  String get statusReplied => 'Replied';
+
+  @override
+  String get awaitingReply => 'Awaiting response from owner';
+
+  @override
+  String get ownerReply => 'Owner Reply';
+
+  @override
+  String get notificationPermissionTitle => 'Notification Permission';
+
+  @override
+  String get notificationPermissionBody =>
+      'Please allow notifications to stay updated with important updates.';
+
+  @override
+  String get fcmTokenError => 'Failed to register notification token';
 }

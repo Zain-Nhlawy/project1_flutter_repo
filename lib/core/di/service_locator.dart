@@ -4,6 +4,16 @@ import 'package:dio/dio.dart';
 import 'package:project1/core/network/dio_client.dart';
 import 'package:project1/core/storage/secure_storage.dart';
 import 'package:project1/core/storage/storage_keys.dart';
+import 'package:project1/features/notifications/data/data_sources/device_info_data_source.dart';
+import 'package:project1/features/notifications/data/data_sources/notification_remote_data_source.dart';
+import 'package:project1/features/notifications/domain/repository/notification_repository.dart';
+import 'package:project1/features/notifications/data/repository/notification_repository_impl.dart';
+import 'package:project1/features/notifications/domain/use_case/register_fcm_token_usecase.dart';
+import 'package:project1/features/notifications/presentation/services/notification_service.dart';
+import 'package:project1/features/demo/data/data_sources/inquery_data_source.dart';
+import 'package:project1/features/demo/data/repository/inquiry_repository_impl.dart';
+import 'package:project1/features/demo/domain/repository/inquiry_repository.dart';
+import 'package:project1/features/demo/presentation/cubit/inquiry%20cubit/inquiry_cubit.dart';
 import 'package:project1/features/attachment/data/data_sources/lesson_attachment_remote_data_source.dart';
 import 'package:project1/features/attachment/data/repository/lesson_attachment_repository_impl.dart';
 import 'package:project1/features/attachment/domain/repository/lesson_attachment_repository.dart';
@@ -72,7 +82,7 @@ import 'package:project1/features/course/upload_photo/presentation/cubit/upload_
 import 'package:project1/features/demo/data/data_sources/data_payment_data_source.dart';
 import 'package:project1/features/demo/data/data_sources/demo_remote_data_source.dart';
 import 'package:project1/features/demo/data/data_sources/demo_users_remote_data_source.dart';
-import 'package:project1/features/demo/data/repository/demo_repository.dart';
+import 'package:project1/features/demo/domain/repository/demo_repository.dart';
 import 'package:project1/features/demo/data/repository/demo_repository_impl.dart';
 import 'package:project1/features/demo/data/repository/demo_user_repository_impl.dart';
 import 'package:project1/features/demo/data/repository/payment%20repo/demo_payment_repository_impl.dart';
@@ -978,5 +988,39 @@ getIt.registerFactory<ExamAttemptsHistoryCubit>(() => ExamAttemptsHistoryCubit(
 ));
 
     //////////////////////// Quiz Attempt ////////////////////////
+
+  //////////////////////// Inquiry ////////////////////////
+  getIt.registerLazySingleton<InquiryDataSource>(
+    () => InquiryDataSourceImpl(dio: getIt<DioClient>().dio),
+  );
+  getIt.registerLazySingleton<InquiryRepository>(
+    () => InquiryRepositoryImpl(inquiryDataSource: getIt<InquiryDataSource>()),
+  );
+  getIt.registerFactory<InquiryCubit>(
+    () => InquiryCubit(repository: getIt<InquiryRepository>()),
+  );
+  //////////////////////// Inquiry ////////////////////////
+
+  //////////////////////// Notifications ////////////////////////
+  getIt.registerLazySingleton<DeviceInfoDataSource>(
+    () => DeviceInfoDataSourceImpl(),
+  );
+  getIt.registerLazySingleton<NotificationRemoteDataSource>(
+    () => NotificationRemoteDataSourceImpl(getIt<DioClient>()),
+  );
+  getIt.registerLazySingleton<NotificationRepository>(
+    () => NotificationRepositoryImpl(getIt<NotificationRemoteDataSource>()),
+  );
+  getIt.registerLazySingleton<RegisterFcmTokenUseCase>(
+    () => RegisterFcmTokenUseCase(getIt<NotificationRepository>()),
+  );
+  getIt.registerLazySingleton<NotificationService>(
+    () => NotificationService(
+      registerFcmTokenUseCase: getIt<RegisterFcmTokenUseCase>(),
+      deviceInfoDataSource: getIt<DeviceInfoDataSource>(),
+      storage: getIt<AppSecureStorage>(),
+    ),
+  );
+  //////////////////////// Notifications ////////////////////////
 
 }

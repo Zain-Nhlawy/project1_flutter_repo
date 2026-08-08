@@ -1444,4 +1444,65 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get noQuestionsAvailable => 'لا توجد أسئلة متاحة.';
+
+  @override
+  String get noInquiriesYet => 'لا توجد استفسارات';
+
+  @override
+  String get createInquiry => 'استفسار جديد';
+
+  @override
+  String get inquirySubject => 'الموضوع';
+
+  @override
+  String get inquirySubjectHint => 'أدخل موضوع الاستفسار...';
+
+  @override
+  String get inquiryMessage => 'الرسالة';
+
+  @override
+  String get inquiryMessageHint => 'اكتب استفسارك هنا...';
+
+  @override
+  String get reply => 'الرد';
+
+  @override
+  String get replyHint => 'اكتب الرد هنا...';
+
+  @override
+  String get sendReply => 'إرسال الرد';
+
+  @override
+  String get inquirySentSuccessfully => 'تم إرسال الاستفسار بنجاح';
+
+  @override
+  String get replySentSuccessfully => 'تم إرسال الرد بنجاح';
+
+  @override
+  String get inquiryDetails => 'تفاصيل الاستفسار';
+
+  @override
+  String get senderDetails => 'تفاصيل المرسل';
+
+  @override
+  String get statusPending => 'قيد الانتظار';
+
+  @override
+  String get statusReplied => 'تم الرد';
+
+  @override
+  String get awaitingReply => 'في انتظار رد المالك';
+
+  @override
+  String get ownerReply => 'رد المالك';
+
+  @override
+  String get notificationPermissionTitle => 'إذن الإشعارات';
+
+  @override
+  String get notificationPermissionBody =>
+      'يرجى السماح بالإشعارات للبقاء على اطلاع بالتحديثات الهامة.';
+
+  @override
+  String get fcmTokenError => 'فشل تسجيل رمز الإشعارات';
 }

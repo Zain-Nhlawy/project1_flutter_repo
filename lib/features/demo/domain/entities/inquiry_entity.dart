@@ -6,15 +6,17 @@ class InquiryEntity {
   final String subject;
   final String message;
   final String demoId;
-  final String status;
-  final MembersEntity creator; 
+  final String? status;
+  final MembersEntity creator;
+  final String? reply;
 
   const InquiryEntity({
     required this.id,
     required this.subject,
     required this.message,
     required this.demoId,
-    required this.status,
+    this.status,
     required this.creator,
+    this.reply,
   });
 }

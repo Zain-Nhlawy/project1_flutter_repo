@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
-import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/course/presentation/pages/courses_selection_screen.dart';
 import 'package:project1/features/course/presentation/pages/public_library_screen.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_cubit.dart';
 import 'package:project1/features/demo/presentation/pages/demo_users_page.dart';
+import 'package:project1/features/demo/presentation/pages/inquiries_page.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:animations/animations.dart';
 
@@ -216,10 +216,23 @@ class MainActionsSheet extends StatelessWidget {
                     gradient: headerGradient,
                     colors: colors,
                     onTap: () {
-                      Navigator.pop(context);
-                      SnackbarTheme().newSnackBarInfo(
-                        context,
-                        l10n.inquiriesComingSoon,
+                      final navigator = Navigator.of(context);
+                      navigator.pop();
+                      navigator.push(
+                        PageRouteBuilder(
+                          transitionDuration: const Duration(milliseconds: 300),
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  InquiriesPage(demoId: demoId, isOwner: true),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            return FadeThroughTransition(
+                              animation: animation,
+                              secondaryAnimation: secondaryAnimation,
+                              child: child,
+                            );
+                          },
+                        ),
                       );
                     },
                   ),

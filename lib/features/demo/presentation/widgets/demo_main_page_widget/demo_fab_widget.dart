@@ -1,9 +1,10 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
-import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/features/demo/domain/entities/demo_entity.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_cubit.dart';
+import 'package:project1/features/demo/presentation/pages/inquiries_page.dart';
 import 'package:project1/features/demo/presentation/widgets/demo_main_page_widget/main_action_sheet.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
@@ -26,7 +27,7 @@ class DemoFabWidget extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: (isDark ? AppColors.darkSecondary : AppColors.secondary)
-                .withOpacity(0.35),
+                .withValues(alpha: 0.35),
             blurRadius: 16,
             offset: const Offset(0, 6),
           ),
@@ -55,9 +56,21 @@ class DemoFabWidget extends StatelessWidget {
               );
             } else {
               // Member view: Direct action for Inquiries
-              SnackbarTheme().newSnackBarInfo(
+              Navigator.push(
                 context,
-                l10n.inquiriesComingSoon,
+                PageRouteBuilder(
+                  transitionDuration: const Duration(milliseconds: 300),
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      InquiriesPage(demoId: demo.id!, isOwner: false),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return FadeThroughTransition(
+                      animation: animation,
+                      secondaryAnimation: secondaryAnimation,
+                      child: child,
+                    );
+                  },
+                ),
               );
             }
           },
