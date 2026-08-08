@@ -2858,6 +2858,126 @@ abstract class AppLocalizations {
   /// **'No questions are available.'**
   String get noQuestionsAvailable;
 
+  /// No description provided for @noInquiriesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No inquiries found'**
+  String get noInquiriesYet;
+
+  /// No description provided for @createInquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'New Inquiry'**
+  String get createInquiry;
+
+  /// No description provided for @inquirySubject.
+  ///
+  /// In en, this message translates to:
+  /// **'Subject'**
+  String get inquirySubject;
+
+  /// No description provided for @inquirySubjectHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter inquiry subject...'**
+  String get inquirySubjectHint;
+
+  /// No description provided for @inquiryMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get inquiryMessage;
+
+  /// No description provided for @inquiryMessageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write your inquiry here...'**
+  String get inquiryMessageHint;
+
+  /// No description provided for @reply.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply'**
+  String get reply;
+
+  /// No description provided for @replyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write your reply here...'**
+  String get replyHint;
+
+  /// No description provided for @sendReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Reply'**
+  String get sendReply;
+
+  /// No description provided for @inquirySentSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Inquiry submitted successfully'**
+  String get inquirySentSuccessfully;
+
+  /// No description provided for @replySentSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply sent successfully'**
+  String get replySentSuccessfully;
+
+  /// No description provided for @inquiryDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Inquiry Details'**
+  String get inquiryDetails;
+
+  /// No description provided for @senderDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Sender Details'**
+  String get senderDetails;
+
+  /// No description provided for @statusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get statusPending;
+
+  /// No description provided for @statusReplied.
+  ///
+  /// In en, this message translates to:
+  /// **'Replied'**
+  String get statusReplied;
+
+  /// No description provided for @awaitingReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting response from owner'**
+  String get awaitingReply;
+
+  /// No description provided for @ownerReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner Reply'**
+  String get ownerReply;
+
+  /// No description provided for @notificationPermissionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification Permission'**
+  String get notificationPermissionTitle;
+
+  /// No description provided for @notificationPermissionBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Please allow notifications to stay updated with important updates.'**
+  String get notificationPermissionBody;
+
+  /// No description provided for @fcmTokenError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to register notification token'**
+  String get fcmTokenError;
+
   /// No description provided for @excellent.
   ///
   /// In en, this message translates to:

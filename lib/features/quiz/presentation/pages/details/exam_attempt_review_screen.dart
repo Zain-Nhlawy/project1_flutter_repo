@@ -39,10 +39,6 @@ class _ExamAttemptReviewScreenState
     if (_currentIndex >= lastIndex) return;
     setState(() => _currentIndex++);
   }
-
-  // Review is pushed on top of the Result screen, and the Result screen
-  // itself replaced the Quiz screen. So to land back on the course screen
-  // (same destination as "Exit Quiz"), we close both Review and Result.
   void _onDone() {
     final navigator = Navigator.of(context);
     navigator.pop();

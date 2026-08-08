@@ -18,6 +18,9 @@ import 'package:project1/features/profile/presentation/cubit/locale_cubit.dart';
 import 'package:project1/features/profile/presentation/cubit/theme_cubit.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:project1/l10n/l10n.dart';
+import 'package:project1/features/auth/presentation/cubit/auth_state.dart';
+import 'package:project1/features/auth/presentation/cubit/user_state.dart';
+import 'package:project1/features/notifications/presentation/services/notification_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:project1/firebase_options.dart';
 
@@ -31,6 +34,8 @@ void main() async {
   await dotenv.load();
   setupDI();
   print("DI DONE");
+
+  await getIt<NotificationService>().initialize();
 
   String? initialResetToken;
 
@@ -132,26 +137,44 @@ class _MyAppState extends State<MyApp> {
             : AppTextStyles.fontFamily;
         return BlocBuilder<ThemeCubit, ThemeMode>(
           builder: (context, themeMode) {
-            return MaterialApp(
-              navigatorKey: navigatorKey,
-              debugShowCheckedModeBanner: false,
-              theme: AppTheme.lightTheme(fontFamily),
-              darkTheme: AppTheme.darkTheme(fontFamily),
-              themeMode: themeMode,
-              title: 'App',
-              supportedLocales: L10n.all,
-              locale: locale,
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
+            return MultiBlocListener(
+              listeners: [
+                BlocListener<UserCubit, UserState>(
+                  listener: (context, state) {
+                    if (state is UserLoaded) {
+                      getIt<NotificationService>().registerToken();
+                    }
+                  },
+                ),
+                BlocListener<AuthCubit, AuthState>(
+                  listener: (context, state) {
+                    if (state is LoginSuccess) {
+                      getIt<NotificationService>().registerToken();
+                    }
+                  },
+                ),
               ],
-              home:
-                  widget.initialResetToken != null &&
-                      widget.initialResetToken!.isNotEmpty
-                  ? ResetPasswordScreen(token: widget.initialResetToken!)
-                  : const LoginScreen(),
+              child: MaterialApp(
+                navigatorKey: navigatorKey,
+                debugShowCheckedModeBanner: false,
+                theme: AppTheme.lightTheme(fontFamily),
+                darkTheme: AppTheme.darkTheme(fontFamily),
+                themeMode: themeMode,
+                title: 'App',
+                supportedLocales: L10n.all,
+                locale: locale,
+                localizationsDelegates: const [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                home:
+                    widget.initialResetToken != null &&
+                        widget.initialResetToken!.isNotEmpty
+                    ? ResetPasswordScreen(token: widget.initialResetToken!)
+                    : const LoginScreen(),
+              ),
             );
           },
         );
