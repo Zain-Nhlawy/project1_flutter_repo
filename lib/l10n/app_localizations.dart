@@ -2857,6 +2857,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No questions are available.'**
   String get noQuestionsAvailable;
+
+  /// No description provided for @excellent.
+  ///
+  /// In en, this message translates to:
+  /// **'Excellent'**
+  String get excellent;
+
+  /// No description provided for @goodJob.
+  ///
+  /// In en, this message translates to:
+  /// **'Good Job'**
+  String get goodJob;
+
+  /// No description provided for @keepPracticing.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep Practicing'**
+  String get keepPracticing;
+
+  /// No description provided for @youDidGreat.
+  ///
+  /// In en, this message translates to:
+  /// **'You did great this time!'**
+  String get youDidGreat;
+
+  /// No description provided for @keepPracticingYoullImprove.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep practicing, you’ll improve!'**
+  String get keepPracticingYoullImprove;
+
+  /// No description provided for @reviewAnswers.
+  ///
+  /// In en, this message translates to:
+  /// **'Review Answers'**
+  String get reviewAnswers;
+
+  /// No description provided for @exitQuiz.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit Quiz'**
+  String get exitQuiz;
+
+  /// No description provided for @previous.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get previous;
+
+  /// No description provided for @next.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// No description provided for @questionNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get questionNote;
+
+  /// No description provided for @correctAnswerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct Answer'**
+  String get correctAnswerLabel;
+
+  /// No description provided for @yourAnswerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Answer'**
+  String get yourAnswerLabel;
 }
 
 class _AppLocalizationsDelegate

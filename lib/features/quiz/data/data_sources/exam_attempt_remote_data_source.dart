@@ -24,32 +24,45 @@ class ExamAttemptRemoteDataSource {
     }
   }
 
-  Future<SubmitExamAttemptResultModel> submitExamAttempt({
-    required String examId,
-    required String demoId,
-    required List<AnswerSubmissionModel> answers,
-  }) async {
-    try {
-      final res = await dioClient.dio.post(
-        '/examAttempts',
-        data: {
-          'examId': examId,
-          'answers': answers.map((a) => a.toJson()).toList(),
+  
+Future<SubmitExamAttemptResultModel> submitExamAttempt({
+  required String examId,
+  required String demoId,
+  required List<AnswerSubmissionModel> answers,
+}) async {
+  try {
+    final res = await dioClient.dio.post(
+      '/examAttempts',
+      data: {
+        'examId': examId,
+        'answers': answers.map((a) => a.toJson()).toList(),
+      },
+      options: Options(
+        headers: {
+          'x-demo-id': demoId,
         },
-          options: Options(
-          headers: {
-            'x-demo-id': demoId,
-          },
-        ),
-      );
-      final data = res.data as Map<String, dynamic>;
-      return SubmitExamAttemptResultModel.fromJson(
-        data['data'] as Map<String, dynamic>,
-      );
-    } on DioException catch (e) {
-      throw mapDioException(e);
-    }
+      ),
+    );
+
+    print('🟢 SUBMIT EXAM RESPONSE:');
+    print('Status Code: ${res.statusCode}');
+    print('Response Data: ${res.data}');
+
+    final data = res.data as Map<String, dynamic>;
+
+    return SubmitExamAttemptResultModel.fromJson(
+      data['data'] as Map<String, dynamic>,
+    );
+  } on DioException catch (e) {
+    print('🔴 SUBMIT EXAM ERROR:');
+    print('Status Code: ${e.response?.statusCode}');
+    print('Response Data: ${e.response?.data}');
+    print('Error: ${e.message}');
+
+    throw mapDioException(e);
   }
+}
+
 
   Future<PaginatedExamAttempts> getExamAttempts({String? cursor}) async {
     try {

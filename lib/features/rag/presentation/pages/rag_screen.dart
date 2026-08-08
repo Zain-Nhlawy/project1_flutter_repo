@@ -298,8 +298,12 @@ class _RagScreenState extends State<RagScreen> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           for (int i = 0; i < data.questions.length; i++) ...[
-            buildQuizCard(data.questions[i], i + 1, textPrimaryColor, textSecondaryColor, isDark),
-            if (i != data.questions.length - 1) const SizedBox(height: 12),
+            QuizCard(
+              question: data.questions[i],
+              index: i + 1,
+            ),
+            if (i != data.questions.length - 1)
+              const SizedBox(height: 12),
           ],
         ],
       );

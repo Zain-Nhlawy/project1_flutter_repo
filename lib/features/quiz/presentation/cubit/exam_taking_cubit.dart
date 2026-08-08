@@ -245,6 +245,7 @@ class ExamTakingCubit extends Cubit<ExamTakingState> {
         emit(
           ExamTakingSubmitted(
             submitResult,
+            currentState.selectedAnswers,
           ),
         );
       },

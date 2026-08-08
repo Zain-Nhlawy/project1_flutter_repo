@@ -11,12 +11,14 @@ import 'package:project1/features/quiz/presentation/cubit/exam_cubit.dart';
 import 'package:project1/features/quiz/presentation/widgets/details/quiz_tile.dart';
 import 'package:project1/features/section/domain/entities/section_entity.dart';
 import 'package:project1/l10n/app_localizations.dart';
+
 class SectionLessonsExpansionTile extends StatefulWidget {
   final SectionEntity section;
   final String? demoId;
   final bool lessonsLocked;
 
   const SectionLessonsExpansionTile({
+    super.key,
     required this.section,
     this.demoId,
     this.lessonsLocked = false,
@@ -31,17 +33,21 @@ class _SectionLessonsExpansionTileState
     extends State<SectionLessonsExpansionTile> {
   late final LessonCubit _lessonCubit;
   late final ExamCubit _examCubit;
+
   List<LessonEntity> _lessons = [];
+
   bool _loading = false;
   bool _loadedOnce = false;
   bool _hasExam = false;
+
   String? _examId;
 
   @override
   void initState() {
     super.initState();
-    _lessonCubit = getIt();
-    _examCubit = getIt();
+
+    _lessonCubit = getIt<LessonCubit>();
+    _examCubit = getIt<ExamCubit>();
   }
 
   @override
@@ -65,12 +71,20 @@ class _SectionLessonsExpansionTileState
     if (!mounted) return;
 
     setState(() {
-  _lessons = lessons..sort((a, b) => a.order.compareTo(b.order));
-  _hasExam = exams?.data.isNotEmpty ?? false;
-  _examId = _hasExam ? exams!.data.first.id : null;
-  _loading = false;
-  _loadedOnce = true;
-});
+      _lessons = lessons
+        ..sort(
+          (a, b) => a.order.compareTo(b.order),
+        );
+
+      _hasExam = exams?.data.isNotEmpty ?? false;
+
+      _examId = _hasExam
+          ? exams!.data.first.id
+          : null;
+
+      _loading = false;
+      _loadedOnce = true;
+    });
   }
 
   void _openLesson(LessonEntity lesson) {
@@ -82,7 +96,9 @@ class _SectionLessonsExpansionTileState
       return;
     }
 
-    final index = _lessons.indexWhere((l) => l.id == lesson.id);
+    final index = _lessons.indexWhere(
+      (l) => l.id == lesson.id,
+    );
 
     Navigator.push(
       context,
@@ -100,7 +116,9 @@ class _SectionLessonsExpansionTileState
     return ExpansionTile(
       title: Text(
         widget.section.title,
-        style: const TextStyle(fontWeight: FontWeight.bold),
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
       ),
       onExpansionChanged: (expanded) {
         if (expanded && !_loadedOnce) {
@@ -112,7 +130,9 @@ class _SectionLessonsExpansionTileState
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 16),
             child: Center(
-              child: CircularProgressIndicator(strokeWidth: 2),
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+              ),
             ),
           )
         else if (_lessons.isEmpty)
@@ -120,7 +140,9 @@ class _SectionLessonsExpansionTileState
             padding: const EdgeInsets.symmetric(vertical: 12),
             child: Text(
               AppLocalizations.of(context)!.noLessonsYet,
-              style: TextStyle(color: AppColors.textSecondary),
+              style: TextStyle(
+                color: AppColors.textSecondary,
+              ),
             ),
           )
         else
@@ -131,7 +153,9 @@ class _SectionLessonsExpansionTileState
                 ..._lessons.asMap().entries.map((entry) {
                   final index = entry.key;
                   final lesson = entry.value;
-                  final isLast = index == _lessons.length - 1;
+
+                  final isLast =
+                      index == _lessons.length - 1;
 
                   return LessonConnector(
                     num: index + 1,
@@ -148,10 +172,14 @@ class _SectionLessonsExpansionTileState
                             locked: widget.lessonsLocked,
                           ),
                         ),
-                        if (isLast && _hasExam && _examId != null)
+
+                        if (isLast &&
+                            _hasExam &&
+                            _examId != null)
                           QuizTile(
                             examId: _examId!,
-                            demoId: widget.demoId!,
+                            demoId: widget.demoId,
+                            locked: widget.lessonsLocked,
                           ),
                       ],
                     ),

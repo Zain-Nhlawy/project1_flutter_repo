@@ -34,9 +34,7 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   void initState() {
     super.initState();
-
     _cubit = getIt<ExamTakingCubit>();
-
     _cubit.startExam(
       examId: widget.examId,
       demoId: widget.demoId,
@@ -50,8 +48,7 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   Future<bool> _confirmExit(BuildContext context) async {
-    final localizations =
-        AppLocalizations.of(context)!;
+    final localizations = AppLocalizations.of(context)!;
 
     final confirm = await showDialog<bool>(
       context: context,
@@ -74,28 +71,14 @@ class _QuizScreenState extends State<QuizScreen> {
           ),
           actions: [
             TextButton(
-              onPressed: () {
-                Navigator.pop(
-                  dialogContext,
-                  false,
-                );
-              },
-              child: Text(
-                localizations.stay,
-              ),
+              onPressed: () => Navigator.pop(dialogContext, false),
+              child: Text(localizations.stay),
             ),
             TextButton(
-              onPressed: () {
-                Navigator.pop(
-                  dialogContext,
-                  true,
-                );
-              },
+              onPressed: () => Navigator.pop(dialogContext, true),
               child: Text(
                 localizations.leaveAnyway,
-                style: TextStyle(
-                  color: AppColors.error,
-                ),
+                style: TextStyle(color: AppColors.error),
               ),
             ),
           ],
@@ -106,15 +89,15 @@ class _QuizScreenState extends State<QuizScreen> {
     return confirm ?? false;
   }
 
-  void _openResultScreen(
-    ExamTakingSubmitted state,
-  ) {
+  void _openResultScreen(ExamTakingSubmitted state) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (_) => QuizResultScreen(
           score: state.result.examAttempt.score,
           total: state.result.exam.numberOfQuestions,
+          exam: state.result.exam,
+          selectedAnswers: state.selectedAnswers,
         ),
       ),
     );
@@ -126,8 +109,7 @@ class _QuizScreenState extends State<QuizScreen> {
       value: _cubit,
       child: PopScope(
         canPop: false,
-        onPopInvokedWithResult:
-            (didPop, result) async {
+        onPopInvokedWithResult: (didPop, result) async {
           if (didPop) return;
 
           final state = _cubit.state;
@@ -137,47 +119,32 @@ class _QuizScreenState extends State<QuizScreen> {
             return;
           }
 
-          final shouldExit =
-              await _confirmExit(context);
+          final shouldExit = await _confirmExit(context);
 
           if (shouldExit && mounted) {
             Navigator.pop(context);
           }
         },
         child: Scaffold(
-          backgroundColor:
-              AppColors.background,
+          backgroundColor: AppColors.background,
           appBar: const QuizAppBar(),
           body: SafeArea(
-            child: BlocConsumer<
-                ExamTakingCubit,
-                ExamTakingState>(
+            child: BlocConsumer<ExamTakingCubit, ExamTakingState>(
               listener: (context, state) {
-                if (state
-                    is ExamTakingSubmitted) {
+                if (state is ExamTakingSubmitted) {
                   _openResultScreen(state);
                 }
               },
               builder: (context, state) {
-                if (state
-                        is ExamTakingLoading ||
-                    state
-                        is ExamTakingInitial) {
-                  return const Center(
-                    child:
-                        CircularProgressIndicator(),
-                  );
+                if (state is ExamTakingLoading || state is ExamTakingInitial) {
+                  return const Center(child: CircularProgressIndicator());
                 }
 
-                if (state
-                    is ExamTakingError) {
-                  return _ErrorView(
-                    message: state.message,
-                  );
+                if (state is ExamTakingError) {
+                  return _ErrorView(message: state.message);
                 }
 
-                if (state
-                    is ExamTakingInProgress) {
+                if (state is ExamTakingInProgress) {
                   return _QuizContent(
                     state: state,
                     examId: widget.examId,
@@ -208,8 +175,7 @@ class _QuizContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localizations =
-        AppLocalizations.of(context)!;
+    final localizations = AppLocalizations.of(context)!;
 
     final questions = state.exam.questions;
 
@@ -224,143 +190,83 @@ class _QuizContent extends StatelessWidget {
       );
     }
 
-    final currentIndex =
-        state.currentQuestionIndex;
-
-    final question =
-        questions[currentIndex];
-
-    final selectedChoices =
-        state.selectedAnswers[question.id] ??
-            <String>{};
-
-    final totalQuestions =
-        questions.length;
-
-    final progress =
-        (currentIndex + 1) / totalQuestions;
-
-    final isLastQuestion =
-        currentIndex ==
-            totalQuestions - 1;
+    final currentIndex = state.currentQuestionIndex;
+    final question = questions[currentIndex];
+    final selectedChoices = state.selectedAnswers[question.id] ?? <String>{};
+    final totalQuestions = questions.length;
+    final progress = (currentIndex + 1) / totalQuestions;
+    final isLastQuestion = currentIndex == totalQuestions - 1;
 
     return Column(
       children: [
         Expanded(
           child: SingleChildScrollView(
-            physics:
-                const BouncingScrollPhysics(),
-            padding:
-                const EdgeInsets.fromLTRB(
-              16,
-              12,
-              16,
-              24,
-            ),
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
             child: Column(
-              crossAxisAlignment:
-                  CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      child:
-                          QuizProgressHeader(
-                        currentQuestion:
-                            currentIndex + 1,
-                        totalQuestions:
-                            totalQuestions,
+                      child: QuizProgressHeader(
+                        currentQuestion: currentIndex + 1,
+                        totalQuestions: totalQuestions,
                         progress: progress,
                       ),
                     ),
                     const SizedBox(width: 12),
-                    QuizTimer(
-                      remainingSeconds:
-                          state.remainingSeconds,
-                    ),
+                    QuizTimer(remainingSeconds: state.remainingSeconds),
                   ],
                 ),
-
                 const SizedBox(height: 24),
-
                 QuizQuestionCard(
-                  questionNumber:
-                      currentIndex + 1,
-                  question:
-                      question.question,
+                  questionNumber: currentIndex + 1,
+                  question: question.question,
                 ),
-
                 const SizedBox(height: 20),
-
                 Text(
                   localizations.selectAnswer,
-                  style: AppTextStyles.bodyMedium
-                      .copyWith(
-                    color:
-                        AppColors.textPrimary,
-                    fontWeight:
-                        FontWeight.bold,
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-
                 const SizedBox(height: 10),
+                ...question.choices.map((choice) {
+                  final isSelected = selectedChoices.contains(choice.id);
 
-                ...question.choices.map(
-                  (choice) {
-                    final isSelected =
-                        selectedChoices
-                            .contains(choice.id);
-
-                    return Padding(
-                      padding:
-                          const EdgeInsets.only(
-                        bottom: 10,
-                      ),
-                      child:
-                          QuizChoiceTile(
-                        choice:
-                            choice.choice,
-                        isSelected:
-                            isSelected,
-                        onTap: () {
-                          context
-                              .read<
-                                  ExamTakingCubit>()
-                              .toggleAnswer(
-                                questionId:
-                                    question.id,
-                                choiceId:
-                                    choice.id,
-                              );
-                        },
-                      ),
-                    );
-                  },
-                ),
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: QuizChoiceTile(
+                      choice: choice.choice,
+                      isSelected: isSelected,
+                      onTap: () {
+                        final cubit = context.read<ExamTakingCubit>();
+                        cubit.toggleAnswer(
+                          questionId: question.id,
+                          choiceId: choice.id,
+                        );
+                      },
+                    ),
+                  );
+                }),
               ],
             ),
           ),
         ),
-
         QuizBottomButton(
           text: isLastQuestion
               ? localizations.submitQuiz
               : localizations.confirmAnswer,
-          isLoading:
-              state.isSubmitting,
-          enabled:
-              selectedChoices.isNotEmpty,
+          isLoading: state.isSubmitting,
+          enabled: selectedChoices.isNotEmpty,
           onPressed: () {
-            final cubit = context
-                .read<ExamTakingCubit>();
+            final cubit = context.read<ExamTakingCubit>();
 
             if (isLastQuestion) {
-              cubit.submitExam(
-                examId: examId,
-                demoId: demoId,
-              );
+              cubit.submitExam(examId: examId, demoId: demoId);
             } else {
               cubit.nextQuestion();
             }
@@ -374,21 +280,17 @@ class _QuizContent extends StatelessWidget {
 class _ErrorView extends StatelessWidget {
   final String message;
 
-  const _ErrorView({
-    required this.message,
-  });
+  const _ErrorView({required this.message});
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding:
-            const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(24),
         child: Text(
           message,
           textAlign: TextAlign.center,
-          style: AppTextStyles.bodyMedium
-              .copyWith(
+          style: AppTextStyles.bodyMedium.copyWith(
             color: AppColors.error,
           ),
         ),

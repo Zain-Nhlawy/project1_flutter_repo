@@ -21,13 +21,9 @@ class ExamTakingError extends ExamTakingState {
 
 class ExamTakingInProgress extends ExamTakingState {
   final GeneratedExamEntity exam;
-
   final Map<String, Set<String>> selectedAnswers;
-
   final int currentQuestionIndex;
-
   final int remainingSeconds;
-
   final bool isSubmitting;
 
   const ExamTakingInProgress({
@@ -50,8 +46,7 @@ class ExamTakingInProgress extends ExamTakingState {
       selectedAnswers: selectedAnswers ?? this.selectedAnswers,
       currentQuestionIndex:
           currentQuestionIndex ?? this.currentQuestionIndex,
-      remainingSeconds:
-          remainingSeconds ?? this.remainingSeconds,
+      remainingSeconds: remainingSeconds ?? this.remainingSeconds,
       isSubmitting: isSubmitting ?? this.isSubmitting,
     );
   }
@@ -59,6 +54,10 @@ class ExamTakingInProgress extends ExamTakingState {
 
 class ExamTakingSubmitted extends ExamTakingState {
   final SubmitExamAttemptResultModel result;
+  final Map<String, Set<String>> selectedAnswers;
 
-  const ExamTakingSubmitted(this.result);
+  const ExamTakingSubmitted(
+    this.result,
+    this.selectedAnswers,
+  );
 }

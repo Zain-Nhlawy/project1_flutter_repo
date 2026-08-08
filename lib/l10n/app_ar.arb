@@ -534,5 +534,19 @@
   "done": "تم",
   "leaveQuiz": "مغادرة الاختبار؟",
   "leaveQuizMessage": "ستفقد تقدمك إذا غادرت الاختبار الآن.",
-  "noQuestionsAvailable": "لا توجد أسئلة متاحة."
+  "noQuestionsAvailable": "لا توجد أسئلة متاحة.",
+  "quizResult": "نتيجة الاختبار",
+  "excellent": "ممتاز",
+  "goodJob": "أحسنت",
+  "keepPracticing": "استمر بالتدرب",
+  "youDidGreat": "لقد أبليت بلاءً رائعًا هذه المرة!",
+  "keepPracticingYoullImprove": "استمر بالتدرب، وستتحسن!",
+  "reviewAnswers": "مراجعة الإجابات",
+  "exitQuiz": "الخروج من الاختبار",
+  "previous": "السابق",
+"next": "التالي",
+"done": "إنهاء",
+"questionNote": "ملاحظة",
+"correctAnswerLabel": "الجواب الصحيح",
+"yourAnswerLabel": "إجابتك"
 }

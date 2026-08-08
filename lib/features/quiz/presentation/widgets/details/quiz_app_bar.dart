@@ -5,8 +5,11 @@ import 'package:project1/l10n/app_localizations.dart';
 
 class QuizAppBar extends StatelessWidget
     implements PreferredSizeWidget {
+  final String? title;
+
   const QuizAppBar({
     super.key,
+    this.title,
   });
 
   @override
@@ -25,7 +28,7 @@ class QuizAppBar extends StatelessWidget
         onPressed: () => Navigator.pop(context),
       ),
       title: Text(
-        localizations.quiz,
+        title ?? localizations.quiz,
         style: AppTextStyles.titleMedium.copyWith(
           color: Colors.white,
           fontWeight: FontWeight.bold,

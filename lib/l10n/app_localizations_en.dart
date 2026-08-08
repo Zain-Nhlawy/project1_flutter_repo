@@ -1454,4 +1454,40 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noQuestionsAvailable => 'No questions are available.';
+
+  @override
+  String get excellent => 'Excellent';
+
+  @override
+  String get goodJob => 'Good Job';
+
+  @override
+  String get keepPracticing => 'Keep Practicing';
+
+  @override
+  String get youDidGreat => 'You did great this time!';
+
+  @override
+  String get keepPracticingYoullImprove => 'Keep practicing, you’ll improve!';
+
+  @override
+  String get reviewAnswers => 'Review Answers';
+
+  @override
+  String get exitQuiz => 'Exit Quiz';
+
+  @override
+  String get previous => 'Previous';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get questionNote => 'Note';
+
+  @override
+  String get correctAnswerLabel => 'Correct Answer';
+
+  @override
+  String get yourAnswerLabel => 'Your Answer';
 }

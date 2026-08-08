@@ -565,5 +565,19 @@
   "done": "Done",
   "leaveQuiz": "Leave Quiz?",
   "leaveQuizMessage": "Your progress will be lost if you leave now.",
-  "noQuestionsAvailable": "No questions are available."
+  "noQuestionsAvailable": "No questions are available.",
+  "quizResult": "Quiz Result",
+  "excellent": "Excellent",
+  "goodJob": "Good Job",
+  "keepPracticing": "Keep Practicing",
+  "youDidGreat": "You did great this time!",
+  "keepPracticingYoullImprove": "Keep practicing, you’ll improve!",
+  "reviewAnswers": "Review Answers",
+  "exitQuiz": "Exit Quiz",
+  "previous": "Previous",
+"next": "Next",
+"done": "Done",
+"questionNote": "Note",
+"correctAnswerLabel": "Correct Answer",
+"yourAnswerLabel": "Your Answer"
 }

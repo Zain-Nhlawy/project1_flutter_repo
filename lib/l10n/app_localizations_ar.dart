@@ -1434,7 +1434,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get wrong => 'إجابات خاطئة';
 
   @override
-  String get done => 'تم';
+  String get done => 'إنهاء';
 
   @override
   String get leaveQuiz => 'مغادرة الاختبار؟';
@@ -1444,4 +1444,40 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get noQuestionsAvailable => 'لا توجد أسئلة متاحة.';
+
+  @override
+  String get excellent => 'ممتاز';
+
+  @override
+  String get goodJob => 'أحسنت';
+
+  @override
+  String get keepPracticing => 'استمر بالتدرب';
+
+  @override
+  String get youDidGreat => 'لقد أبليت بلاءً رائعًا هذه المرة!';
+
+  @override
+  String get keepPracticingYoullImprove => 'استمر بالتدرب، وستتحسن!';
+
+  @override
+  String get reviewAnswers => 'مراجعة الإجابات';
+
+  @override
+  String get exitQuiz => 'الخروج من الاختبار';
+
+  @override
+  String get previous => 'السابق';
+
+  @override
+  String get next => 'التالي';
+
+  @override
+  String get questionNote => 'ملاحظة';
+
+  @override
+  String get correctAnswerLabel => 'الجواب الصحيح';
+
+  @override
+  String get yourAnswerLabel => 'إجابتك';
 }
