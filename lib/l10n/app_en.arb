@@ -541,5 +541,20 @@
   "examCreatedSuccessfully": "Exam created successfully",
   "examUpdatedSuccessfully": "Exam updated successfully",
   "failedToUpdateExam": "Failed to update exam",
-  "failedToCreateExam": "Failed to create exam"
+  "failedToCreateExam": "Failed to create exam",
+  "quiz": "Quiz",
+  "question": "Question",
+  "selectAnswer": "Select your answer",
+  "confirmAnswer": "Confirm Answer",
+  "submitQuiz": "Submit Quiz",
+  "quizResult": "Quiz Result",
+  "quizCompleted": "Quiz Completed",
+  "greatJob": "Great job! Keep it up.",
+  "score": "Score",
+  "correct": "Correct",
+  "wrong": "Wrong",
+  "done": "Done",
+  "leaveQuiz": "Leave Quiz?",
+  "leaveQuizMessage": "Your progress will be lost if you leave now.",
+  "noQuestionsAvailable": "No questions are available."
 }

@@ -18,22 +18,26 @@ class ExamCubit extends Cubit<ExamState> {
     required this.deleteExamUseCase,
   }) : super(const ExamInitial());
 
-  Future<void> fetchExams({required String sectionId}) async {
-    emit(const ExamLoading());
-
-    final result = await getExamsUseCase(sectionId: sectionId);
-
-    result.fold(
-      (failure) => emit(ExamError(failure.message)),
-      (data) => emit(
+  Future<dynamic> fetchExams({required String sectionId}) async {
+  emit(const ExamLoading());
+  final result = await getExamsUseCase(sectionId: sectionId);
+  return result.fold(
+    (failure) {
+      emit(ExamError(failure.message));
+      return null;
+    },
+    (data) {
+      emit(
         ExamLoaded(
           exams: data.data,
           hasNextPage: data.hasNextPage,
           endCursor: data.endCursor,
         ),
-      ),
-    );
-  }
+      );
+      return data;
+    },
+  );
+}
 
   Future<bool> createExam({
     required String sectionId,

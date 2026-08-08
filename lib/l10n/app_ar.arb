@@ -510,5 +510,20 @@
   "examCreatedSuccessfully": "تم إنشاء الامتحان بنجاح",
   "examUpdatedSuccessfully": "تم تحديث الامتحان بنجاح",
   "failedToUpdateExam": "فشل تحديث الامتحان",
-  "failedToCreateExam": "فشل إنشاء الامتحان"
+  "failedToCreateExam": "فشل إنشاء الامتحان",
+  "quiz": "الاختبار",
+  "question": "السؤال",
+  "selectAnswer": "اختر إجابتك",
+  "confirmAnswer": "تأكيد الإجابة",
+  "submitQuiz": "تسليم الاختبار",
+  "quizResult": "نتيجة الاختبار",
+  "quizCompleted": "اكتمل الاختبار",
+  "greatJob": "أحسنت! استمر بهذا الأداء.",
+  "score": "النتيجة",
+  "correct": "إجابات صحيحة",
+  "wrong": "إجابات خاطئة",
+  "done": "تم",
+  "leaveQuiz": "مغادرة الاختبار؟",
+  "leaveQuizMessage": "ستفقد تقدمك إذا غادرت الاختبار الآن.",
+  "noQuestionsAvailable": "لا توجد أسئلة متاحة."
 }

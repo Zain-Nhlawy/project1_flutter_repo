@@ -137,14 +137,24 @@ import 'package:project1/features/questions_bank/domain/use_case/delete_question
 import 'package:project1/features/questions_bank/domain/use_case/get_question_bank_usecase.dart';
 import 'package:project1/features/questions_bank/domain/use_case/get_question_banks_usecase.dart';
 import 'package:project1/features/questions_bank/presentation/cubit/question_bank_cubit.dart';
+import 'package:project1/features/quiz/data/data_sources/exam_attempt_remote_data_source.dart';
 import 'package:project1/features/quiz/data/data_sources/exam_remote_data_source.dart';
+import 'package:project1/features/quiz/data/repositories/exam_attempt_repository_impl.dart';
 import 'package:project1/features/quiz/data/repositories/exam_repository_impl.dart';
+import 'package:project1/features/quiz/domain/repositories/exam_attempt_repository.dart';
 import 'package:project1/features/quiz/domain/repositories/exam_repository.dart';
 import 'package:project1/features/quiz/domain/use_case/create_exam_usecase.dart';
+import 'package:project1/features/quiz/domain/use_case/delete_exam_attempt_usecase.dart';
 import 'package:project1/features/quiz/domain/use_case/delete_exam_usecase.dart';
+import 'package:project1/features/quiz/domain/use_case/generate_exam_attempt_usecase.dart';
+import 'package:project1/features/quiz/domain/use_case/get_exam_attempt_usecase.dart';
+import 'package:project1/features/quiz/domain/use_case/get_exam_attempts_usecase.dart';
 import 'package:project1/features/quiz/domain/use_case/get_exams_usecase.dart';
+import 'package:project1/features/quiz/domain/use_case/submit_exam_attempt_usecase.dart';
 import 'package:project1/features/quiz/domain/use_case/update_exam_usecase.dart';
+import 'package:project1/features/quiz/presentation/cubit/exam_attempts_history_cubit.dart';
 import 'package:project1/features/quiz/presentation/cubit/exam_cubit.dart';
+import 'package:project1/features/quiz/presentation/cubit/exam_taking_cubit.dart';
 import 'package:project1/features/rag/data/data_sources/rag_remote_data_source.dart';
 import 'package:project1/features/rag/data/repositories/rag_repository_impl.dart';
 import 'package:project1/features/rag/domain/repositories/rag_repository.dart';
@@ -929,5 +939,44 @@ getIt.registerFactory<RagCubit>(
 ));
 
   //////////////////////// Quiz ////////////////////////
+  
+  
+    //////////////////////// Quiz Attempt ////////////////////////
+
+      getIt.registerLazySingleton<ExamAttemptRemoteDataSource>(
+  () => ExamAttemptRemoteDataSource(getIt()),
+);
+getIt.registerLazySingleton<ExamAttemptRepository>(
+  () => ExamAttemptRepositoryImpl(getIt()),
+);
+
+
+getIt.registerLazySingleton<GenerateExamAttemptUseCase>(
+  () => GenerateExamAttemptUseCase(getIt()),
+);
+getIt.registerLazySingleton<SubmitExamAttemptUseCase>(
+  () => SubmitExamAttemptUseCase(getIt()),
+);
+getIt.registerLazySingleton<GetExamAttemptsUseCase>(
+  () => GetExamAttemptsUseCase(getIt()),
+);
+getIt.registerLazySingleton<GetExamAttemptUseCase>(
+  () => GetExamAttemptUseCase(getIt()),
+);
+getIt.registerLazySingleton<DeleteExamAttemptUseCase>(
+  () => DeleteExamAttemptUseCase(getIt()),
+);
+
+
+getIt.registerFactory<ExamTakingCubit>(() => ExamTakingCubit(
+  generateExamAttemptUseCase: getIt(),
+  submitExamAttemptUseCase: getIt(),
+));
+getIt.registerFactory<ExamAttemptsHistoryCubit>(() => ExamAttemptsHistoryCubit(
+  getExamAttemptsUseCase: getIt(),
+  deleteExamAttemptUseCase: getIt(),
+));
+
+    //////////////////////// Quiz Attempt ////////////////////////
 
 }

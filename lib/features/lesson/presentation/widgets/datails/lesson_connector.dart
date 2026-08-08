@@ -5,6 +5,7 @@ class LessonConnector extends StatelessWidget {
   final bool isLast;
   final bool showTopLine;
   final int num;
+  final bool hasExam;
 
   const LessonConnector({
     super.key,
@@ -12,10 +13,12 @@ class LessonConnector extends StatelessWidget {
     required this.num,
     this.isLast = false,
     this.showTopLine = true,
+    this.hasExam = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    final primaryColor = Theme.of(context).primaryColor;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -25,21 +28,37 @@ class LessonConnector extends StatelessWidget {
               Container(
                 width: 2,
                 height: 10,
-                color: Theme.of(context).primaryColor.withOpacity(0.3),
+                color: primaryColor.withOpacity(0.3),
               ),
             CircleAvatar(
               radius: 15,
-              backgroundColor: Theme.of(context).primaryColor,
+              backgroundColor: primaryColor,
               child: Text(
                 "$num",
-                style: const TextStyle(color: Colors.white, fontSize: 12),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                ),
               ),
             ),
-            if (!isLast)
+            Container(
+              width: 2,
+              height: hasExam ? 60 : (isLast ? 0 : 60),
+              color: primaryColor.withOpacity(0.3),
+            ),
+            if (hasExam)
               Container(
-                width: 2,
-                height: 60,
-                color: Theme.of(context).primaryColor.withOpacity(0.3),
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: primaryColor,
+                ),
+                child: const Icon(
+                  Icons.quiz_rounded,
+                  color: Colors.white,
+                  size: 16,
+                ),
               ),
           ],
         ),

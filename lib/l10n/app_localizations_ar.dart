@@ -869,7 +869,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get cancel => 'إلغاء';
 
   @override
-  String get quiz => 'اختبار';
+  String get quiz => 'الاختبار';
 
   @override
   String get lessons => 'الدروس';
@@ -1383,4 +1383,37 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get failedToCreateExam => 'فشل إنشاء الامتحان';
+
+  @override
+  String get selectAnswer => 'اختر إجابتك';
+
+  @override
+  String get submitQuiz => 'تسليم الاختبار';
+
+  @override
+  String get quizCompleted => 'اكتمل الاختبار';
+
+  @override
+  String get greatJob => 'أحسنت! استمر بهذا الأداء.';
+
+  @override
+  String get score => 'النتيجة';
+
+  @override
+  String get correct => 'إجابات صحيحة';
+
+  @override
+  String get wrong => 'إجابات خاطئة';
+
+  @override
+  String get done => 'تم';
+
+  @override
+  String get leaveQuiz => 'مغادرة الاختبار؟';
+
+  @override
+  String get leaveQuizMessage => 'ستفقد تقدمك إذا غادرت الاختبار الآن.';
+
+  @override
+  String get noQuestionsAvailable => 'لا توجد أسئلة متاحة.';
 }

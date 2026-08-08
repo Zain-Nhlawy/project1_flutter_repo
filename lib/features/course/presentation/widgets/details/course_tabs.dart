@@ -1,28 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project1/config/theme/app_colors.dart';
-import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/faq/domain/entities/course_faq_entity.dart';
 import 'package:project1/features/faq/presentation/cubit/course_faq_cubit.dart';
 import 'package:project1/features/faq/presentation/cubit/course_faq_state.dart';
 import 'package:project1/features/faq/presentation/widgets/details/Faq_item.dart';
-import 'package:project1/features/lesson/domain/entities/lesson_entity.dart';
-import 'package:project1/features/lesson/presentation/cubit/lesson_cubit.dart';
-import 'package:project1/features/lesson/presentation/pages/lesson_details_screen.dart';
-import 'package:project1/features/lesson/presentation/widgets/datails/lesson_connector.dart';
-import 'package:project1/features/lesson/presentation/widgets/datails/lesson_tile.dart';
-import 'package:project1/features/section/domain/entities/section_entity.dart';
 import 'package:project1/features/section/presentation/cubit/section_cubit.dart';
 import 'package:project1/features/section/presentation/cubit/section_state.dart';
+import 'package:project1/features/section/presentation/pages/section_details_screen.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class CourseTabs extends StatefulWidget {
+  final String demoId;
   final String courseId;
   final bool lessonsLocked;
 
   const CourseTabs({
     super.key,
+    required this.demoId,
     required this.courseId,
     this.lessonsLocked = false,
   });
@@ -106,8 +101,9 @@ class _CourseTabsState extends State<CourseTabs> {
                             ),
                             child: Column(
                               children: [
-                                _SectionLessonsExpansionTile(
+                                SectionLessonsExpansionTile(
                                   section: section,
+                                  demoId: widget.demoId,
                                   lessonsLocked: widget.lessonsLocked,
                                 ),
                                 Divider(
@@ -177,123 +173,3 @@ class _CourseTabsState extends State<CourseTabs> {
   }
 }
 
-class _SectionLessonsExpansionTile extends StatefulWidget {
-  final SectionEntity section;
-  final bool lessonsLocked;
-
-  const _SectionLessonsExpansionTile({
-    required this.section,
-    this.lessonsLocked = false,
-  });
-
-  @override
-  State<_SectionLessonsExpansionTile> createState() =>
-      _SectionLessonsExpansionTileState();
-}
-
-class _SectionLessonsExpansionTileState
-    extends State<_SectionLessonsExpansionTile> {
-  late final LessonCubit _lessonCubit;
-  List<LessonEntity> _lessons = [];
-  bool _loading = false;
-  bool _loadedOnce = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _lessonCubit = getIt<LessonCubit>();
-  }
-
-  @override
-  void dispose() {
-    _lessonCubit.close();
-    super.dispose();
-  }
-
-  Future<void> _fetchLessons() async {
-    setState(() => _loading = true);
-
-    final lessons = await _lessonCubit.getLessons(sectionId: widget.section.id);
-
-    if (!mounted) return;
-    setState(() {
-      _lessons = lessons..sort((a, b) => a.order.compareTo(b.order));
-      _loading = false;
-      _loadedOnce = true;
-    });
-  }
-
-  void _openLesson(LessonEntity lesson) {
-    if (widget.lessonsLocked) {
-      SnackbarTheme().newSnackBarInfo(
-        context,
-        AppLocalizations.of(context)!.enrollToWatchLesson,
-      );
-      return;
-    }
-
-    final index = _lessons.indexWhere((l) => l.id == lesson.id);
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) =>
-            LessonDetailsScreen(lessons: _lessons, initialIndex: index),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ExpansionTile(
-      title: Text(
-        widget.section.title,
-        style: const TextStyle(fontWeight: FontWeight.bold),
-      ),
-      onExpansionChanged: (expanded) {
-        if (expanded && !_loadedOnce) {
-          _fetchLessons();
-        }
-      },
-      children: [
-        if (_loading)
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 16),
-            child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
-          )
-        else if (_lessons.isEmpty)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            child: Text(
-              AppLocalizations.of(context)!.noLessonsYet,
-              style: TextStyle(color: AppColors.textSecondary),
-            ),
-          )
-        else
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Column(
-              children: _lessons.asMap().entries.map((entry) {
-                final index = entry.key;
-                final lesson = entry.value;
-                final isLast = index == _lessons.length - 1;
-                return LessonConnector(
-                  num: index + 1,
-                  isLast: isLast,
-                  showTopLine: index != 0,
-                  child: GestureDetector(
-                    onTap: () => _openLesson(lesson),
-                    child: LessonTile(
-                      num: index + 1,
-                      title: lesson.title,
-                      locked: widget.lessonsLocked,
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
-          ),
-      ],
-    );
-  }
-}

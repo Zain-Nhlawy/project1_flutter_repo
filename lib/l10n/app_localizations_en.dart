@@ -1393,4 +1393,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get failedToCreateExam => 'Failed to create exam';
+
+  @override
+  String get selectAnswer => 'Select your answer';
+
+  @override
+  String get submitQuiz => 'Submit Quiz';
+
+  @override
+  String get quizCompleted => 'Quiz Completed';
+
+  @override
+  String get greatJob => 'Great job! Keep it up.';
+
+  @override
+  String get score => 'Score';
+
+  @override
+  String get correct => 'Correct';
+
+  @override
+  String get wrong => 'Wrong';
+
+  @override
+  String get done => 'Done';
+
+  @override
+  String get leaveQuiz => 'Leave Quiz?';
+
+  @override
+  String get leaveQuizMessage => 'Your progress will be lost if you leave now.';
+
+  @override
+  String get noQuestionsAvailable => 'No questions are available.';
 }

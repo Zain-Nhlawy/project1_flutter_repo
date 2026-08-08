@@ -2737,6 +2737,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to create exam'**
   String get failedToCreateExam;
+
+  /// No description provided for @selectAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your answer'**
+  String get selectAnswer;
+
+  /// No description provided for @submitQuiz.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Quiz'**
+  String get submitQuiz;
+
+  /// No description provided for @quizCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz Completed'**
+  String get quizCompleted;
+
+  /// No description provided for @greatJob.
+  ///
+  /// In en, this message translates to:
+  /// **'Great job! Keep it up.'**
+  String get greatJob;
+
+  /// No description provided for @score.
+  ///
+  /// In en, this message translates to:
+  /// **'Score'**
+  String get score;
+
+  /// No description provided for @correct.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct'**
+  String get correct;
+
+  /// No description provided for @wrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong'**
+  String get wrong;
+
+  /// No description provided for @done.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get done;
+
+  /// No description provided for @leaveQuiz.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave Quiz?'**
+  String get leaveQuiz;
+
+  /// No description provided for @leaveQuizMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your progress will be lost if you leave now.'**
+  String get leaveQuizMessage;
+
+  /// No description provided for @noQuestionsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No questions are available.'**
+  String get noQuestionsAvailable;
 }
 
 class _AppLocalizationsDelegate

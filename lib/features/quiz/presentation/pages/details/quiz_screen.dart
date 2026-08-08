@@ -1,331 +1,396 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
-import 'quiz_result_screen.dart';
+import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/features/quiz/presentation/cubit/exam_taking_cubit.dart';
+import 'package:project1/features/quiz/presentation/cubit/exam_taking_state.dart';
+import 'package:project1/features/quiz/presentation/pages/details/quiz_result_screen.dart';
+import 'package:project1/features/quiz/presentation/widgets/details/quiz_app_bar.dart';
+import 'package:project1/features/quiz/presentation/widgets/details/quiz_bottom_button.dart';
+import 'package:project1/features/quiz/presentation/widgets/details/quiz_choice_tile.dart';
+import 'package:project1/features/quiz/presentation/widgets/details/quiz_progress_header.dart';
+import 'package:project1/features/quiz/presentation/widgets/details/quiz_question_card.dart';
+import 'package:project1/features/quiz/presentation/widgets/details/quiz_timer.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class QuizScreen extends StatefulWidget {
-  const QuizScreen({super.key});
+  final String examId;
+  final String demoId;
+
+  const QuizScreen({
+    super.key,
+    required this.examId,
+    required this.demoId,
+  });
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
 }
 
 class _QuizScreenState extends State<QuizScreen> {
-  final List<Map<String, dynamic>> questions = [
-    {
-      "question": "What is JSX in React?",
-      "answers": [
-        "A JavaScript extension for XML",
-        "JavaScript XML - syntax extension that allows HTML-like code in JS",
-        "A separate templating language",
-        "A CSS-in-JS solution",
-      ],
-      "correct": 1,
-      "explanation":
-          "JSX is a syntax extension for JavaScript that lets you write HTML-like code inside JavaScript.",
-    },
-    {
-      "question": "Which widget is immutable in Flutter?",
-      "answers": [
-        "StatefulWidget",
-        "InheritedWidget",
-        "StatelessWidget",
-        "State",
-      ],
-      "correct": 2,
-      "explanation": "StatelessWidget cannot change after it is built.",
-    },
-    {
-      "question": "What does API stand for?",
-      "answers": [
-        "Application Programming Interface",
-        "Advanced Program Integration",
-        "Application Process Interface",
-        "Automated Programming Input",
-      ],
-      "correct": 0,
-      "explanation": "API stands for Application Programming Interface.",
-    },
-  ];
+  late final ExamTakingCubit _cubit;
 
-  int current = 0;
-  List<int> selected = [];
-  bool answered = false;
-  int score = 0;
+  @override
+  void initState() {
+    super.initState();
 
-  void toggleAnswer(int index) {
-    if (answered) return;
+    _cubit = getIt<ExamTakingCubit>();
 
-    setState(() {
-      if (selected.contains(index)) {
-        selected.remove(index);
-      } else {
-        selected.add(index);
-      }
-    });
+    _cubit.startExam(
+      examId: widget.examId,
+      demoId: widget.demoId,
+    );
   }
 
-  void confirmAnswer() {
-    if (answered || selected.isEmpty) return;
-
-    final correct = questions[current]["correct"];
-
-    setState(() {
-      answered = true;
-
-      if (selected.contains(correct)) {
-        score++;
-      }
-    });
+  @override
+  void dispose() {
+    _cubit.close();
+    super.dispose();
   }
 
-  void nextQuestion() {
-    if (current == questions.length - 1) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) =>
-              QuizResultScreen(score: score, total: questions.length),
+  Future<bool> _confirmExit(BuildContext context) async {
+    final localizations =
+        AppLocalizations.of(context)!;
+
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: Text(
+            localizations.leaveQuiz,
+            style: AppTextStyles.titleMedium.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            localizations.leaveQuizMessage,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.textSecondary,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(
+                  dialogContext,
+                  false,
+                );
+              },
+              child: Text(
+                localizations.stay,
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(
+                  dialogContext,
+                  true,
+                );
+              },
+              child: Text(
+                localizations.leaveAnyway,
+                style: TextStyle(
+                  color: AppColors.error,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    return confirm ?? false;
+  }
+
+  void _openResultScreen(
+    ExamTakingSubmitted state,
+  ) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => QuizResultScreen(
+          score: state.result.examAttempt.score,
+          total: state.result.exam.numberOfQuestions,
         ),
-      );
-      return;
-    }
-
-    setState(() {
-      current++;
-      selected = [];
-      answered = false;
-    });
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final q = questions[current];
-    final primary = Theme.of(context).primaryColor;
-    final progress = (current + 1) / questions.length;
+    return BlocProvider.value(
+      value: _cubit,
+      child: PopScope(
+        canPop: false,
+        onPopInvokedWithResult:
+            (didPop, result) async {
+          if (didPop) return;
 
-    return Scaffold(
-      backgroundColor: const Color(0xfff8fafc),
-      appBar: AppBar(
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        title: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.quiz_outlined),
-            const SizedBox(width: 8),
-            Text(AppLocalizations.of(context)!.quiz, style: AppTextStyles.h3),
-          ],
+          final state = _cubit.state;
+
+          if (state is ExamTakingSubmitted) {
+            Navigator.pop(context);
+            return;
+          }
+
+          final shouldExit =
+              await _confirmExit(context);
+
+          if (shouldExit && mounted) {
+            Navigator.pop(context);
+          }
+        },
+        child: Scaffold(
+          backgroundColor:
+              AppColors.background,
+          appBar: const QuizAppBar(),
+          body: SafeArea(
+            child: BlocConsumer<
+                ExamTakingCubit,
+                ExamTakingState>(
+              listener: (context, state) {
+                if (state
+                    is ExamTakingSubmitted) {
+                  _openResultScreen(state);
+                }
+              },
+              builder: (context, state) {
+                if (state
+                        is ExamTakingLoading ||
+                    state
+                        is ExamTakingInitial) {
+                  return const Center(
+                    child:
+                        CircularProgressIndicator(),
+                  );
+                }
+
+                if (state
+                    is ExamTakingError) {
+                  return _ErrorView(
+                    message: state.message,
+                  );
+                }
+
+                if (state
+                    is ExamTakingInProgress) {
+                  return _QuizContent(
+                    state: state,
+                    examId: widget.examId,
+                    demoId: widget.demoId,
+                  );
+                }
+
+                return const SizedBox.shrink();
+              },
+            ),
+          ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Row(
+    );
+  }
+}
+
+class _QuizContent extends StatelessWidget {
+  final ExamTakingInProgress state;
+  final String examId;
+  final String demoId;
+
+  const _QuizContent({
+    required this.state,
+    required this.examId,
+    required this.demoId,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final localizations =
+        AppLocalizations.of(context)!;
+
+    final questions = state.exam.questions;
+
+    if (questions.isEmpty) {
+      return Center(
+        child: Text(
+          localizations.noQuestionsAvailable,
+          style: AppTextStyles.bodyMedium.copyWith(
+            color: AppColors.textSecondary,
+          ),
+        ),
+      );
+    }
+
+    final currentIndex =
+        state.currentQuestionIndex;
+
+    final question =
+        questions[currentIndex];
+
+    final selectedChoices =
+        state.selectedAnswers[question.id] ??
+            <String>{};
+
+    final totalQuestions =
+        questions.length;
+
+    final progress =
+        (currentIndex + 1) / totalQuestions;
+
+    final isLastQuestion =
+        currentIndex ==
+            totalQuestions - 1;
+
+    return Column(
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            physics:
+                const BouncingScrollPhysics(),
+            padding:
+                const EdgeInsets.fromLTRB(
+              16,
+              12,
+              16,
+              24,
+            ),
+            child: Column(
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: LinearProgressIndicator(
-                    value: progress,
-                    minHeight: 10,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  "${current + 1}/${questions.length}",
-                  style: AppTextStyles.titleMedium.copyWith(
-                    color: primary,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 30),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [primary.withOpacity(.08), primary.withOpacity(.03)],
-                ),
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: primary.withOpacity(.15)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      color: primary,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Text(
-                      "Question ${current + 1}",
-                      style: AppTextStyles.label.copyWith(color: Colors.white),
-                    ),
-                  ),
-                  const SizedBox(height: 18),
-                  Text(
-                    q["question"],
-                    style: AppTextStyles.h3.copyWith(fontSize: 22),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 25),
-            Expanded(
-              child: ListView.builder(
-                itemCount: q["answers"].length,
-                itemBuilder: (context, index) {
-                  final correct = q["correct"];
-
-                  Color bg = Colors.white;
-                  Color border = Colors.transparent;
-                  IconData? icon;
-
-                  if (answered) {
-                    if (index == correct) {
-                      bg = Colors.green.shade50;
-                      border = Colors.green;
-                      icon = Icons.check_circle;
-                    }
-
-                    if (selected.contains(index) && index != correct) {
-                      bg = Colors.red.shade50;
-                      border = Colors.red;
-                      icon = Icons.cancel;
-                    }
-                  } else {
-                    if (selected.contains(index)) {
-                      border = primary;
-                    }
-                  }
-
-                  return InkWell(
-                    borderRadius: BorderRadius.circular(18),
-                    onTap: () => toggleAnswer(index),
-                    child: Container(
-                      margin: const EdgeInsets.only(bottom: 14),
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: bg,
-                        borderRadius: BorderRadius.circular(18),
-                        border: Border.all(color: border, width: 1.5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(.03),
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 18,
-                            backgroundColor: primary.withOpacity(0.1),
-                            child: Text(
-                              String.fromCharCode(65 + index),
-                              style: AppTextStyles.bodyMedium.copyWith(
-                                color: primary,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 14),
-                          Expanded(
-                            child: Text(
-                              q["answers"][index],
-                              style: AppTextStyles.bodyLarge.copyWith(
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                          if (icon != null)
-                            Icon(
-                              icon,
-                              color: index == correct
-                                  ? Colors.green
-                                  : Colors.red,
-                            ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            if (!answered)
-              SizedBox(
-                width: double.infinity,
-                height: 56,
-                child: ElevatedButton(
-                  onPressed: selected.isEmpty ? null : confirmAnswer,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: primary,
-                    foregroundColor: Colors.white,
-                  ),
-                  child: Text(AppLocalizations.of(context)!.confirmAnswer),
-                ),
-              ),
-            if (answered)
-              Container(
-                width: double.infinity,
-                margin: const EdgeInsets.only(bottom: 16),
-                padding: const EdgeInsets.all(18),
-                decoration: BoxDecoration(
-                  color: Colors.amber.withOpacity(.08),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.amber.withOpacity(.3)),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Note",
-                      style: AppTextStyles.titleMedium.copyWith(
-                        color: primary,
-                        fontWeight: FontWeight.w700,
+                    Expanded(
+                      child:
+                          QuizProgressHeader(
+                        currentQuestion:
+                            currentIndex + 1,
+                        totalQuestions:
+                            totalQuestions,
+                        progress: progress,
                       ),
                     ),
-                    const SizedBox(height: 6),
-                    Text(
-                      q["explanation"],
-                      style: AppTextStyles.bodyMedium.copyWith(height: 1.6),
+                    const SizedBox(width: 12),
+                    QuizTimer(
+                      remainingSeconds:
+                          state.remainingSeconds,
                     ),
                   ],
                 ),
-              ),
-            if (answered)
-              SizedBox(
-                width: double.infinity,
-                height: 56,
-                child: ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: primary,
-                    foregroundColor: Colors.white,
-                  ),
-                  onPressed: nextQuestion,
-                  icon: Icon(
-                    current == questions.length - 1
-                        ? Icons.flag
-                        : Icons.arrow_forward,
-                  ),
-                  label: Text(
-                    current == questions.length - 1
-                        ? "Finish Quiz"
-                        : "Next Question",
-                    style: const TextStyle(color: Colors.white),
+
+                const SizedBox(height: 24),
+
+                QuizQuestionCard(
+                  questionNumber:
+                      currentIndex + 1,
+                  question:
+                      question.question,
+                ),
+
+                const SizedBox(height: 20),
+
+                Text(
+                  localizations.selectAnswer,
+                  style: AppTextStyles.bodyMedium
+                      .copyWith(
+                    color:
+                        AppColors.textPrimary,
+                    fontWeight:
+                        FontWeight.bold,
                   ),
                 ),
-              ),
-          ],
+
+                const SizedBox(height: 10),
+
+                ...question.choices.map(
+                  (choice) {
+                    final isSelected =
+                        selectedChoices
+                            .contains(choice.id);
+
+                    return Padding(
+                      padding:
+                          const EdgeInsets.only(
+                        bottom: 10,
+                      ),
+                      child:
+                          QuizChoiceTile(
+                        choice:
+                            choice.choice,
+                        isSelected:
+                            isSelected,
+                        onTap: () {
+                          context
+                              .read<
+                                  ExamTakingCubit>()
+                              .toggleAnswer(
+                                questionId:
+                                    question.id,
+                                choiceId:
+                                    choice.id,
+                              );
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        QuizBottomButton(
+          text: isLastQuestion
+              ? localizations.submitQuiz
+              : localizations.confirmAnswer,
+          isLoading:
+              state.isSubmitting,
+          enabled:
+              selectedChoices.isNotEmpty,
+          onPressed: () {
+            final cubit = context
+                .read<ExamTakingCubit>();
+
+            if (isLastQuestion) {
+              cubit.submitExam(
+                examId: examId,
+                demoId: demoId,
+              );
+            } else {
+              cubit.nextQuestion();
+            }
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _ErrorView extends StatelessWidget {
+  final String message;
+
+  const _ErrorView({
+    required this.message,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding:
+            const EdgeInsets.all(24),
+        child: Text(
+          message,
+          textAlign: TextAlign.center,
+          style: AppTextStyles.bodyMedium
+              .copyWith(
+            color: AppColors.error,
+          ),
         ),
       ),
     );

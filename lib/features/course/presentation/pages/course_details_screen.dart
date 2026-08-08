@@ -420,6 +420,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                           child: BlocProvider(
                             create: (_) => getIt<SectionCubit>(),
                             child: CourseTabs(
+                              demoId: widget.demoId!,
                               courseId: course.id,
                               lessonsLocked:
                                   widget.mode == CourseDetailsMode.library &&
