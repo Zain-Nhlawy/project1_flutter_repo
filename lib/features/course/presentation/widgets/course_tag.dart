@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/config/theme/app_text_styles.dart';
 
 class CourseTag extends StatelessWidget {
   final String text;
@@ -14,32 +16,29 @@ class CourseTag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final primaryColor = Theme.of(context).primaryColor;
+    final primaryColor = AppColors.primaryOf(context);
 
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(30),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 7),
         decoration: BoxDecoration(
-          color: selected ? primaryColor : primaryColor.withOpacity(0.08),
-          borderRadius: BorderRadius.circular(30),
+          color: selected ? primaryColor : primaryColor.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: selected ? primaryColor : primaryColor.withOpacity(0.15),
+            color: selected
+                ? primaryColor
+                : primaryColor.withValues(alpha: 0.14),
           ),
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              text,
-              style: TextStyle(
-                color: selected ? Colors.white : primaryColor,
-                fontWeight: FontWeight.w600,
-                fontSize: 13,
-              ),
-            ),
-          ],
+        child: Text(
+          text,
+          style: AppTextStyles.label.copyWith(
+            color: selected ? Colors.white : primaryColor,
+            fontWeight: FontWeight.w700,
+            fontSize: 11,
+          ),
         ),
       ),
     );

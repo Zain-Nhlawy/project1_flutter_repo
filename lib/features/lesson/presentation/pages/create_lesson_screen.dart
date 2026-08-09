@@ -114,10 +114,7 @@ class _CreateLessonScreenState extends State<CreateLessonScreen> {
   Future<void> saveLesson(BuildContext context) async {
     final l = AppLocalizations.of(context)!;
     if (!isValid) {
-      SnackbarTheme().newSnackBarError(
-        context,
-        l.fillAllFieldsWarning,
-      );
+      SnackbarTheme().newSnackBarError(context, l.fillAllFieldsWarning);
       return;
     }
 
@@ -175,12 +172,12 @@ class _CreateLessonScreenState extends State<CreateLessonScreen> {
                         _handleBack(isBusy);
                       },
                       child: Scaffold(
-                        backgroundColor: AppColors.background,
+                        backgroundColor: AppColors.backgroundOf(context),
                         appBar: LessonAppBar(
                           onBackPressed: () => _handleBack(isBusy),
                         ),
                         body: SingleChildScrollView(
-                          padding: const EdgeInsets.fromLTRB(16, 16, 16, 50),
+                          padding: const EdgeInsets.fromLTRB(18, 24, 18, 54),
                           child: Column(
                             children: [
                               LessonVideoSection(
@@ -192,19 +189,18 @@ class _CreateLessonScreenState extends State<CreateLessonScreen> {
                               ),
                               if (isUploading)
                                 LessonUploadProgress(state: uploadState),
-                              const SizedBox(height: 24),
-                              const SizedBox(height: 24),
+                              const SizedBox(height: 22),
                               LessonFormSection(
                                 titleController: _titleController,
                                 descriptionController: _descriptionController,
                               ),
-                              const SizedBox(height: 24),
+                              const SizedBox(height: 22),
                               LessonAttachmentsManager(
                                 key: _attachmentsManagerKey,
                                 lessonId: null,
                                 enabled: !isBusy,
                               ),
-                              const SizedBox(height: 32),
+                              const SizedBox(height: 30),
                               LessonActionButton(
                                 loading: isBusy,
                                 onPressed: isBusy
@@ -240,10 +236,7 @@ class _CreateLessonScreenState extends State<CreateLessonScreen> {
       final message = state.errors.isNotEmpty
           ? state.errors.first
           : "Upload failed";
-      SnackbarTheme().newSnackBarError(
-        context,
-        message,
-      );
+      SnackbarTheme().newSnackBarError(context, message);
     }
   }
 

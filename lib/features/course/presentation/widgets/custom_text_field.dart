@@ -40,15 +40,19 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
+    final primary = AppColors.primaryOf(context);
+    final border = AppColors.borderOf(context);
+    final surface = AppColors.surfaceOf(context);
+
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: widget.enabled
             ? [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.04),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
+                  color: Colors.black.withValues(alpha: 0.035),
+                  blurRadius: 10,
+                  offset: const Offset(0, 3),
                 ),
               ]
             : [],
@@ -64,7 +68,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
           labelText: widget.labelText,
           prefixIcon: Icon(
             widget.icon,
-            color: widget.enabled ? AppColors.primary : AppColors.textSecondary,
+            color: widget.enabled
+                ? primary
+                : AppColors.textSecondaryOf(context),
           ),
           suffixIcon: widget.isPassword
               ? IconButton(
@@ -72,7 +78,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     obscureText
                         ? Icons.visibility_off_outlined
                         : Icons.visibility_outlined,
-                    color: AppColors.textSecondary,
+                    color: AppColors.textSecondaryOf(context),
                   ),
                   onPressed: () {
                     setState(() {
@@ -82,29 +88,27 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 )
               : null,
           hintText: widget.hintText,
-          hintStyle: const TextStyle(color: AppColors.textSecondary),
+          hintStyle: TextStyle(color: AppColors.textSecondaryOf(context)),
           filled: true,
-          fillColor: widget.enabled
-              ? AppColors.surface
-              : AppColors.surface.withOpacity(0.5),
+          fillColor: widget.enabled ? surface : surface.withValues(alpha: 0.5),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(color: AppColors.border, width: 1.2),
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide(color: border, width: 1.1),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(color: AppColors.border, width: 1.2),
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide(color: border, width: 1.1),
           ),
           disabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(
-              color: AppColors.border.withOpacity(0.5),
+              color: border.withValues(alpha: 0.5),
               width: 1.2,
             ),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(color: AppColors.primary, width: 2),
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide(color: primary, width: 1.8),
           ),
         ),
       ),

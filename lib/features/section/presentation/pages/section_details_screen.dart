@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/lesson/domain/entities/lesson_entity.dart';
@@ -60,27 +61,18 @@ class _SectionLessonsExpansionTileState
   Future<void> _fetchLessons() async {
     setState(() => _loading = true);
 
-    final lessons = await _lessonCubit.getLessons(
-      sectionId: widget.section.id,
-    );
+    final lessons = await _lessonCubit.getLessons(sectionId: widget.section.id);
 
-    final exams = await _examCubit.fetchExams(
-      sectionId: widget.section.id,
-    );
+    final exams = await _examCubit.fetchExams(sectionId: widget.section.id);
 
     if (!mounted) return;
 
     setState(() {
-      _lessons = lessons
-        ..sort(
-          (a, b) => a.order.compareTo(b.order),
-        );
+      _lessons = lessons..sort((a, b) => a.order.compareTo(b.order));
 
       _hasExam = exams?.data.isNotEmpty ?? false;
 
-      _examId = _hasExam
-          ? exams!.data.first.id
-          : null;
+      _examId = _hasExam ? exams!.data.first.id : null;
 
       _loading = false;
       _loadedOnce = true;
@@ -96,99 +88,169 @@ class _SectionLessonsExpansionTileState
       return;
     }
 
-    final index = _lessons.indexWhere(
-      (l) => l.id == lesson.id,
-    );
+    final index = _lessons.indexWhere((item) => item.id == lesson.id);
 
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => LessonDetailsScreen(
-          lessons: _lessons,
-          initialIndex: index,
-        ),
+        builder: (_) =>
+            LessonDetailsScreen(lessons: _lessons, initialIndex: index),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return ExpansionTile(
-      title: Text(
-        widget.section.title,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
+    final primary = AppColors.primaryOf(context);
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        color: AppColors.surfaceOf(context),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: AppColors.borderOf(context).withValues(alpha: 0.78),
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
-      onExpansionChanged: (expanded) {
-        if (expanded && !_loadedOnce) {
-          _fetchLessons();
-        }
-      },
-      children: [
-        if (_loading)
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 16),
-            child: Center(
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-              ),
-            ),
-          )
-        else if (_lessons.isEmpty)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            child: Text(
-              AppLocalizations.of(context)!.noLessonsYet,
-              style: TextStyle(
-                color: AppColors.textSecondary,
-              ),
-            ),
-          )
-        else
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Column(
-              children: [
-                ..._lessons.asMap().entries.map((entry) {
-                  final index = entry.key;
-                  final lesson = entry.value;
-
-                  final isLast =
-                      index == _lessons.length - 1;
-
-                  return LessonConnector(
-                    num: index + 1,
-                    isLast: isLast && !_hasExam,
-                    showTopLine: index != 0,
-                    hasExam: isLast && _hasExam,
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () => _openLesson(lesson),
-                          child: LessonTile(
-                            num: index + 1,
-                            title: lesson.title,
-                            locked: widget.lessonsLocked,
-                          ),
-                        ),
-
-                        if (isLast &&
-                            _hasExam &&
-                            _examId != null)
-                          QuizTile(
-                            examId: _examId!,
-                            demoId: widget.demoId,
-                            locked: widget.lessonsLocked,
-                          ),
-                      ],
-                    ),
-                  );
-                }),
+      child: Theme(
+        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+        child: ExpansionTile(
+          tilePadding: const EdgeInsets.symmetric(horizontal: 13, vertical: 3),
+          childrenPadding: const EdgeInsets.fromLTRB(13, 0, 13, 14),
+          iconColor: primary,
+          collapsedIconColor: AppColors.textSecondaryOf(context),
+          leading: Container(
+            width: 42,
+            height: 42,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              gradient: AppColors.buttonGradientOf(context),
+              borderRadius: BorderRadius.circular(13),
+              boxShadow: [
+                BoxShadow(
+                  color: primary.withValues(alpha: 0.16),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
               ],
             ),
+            child: Text(
+              widget.section.order.toString().padLeft(2, '0'),
+              style: AppTextStyles.label.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
           ),
-      ],
+          title: Text(
+            widget.section.title,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: AppTextStyles.bodyLarge.copyWith(
+              color: AppColors.textPrimaryOf(context),
+              fontWeight: FontWeight.w800,
+              height: 1.3,
+            ),
+          ),
+          onExpansionChanged: (expanded) {
+            if (expanded && !_loadedOnce) {
+              _fetchLessons();
+            }
+          },
+          children: [
+            Divider(
+              height: 1,
+              color: AppColors.borderOf(context).withValues(alpha: 0.72),
+            ),
+            const SizedBox(height: 14),
+            if (_loading)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 18),
+                child: Center(
+                  child: SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(
+                      color: primary,
+                      strokeWidth: 2.4,
+                    ),
+                  ),
+                ),
+              )
+            else if (_lessons.isEmpty)
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.backgroundOf(context),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.play_disabled_outlined,
+                      color: AppColors.textSecondaryOf(context),
+                      size: 20,
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        AppLocalizations.of(context)!.noLessonsYet,
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          color: AppColors.textSecondaryOf(context),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            else
+              Column(
+                children: [
+                  ..._lessons.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final lesson = entry.value;
+                    final isLast = index == _lessons.length - 1;
+
+                    return LessonConnector(
+                      num: index + 1,
+                      isLast: isLast && !_hasExam,
+                      showTopLine: index != 0,
+                      hasExam: isLast && _hasExam,
+                      child: Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () => _openLesson(lesson),
+                            child: LessonTile(
+                              num: index + 1,
+                              title: lesson.title,
+                              locked: widget.lessonsLocked,
+                            ),
+                          ),
+                          if (isLast && _hasExam && _examId != null)
+                            QuizTile(
+                              examId: _examId!,
+                              demoId: widget.demoId,
+                              locked: widget.lessonsLocked,
+                            ),
+                        ],
+                      ),
+                    );
+                  }),
+                ],
+              ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/faq/domain/entities/course_faq_entity.dart';
 import 'package:project1/features/faq/presentation/cubit/course_faq_cubit.dart';
@@ -45,79 +47,97 @@ class _CourseTabsState extends State<CourseTabs> {
 
   @override
   Widget build(BuildContext context) {
-    final primary = Theme.of(context).primaryColor;
+    final localizations = AppLocalizations.of(context)!;
+    final primary = AppColors.primaryOf(context);
 
     return DefaultTabController(
       length: 2,
       child: Column(
         children: [
-          TabBar(
-            labelColor: primary,
-            indicatorSize: TabBarIndicatorSize.tab,
-            tabs: [
-              Tab(text: AppLocalizations.of(context)!.lessons),
-              Tab(text: AppLocalizations.of(context)!.faq),
-            ],
+          Container(
+            margin: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: AppColors.backgroundOf(context),
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(
+                color: AppColors.borderOf(context).withValues(alpha: 0.70),
+              ),
+            ),
+            child: TabBar(
+              dividerColor: Colors.transparent,
+              indicatorSize: TabBarIndicatorSize.tab,
+              indicator: BoxDecoration(
+                gradient: AppColors.buttonGradientOf(context),
+                borderRadius: BorderRadius.circular(11),
+                boxShadow: [
+                  BoxShadow(
+                    color: primary.withValues(alpha: 0.18),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              labelColor: Colors.white,
+              unselectedLabelColor: AppColors.textSecondaryOf(context),
+              labelStyle: AppTextStyles.label.copyWith(
+                fontWeight: FontWeight.w800,
+              ),
+              unselectedLabelStyle: AppTextStyles.label.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+              tabs: [
+                Tab(
+                  height: 42,
+                  icon: const Icon(Icons.play_lesson_outlined, size: 18),
+                  text: localizations.lessons,
+                  iconMargin: const EdgeInsets.only(bottom: 2),
+                ),
+                Tab(
+                  height: 42,
+                  icon: const Icon(Icons.help_outline_rounded, size: 18),
+                  text: localizations.faq,
+                  iconMargin: const EdgeInsets.only(bottom: 2),
+                ),
+              ],
+            ),
           ),
+          const SizedBox(height: 4),
           Expanded(
             child: TabBarView(
               children: [
-                Theme(
-                  data: Theme.of(
-                    context,
-                  ).copyWith(dividerColor: Colors.transparent),
-                  child: BlocBuilder<SectionCubit, SectionState>(
-                    builder: (context, state) {
-                      if (state.isLoading) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
+                BlocBuilder<SectionCubit, SectionState>(
+                  builder: (context, state) {
+                    if (state.isLoading) {
+                      return const _CourseTabStatus(isLoading: true);
+                    }
 
-                      if (state.errors != null && state.errors!.isNotEmpty) {
-                        return Center(
-                          child: Text(
-                            state.errors!.first,
-                            style: const TextStyle(color: Colors.red),
-                          ),
-                        );
-                      }
-
-                      if (state.sections.isEmpty) {
-                        return Center(
-                          child: Text(
-                            AppLocalizations.of(context)!.noSectionsAvailable,
-                          ),
-                        );
-                      }
-
-                      return ListView(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        children: state.sections.asMap().entries.map((entry) {
-                        final index = entry.key;
-                        final section = entry.value;
-                        final isLastSection = index == state.sections.length - 1;
-                          return Padding(
-                            padding: EdgeInsets.only(
-                              bottom: isLastSection ? 95 : 0,
-                            ),
-                            child: Column(
-                              children: [
-                                SectionLessonsExpansionTile(
-                                  section: section,
-                                  demoId: widget.demoId,
-                                  lessonsLocked: widget.lessonsLocked,
-                                ),
-                                Divider(
-                                  height: 1,
-                                  thickness: 1,
-                                  color: Colors.grey.shade300,
-                                ),
-                              ],
-                            ),
-                          );
-                        }).toList(),
+                    if (state.errors != null && state.errors!.isNotEmpty) {
+                      return _CourseTabStatus(
+                        message: state.errors!.first,
+                        isError: true,
                       );
-                    },
-                  ),
+                    }
+
+                    if (state.sections.isEmpty) {
+                      return _CourseTabStatus(
+                        icon: Icons.account_tree_outlined,
+                        message: localizations.noSectionsAvailable,
+                      );
+                    }
+
+                    return ListView.builder(
+                      padding: const EdgeInsets.fromLTRB(12, 10, 12, 90),
+                      itemCount: state.sections.length,
+                      itemBuilder: (context, index) {
+                        return SectionLessonsExpansionTile(
+                          section: state.sections[index],
+                          demoId: widget.demoId,
+                          lessonsLocked: widget.lessonsLocked,
+                        );
+                      },
+                    );
+                  },
                 ),
                 BlocProvider.value(
                   value: _faqCubit,
@@ -125,15 +145,13 @@ class _CourseTabsState extends State<CourseTabs> {
                     builder: (context, state) {
                       if (state is CourseFaqLoading ||
                           state is CourseFaqInitial) {
-                        return const Center(child: CircularProgressIndicator());
+                        return const _CourseTabStatus(isLoading: true);
                       }
 
                       if (state is CourseFaqError) {
-                        return Center(
-                          child: Text(
-                            state.message,
-                            style: const TextStyle(color: Colors.red),
-                          ),
+                        return _CourseTabStatus(
+                          message: state.message,
+                          isError: true,
                         );
                       }
 
@@ -142,15 +160,14 @@ class _CourseTabsState extends State<CourseTabs> {
                           : <CourseFaqEntity>[];
 
                       if (faqs.isEmpty) {
-                        return Center(
-                          child: Text(
-                            AppLocalizations.of(context)!.noFaqAvailable,
-                          ),
+                        return _CourseTabStatus(
+                          icon: Icons.question_answer_outlined,
+                          message: localizations.noFaqAvailable,
                         );
                       }
 
                       return ListView.separated(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.fromLTRB(12, 10, 12, 24),
                         itemCount: faqs.length,
                         separatorBuilder: (_, __) => const SizedBox(height: 12),
                         itemBuilder: (context, index) {
@@ -173,3 +190,64 @@ class _CourseTabsState extends State<CourseTabs> {
   }
 }
 
+class _CourseTabStatus extends StatelessWidget {
+  final bool isLoading;
+  final bool isError;
+  final IconData icon;
+  final String? message;
+
+  const _CourseTabStatus({
+    this.isLoading = false,
+    this.isError = false,
+    this.icon = Icons.info_outline_rounded,
+    this.message,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final color = isError ? AppColors.error : AppColors.primaryOf(context);
+
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: isLoading
+            ? SizedBox(
+                width: 26,
+                height: 26,
+                child: CircularProgressIndicator(
+                  color: color,
+                  strokeWidth: 2.5,
+                ),
+              )
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 54,
+                    height: 54,
+                    decoration: BoxDecoration(
+                      color: color.withValues(alpha: 0.08),
+                      borderRadius: BorderRadius.circular(17),
+                    ),
+                    child: Icon(
+                      isError ? Icons.error_outline_rounded : icon,
+                      color: color,
+                      size: 25,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    message ?? '',
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.textSecondaryOf(context),
+                      fontWeight: FontWeight.w600,
+                      height: 1.4,
+                    ),
+                  ),
+                ],
+              ),
+      ),
+    );
+  }
+}

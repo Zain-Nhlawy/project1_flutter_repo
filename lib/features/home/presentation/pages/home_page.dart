@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/features/demo/domain/entities/demo_entity.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20cubit/demo_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20cubit/demo_state.dart';
@@ -15,7 +17,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
     final localizations = AppLocalizations.of(context)!;
 
     return BlocProvider(
@@ -23,8 +24,10 @@ class HomePage extends StatelessWidget {
           DemoCubit(getDemosUseCase: GetIt.instance<GetDemosUseCase>())
             ..fetchDemos(),
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppColors.backgroundOf(context),
         body: RefreshIndicator(
+          color: AppColors.primaryOf(context),
+          backgroundColor: AppColors.surfaceOf(context),
           onRefresh: () async {
             await context.read<DemoCubit>().fetchDemos();
           },
@@ -53,9 +56,11 @@ class HomePage extends StatelessWidget {
                   },
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: size.width * 0.06,
-                    vertical: size.height * 0.02,
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                    20,
+                    26,
+                    20,
+                    116,
                   ),
                   child: BlocBuilder<DemoCubit, DemoState>(
                     builder: (context, state) {
@@ -75,32 +80,35 @@ class HomePage extends StatelessWidget {
                         children: [
                           SectionHeader(
                             title: localizations.myDemos,
-
                             demoList: myDemosList,
                           ),
-                          SizedBox(height: size.height * 0.015),
+                          const SizedBox(height: 14),
                           _buildSubContent(
                             context,
                             state,
                             isOwnerList: true,
                             emptyMessage: localizations.noDemosAvailable,
                           ),
-
-                          SizedBox(height: size.height * 0.03),
-
+                          const SizedBox(height: 14),
+                          Divider(
+                            height: 1,
+                            thickness: 1,
+                            color: AppColors.borderOf(
+                              context,
+                            ).withValues(alpha: 0.72),
+                          ),
+                          const SizedBox(height: 28),
                           SectionHeader(
                             title: localizations.demosImIn,
                             demoList: joinedDemosList,
                           ),
-                          SizedBox(height: size.height * 0.015),
+                          const SizedBox(height: 14),
                           _buildSubContent(
                             context,
                             state,
                             isOwnerList: false,
                             emptyMessage: localizations.noDemosAvailable,
                           ),
-
-                          SizedBox(height: size.height * 0.12),
                         ],
                       );
                     },
@@ -121,26 +129,13 @@ class HomePage extends StatelessWidget {
     required String emptyMessage,
   }) {
     if (state is GetDemosLoading) {
-      return const Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 20.0),
-          child: CircularProgressIndicator(),
-        ),
-      );
+      return const _HomeLoadingCard();
     }
     if (state is GetDemosError) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20.0),
-          child: Text(
-            state.message,
-            style: const TextStyle(
-              color: Colors.red,
-              fontWeight: FontWeight.bold,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
+      return _HomeStatusCard(
+        icon: Icons.error_outline_rounded,
+        message: state.message,
+        accentColor: AppColors.error,
       );
     }
 
@@ -148,25 +143,35 @@ class HomePage extends StatelessWidget {
       final filteredList = state.demos
           .where((demo) => demo.isOwner == isOwnerList)
           .toList();
-      return _buildDemosList(filteredList, emptyMessage);
+      return _buildDemosList(
+        context,
+        filteredList,
+        emptyMessage,
+        emptyIcon: isOwnerList
+            ? Icons.dashboard_customize_outlined
+            : Icons.school_outlined,
+      );
     }
 
     final localizations = AppLocalizations.of(context)!;
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20.0),
-        child: Text(localizations.somethingWentWrong),
-      ),
+    return _HomeStatusCard(
+      icon: Icons.error_outline_rounded,
+      message: localizations.somethingWentWrong,
+      accentColor: AppColors.error,
     );
   }
 
-  Widget _buildDemosList(List demosList, String emptyMessage) {
+  Widget _buildDemosList(
+    BuildContext context,
+    List<DemoEntity> demosList,
+    String emptyMessage, {
+    required IconData emptyIcon,
+  }) {
     if (demosList.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20.0),
-          child: Text(emptyMessage),
-        ),
+      return _HomeStatusCard(
+        icon: emptyIcon,
+        message: emptyMessage,
+        accentColor: AppColors.primaryOf(context),
       );
     }
 
@@ -181,4 +186,151 @@ class HomePage extends StatelessWidget {
       },
     );
   }
+}
+
+class _HomeLoadingCard extends StatelessWidget {
+  const _HomeLoadingCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final primary = AppColors.primaryOf(context);
+    final placeholder = AppColors.textSecondaryOf(
+      context,
+    ).withValues(alpha: 0.10);
+
+    return Container(
+      width: double.infinity,
+      constraints: const BoxConstraints(minHeight: 112),
+      padding: const EdgeInsets.all(18),
+      decoration: _contentCardDecoration(context),
+      child: Row(
+        children: [
+          Container(
+            width: 54,
+            height: 54,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: primary.withValues(alpha: 0.08),
+              borderRadius: BorderRadius.circular(17),
+            ),
+            child: SizedBox(
+              width: 22,
+              height: 22,
+              child: CircularProgressIndicator(
+                strokeWidth: 2.4,
+                color: primary,
+              ),
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FractionallySizedBox(
+                  widthFactor: 0.72,
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Container(
+                    height: 11,
+                    decoration: BoxDecoration(
+                      color: placeholder,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                FractionallySizedBox(
+                  widthFactor: 0.94,
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Container(
+                    height: 9,
+                    decoration: BoxDecoration(
+                      color: placeholder.withValues(alpha: 0.07),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                FractionallySizedBox(
+                  widthFactor: 0.56,
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Container(
+                    height: 9,
+                    decoration: BoxDecoration(
+                      color: placeholder.withValues(alpha: 0.07),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _HomeStatusCard extends StatelessWidget {
+  final IconData icon;
+  final String message;
+  final Color accentColor;
+
+  const _HomeStatusCard({
+    required this.icon,
+    required this.message,
+    required this.accentColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      constraints: const BoxConstraints(minHeight: 112),
+      padding: const EdgeInsets.all(18),
+      decoration: _contentCardDecoration(context),
+      child: Row(
+        children: [
+          Container(
+            width: 54,
+            height: 54,
+            decoration: BoxDecoration(
+              color: accentColor.withValues(alpha: 0.09),
+              borderRadius: BorderRadius.circular(17),
+            ),
+            child: Icon(icon, color: accentColor, size: 25),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Text(
+              message,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.textSecondaryOf(context),
+                fontWeight: FontWeight.w600,
+                height: 1.4,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+BoxDecoration _contentCardDecoration(BuildContext context) {
+  return BoxDecoration(
+    color: AppColors.surfaceOf(context),
+    borderRadius: BorderRadius.circular(20),
+    border: Border.all(
+      color: AppColors.borderOf(context).withValues(alpha: 0.72),
+    ),
+    boxShadow: [
+      BoxShadow(
+        color: AppColors.textSecondaryOf(context).withValues(alpha: 0.08),
+        blurRadius: 16,
+        offset: const Offset(0, 6),
+      ),
+    ],
+  );
 }

@@ -4,6 +4,8 @@ import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/core/presentation/widgets/gradient_action_button.dart';
+import 'package:project1/core/presentation/widgets/gradient_page_app_bar.dart';
 import 'package:project1/features/questions_bank/data/models/question_bank_model.dart';
 import 'package:project1/features/questions_bank/data/models/question_choice_model.dart';
 import 'package:project1/features/questions_bank/presentation/cubit/question_bank_cubit.dart';
@@ -55,7 +57,9 @@ class _QuestionBankManagementScreenState
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           title: Text(localizations.deleteQuestion),
           content: Text(localizations.deleteQuestionConfirmation),
           actions: [
@@ -88,7 +92,10 @@ class _QuestionBankManagementScreenState
     if (!mounted) return;
 
     if (!success) {
-      SnackbarTheme().newSnackBarError(context, localizations.deleteQuestionFailed);
+      SnackbarTheme().newSnackBarError(
+        context,
+        localizations.deleteQuestionFailed,
+      );
     }
   }
 
@@ -110,34 +117,26 @@ class _QuestionBankManagementScreenState
     return BlocProvider.value(
       value: _cubit,
       child: Scaffold(
-        backgroundColor: AppColors.background,
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
-            onPressed: () => Navigator.pop(context),
-          ),
-          title: Text(
-            localizations.questionsBank,
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(gradient: AppColors.primaryGradient),
-          ),
+        backgroundColor: AppColors.backgroundOf(context),
+        appBar: GradientPageAppBar(
+          title: localizations.questionsBank,
+          subtitle: localizations.questionsBankDescription,
+          onBackPressed: () => Navigator.pop(context),
         ),
-        floatingActionButton: FloatingActionButton.extended(
+        floatingActionButton: GradientActionButton(
           onPressed: _openAddQuestionSheet,
-          backgroundColor: AppColors.primary,
-          icon: const Icon(Icons.add, color: Colors.white),
-          label: Text(
-            localizations.addQuestion,
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-          ),
+          icon: Icons.add_rounded,
+          label: localizations.addQuestion,
         ),
         body: SafeArea(
           child: BlocBuilder<QuestionBankCubit, QuestionBankState>(
             builder: (context, state) {
               if (state is QuestionBankLoading) {
-                return const Center(child: CircularProgressIndicator());
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: AppColors.primaryOf(context),
+                  ),
+                );
               }
 
               if (state is QuestionBankError) {
@@ -147,7 +146,9 @@ class _QuestionBankManagementScreenState
                     child: Text(
                       state.message,
                       textAlign: TextAlign.center,
-                      style: AppTextStyles.bodyMedium.copyWith(color: AppColors.error),
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.error,
+                      ),
                     ),
                   ),
                 );
@@ -156,37 +157,28 @@ class _QuestionBankManagementScreenState
               if (state is QuestionBankLoaded) {
                 return ListView(
                   controller: _scrollController,
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+                  padding: const EdgeInsets.fromLTRB(18, 24, 18, 100),
                   children: [
                     QuestionBankHeader(questionsCount: state.questions.length),
                     const SizedBox(height: 18),
                     if (state.questions.isEmpty)
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 40),
-                          child: Text(
-                            localizations.noQuestionsYet,
-                            style: AppTextStyles.bodyMedium.copyWith(
-                              color: AppColors.textSecondary.withOpacity(.7),
-                            ),
+                      _QuestionBankEmptyState(
+                        message: localizations.noQuestionsYet,
+                      )
+                    else ...[
+                      for (int i = 0; i < state.questions.length; i++)
+                        QuestionCard(
+                          question: state.questions[i],
+                          onDelete: () => _confirmDelete(state.questions[i]),
+                        ),
+                      if (state.hasNextPage)
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          child: Center(
+                            child: CircularProgressIndicator(strokeWidth: 2),
                           ),
                         ),
-                      )
-                    else
-                      ...[
-                        for (int i = 0; i < state.questions.length; i++)
-                          QuestionCard(
-                            question: state.questions[i],
-                            onDelete: () => _confirmDelete(state.questions[i]),
-                          ),
-                        if (state.hasNextPage)
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 16),
-                            child: Center(
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            ),
-                          ),
-                      ],
+                    ],
                   ],
                 );
               }
@@ -195,6 +187,50 @@ class _QuestionBankManagementScreenState
             },
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _QuestionBankEmptyState extends StatelessWidget {
+  final String message;
+
+  const _QuestionBankEmptyState({required this.message});
+
+  @override
+  Widget build(BuildContext context) {
+    final primary = AppColors.primaryOf(context);
+
+    return Container(
+      margin: const EdgeInsets.only(top: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 30),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceOf(context),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: AppColors.borderOf(context)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 66,
+            height: 66,
+            decoration: BoxDecoration(
+              color: primary.withValues(alpha: 0.09),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(Icons.quiz_outlined, color: primary, size: 31),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            message,
+            textAlign: TextAlign.center,
+            style: AppTextStyles.bodyLarge.copyWith(
+              color: AppColors.textPrimaryOf(context),
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -239,9 +275,9 @@ class _AddQuestionSheetState extends State<_AddQuestionSheet> {
 
   OutlineInputBorder _buildBorder(bool hasError) {
     return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(15),
       borderSide: BorderSide(
-        color: hasError ? Colors.red.shade400 : AppColors.border,
+        color: hasError ? Colors.red.shade400 : AppColors.borderOf(context),
         width: hasError ? 1.4 : 1,
       ),
     );
@@ -326,7 +362,10 @@ class _AddQuestionSheetState extends State<_AddQuestionSheet> {
     if (success) {
       Navigator.pop(context, true);
     } else {
-      SnackbarTheme().newSnackBarError(context, localizations.deleteQuestionFailed);
+      SnackbarTheme().newSnackBarError(
+        context,
+        localizations.deleteQuestionFailed,
+      );
     }
   }
 
@@ -335,16 +374,18 @@ class _AddQuestionSheetState extends State<_AddQuestionSheet> {
     final localizations = AppLocalizations.of(context)!;
 
     return Padding(
-      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+      ),
       child: ConstrainedBox(
         constraints: BoxConstraints(
           maxHeight: MediaQuery.of(context).size.height * 0.85,
         ),
         child: Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.fromLTRB(20, 14, 20, 24),
           decoration: BoxDecoration(
-            color: AppColors.surface,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+            color: AppColors.surfaceOf(context),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
           ),
           child: SafeArea(
             top: false,
@@ -359,23 +400,45 @@ class _AddQuestionSheetState extends State<_AddQuestionSheet> {
                       height: 4,
                       margin: const EdgeInsets.only(bottom: 16),
                       decoration: BoxDecoration(
-                        color: AppColors.border,
+                        color: AppColors.borderOf(context),
                         borderRadius: BorderRadius.circular(4),
                       ),
                     ),
                   ),
-                  Text(
-                    localizations.addQuestion,
-                    style: AppTextStyles.titleMedium.copyWith(
-                      color: AppColors.textPrimary,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Row(
+                    children: [
+                      Container(
+                        width: 44,
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryOf(
+                            context,
+                          ).withValues(alpha: 0.09),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: Icon(
+                          Icons.quiz_outlined,
+                          color: AppColors.primaryOf(context),
+                          size: 22,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          localizations.addQuestion,
+                          style: AppTextStyles.titleMedium.copyWith(
+                            color: AppColors.textPrimaryOf(context),
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 18),
                   TextField(
                     controller: _questionController,
                     maxLines: 2,
-                    style: const TextStyle(color: AppColors.textPrimary),
+                    style: TextStyle(color: AppColors.textPrimaryOf(context)),
                     onChanged: (_) {
                       if (_questionHasError) {
                         setState(() => _questionHasError = false);
@@ -383,9 +446,17 @@ class _AddQuestionSheetState extends State<_AddQuestionSheet> {
                     },
                     decoration: InputDecoration(
                       hintText: localizations.questionHint,
-                      hintStyle: TextStyle(color: AppColors.textSecondary.withOpacity(.7)),
+                      hintStyle: TextStyle(
+                        color: AppColors.textSecondaryOf(
+                          context,
+                        ).withValues(alpha: .74),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.help_outline_rounded,
+                        color: AppColors.primaryOf(context),
+                      ),
                       filled: true,
-                      fillColor: AppColors.background,
+                      fillColor: AppColors.backgroundOf(context),
                       border: _buildBorder(_questionHasError),
                       enabledBorder: _buildBorder(_questionHasError),
                       focusedBorder: _buildBorder(_questionHasError),
@@ -395,12 +466,20 @@ class _AddQuestionSheetState extends State<_AddQuestionSheet> {
                   TextField(
                     controller: _noteController,
                     maxLines: 2,
-                    style: const TextStyle(color: AppColors.textPrimary),
+                    style: TextStyle(color: AppColors.textPrimaryOf(context)),
                     decoration: InputDecoration(
                       hintText: 'Note',
-                      hintStyle: TextStyle(color: AppColors.textSecondary.withOpacity(.7)),
+                      hintStyle: TextStyle(
+                        color: AppColors.textSecondaryOf(
+                          context,
+                        ).withValues(alpha: .74),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.notes_rounded,
+                        color: AppColors.primaryOf(context),
+                      ),
                       filled: true,
-                      fillColor: AppColors.background,
+                      fillColor: AppColors.backgroundOf(context),
                       border: _buildBorder(false),
                       enabledBorder: _buildBorder(false),
                       focusedBorder: _buildBorder(false),
@@ -413,14 +492,16 @@ class _AddQuestionSheetState extends State<_AddQuestionSheet> {
                       Text(
                         localizations.choicesLabel,
                         style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.textPrimary,
+                          color: AppColors.textPrimaryOf(context),
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       Text(
                         '${_choiceControllers.length}/$kMaxChoices',
                         style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.textSecondary.withOpacity(.7),
+                          color: AppColors.textSecondaryOf(
+                            context,
+                          ).withValues(alpha: .74),
                           fontSize: 12,
                         ),
                       ),
@@ -436,7 +517,10 @@ class _AddQuestionSheetState extends State<_AddQuestionSheet> {
                             value: _isCorrectFlags[i],
                             activeColor: AppColors.success,
                             side: _correctAnswerError
-                                ? BorderSide(color: Colors.red.shade400, width: 1.6)
+                                ? BorderSide(
+                                    color: Colors.red.shade400,
+                                    width: 1.6,
+                                  )
                                 : null,
                             onChanged: (val) {
                               setState(() {
@@ -450,20 +534,27 @@ class _AddQuestionSheetState extends State<_AddQuestionSheet> {
                           Expanded(
                             child: TextField(
                               controller: _choiceControllers[i],
-                              style: const TextStyle(color: AppColors.textPrimary),
+                              style: TextStyle(
+                                color: AppColors.textPrimaryOf(context),
+                              ),
                               onChanged: (_) {
                                 if (_choiceErrors[i]) {
                                   setState(() => _choiceErrors[i] = false);
                                 }
                               },
                               decoration: InputDecoration(
-                                hintText: '${localizations.choiceHint} ${i + 1}',
+                                hintText:
+                                    '${localizations.choiceHint} ${i + 1}',
                                 hintStyle: TextStyle(
-                                  color: AppColors.textSecondary.withOpacity(.7),
+                                  color: AppColors.textSecondaryOf(
+                                    context,
+                                  ).withValues(alpha: .74),
                                 ),
                                 filled: true,
-                                fillColor: AppColors.background,
-                                contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                                fillColor: AppColors.backgroundOf(context),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                ),
                                 border: _buildBorder(_choiceErrors[i]),
                                 enabledBorder: _buildBorder(_choiceErrors[i]),
                                 focusedBorder: _buildBorder(_choiceErrors[i]),
@@ -490,51 +581,33 @@ class _AddQuestionSheetState extends State<_AddQuestionSheet> {
                       child: OutlinedButton.icon(
                         onPressed: _addChoice,
                         style: OutlinedButton.styleFrom(
-                          side: BorderSide(color: AppColors.border),
+                          side: BorderSide(color: AppColors.borderOf(context)),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                           padding: const EdgeInsets.symmetric(vertical: 12),
                         ),
-                        icon: Icon(Icons.add, size: 18, color: AppColors.primary),
+                        icon: Icon(
+                          Icons.add,
+                          size: 18,
+                          color: AppColors.primaryOf(context),
+                        ),
                         label: Text(
                           localizations.addChoice,
                           style: TextStyle(
-                            color: AppColors.primary,
+                            color: AppColors.primaryOf(context),
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),
                     ),
                   const SizedBox(height: 8),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      onPressed: _isSaving ? null : _save,
-                      child: _isSaving
-                          ? const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation(Colors.white),
-                              ),
-                            )
-                          : Text(
-                              localizations.save,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                    ),
+                  GradientActionButton(
+                    label: localizations.save,
+                    icon: Icons.check_rounded,
+                    isLoading: _isSaving,
+                    expand: true,
+                    onPressed: _isSaving ? null : _save,
                   ),
                 ],
               ),

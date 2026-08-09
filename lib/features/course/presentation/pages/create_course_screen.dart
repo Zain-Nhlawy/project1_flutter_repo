@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
+import 'package:project1/core/presentation/widgets/gradient_action_button.dart';
+import 'package:project1/core/presentation/widgets/gradient_page_app_bar.dart';
 import 'package:project1/features/course/presentation/widgets/course_tags_section.dart';
 import 'package:project1/features/course/upload_photo/presentation/cubit/upload_photo_course_cubit.dart';
 import 'package:project1/features/course/domain/entities/course_entity.dart';
 import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
 import 'package:project1/features/course/presentation/cubit/course_state.dart';
 import 'package:project1/features/course/presentation/widgets/management/course_image_picker.dart';
-import 'package:project1/features/course/presentation/widgets/custom_button.dart';
 import 'package:project1/features/course/presentation/widgets/custom_text_field.dart';
 import 'package:project1/features/course/presentation/widgets/management/visibility_dropdown.dart';
 import 'package:project1/l10n/app_localizations.dart';
@@ -133,104 +135,160 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor: AppColors.background,
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
-            onPressed: () => Navigator.pop(context),
-          ),
-          title: Text(
-            localizations.createCourse,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: AppColors.primaryGradient,
-            ),
-          ),
+        backgroundColor: AppColors.backgroundOf(context),
+        appBar: GradientPageAppBar(
+          title: localizations.createCourse,
+          subtitle: localizations.courseDescription,
+          onBackPressed: () => Navigator.pop(context),
         ),
         body: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 60),
+          padding: const EdgeInsets.fromLTRB(18, 24, 18, 60),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CourseImagePicker(
-                key: ValueKey(selectedImage?.path),
-                selectedImage: selectedImage,
-                onTap: pickImage,
-                onRemove: () {
-                  setState(() {
-                    selectedImage = null;
-                  });
-                },
-                uploadLabel: localizations.uploadImage,
+              _CourseCreationSection(
+                icon: Icons.add_photo_alternate_outlined,
+                title: localizations.uploadImage,
+                child: CourseImagePicker(
+                  key: ValueKey(selectedImage?.path),
+                  selectedImage: selectedImage,
+                  onTap: pickImage,
+                  onRemove: () {
+                    setState(() {
+                      selectedImage = null;
+                    });
+                  },
+                  uploadLabel: localizations.uploadImage,
+                ),
               ),
-              const SizedBox(height: 16),
-
-              CustomTextField(
-                controller: _titleController,
-                hintText: localizations.courseTitle,
-                icon: Icons.title_outlined,
+              const SizedBox(height: 22),
+              _CourseCreationSection(
+                icon: Icons.auto_stories_outlined,
+                title: localizations.courseDetails,
+                child: Column(
+                  children: [
+                    CustomTextField(
+                      controller: _titleController,
+                      hintText: localizations.courseTitle,
+                      icon: Icons.title_outlined,
+                    ),
+                    const SizedBox(height: 14),
+                    CustomTextField(
+                      controller: _descriptionController,
+                      hintText: localizations.courseDescription,
+                      icon: Icons.description_outlined,
+                      maxLines: 4,
+                    ),
+                    const SizedBox(height: 14),
+                    CustomTextField(
+                      controller: _priceController,
+                      hintText: localizations.price,
+                      icon: Icons.attach_money_rounded,
+                      keyboardType: TextInputType.number,
+                    ),
+                    const SizedBox(height: 14),
+                    VisibilityDropdown(
+                      value: visibility,
+                      onChanged: (v) => setState(() => visibility = v),
+                      publicLabel: localizations.public,
+                      privateLabel: localizations.private,
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 12),
-
-              CustomTextField(
-                controller: _descriptionController,
-                hintText: localizations.courseDescription,
-                icon: Icons.description_outlined,
-                maxLines: 4,
+              const SizedBox(height: 22),
+              _CourseCreationSection(
+                icon: Icons.sell_outlined,
+                title: localizations.tags,
+                child: CourseTagsSection(
+                  selectedTagIds: selectedTagIds,
+                  onToggle: toggleTag,
+                  enabled: true,
+                  showTitle: false,
+                ),
               ),
-              const SizedBox(height: 12),
-
-              CustomTextField(
-                controller: _priceController,
-                hintText: localizations.price,
-                icon: Icons.attach_money,
-                keyboardType: TextInputType.number,
-              ),
-              const SizedBox(height: 14),
-
-              VisibilityDropdown(
-                value: visibility,
-                onChanged: (v) => setState(() => visibility = v),
-                publicLabel: localizations.public,
-                privateLabel: localizations.private,
-              ),
-
-              const SizedBox(height: 16),
-
-              CourseTagsSection(
-                selectedTagIds: selectedTagIds,
-                onToggle: toggleTag,
-                enabled: true,
-              ),
-
-              const SizedBox(height: 24),
-
+              const SizedBox(height: 30),
               BlocBuilder<CourseCubit, CourseState>(
                 builder: (context, state) {
                   final loading = state is CourseCreating;
-
-                  return SizedBox(
-                    height: 52,
-                    width: double.infinity,
-                    child: CustomButton(
-                      text: loading
-                          ? "Creating..."
-                          : localizations.createCourse,
-                      gradient: AppColors.buttonGradient,
-                      expand: true,
-                      onPressed: loading ? null : handleCreateCourse,
-                    ),
+                  return GradientActionButton(
+                    label: loading ? "Creating..." : localizations.createCourse,
+                    icon: Icons.add_circle_outline_rounded,
+                    isLoading: loading,
+                    expand: true,
+                    onPressed: loading ? null : handleCreateCourse,
                   );
                 },
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _CourseCreationSection extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final Widget child;
+
+  const _CourseCreationSection({
+    required this.icon,
+    required this.title,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final primary = AppColors.primaryOf(context);
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(17),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceOf(context),
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(
+          color: AppColors.borderOf(context).withValues(alpha: 0.78),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.045),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: primary.withValues(alpha: 0.09),
+                  borderRadius: BorderRadius.circular(13),
+                ),
+                child: Icon(icon, color: primary, size: 20),
+              ),
+              const SizedBox(width: 11),
+              Expanded(
+                child: Text(
+                  title,
+                  style: AppTextStyles.bodyLarge.copyWith(
+                    color: AppColors.textPrimaryOf(context),
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          child,
+        ],
       ),
     );
   }

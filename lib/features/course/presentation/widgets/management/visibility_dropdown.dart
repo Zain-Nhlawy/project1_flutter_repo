@@ -19,18 +19,21 @@ class VisibilityDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final primary = AppColors.primaryOf(context);
+    final surface = AppColors.surfaceOf(context);
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14),
       decoration: BoxDecoration(
-        color: enabled ? AppColors.surface : AppColors.surface.withOpacity(0.5),
-        border: Border.all(color: AppColors.border, width: 1.2),
-        borderRadius: BorderRadius.circular(15),
+        color: enabled ? surface : surface.withValues(alpha: 0.5),
+        border: Border.all(color: AppColors.borderOf(context), width: 1.1),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: enabled
             ? [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.04),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
+                  color: Colors.black.withValues(alpha: 0.035),
+                  blurRadius: 10,
+                  offset: const Offset(0, 3),
                 ),
               ]
             : [],
@@ -41,7 +44,7 @@ class VisibilityDropdown extends StatelessWidget {
           isExpanded: true,
           icon: Icon(
             Icons.keyboard_arrow_down_rounded,
-            color: enabled ? AppColors.primary : AppColors.textSecondary,
+            color: enabled ? primary : AppColors.textSecondaryOf(context),
           ),
           items: [
             DropdownMenuItem(
@@ -52,8 +55,8 @@ class VisibilityDropdown extends StatelessWidget {
                     Icons.public,
                     size: 18,
                     color: enabled
-                        ? AppColors.primary
-                        : AppColors.textSecondary,
+                        ? primary
+                        : AppColors.textSecondaryOf(context),
                   ),
                   const SizedBox(width: 8),
                   Text(publicLabel),
@@ -68,8 +71,8 @@ class VisibilityDropdown extends StatelessWidget {
                     Icons.lock_outline,
                     size: 18,
                     color: enabled
-                        ? AppColors.primary
-                        : AppColors.textSecondary,
+                        ? primary
+                        : AppColors.textSecondaryOf(context),
                   ),
                   const SizedBox(width: 8),
                   Text(privateLabel),

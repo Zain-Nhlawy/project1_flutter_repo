@@ -57,7 +57,7 @@ class DemoMainContent extends StatelessWidget {
           Divider(
             height: 1,
             thickness: 1,
-            color: AppColors.textSecondary.withOpacity(0.08),
+            color: AppColors.textSecondary.withValues(alpha: 0.08),
           ),
           const SizedBox(height: 12),
           Row(
@@ -65,18 +65,18 @@ class DemoMainContent extends StatelessWidget {
               Icon(
                 Icons.person_outline_rounded,
                 size: 13 * textScale,
-                color: AppColors.textSecondary.withOpacity(0.6),
+                color: AppColors.textSecondary.withValues(alpha: 0.6),
               ),
               const SizedBox(width: 4),
               Expanded(
                 child: Text(
-                  localizations.byAuthor(demo.ownerName),
+                  demo.ownerName,
                   style: AppTextStyles.label.copyWith(
-                    color: AppColors.textSecondary.withOpacity(0.7),
+                    color: AppColors.textSecondary.withValues(alpha: 0.7),
                     fontSize: 12 * textScale,
+                    height: 1.25,
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                  softWrap: true,
                 ),
               ),
               const SizedBox(width: 8),
@@ -91,7 +91,7 @@ class DemoMainContent extends StatelessWidget {
                     ? localizations.upgradePlan
                     : localizations.see,
                 onPressed: canOpen
-                    ? () async {  
+                    ? () async {
                         Navigator.push(
                           context,
                           PageRouteBuilder(
@@ -100,7 +100,7 @@ class DemoMainContent extends StatelessWidget {
                             ),
                             pageBuilder:
                                 (context, animation, secondaryAnimation) =>
-                                    DemoMainPage(demo:demo),
+                                    DemoMainPage(demo: demo),
                             transitionsBuilder:
                                 (
                                   context,
@@ -184,22 +184,22 @@ class _ActionButton extends StatelessWidget {
       onTap: onPressed,
       borderRadius: BorderRadius.circular(20),
       child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 8,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           gradient: isDisabled ? null : AppColors.headerGradientOf(context),
-          color: isDisabled ? AppColors.textSecondary.withOpacity(0.15) : null,
+          color: isDisabled
+              ? AppColors.textSecondary.withValues(alpha: 0.15)
+              : null,
           borderRadius: BorderRadius.circular(20),
           boxShadow: isDisabled
               ? []
               : [
                   BoxShadow(
-                    color: (Theme.of(context).brightness == Brightness.dark
-                            ? AppColors.darkSecondary
-                            : AppColors.secondary)
-                        .withOpacity(0.25),
+                    color:
+                        (Theme.of(context).brightness == Brightness.dark
+                                ? AppColors.darkSecondary
+                                : AppColors.secondary)
+                            .withValues(alpha: 0.25),
                     blurRadius: 8,
                     offset: const Offset(0, 3),
                   ),
@@ -212,7 +212,7 @@ class _ActionButton extends StatelessWidget {
               label,
               style: AppTextStyles.label.copyWith(
                 color: isDisabled
-                    ? AppColors.textSecondary.withOpacity(0.6)
+                    ? AppColors.textSecondary.withValues(alpha: 0.6)
                     : AppColors.surface,
                 fontWeight: FontWeight.w600,
                 fontSize: 12 * textScale,
@@ -222,7 +222,7 @@ class _ActionButton extends StatelessWidget {
             Icon(
               icon,
               color: isDisabled
-                  ? AppColors.textSecondary.withOpacity(0.6)
+                  ? AppColors.textSecondary.withValues(alpha: 0.6)
                   : AppColors.surface,
               size: 14 * textScale,
             ),

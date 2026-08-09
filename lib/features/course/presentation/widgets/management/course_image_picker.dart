@@ -43,6 +43,7 @@ class CourseImagePicker extends StatelessWidget {
   Widget build(BuildContext context) {
     final image = _resolveImage();
     final hasImage = image != null;
+    final primary = AppColors.primaryOf(context);
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -51,12 +52,12 @@ class CourseImagePicker extends StatelessWidget {
         height: 190,
         width: double.infinity,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(18),
           gradient: !hasImage
               ? LinearGradient(
                   colors: [
-                    AppColors.primary.withOpacity(0.08),
-                    AppColors.primary.withOpacity(0.03),
+                    primary.withValues(alpha: 0.10),
+                    primary.withValues(alpha: 0.035),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -64,7 +65,7 @@ class CourseImagePicker extends StatelessWidget {
               : null,
           image: image,
           border: Border.all(
-            color: AppColors.primary.withOpacity(enabled ? 0.4 : 0.15),
+            color: primary.withValues(alpha: enabled ? 0.38 : 0.15),
             width: 1.4,
           ),
         ),
@@ -75,11 +76,11 @@ class CourseImagePicker extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.surfaceOf(context),
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.primary.withOpacity(0.15),
+                          color: primary.withValues(alpha: 0.15),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
@@ -88,14 +89,14 @@ class CourseImagePicker extends StatelessWidget {
                     child: Icon(
                       Icons.add_photo_alternate_outlined,
                       size: 34,
-                      color: AppColors.primary,
+                      color: primary,
                     ),
                   ),
                   const SizedBox(height: 12),
                   Text(
                     uploadLabel,
-                    style: const TextStyle(
-                      color: AppColors.textSecondary,
+                    style: TextStyle(
+                      color: AppColors.textPrimaryOf(context),
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -103,7 +104,9 @@ class CourseImagePicker extends StatelessWidget {
                   Text(
                     'PNG / JPG',
                     style: TextStyle(
-                      color: AppColors.textSecondary.withOpacity(0.6),
+                      color: AppColors.textSecondaryOf(
+                        context,
+                      ).withValues(alpha: 0.72),
                       fontSize: 12,
                     ),
                   ),

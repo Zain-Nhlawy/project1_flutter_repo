@@ -189,24 +189,20 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
               builder: (context, state) {
                 if (state is CourseDetailsLoading ||
                     state is CourseAssetLoading) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const _CourseDetailsStatus(isLoading: true);
                 }
 
                 if (state is CourseDetailsError) {
-                  return Center(
-                    child: Text(
-                      state.errors.first,
-                      style: const TextStyle(color: Colors.red),
-                    ),
+                  return _CourseDetailsStatus(
+                    message: state.errors.first,
+                    accentColor: AppColors.error,
                   );
                 }
 
                 if (state is CourseAssetError) {
-                  return Center(
-                    child: Text(
-                      state.errors.first,
-                      style: const TextStyle(color: Colors.red),
-                    ),
+                  return _CourseDetailsStatus(
+                    message: state.errors.first,
+                    accentColor: AppColors.error,
                   );
                 }
 
@@ -226,7 +222,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                         _checkIfAlreadyOwned(widget.userDemoId!, course.id);
                       });
                     }
-                    return const Center(child: CircularProgressIndicator());
+                    return const _CourseDetailsStatus(isLoading: true);
                   }
 
                   final bool isFree = course.price == null || course.price == 0;
@@ -234,7 +230,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                       widget.mode == CourseDetailsMode.library;
 
                   return SingleChildScrollView(
-                    padding: EdgeInsets.only(bottom: showEnrollBar ? 90 : 20),
+                    padding: EdgeInsets.only(bottom: showEnrollBar ? 112 : 36),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -243,9 +239,11 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                           totalLessons: course.totalLessons,
                           totalDurationSeconds: course.totalDuration,
                         ),
-                        const SizedBox(height: 30),
+                        const SizedBox(height: 26),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          padding: const EdgeInsetsDirectional.symmetric(
+                            horizontal: 20,
+                          ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -255,41 +253,23 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                   Expanded(
                                     child: Text(
                                       course.title,
-                                      style: const TextStyle(
+                                      style: AppTextStyles.h2.copyWith(
+                                        color: AppColors.textPrimaryOf(context),
                                         fontSize: 26,
-                                        fontWeight: FontWeight.bold,
+                                        height: 1.2,
+                                        fontWeight: FontWeight.w800,
+                                        letterSpacing: -0.45,
                                       ),
                                     ),
                                   ),
                                   if (isFree) ...[
                                     const SizedBox(width: 10),
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 12,
-                                        vertical: 6,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Colors.green.shade50,
-                                        borderRadius: BorderRadius.circular(20),
-                                        border: Border.all(
-                                          color: Colors.green.shade400,
-                                        ),
-                                      ),
-                                      child: Text(
-                                        localizations.free,
-                                        style: TextStyle(
-                                          color: Colors.green.shade700,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ),
+                                    _FreeCourseBadge(label: localizations.free),
                                   ],
                                 ],
                               ),
-                              const SizedBox(height: 15),
-
-                              if (course.tags.isNotEmpty)
+                              if (course.tags.isNotEmpty) ...[
+                                const SizedBox(height: 16),
                                 Wrap(
                                   spacing: 8,
                                   runSpacing: 8,
@@ -297,103 +277,56 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                       .map((tag) => CourseTag(text: tag))
                                       .toList(),
                                 ),
-
-                              const SizedBox(height: 20),
-
+                              ],
+                              if ((course.demo?.name ?? '')
+                                  .trim()
+                                  .isNotEmpty) ...[
+                                const SizedBox(height: 18),
+                                _CourseProducerCard(
+                                  label: localizations.producedBy,
+                                  name: course.demo!.name,
+                                ),
+                              ],
+                              const SizedBox(height: 28),
+                              _CourseDetailsSectionTitle(
+                                icon: Icons.subject_rounded,
+                                title: localizations.aboutThisCourse,
+                              ),
+                              const SizedBox(height: 12),
+                              _CourseDescriptionCard(
+                                description: course.description,
+                              ),
+                              const SizedBox(height: 28),
+                              _CourseDetailsSectionTitle(
+                                icon: Icons.account_tree_outlined,
+                                title: localizations.courseContent,
+                              ),
+                              const SizedBox(height: 14),
                               Container(
-                                padding: const EdgeInsets.all(16),
+                                height: 480,
+                                clipBehavior: Clip.antiAlias,
                                 decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.surface,
-                                  borderRadius: BorderRadius.circular(16),
+                                  color: AppColors.surfaceOf(context),
+                                  borderRadius: BorderRadius.circular(22),
                                   border: Border.all(
-                                    color: Colors.grey.withValues(alpha: 0.2),
+                                    color: AppColors.borderOf(
+                                      context,
+                                    ).withValues(alpha: 0.82),
                                   ),
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.black.withValues(
-                                        alpha: 0.05,
+                                        alpha:
+                                            Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? 0.18
+                                            : 0.05,
                                       ),
-                                      blurRadius: 10,
-                                      offset: const Offset(0, 4),
+                                      blurRadius: 16,
+                                      offset: const Offset(0, 6),
                                     ),
                                   ],
                                 ),
-                                child: Row(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundColor: Theme.of(
-                                        context,
-                                      ).primaryColor.withValues(alpha: 0.1),
-                                      child: Icon(
-                                        Icons.business,
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 15),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          localizations.producedBy,
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                        Text(
-                                          course.demo?.name ?? '',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Theme.of(
-                                              context,
-                                            ).primaryColor,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                              const SizedBox(height: 30),
-
-                              Text(
-                                localizations.aboutThisCourse,
-                                style: TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                              ),
-
-                              const SizedBox(height: 12),
-
-                              Text(
-                                course.description,
-                                style: TextStyle(
-                                  color: Colors.grey[700],
-                                  height: 1.6,
-                                  fontSize: 16,
-                                ),
-                              ),
-
-                              const SizedBox(height: 30),
-
-                              Text(
-                                localizations.courseContent,
-                                style: TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                              ),
-
-                              const SizedBox(height: 15),
-
-                              SizedBox(
-                                height: 400,
                                 child: BlocProvider(
                                   create: (_) => getIt<SectionCubit>(),
                                   child: CourseTabs(
@@ -429,7 +362,9 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                 final course = state.course;
                 return FloatingActionButton(
                   heroTag: 'rag_fab',
-                  backgroundColor: AppColors.primary,
+                  tooltip: localizations.aiAssistantTitle,
+                  backgroundColor: AppColors.primaryOf(context),
+                  elevation: 5,
                   onPressed: () => _openRagScreen(course.id),
                   child: const Icon(Icons.auto_awesome, color: Colors.white),
                 );
@@ -455,14 +390,23 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
           final bool isFree = course.price == null || course.price == 0;
 
           return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            padding: const EdgeInsetsDirectional.fromSTEB(20, 12, 20, 10),
             decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor,
+              color: AppColors.surfaceOf(context),
+              border: Border(
+                top: BorderSide(
+                  color: AppColors.borderOf(context).withValues(alpha: 0.76),
+                ),
+              ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.08),
-                  blurRadius: 10,
-                  offset: const Offset(0, -3),
+                  color: Colors.black.withValues(
+                    alpha: Theme.of(context).brightness == Brightness.dark
+                        ? 0.26
+                        : 0.09,
+                  ),
+                  blurRadius: 18,
+                  offset: const Offset(0, -6),
                 ),
               ],
             ),
@@ -477,16 +421,18 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                         vertical: 10,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.green.shade50,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.green.shade400),
+                        color: AppColors.success.withValues(alpha: 0.10),
+                        borderRadius: BorderRadius.circular(13),
+                        border: Border.all(
+                          color: AppColors.success.withValues(alpha: 0.24),
+                        ),
                       ),
                       child: Text(
                         localizations.free,
-                        style: TextStyle(
+                        style: AppTextStyles.titleMedium.copyWith(
                           fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green.shade700,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.success,
                         ),
                       ),
                     )
@@ -495,8 +441,8 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                       '\$${course.price!.toStringAsFixed(2)}',
                       style: TextStyle(
                         fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.primaryOf(context),
                       ),
                     ),
                   const SizedBox(width: 16),
@@ -515,7 +461,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                   Colors.grey.shade500,
                                 ],
                               )
-                            : AppColors.buttonGradient,
+                            : AppColors.buttonGradientOf(context),
                         expand: true,
                         onPressed: _alreadyOwned
                             ? null
@@ -528,6 +474,261 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _CourseDetailsStatus extends StatelessWidget {
+  final bool isLoading;
+  final String? message;
+  final Color? accentColor;
+
+  const _CourseDetailsStatus({
+    this.isLoading = false,
+    this.message,
+    this.accentColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final color = accentColor ?? AppColors.primaryOf(context);
+
+    return Center(
+      child: Container(
+        margin: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(22),
+        constraints: const BoxConstraints(minWidth: 150, minHeight: 112),
+        decoration: BoxDecoration(
+          color: AppColors.surfaceOf(context),
+          borderRadius: BorderRadius.circular(22),
+          border: Border.all(
+            color: AppColors.borderOf(context).withValues(alpha: 0.78),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.06),
+              blurRadius: 16,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        child: isLoading
+            ? Center(
+                child: SizedBox(
+                  width: 28,
+                  height: 28,
+                  child: CircularProgressIndicator(
+                    color: color,
+                    strokeWidth: 2.6,
+                  ),
+                ),
+              )
+            : Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 46,
+                    height: 46,
+                    decoration: BoxDecoration(
+                      color: color.withValues(alpha: 0.09),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Icon(
+                      Icons.error_outline_rounded,
+                      color: color,
+                      size: 23,
+                    ),
+                  ),
+                  const SizedBox(width: 14),
+                  Flexible(
+                    child: Text(
+                      message ?? '',
+                      textAlign: TextAlign.start,
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.textSecondaryOf(context),
+                        fontWeight: FontWeight.w600,
+                        height: 1.4,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+      ),
+    );
+  }
+}
+
+class _FreeCourseBadge extends StatelessWidget {
+  final String label;
+
+  const _FreeCourseBadge({required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 7),
+      decoration: BoxDecoration(
+        color: AppColors.success.withValues(alpha: 0.10),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.success.withValues(alpha: 0.22)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(
+            Icons.check_circle_outline_rounded,
+            color: AppColors.success,
+            size: 15,
+          ),
+          const SizedBox(width: 5),
+          Text(
+            label,
+            style: AppTextStyles.label.copyWith(
+              color: AppColors.success,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _CourseProducerCard extends StatelessWidget {
+  final String label;
+  final String name;
+
+  const _CourseProducerCard({required this.label, required this.name});
+
+  @override
+  Widget build(BuildContext context) {
+    final primary = AppColors.primaryOf(context);
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceOf(context),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: AppColors.borderOf(context).withValues(alpha: 0.78),
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              gradient: AppColors.buttonGradientOf(context),
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: primary.withValues(alpha: 0.18),
+                  blurRadius: 10,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
+            child: const Icon(
+              Icons.business_rounded,
+              color: Colors.white,
+              size: 22,
+            ),
+          ),
+          const SizedBox(width: 13),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: AppTextStyles.caption.copyWith(
+                    color: AppColors.textSecondaryOf(context),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  name,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.bodyLarge.copyWith(
+                    color: AppColors.textPrimaryOf(context),
+                    fontWeight: FontWeight.w800,
+                    height: 1.25,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _CourseDetailsSectionTitle extends StatelessWidget {
+  final IconData icon;
+  final String title;
+
+  const _CourseDetailsSectionTitle({required this.icon, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: AppColors.primaryOf(context).withValues(alpha: 0.09),
+            borderRadius: BorderRadius.circular(13),
+          ),
+          child: Icon(icon, color: AppColors.primaryOf(context), size: 20),
+        ),
+        const SizedBox(width: 11),
+        Expanded(
+          child: Text(
+            title,
+            style: AppTextStyles.titleLarge.copyWith(
+              color: AppColors.textPrimaryOf(context),
+              fontSize: 20,
+              fontWeight: FontWeight.w800,
+              letterSpacing: -0.25,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _CourseDescriptionCard extends StatelessWidget {
+  final String description;
+
+  const _CourseDescriptionCard({required this.description});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(17),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceOf(context),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: AppColors.borderOf(context).withValues(alpha: 0.78),
+        ),
+      ),
+      child: Text(
+        description,
+        style: AppTextStyles.bodyLarge.copyWith(
+          color: AppColors.textSecondaryOf(context),
+          fontSize: 15,
+          height: 1.65,
+        ),
       ),
     );
   }

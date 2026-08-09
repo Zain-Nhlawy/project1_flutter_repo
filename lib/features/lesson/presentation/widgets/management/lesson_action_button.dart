@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project1/config/theme/app_colors.dart';
-import 'package:project1/features/lesson/presentation/widgets/custom_button.dart';
+import 'package:project1/core/presentation/widgets/gradient_action_button.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class LessonActionButton extends StatelessWidget {
@@ -19,10 +18,11 @@ class LessonActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
 
-    return CustomButton(
-      text: loading ? "..." : (label ?? l.createLesson),
+    return GradientActionButton(
+      label: label ?? l.createLesson,
+      icon: Icons.add_circle_outline_rounded,
+      isLoading: loading,
       expand: true,
-      gradient: AppColors.buttonGradient,
       onPressed: onPressed,
     );
   }

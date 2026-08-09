@@ -14,21 +14,61 @@ class SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textScale = MediaQuery.textScalerOf(context).scale(1);
     final localizations = AppLocalizations.of(context)!;
+    final primary = AppColors.primaryOf(context);
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          title,
-          style: AppTextStyles.h3.copyWith(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.bold,
-            fontSize: 20 * textScale,
+        Expanded(
+          child: Row(
+            children: [
+              Container(
+                width: 4,
+                height: 24,
+                decoration: BoxDecoration(
+                  gradient: AppColors.buttonGradientOf(context),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Flexible(
+                child: Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.h3.copyWith(
+                    color: AppColors.textPrimaryOf(context),
+                    fontWeight: FontWeight.w700,
+                    fontSize: 20,
+                    letterSpacing: -0.2,
+                  ),
+                ),
+              ),
+              if (demoList.isNotEmpty) ...[
+                const SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: primary.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    demoList.length.toString(),
+                    style: AppTextStyles.caption.copyWith(
+                      color: primary,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ],
+            ],
           ),
         ),
-        TextButton(
+        const SizedBox(width: 12),
+        TextButton.icon(
           onPressed: () {
             Navigator.push(
               context,
@@ -47,12 +87,23 @@ class SectionHeader extends StatelessWidget {
               ),
             );
           },
-          child: Text(
+          style: TextButton.styleFrom(
+            foregroundColor: primary,
+            backgroundColor: primary.withValues(alpha: 0.07),
+            minimumSize: Size.zero,
+            padding: const EdgeInsetsDirectional.fromSTEB(11, 8, 9, 8),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+          iconAlignment: IconAlignment.end,
+          icon: const Icon(Icons.arrow_forward_rounded, size: 16),
+          label: Text(
             localizations.seeAll,
-            style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.primary,
-              fontWeight: FontWeight.w600,
-              fontSize: 14 * textScale,
+            style: AppTextStyles.label.copyWith(
+              color: primary,
+              fontWeight: FontWeight.w700,
             ),
           ),
         ),

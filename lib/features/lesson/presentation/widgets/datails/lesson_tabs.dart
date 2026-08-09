@@ -68,18 +68,62 @@ class _LessonTabsState extends State<LessonTabs> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    final primary = AppColors.primaryOf(context);
+
     return DefaultTabController(
       length: 2,
       child: Column(
         children: [
-          const TabBar(
-            indicatorSize: TabBarIndicatorSize.tab,
-            tabs: [
-              Tab(text: "Q&A"),
-              Tab(text: "Attachments"),
-            ],
+          Container(
+            margin: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: AppColors.backgroundOf(context),
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(
+                color: AppColors.borderOf(context).withValues(alpha: 0.70),
+              ),
+            ),
+            child: TabBar(
+              dividerColor: Colors.transparent,
+              indicatorSize: TabBarIndicatorSize.tab,
+              indicator: BoxDecoration(
+                gradient: AppColors.buttonGradientOf(context),
+                borderRadius: BorderRadius.circular(11),
+                boxShadow: [
+                  BoxShadow(
+                    color: primary.withValues(alpha: 0.18),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              labelColor: Colors.white,
+              unselectedLabelColor: AppColors.textSecondaryOf(context),
+              labelStyle: AppTextStyles.label.copyWith(
+                fontWeight: FontWeight.w800,
+              ),
+              unselectedLabelStyle: AppTextStyles.label.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+              tabs: [
+                Tab(
+                  height: 42,
+                  icon: const Icon(Icons.forum_outlined, size: 18),
+                  text: localizations.questionsCount,
+                  iconMargin: const EdgeInsets.only(bottom: 2),
+                ),
+                Tab(
+                  height: 42,
+                  icon: const Icon(Icons.attach_file_rounded, size: 18),
+                  text: localizations.lessonAttachments,
+                  iconMargin: const EdgeInsets.only(bottom: 2),
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 4),
           Expanded(
             child: TabBarView(
               children: [
@@ -89,7 +133,10 @@ class _LessonTabsState extends State<LessonTabs> {
                   loading: _loadingQuestions,
                   onPostQuestion: _postQuestion,
                 ),
-                AttachmentsTab(attachments: _attachments, loading: _loadingAttachments),
+                _LessonAttachmentsTab(
+                  attachments: _attachments,
+                  loading: _loadingAttachments,
+                ),
               ],
             ),
           ),
@@ -117,23 +164,19 @@ class _QuestionsTab extends StatelessWidget {
     final localizations = AppLocalizations.of(context)!;
 
     if (loading) {
-      return const Center(child: CircularProgressIndicator());
+      return const _LessonTabStatus(isLoading: true);
     }
 
     return Column(
       children: [
         Expanded(
           child: questions.isEmpty
-              ? Center(
-                  child: Text(
-                    localizations.noQuestionsYet,
-                    style: AppTextStyles.bodyMedium.copyWith(
-                      fontFamily: AppTextStyles.fontFamily,
-                      color: AppColors.textSecondaryOf(context),
-                    ),
-                  ),
+              ? _LessonTabStatus(
+                  icon: Icons.chat_bubble_outline_rounded,
+                  message: localizations.noQuestionsYet,
                 )
               : ListView.builder(
+                  padding: const EdgeInsets.fromLTRB(10, 8, 10, 12),
                   physics: const BouncingScrollPhysics(),
                   itemCount: questions.length,
                   itemBuilder: (context, index) {
@@ -155,6 +198,91 @@ class _QuestionsTab extends StatelessWidget {
           onSubmit: onPostQuestion,
         ),
       ],
+    );
+  }
+}
+
+class _LessonAttachmentsTab extends StatelessWidget {
+  final List<LessonAttachmentEntity> attachments;
+  final bool loading;
+
+  const _LessonAttachmentsTab({
+    required this.attachments,
+    required this.loading,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (loading) {
+      return const _LessonTabStatus(isLoading: true);
+    }
+
+    if (attachments.isEmpty) {
+      return _LessonTabStatus(
+        icon: Icons.attach_file_rounded,
+        message: AppLocalizations.of(context)!.noAttachments,
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10, 8, 10, 12),
+      child: AttachmentsTab(attachments: attachments, loading: false),
+    );
+  }
+}
+
+class _LessonTabStatus extends StatelessWidget {
+  final bool isLoading;
+  final IconData icon;
+  final String? message;
+
+  const _LessonTabStatus({
+    this.isLoading = false,
+    this.icon = Icons.info_outline_rounded,
+    this.message,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final primary = AppColors.primaryOf(context);
+
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: isLoading
+            ? SizedBox(
+                width: 26,
+                height: 26,
+                child: CircularProgressIndicator(
+                  color: primary,
+                  strokeWidth: 2.5,
+                ),
+              )
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 54,
+                    height: 54,
+                    decoration: BoxDecoration(
+                      color: primary.withValues(alpha: 0.08),
+                      borderRadius: BorderRadius.circular(17),
+                    ),
+                    child: Icon(icon, color: primary, size: 25),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    message ?? '',
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.textSecondaryOf(context),
+                      fontWeight: FontWeight.w600,
+                      height: 1.4,
+                    ),
+                  ),
+                ],
+              ),
+      ),
     );
   }
 }
