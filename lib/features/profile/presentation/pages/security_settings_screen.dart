@@ -205,10 +205,10 @@ class _SecurityHeader extends StatelessWidget {
       ),
       child: Padding(
         padding: EdgeInsets.only(
-          top: topPadding > 0 ? topPadding + 12 : 36,
+          top: topPadding > 0 ? topPadding + 8 : 32,
           left: 20,
           right: 20,
-          bottom: 24,
+          bottom: 18,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -222,10 +222,16 @@ class _SecurityHeader extends StatelessWidget {
                   ),
                   child: IconButton(
                     onPressed: () => Navigator.of(context).pop(),
+                    visualDensity: VisualDensity.compact,
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints.tightFor(
+                      width: 38,
+                      height: 38,
+                    ),
                     icon: const Icon(
                       Icons.arrow_back_rounded,
                       color: AppColors.surface,
-                      size: 20,
+                      size: 17,
                     ),
                   ),
                 ),
@@ -236,18 +242,19 @@ class _SecurityHeader extends StatelessWidget {
                     style: AppTextStyles.h3.copyWith(
                       color: AppColors.surface,
                       fontWeight: FontWeight.bold,
+                      fontSize: 21,
                       letterSpacing: -0.3,
                     ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 10),
             Text(
               subtitle,
               style: AppTextStyles.bodyMedium.copyWith(
                 color: AppColors.surface.withValues(alpha: 0.85),
-                fontSize: 13.5,
+                fontSize: 13,
               ),
             ),
           ],

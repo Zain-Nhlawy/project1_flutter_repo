@@ -61,6 +61,8 @@ class HeaderWidget extends StatelessWidget {
                 _GhostIconButton(
                   icon: Icons.arrow_back_rounded,
                   textScale: textScale,
+                  iconSize: 17,
+                  buttonSize: 38,
                   onTap: () => Navigator.of(context).pop(),
                 ),
                 Row(
@@ -106,6 +108,8 @@ class HeaderWidget extends StatelessWidget {
                     _GhostIconButton(
                       icon: Icons.notifications_none_rounded,
                       textScale: textScale,
+                      iconSize: 17,
+                      buttonSize: 38,
                       onTap: () {
                         Navigator.push(
                           context,
@@ -185,7 +189,9 @@ class HeaderWidget extends StatelessWidget {
                             child: Text(
                               l10n.byAuthor(demo.ownerName),
                               style: AppTextStyles.bodyMedium.copyWith(
-                                color: AppColors.surface.withValues(alpha: 0.85),
+                                color: AppColors.surface.withValues(
+                                  alpha: 0.85,
+                                ),
                                 fontSize: 13,
                               ),
                               maxLines: 1,
@@ -295,23 +301,21 @@ class HeaderWidget extends StatelessWidget {
                                   milliseconds: 300,
                                 ),
                                 pageBuilder:
+                                    (context, animation, secondaryAnimation) =>
+                                        UpgradePlanScreen(demoId: demo.id!),
+                                transitionsBuilder:
                                     (
                                       context,
                                       animation,
                                       secondaryAnimation,
-                                    ) => UpgradePlanScreen(demoId: demo.id!),
-                                transitionsBuilder: (
-                                  context,
-                                  animation,
-                                  secondaryAnimation,
-                                  child,
-                                ) {
-                                  return FadeThroughTransition(
-                                    animation: animation,
-                                    secondaryAnimation: secondaryAnimation,
-                                    child: child,
-                                  );
-                                },
+                                      child,
+                                    ) {
+                                      return FadeThroughTransition(
+                                        animation: animation,
+                                        secondaryAnimation: secondaryAnimation,
+                                        child: child,
+                                      );
+                                    },
                               ),
                             );
                           },
@@ -358,33 +362,36 @@ class HeaderWidget extends StatelessWidget {
 class _GhostIconButton extends StatelessWidget {
   final IconData icon;
   final double textScale;
+  final double iconSize;
+  final double buttonSize;
   final VoidCallback onTap;
 
   const _GhostIconButton({
     required this.icon,
     required this.textScale,
+    this.iconSize = 20,
+    this.buttonSize = 44,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: buttonSize,
+      height: buttonSize,
       decoration: BoxDecoration(
         color: AppColors.surface.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(12),
       ),
       child: IconButton(
         onPressed: onTap,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 12,
+        visualDensity: VisualDensity.compact,
+        padding: EdgeInsets.zero,
+        constraints: BoxConstraints.tightFor(
+          width: buttonSize,
+          height: buttonSize,
         ),
-        constraints: const BoxConstraints(),
-        icon: Icon(
-          icon,
-          color: AppColors.surface,
-          size: 20 * textScale,
-        ),
+        icon: Icon(icon, color: AppColors.surface, size: iconSize * textScale),
       ),
     );
   }
