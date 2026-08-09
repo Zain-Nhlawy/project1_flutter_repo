@@ -41,25 +41,22 @@ class ChatMessageBubble extends StatelessWidget {
       child: Directionality(
         textDirection: TextDirection.ltr,
         child: Row(
-          mainAxisAlignment:
-              isMine ? MainAxisAlignment.end : MainAxisAlignment.start,
+          mainAxisAlignment: isMine
+              ? MainAxisAlignment.end
+              : MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            if (!isMine) ...[
-              _buildAvatar(context),
-              const SizedBox(width: 8),
-            ],
+            if (!isMine) ...[_buildAvatar(context), const SizedBox(width: 8)],
             Flexible(
               child: GestureDetector(
                 onLongPress: () => _showOptionsSheet(context),
                 child: Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    gradient:
-                        isMine ? AppColors.headerGradientOf(context) : null,
-                    color: isMine
-                        ? null
-                        : AppColors.surfaceOf(context),
+                    gradient: isMine
+                        ? AppColors.headerGradientOf(context)
+                        : null,
+                    color: isMine ? null : AppColors.surfaceOf(context),
                     borderRadius: BorderRadius.only(
                       topLeft: const Radius.circular(16),
                       topRight: const Radius.circular(16),
@@ -183,8 +180,9 @@ class ChatMessageBubble extends StatelessWidget {
         CircleAvatar(
           radius: 16,
           backgroundColor: AppColors.secondary.withValues(alpha: 0.2),
-          backgroundImage:
-              imagePath != null && imagePath.isNotEmpty ? NetworkImage(imagePath) : null,
+          backgroundImage: imagePath != null && imagePath.isNotEmpty
+              ? NetworkImage(imagePath)
+              : null,
           child: imagePath == null || imagePath.isEmpty
               ? Text(
                   initials,
@@ -291,7 +289,10 @@ class ChatMessageBubble extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.delete_outline, color: AppColors.error),
+                  leading: const Icon(
+                    Icons.delete_outline,
+                    color: AppColors.error,
+                  ),
                   title: Text(
                     localizations?.chatDelete ?? 'Delete',
                     style: const TextStyle(color: AppColors.error),
@@ -309,4 +310,3 @@ class ChatMessageBubble extends StatelessWidget {
     );
   }
 }
-

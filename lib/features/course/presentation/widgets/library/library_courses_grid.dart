@@ -18,33 +18,45 @@ class LibraryCoursesGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.fromLTRB(12, 12, 12, 40),
-      itemCount: courses.length,
-      itemBuilder: (context, index) {
-        final course = courses[index];
-        return CourseCard(
-          id: course.id,
-          title: course.title,
-          companyName: course.demo?.name ?? "",
-          imageUrl: course.imagePath,
-          price: course.price,
-          description: course.description,
-          tags: course.tags,
-          visibility: course.visibility,
-          mode: CourseCardMode.library,
-          onSeeMore: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => BlocProvider(
-                  create: (_) => getIt<CourseCubit>(),
-                  child: CourseDetailsScreen.fromLibrary(
-                    courseId: course.id,
-                    userDemoId: userDemoId,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final horizontalPadding = constraints.maxWidth >= 700 ? 56.0 : 12.0;
+
+        return ListView.builder(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          padding: EdgeInsets.fromLTRB(
+            horizontalPadding,
+            10,
+            horizontalPadding,
+            40,
+          ),
+          itemCount: courses.length,
+          itemBuilder: (context, index) {
+            final course = courses[index];
+            return CourseCard(
+              id: course.id,
+              title: course.title,
+              companyName: course.demo?.name ?? "",
+              imageUrl: course.imagePath,
+              price: course.price,
+              description: course.description,
+              tags: course.tags,
+              visibility: course.visibility,
+              mode: CourseCardMode.library,
+              onSeeMore: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => BlocProvider(
+                      create: (_) => getIt<CourseCubit>(),
+                      child: CourseDetailsScreen.fromLibrary(
+                        courseId: course.id,
+                        userDemoId: userDemoId,
+                      ),
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
             );
           },
         );

@@ -3,12 +3,7 @@ import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/features/course/presentation/widgets/custom_button.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
-enum CourseCardMode {
-  ongoing,
-  demoView,
-  demoSelection,
-  library,
-}
+enum CourseCardMode { ongoing, demoView, demoSelection, library }
 
 class CourseCard extends StatelessWidget {
   final String id;
@@ -26,7 +21,6 @@ class CourseCard extends StatelessWidget {
   final VoidCallback? onSeeMore;
   final VoidCallback? onSelect;
   final VoidCallback? onBuy;
-  
 
   const CourseCard({
     super.key,
@@ -75,6 +69,22 @@ class CourseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
+    final isLibraryMode = mode == CourseCardMode.library;
+    final surfaceColor = isLibraryMode
+        ? AppColors.surfaceOf(context)
+        : AppColors.surface;
+    final primaryColor = isLibraryMode
+        ? AppColors.primaryOf(context)
+        : AppColors.primary;
+    final textPrimaryColor = isLibraryMode
+        ? AppColors.textPrimaryOf(context)
+        : AppColors.textPrimary;
+    final textSecondaryColor = isLibraryMode
+        ? AppColors.textSecondaryOf(context)
+        : AppColors.textSecondary;
+    final buttonGradient = isLibraryMode
+        ? AppColors.buttonGradientOf(context)
+        : AppColors.buttonGradient;
     final displayDescription = description.length > 80
         ? "${description.substring(0, 80)}..."
         : description;
@@ -87,11 +97,18 @@ class CourseCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: surfaceColor,
         borderRadius: BorderRadius.circular(20),
+        border: isLibraryMode
+            ? Border.all(color: AppColors.borderOf(context))
+            : null,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(.05),
+            color: Colors.black.withValues(
+              alpha: Theme.of(context).brightness == Brightness.dark
+                  ? 0.18
+                  : 0.05,
+            ),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -119,20 +136,20 @@ class CourseCard extends StatelessWidget {
                             imageUrl,
                             fit: BoxFit.cover,
                             errorBuilder: (_, __, ___) {
-                              return const Center(
+                              return Center(
                                 child: Icon(
                                   Icons.image_not_supported_outlined,
                                   size: 50,
-                                  color: AppColors.textSecondary,
+                                  color: textSecondaryColor,
                                 ),
                               );
                             },
                           )
-                        : const Center(
+                        : Center(
                             child: Icon(
                               Icons.image_outlined,
                               size: 50,
-                              color: AppColors.textSecondary,
+                              color: textSecondaryColor,
                             ),
                           ),
                     Container(
@@ -142,7 +159,7 @@ class CourseCard extends StatelessWidget {
                           end: Alignment.bottomCenter,
                           colors: [
                             Colors.transparent,
-                            Colors.black.withOpacity(.25),
+                            Colors.black.withValues(alpha: 0.25),
                           ],
                         ),
                       ),
@@ -157,7 +174,7 @@ class CourseCard extends StatelessWidget {
                             vertical: 6,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(.9),
+                            color: Colors.white.withValues(alpha: 0.9),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Row(
@@ -198,7 +215,7 @@ class CourseCard extends StatelessWidget {
                                     Colors.green.shade700,
                                   ],
                                 )
-                              : AppColors.buttonGradient,
+                              : buttonGradient,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
@@ -223,10 +240,10 @@ class CourseCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.primary,
+                      color: primaryColor,
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -236,24 +253,24 @@ class CourseCard extends StatelessWidget {
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(.08),
+                      color: primaryColor.withValues(alpha: 0.08),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.business_rounded,
                           size: 15,
-                          color: AppColors.primary,
+                          color: primaryColor,
                         ),
                         const SizedBox(width: 6),
                         Text(
                           companyName,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.primary,
+                            color: primaryColor,
                           ),
                         ),
                       ],
@@ -265,7 +282,7 @@ class CourseCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 13,
                       height: 1.5,
-                      color: AppColors.textPrimary.withOpacity(.75),
+                      color: textPrimaryColor.withValues(alpha: 0.75),
                     ),
                   ),
                   if (tags.isNotEmpty) ...[
@@ -281,17 +298,19 @@ class CourseCard extends StatelessWidget {
                           ),
                           decoration: BoxDecoration(
                             border: Border.all(
-                              color: AppColors.primary,
+                              color: isLibraryMode
+                                  ? AppColors.borderOf(context)
+                                  : AppColors.primary,
                               width: 1,
                             ),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
                             tag,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
-                              color: AppColors.primary,
+                              color: primaryColor,
                             ),
                           ),
                         );
@@ -312,7 +331,7 @@ class CourseCard extends StatelessWidget {
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(.1),
+                                  color: Colors.black.withValues(alpha: 0.1),
                                   blurRadius: 6,
                                 ),
                               ],
@@ -335,7 +354,7 @@ class CourseCard extends StatelessWidget {
                           text: _buttonText(localizations),
                           height: 38,
                           onPressed: _buttonAction(),
-                          gradient: AppColors.buttonGradient,
+                          gradient: buttonGradient,
                           expand: false,
                         ),
                       ),
