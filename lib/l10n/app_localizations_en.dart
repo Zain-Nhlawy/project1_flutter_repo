@@ -1551,4 +1551,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get yourAnswerLabel => 'Your Answer';
+
+  @override
+  String get hideReplies => 'Hide replies';
+
+  @override
+  String repliesCount(Object count) {
+    return '$count Replies';
+  }
+
+  @override
+  String get askAQuestion => 'Ask a question';
+
+  @override
+  String get viewReplies => 'View replies';
+
+  @override
+  String get answers => 'answers';
+
+  @override
+  String get noAnswersYet => 'No answers yet';
 }

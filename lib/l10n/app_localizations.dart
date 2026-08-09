@@ -3049,6 +3049,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your Answer'**
   String get yourAnswerLabel;
+
+  /// No description provided for @hideReplies.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide replies'**
+  String get hideReplies;
+
+  /// No description provided for @repliesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Replies'**
+  String repliesCount(Object count);
+
+  /// No description provided for @askAQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask a question'**
+  String get askAQuestion;
+
+  /// No description provided for @viewReplies.
+  ///
+  /// In en, this message translates to:
+  /// **'View replies'**
+  String get viewReplies;
+
+  /// No description provided for @answers.
+  ///
+  /// In en, this message translates to:
+  /// **'answers'**
+  String get answers;
+
+  /// No description provided for @noAnswersYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No answers yet'**
+  String get noAnswersYet;
 }
 
 class _AppLocalizationsDelegate

@@ -1541,4 +1541,24 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get yourAnswerLabel => 'إجابتك';
+
+  @override
+  String get hideReplies => 'إخفاء الردود';
+
+  @override
+  String repliesCount(Object count) {
+    return '$count ردود';
+  }
+
+  @override
+  String get askAQuestion => 'اطرح سؤالاً';
+
+  @override
+  String get viewReplies => 'عرض الردود';
+
+  @override
+  String get answers => 'إجابات';
+
+  @override
+  String get noAnswersYet => 'لا توجد إجابات بعد';
 }
