@@ -599,6 +599,13 @@
 "done": "Done",
 "questionNote": "Note",
 "correctAnswerLabel": "Correct Answer",
-"yourAnswerLabel": "Your Answer"
+"yourAnswerLabel": "Your Answer",
+"hideReplies": "Hide Replies",
+"repliesCount": "{count} Replies",
+"askAQuestion":"Ask a question",
+"hideReplies": "Hide replies",
+"viewReplies": "View replies",
+"answers": "answers",
+"noAnswersYet": "No answers yet"
 
 }

@@ -568,6 +568,14 @@
 "done": "إنهاء",
 "questionNote": "ملاحظة",
 "correctAnswerLabel": "الجواب الصحيح",
-"yourAnswerLabel": "إجابتك"
+"yourAnswerLabel": "إجابتك",
+"hideReplies": "إخفاء الردود",
+"repliesCount": "{count} ردود",
+"askAQuestion":"اطرح سؤالاً",
+"hideReplies": "إخفاء الردود",
+"viewReplies": "عرض الردود",
+"answers": "إجابات",
+"noAnswersYet": "لا توجد إجابات بعد"
+
 
 }

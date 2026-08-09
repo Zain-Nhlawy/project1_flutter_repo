@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project1/features/q&a/presentation/widgets/qa_card.dart';
+import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/features/attachment/domain/entities/lesson_attachment_entity.dart';
 import 'package:project1/features/attachment/presentation/cubit/lesson_attachment_cubit.dart';
 import 'package:project1/features/attachment/presentation/widgets/details/attachments_tab.dart';
+import 'package:project1/features/q&a/data/models/discussion_question_model.dart';
+import 'package:project1/features/q&a/presentation/cubit/discussion_cubit.dart';
+import 'package:project1/features/q&a/presentation/widgets/discussion_composer.dart';
+import 'package:project1/features/q&a/presentation/widgets/qa_card.dart';
+import 'package:project1/l10n/app_localizations.dart';
 
 class LessonTabs extends StatefulWidget {
   final String lessonId;
@@ -16,12 +22,16 @@ class LessonTabs extends StatefulWidget {
 
 class _LessonTabsState extends State<LessonTabs> {
   List<LessonAttachmentEntity> _attachments = [];
-  bool _loading = true;
+  bool _loadingAttachments = true;
+
+  List<DiscussionQuestionModel> _questions = [];
+  bool _loadingQuestions = true;
 
   @override
   void initState() {
     super.initState();
     _loadAttachments();
+    _loadQuestions();
   }
 
   Future<void> _loadAttachments() async {
@@ -32,8 +42,28 @@ class _LessonTabsState extends State<LessonTabs> {
     if (!mounted) return;
     setState(() {
       _attachments = result;
-      _loading = false;
+      _loadingAttachments = false;
     });
+  }
+
+  Future<void> _loadQuestions() async {
+    final result = await context.read<DiscussionCubit>().getQuestions(
+      lessonId: widget.lessonId,
+    );
+
+    if (!mounted) return;
+    setState(() {
+      _questions = result;
+      _loadingQuestions = false;
+    });
+  }
+
+  Future<void> _postQuestion(String content) async {
+    await context.read<DiscussionCubit>().postQuestion(
+      lessonId: widget.lessonId,
+      content: content,
+    );
+    await _loadQuestions();
   }
 
   @override
@@ -53,8 +83,13 @@ class _LessonTabsState extends State<LessonTabs> {
           Expanded(
             child: TabBarView(
               children: [
-                const _QuestionsTab(),
-                AttachmentsTab(attachments: _attachments, loading: _loading),
+                _QuestionsTab(
+                  lessonId: widget.lessonId,
+                  questions: _questions,
+                  loading: _loadingQuestions,
+                  onPostQuestion: _postQuestion,
+                ),
+                AttachmentsTab(attachments: _attachments, loading: _loadingAttachments),
               ],
             ),
           ),
@@ -65,40 +100,59 @@ class _LessonTabsState extends State<LessonTabs> {
 }
 
 class _QuestionsTab extends StatelessWidget {
-  const _QuestionsTab();
+  final String lessonId;
+  final List<DiscussionQuestionModel> questions;
+  final bool loading;
+  final ValueChanged<String> onPostQuestion;
+
+  const _QuestionsTab({
+    required this.lessonId,
+    required this.questions,
+    required this.loading,
+    required this.onPostQuestion,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: const [
-        QaCard(
-          userName: "Mohammed",
-          question: "Can you explain the difference between CNN and RNN?",
-          replies: [
-            "CNN is mainly used for image processing.",
-            "RNN is designed for sequential data.",
-            "Nowadays transformers are often preferred.",
-            "Both are still important concepts to learn.",
-          ],
+    final localizations = AppLocalizations.of(context)!;
+
+    if (loading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return Column(
+      children: [
+        Expanded(
+          child: questions.isEmpty
+              ? Center(
+                  child: Text(
+                    localizations.noQuestionsYet,
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      fontFamily: AppTextStyles.fontFamily,
+                      color: AppColors.textSecondaryOf(context),
+                    ),
+                  ),
+                )
+              : ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: questions.length,
+                  itemBuilder: (context, index) {
+                    final question = questions[index];
+
+                    return QaCard(
+                      questionId: question.id,
+                      userName: question.authorName,
+                      avatarUrl: question.authorAvatarUrl,
+                      question: question.content,
+                      createdAt: question.createdAt,
+                    );
+                  },
+                ),
         ),
-        QaCard(
-          userName: "Sarah",
-          question: "Will we use TensorFlow later in the course?",
-          replies: [
-            "Yes, TensorFlow will be introduced in the next section.",
-            "You will also see some PyTorch examples.",
-          ],
-        ),
-        QaCard(
-          userName: "Ali",
-          question: "Can I use PyTorch instead of TensorFlow?",
-          replies: [
-            "Absolutely.",
-            "The concepts are framework independent.",
-            "Most assignments can be solved using either.",
-            "PyTorch is actually very popular nowadays.",
-            "Just make sure your output matches the requirements.",
-          ],
+        DiscussionComposer(
+          hintText: localizations.askAQuestion,
+          isPosting: false,
+          onSubmit: onPostQuestion,
         ),
       ],
     );
