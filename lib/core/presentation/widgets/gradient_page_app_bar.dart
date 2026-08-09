@@ -6,12 +6,14 @@ class GradientPageAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   final String title;
   final String? subtitle;
+  final int subtitleMaxLines;
   final VoidCallback? onBackPressed;
 
   const GradientPageAppBar({
     super.key,
     required this.title,
     this.subtitle,
+    this.subtitleMaxLines = 1,
     this.onBackPressed,
   });
 
@@ -114,11 +116,12 @@ class GradientPageAppBar extends StatelessWidget
               const SizedBox(height: 4),
               Text(
                 subtitle!,
-                maxLines: 1,
+                maxLines: subtitleMaxLines,
                 overflow: TextOverflow.ellipsis,
                 style: AppTextStyles.caption.copyWith(
                   color: Colors.white.withValues(alpha: 0.82),
                   fontSize: 12,
+                  height: 1.35,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -130,7 +133,9 @@ class GradientPageAppBar extends StatelessWidget
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(
-    subtitle != null && subtitle!.trim().isNotEmpty ? 82 : 72,
-  );
+  Size get preferredSize {
+    final hasSubtitle = subtitle != null && subtitle!.trim().isNotEmpty;
+    if (!hasSubtitle) return const Size.fromHeight(72);
+    return Size.fromHeight(subtitleMaxLines > 1 ? 98 : 82);
+  }
 }

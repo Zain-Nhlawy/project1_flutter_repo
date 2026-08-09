@@ -212,6 +212,8 @@
   "price": "السعر",
   "public": "عام",
   "private": "خاص",
+  "publicVisibilityWarningTitle": "النشر في المكتبة العامة؟",
+  "publicVisibilityWarningMessage": "اختيار عام يجعل هذا الكورس متاحاً في المكتبة العامة بعد حفظ التعديلات.",
   "tags": "التاغات",
   "add": "إضافة",
   "uploadImage": "رفع صورة",
@@ -402,6 +404,17 @@
 "publicLibrary": "المكتبة العامة",
   "searchCourses": "..ابحث عن الكورسات أو المهارات",
   "allFilters": "كل الفلاتر",
+  "searchTags": "البحث في الوسوم",
+  "selectedTagsCount": "تم تحديد {count}",
+  "@selectedTagsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "applyFilters": "تطبيق الفلاتر",
+  "clearAll": "مسح الكل",
   "beginner": "مبتدئ",
   "intermediate": "متوسط",
   "advanced": "متقدم",
@@ -441,6 +454,7 @@
   "generateRandomQuizButton": "إنشاء اختبار عشوائي",
   
   "aiResponseTitle": "استجابة الذكاء الاصطناعي",
+  "aiFulfillingRequest": "الذكاء الاصطناعي ينفذ طلبك",
   "noDataYet": "اطرح سؤالاً أو أنشئ اختباراً لرؤية النتائج هنا.",
   "errorPrefix": "حدث خطأ: ",
   "chatConnecting": "جاري الاتصال...",

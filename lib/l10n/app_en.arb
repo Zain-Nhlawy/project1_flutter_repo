@@ -237,6 +237,8 @@
   "price": "Price",
   "public": "Public",
   "private": "Private",
+  "publicVisibilityWarningTitle": "Publish to the public library?",
+  "publicVisibilityWarningMessage": "Choosing Public makes this course available in the public library after you save your changes.",
   "tags": "Tags",
   "add": "Add",
   "uploadImage": "Upload Image",
@@ -433,6 +435,17 @@
 "publicLibrary": "Public Library",
   "searchCourses": "Search courses, or skills..",
   "allFilters": "All Filters",
+  "searchTags": "Search tags",
+  "selectedTagsCount": "{count} selected",
+  "@selectedTagsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "applyFilters": "Apply Filters",
+  "clearAll": "Clear All",
   "beginner": "Beginner",
   "intermediate": "Intermediate",
   "advanced": "Advanced",
@@ -472,6 +485,7 @@
   "generateRandomQuizButton": "Generate Random Quiz",
   
   "aiResponseTitle": "AI Response",
+  "aiFulfillingRequest": "AI is fulfilling your request",
   "noDataYet": "Ask a question or generate a quiz to see the AI insights here.",
   "errorPrefix": "Error occurred: ",
   "chatConnecting": "Connecting...",

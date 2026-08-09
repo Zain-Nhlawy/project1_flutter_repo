@@ -573,6 +573,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get private => 'Private';
 
   @override
+  String get publicVisibilityWarningTitle => 'Publish to the public library?';
+
+  @override
+  String get publicVisibilityWarningMessage =>
+      'Choosing Public makes this course available in the public library after you save your changes.';
+
+  @override
   String get tags => 'Tags';
 
   @override
@@ -1146,6 +1153,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get allFilters => 'All Filters';
 
   @override
+  String get searchTags => 'Search tags';
+
+  @override
+  String selectedTagsCount(int count) {
+    return '$count selected';
+  }
+
+  @override
+  String get applyFilters => 'Apply Filters';
+
+  @override
+  String get clearAll => 'Clear All';
+
+  @override
   String get beginner => 'Beginner';
 
   @override
@@ -1225,6 +1246,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aiResponseTitle => 'AI Response';
+
+  @override
+  String get aiFulfillingRequest => 'AI is fulfilling your request';
 
   @override
   String get noDataYet =>

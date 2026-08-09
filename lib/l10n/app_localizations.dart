@@ -1178,6 +1178,18 @@ abstract class AppLocalizations {
   /// **'Private'**
   String get private;
 
+  /// No description provided for @publicVisibilityWarningTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish to the public library?'**
+  String get publicVisibilityWarningTitle;
+
+  /// No description provided for @publicVisibilityWarningMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Choosing Public makes this course available in the public library after you save your changes.'**
+  String get publicVisibilityWarningMessage;
+
   /// No description provided for @tags.
   ///
   /// In en, this message translates to:
@@ -2276,6 +2288,30 @@ abstract class AppLocalizations {
   /// **'All Filters'**
   String get allFilters;
 
+  /// No description provided for @searchTags.
+  ///
+  /// In en, this message translates to:
+  /// **'Search tags'**
+  String get searchTags;
+
+  /// No description provided for @selectedTagsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} selected'**
+  String selectedTagsCount(int count);
+
+  /// No description provided for @applyFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply Filters'**
+  String get applyFilters;
+
+  /// No description provided for @clearAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear All'**
+  String get clearAll;
+
   /// No description provided for @beginner.
   ///
   /// In en, this message translates to:
@@ -2425,6 +2461,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'AI Response'**
   String get aiResponseTitle;
+
+  /// No description provided for @aiFulfillingRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'AI is fulfilling your request'**
+  String get aiFulfillingRequest;
 
   /// No description provided for @noDataYet.
   ///

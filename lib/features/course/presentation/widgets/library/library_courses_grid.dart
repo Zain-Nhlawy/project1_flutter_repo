@@ -18,47 +18,53 @@ class LibraryCoursesGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
+    return SliverLayoutBuilder(
       builder: (context, constraints) {
-        final horizontalPadding = constraints.maxWidth >= 700 ? 56.0 : 12.0;
+        final viewportWidth = constraints.crossAxisExtent;
+        final contentWidth = viewportWidth > 920 ? 920.0 : viewportWidth;
+        final outerPadding = viewportWidth > 920
+            ? (viewportWidth - 920) / 2
+            : 0.0;
+        final contentPadding = contentWidth >= 700 ? 56.0 : 12.0;
 
-        return ListView.builder(
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        return SliverPadding(
           padding: EdgeInsets.fromLTRB(
-            horizontalPadding,
+            outerPadding + contentPadding,
             10,
-            horizontalPadding,
+            outerPadding + contentPadding,
             40,
           ),
-          itemCount: courses.length,
-          itemBuilder: (context, index) {
-            final course = courses[index];
-            return CourseCard(
-              id: course.id,
-              title: course.title,
-              companyName: course.demo?.name ?? "",
-              imageUrl: course.imagePath,
-              price: course.price,
-              description: course.description,
-              tags: course.tags,
-              visibility: course.visibility,
-              mode: CourseCardMode.library,
-              onSeeMore: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => BlocProvider(
-                      create: (_) => getIt<CourseCubit>(),
-                      child: CourseDetailsScreen.fromLibrary(
-                        courseId: course.id,
-                        userDemoId: userDemoId,
+          sliver: SliverList.builder(
+            itemCount: courses.length,
+            itemBuilder: (context, index) {
+              final course = courses[index];
+              return CourseCard(
+                id: course.id,
+                title: course.title,
+                companyName: course.demo?.name ?? '',
+                imageUrl: course.imagePath,
+                price: course.price,
+                description: course.description,
+                tags: course.tags,
+                visibility: course.visibility,
+                mode: CourseCardMode.library,
+                onSeeMore: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => BlocProvider(
+                        create: (_) => getIt<CourseCubit>(),
+                        child: CourseDetailsScreen.fromLibrary(
+                          courseId: course.id,
+                          userDemoId: userDemoId,
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
-            );
-          },
+                  );
+                },
+              );
+            },
+          ),
         );
       },
     );

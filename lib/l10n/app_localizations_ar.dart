@@ -571,6 +571,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get private => 'خاص';
 
   @override
+  String get publicVisibilityWarningTitle => 'النشر في المكتبة العامة؟';
+
+  @override
+  String get publicVisibilityWarningMessage =>
+      'اختيار عام يجعل هذا الكورس متاحاً في المكتبة العامة بعد حفظ التعديلات.';
+
+  @override
   String get tags => 'التاغات';
 
   @override
@@ -1141,6 +1148,20 @@ class AppLocalizationsAr extends AppLocalizations {
   String get allFilters => 'كل الفلاتر';
 
   @override
+  String get searchTags => 'البحث في الوسوم';
+
+  @override
+  String selectedTagsCount(int count) {
+    return 'تم تحديد $count';
+  }
+
+  @override
+  String get applyFilters => 'تطبيق الفلاتر';
+
+  @override
+  String get clearAll => 'مسح الكل';
+
+  @override
   String get beginner => 'مبتدئ';
 
   @override
@@ -1219,6 +1240,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get aiResponseTitle => 'استجابة الذكاء الاصطناعي';
+
+  @override
+  String get aiFulfillingRequest => 'الذكاء الاصطناعي ينفذ طلبك';
 
   @override
   String get noDataYet => 'اطرح سؤالاً أو أنشئ اختباراً لرؤية النتائج هنا.';

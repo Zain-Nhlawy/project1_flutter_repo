@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
+import 'package:project1/core/presentation/widgets/gradient_page_app_bar.dart';
 import 'package:project1/features/course/domain/entities/course_entity.dart';
 import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
 import 'package:project1/features/course/presentation/cubit/course_state.dart';
@@ -55,23 +56,25 @@ class CourseManagementScreen extends StatefulWidget {
 
 class _CourseManagementScreenState extends State<CourseManagementScreen> {
   late TextEditingController titleController;
+  late TextEditingController companyController;
   late TextEditingController descriptionController;
   late TextEditingController priceController;
   late String visibility;
   File? selectedImage;
   bool removeExistingImage = false;
-  bool isEditing = false;
   late Set<String> selectedTagIds;
 
   late int _currentLessons;
   late int _currentDuration;
 
   bool _hasChanges = false;
+  bool _hasFormChanges = false;
 
   @override
   void initState() {
     super.initState();
     titleController = TextEditingController(text: widget.title);
+    companyController = TextEditingController(text: widget.company);
     descriptionController = TextEditingController(text: widget.description);
     priceController = TextEditingController(
       text: widget.price?.toString() ?? '',
@@ -80,6 +83,9 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
     selectedTagIds = {...widget.tagIds};
     _currentLessons = widget.lessons;
     _currentDuration = widget.duration;
+    titleController.addListener(_updateFormChanges);
+    descriptionController.addListener(_updateFormChanges);
+    priceController.addListener(_updateFormChanges);
   }
 
   void toggleTag(String id) {
@@ -89,12 +95,143 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
       } else {
         selectedTagIds.add(id);
       }
+      _hasFormChanges = _computeHasFormChanges();
+    });
+  }
+
+  bool get _priceHasChanged {
+    final currentText = priceController.text.trim();
+    final originalText = widget.price?.toString() ?? '';
+
+    if (currentText == originalText) return false;
+
+    final currentPrice = double.tryParse(currentText);
+    if (currentPrice != null &&
+        widget.price != null &&
+        currentPrice == widget.price) {
+      return false;
+    }
+
+    return true;
+  }
+
+  bool _computeHasFormChanges() {
+    final originalTags = widget.tagIds.toSet();
+    final tagsChanged =
+        originalTags.length != selectedTagIds.length ||
+        !originalTags.every(selectedTagIds.contains);
+    final imageChanged =
+        selectedImage != null ||
+        (removeExistingImage && widget.image.isNotEmpty);
+
+    return titleController.text.trim() != widget.title.trim() ||
+        descriptionController.text.trim() != widget.description.trim() ||
+        _priceHasChanged ||
+        visibility != widget.visibility ||
+        tagsChanged ||
+        imageChanged;
+  }
+
+  void _updateFormChanges() {
+    final hasChanges = _computeHasFormChanges();
+    if (hasChanges == _hasFormChanges || !mounted) return;
+    setState(() => _hasFormChanges = hasChanges);
+  }
+
+  Future<void> _onVisibilityChanged(String value) async {
+    if (value == visibility) return;
+
+    if (value == 'PUBLIC' && visibility != 'PUBLIC') {
+      final localizations = AppLocalizations.of(context)!;
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (dialogContext) {
+          final primary = AppColors.primaryOf(dialogContext);
+
+          return AlertDialog(
+            backgroundColor: AppColors.surfaceOf(dialogContext),
+            surfaceTintColor: Colors.transparent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24),
+            ),
+            titlePadding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+            contentPadding: const EdgeInsets.fromLTRB(20, 18, 20, 8),
+            actionsPadding: const EdgeInsets.fromLTRB(14, 6, 14, 14),
+            title: Row(
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: primary.withValues(alpha: 0.10),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: Icon(Icons.public_rounded, color: primary, size: 24),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    localizations.publicVisibilityWarningTitle,
+                    style: TextStyle(
+                      color: AppColors.textPrimaryOf(dialogContext),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            content: Text(
+              localizations.publicVisibilityWarningMessage,
+              style: TextStyle(
+                color: AppColors.textSecondaryOf(dialogContext),
+                fontSize: 14,
+                height: 1.55,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(dialogContext, false),
+                child: Text(
+                  localizations.cancel,
+                  style: TextStyle(
+                    color: AppColors.textSecondaryOf(dialogContext),
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              FilledButton(
+                onPressed: () => Navigator.pop(dialogContext, true),
+                style: FilledButton.styleFrom(
+                  backgroundColor: primary,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Text(
+                  localizations.confirm,
+                  style: const TextStyle(fontWeight: FontWeight.w800),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+
+      if (!mounted || confirmed != true) return;
+    }
+
+    setState(() {
+      visibility = value;
+      _hasFormChanges = _computeHasFormChanges();
     });
   }
 
   @override
   void dispose() {
     titleController.dispose();
+    companyController.dispose();
     descriptionController.dispose();
     priceController.dispose();
     super.dispose();
@@ -110,13 +247,14 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
       setState(() {
         selectedImage = File(image.path);
         removeExistingImage = false;
+        _hasFormChanges = _computeHasFormChanges();
       });
     }
   }
 
   bool get isValid {
-    return titleController.text.isNotEmpty &&
-        descriptionController.text.isNotEmpty;
+    return titleController.text.trim().isNotEmpty &&
+        descriptionController.text.trim().isNotEmpty;
   }
 
   String formatDuration(int totalSeconds) {
@@ -128,34 +266,34 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
     return '$hours:$minutes:$seconds';
   }
 
-  void toggleEditOrSave() async {
+  void saveChanges() async {
     final localizations = AppLocalizations.of(context)!;
-    if (isEditing && !isValid) {
+    if (!isValid) {
       SnackbarTheme().newSnackBarError(
         context,
         localizations.fillAllFieldsWarning,
       );
       return;
     }
-    if (!isEditing) {
-      setState(() => isEditing = true);
-      return;
-    }
+    if (!_hasFormChanges) return;
+
     String imagePath = widget.image;
     if (selectedImage != null) {
-      final uploadedUrl = await context
-          .read<UploadPhotoCourseCubit>()
-          .uploadPhoto(selectedImage!);
+      final uploadCubit = context.read<UploadPhotoCourseCubit>();
+      final uploadedUrl = await uploadCubit.uploadPhoto(selectedImage!);
+
+      if (!mounted) return;
+
       if (uploadedUrl == null) {
-        if (context.mounted) {
-          SnackbarTheme().newSnackBarError(
-            context,
-            localizations.failedToUploadImage,
-          );
-        }
+        SnackbarTheme().newSnackBarError(
+          context,
+          localizations.failedToUploadImage,
+        );
         return;
       }
       imagePath = uploadedUrl;
+    } else if (removeExistingImage) {
+      imagePath = '';
     }
     final course = CourseEntity(
       id: widget.courseId,
@@ -236,24 +374,11 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
           }
         },
         child: Scaffold(
-          backgroundColor: AppColors.background,
-          appBar: AppBar(
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
-              onPressed: _handleBack,
-            ),
-            title: Text(
-              localizations.courseManagement,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            flexibleSpace: Container(
-              decoration: const BoxDecoration(
-                gradient: AppColors.primaryGradient,
-              ),
-            ),
+          backgroundColor: AppColors.backgroundOf(context),
+          appBar: GradientPageAppBar(
+            title: localizations.courseManagement,
+            subtitle: widget.title,
+            onBackPressed: _handleBack,
           ),
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
@@ -267,22 +392,23 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
                   onRemove: () {
                     setState(() {
                       selectedImage = null;
-                      removeExistingImage = true;
+                      removeExistingImage = widget.image.isNotEmpty;
+                      _hasFormChanges = _computeHasFormChanges();
                     });
                   },
                   uploadLabel: localizations.uploadImage,
-                  enabled: isEditing,
+                  enabled: true,
                 ),
                 const SizedBox(height: 20),
                 CustomTextField(
                   controller: titleController,
                   hintText: localizations.courseTitle,
                   icon: Icons.title_outlined,
-                  enabled: isEditing,
+                  enabled: true,
                 ),
                 const SizedBox(height: 14),
                 CustomTextField(
-                  controller: TextEditingController(text: widget.company),
+                  controller: companyController,
                   hintText: localizations.company,
                   icon: Icons.apartment_outlined,
                   enabled: false,
@@ -293,7 +419,7 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
                   hintText: localizations.courseDescription,
                   icon: Icons.description_outlined,
                   maxLines: 4,
-                  enabled: isEditing,
+                  enabled: true,
                 ),
                 const SizedBox(height: 14),
                 CustomTextField(
@@ -301,21 +427,21 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
                   hintText: localizations.price,
                   icon: Icons.attach_money_rounded,
                   keyboardType: TextInputType.number,
-                  enabled: isEditing,
+                  enabled: true,
                 ),
                 const SizedBox(height: 16),
                 VisibilityDropdown(
                   value: visibility,
-                  onChanged: (v) => setState(() => visibility = v),
+                  onChanged: _onVisibilityChanged,
                   publicLabel: localizations.public,
                   privateLabel: localizations.private,
-                  enabled: isEditing,
+                  enabled: true,
                 ),
                 const SizedBox(height: 18),
                 CourseTagsSection(
                   selectedTagIds: selectedTagIds,
                   onToggle: toggleTag,
-                  enabled: isEditing,
+                  enabled: true,
                 ),
                 const SizedBox(height: 16),
                 CourseStatsCard(
@@ -333,15 +459,32 @@ class _CourseManagementScreenState extends State<CourseManagementScreen> {
                   onSectionsChanged: _onSectionsChanged,
                 ),
                 const SizedBox(height: 24),
-                CourseEditSaveButton(
-                  isEditing: isEditing,
-                  onPressed: toggleEditOrSave,
+                BlocBuilder<CourseCubit, CourseState>(
+                  builder: (context, state) {
+                    final isSaving = state is CourseUpdating;
+
+                    return AnimatedSize(
+                      duration: const Duration(milliseconds: 220),
+                      curve: Curves.easeOut,
+                      alignment: Alignment.topCenter,
+                      child: _hasFormChanges
+                          ? Column(
+                              children: [
+                                CourseEditSaveButton(
+                                  isLoading: isSaving,
+                                  onPressed: isSaving ? null : saveChanges,
+                                ),
+                                const SizedBox(height: 14),
+                              ],
+                            )
+                          : const SizedBox.shrink(),
+                    );
+                  },
                 ),
-                const SizedBox(height: 14),
-                CourseDeleteButton(courseId: widget.courseId),
-                const SizedBox(height: 14),
                 CoursePublishButton(courseId: widget.courseId),
-                const SizedBox(height: 35),
+                const SizedBox(height: 30),
+                CourseDeleteButton(courseId: widget.courseId),
+                const SizedBox(height: 36),
               ],
             ),
           ),

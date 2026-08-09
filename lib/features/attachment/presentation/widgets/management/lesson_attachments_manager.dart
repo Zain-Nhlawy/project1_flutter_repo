@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/features/attachment/domain/entities/lesson_attachment_entity.dart';
 import 'package:project1/features/attachment/presentation/cubit/lesson_attachment_cubit.dart';
@@ -109,16 +110,68 @@ class LessonAttachmentsManagerState extends State<LessonAttachmentsManager> {
     final result = await showDialog<String>(
       context: context,
       builder: (dialogContext) {
+        final primary = AppColors.primaryOf(dialogContext);
+
         return AlertDialog(
+          backgroundColor: AppColors.surfaceOf(dialogContext),
+          surfaceTintColor: Colors.transparent,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(22),
           ),
-          title: Text(localizations.editAttachment),
+          titlePadding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+          contentPadding: const EdgeInsets.fromLTRB(20, 18, 20, 4),
+          actionsPadding: const EdgeInsets.fromLTRB(14, 8, 14, 14),
+          title: Row(
+            children: [
+              Container(
+                width: 42,
+                height: 42,
+                decoration: BoxDecoration(
+                  color: primary.withValues(alpha: 0.09),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Icon(Icons.edit_outlined, color: primary, size: 21),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  localizations.editAttachment,
+                  style: AppTextStyles.titleMedium.copyWith(
+                    color: AppColors.textPrimaryOf(dialogContext),
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+            ],
+          ),
           content: TextField(
             controller: controller,
+            autofocus: true,
+            style: TextStyle(color: AppColors.textPrimaryOf(dialogContext)),
             decoration: InputDecoration(
               hintText: localizations.attachmentName,
-              prefixIcon: const Icon(Icons.edit_outlined),
+              hintStyle: TextStyle(
+                color: AppColors.textSecondaryOf(dialogContext),
+              ),
+              prefixIcon: Icon(Icons.title_rounded, color: primary),
+              filled: true,
+              fillColor: AppColors.backgroundOf(dialogContext),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(
+                  color: AppColors.borderOf(dialogContext),
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(
+                  color: AppColors.borderOf(dialogContext),
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: primary, width: 1.7),
+              ),
             ),
           ),
           actions: [
@@ -126,22 +179,29 @@ class LessonAttachmentsManagerState extends State<LessonAttachmentsManager> {
               onPressed: () => Navigator.pop(dialogContext),
               child: Text(
                 localizations.cancel,
-                style: const TextStyle(color: AppColors.textSecondary),
+                style: TextStyle(
+                  color: AppColors.textSecondaryOf(dialogContext),
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
-            TextButton(
+            FilledButton(
               onPressed: () {
                 final value = controller.text.trim();
                 if (value.isNotEmpty) {
                   Navigator.pop(dialogContext, value);
                 }
               },
+              style: FilledButton.styleFrom(
+                backgroundColor: primary,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
               child: Text(
                 localizations.save,
-                style: const TextStyle(
-                  color: AppColors.primary,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: const TextStyle(fontWeight: FontWeight.w800),
               ),
             ),
           ],
@@ -178,24 +238,71 @@ class LessonAttachmentsManagerState extends State<LessonAttachmentsManager> {
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
+          backgroundColor: AppColors.surfaceOf(dialogContext),
+          surfaceTintColor: Colors.transparent,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(22),
           ),
-          title: Text(localizations.deleteAttachment),
-          content: Text(localizations.deleteAttachmentConfirmation),
+          titlePadding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+          contentPadding: const EdgeInsets.fromLTRB(20, 18, 20, 4),
+          actionsPadding: const EdgeInsets.fromLTRB(14, 8, 14, 14),
+          title: Row(
+            children: [
+              Container(
+                width: 42,
+                height: 42,
+                decoration: BoxDecoration(
+                  color: AppColors.error.withValues(alpha: 0.09),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: const Icon(
+                  Icons.delete_outline_rounded,
+                  color: AppColors.error,
+                  size: 21,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  localizations.deleteAttachment,
+                  style: AppTextStyles.titleMedium.copyWith(
+                    color: AppColors.textPrimaryOf(dialogContext),
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          content: Text(
+            localizations.deleteAttachmentConfirmation,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.textSecondaryOf(dialogContext),
+              height: 1.5,
+            ),
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialogContext, false),
-              child: Text(localizations.cancel),
+              child: Text(
+                localizations.cancel,
+                style: TextStyle(
+                  color: AppColors.textSecondaryOf(dialogContext),
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
             ),
-            TextButton(
+            FilledButton(
               onPressed: () => Navigator.pop(dialogContext, true),
+              style: FilledButton.styleFrom(
+                backgroundColor: AppColors.error,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
               child: Text(
                 localizations.delete,
-                style: TextStyle(
-                  color: Colors.red.shade400,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: const TextStyle(fontWeight: FontWeight.w800),
               ),
             ),
           ],
@@ -261,10 +368,7 @@ class LessonAttachmentsManagerState extends State<LessonAttachmentsManager> {
       final message = state.errors.isNotEmpty
           ? state.errors.first
           : 'Upload failed';
-      SnackbarTheme().newSnackBarError(
-        context,
-        message,
-      );
+      SnackbarTheme().newSnackBarError(context, message);
       context.read<AttachmentUploadCubit>().reset();
     }
   }
@@ -290,10 +394,7 @@ class LessonAttachmentsManagerState extends State<LessonAttachmentsManager> {
       final message = state.errors.isNotEmpty
           ? state.errors.first
           : 'حدث خطأ غير متوقع';
-      SnackbarTheme().newSnackBarError(
-        context,
-        message,
-      );
+      SnackbarTheme().newSnackBarError(context, message);
     }
   }
 
@@ -316,9 +417,20 @@ class LessonAttachmentsManagerState extends State<LessonAttachmentsManager> {
                   uploadState is AttachmentUploadInProgress);
 
           if (_loading) {
-            return const Padding(
-              padding: EdgeInsets.symmetric(vertical: 12),
-              child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+            return Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 34),
+              decoration: BoxDecoration(
+                color: AppColors.surfaceOf(context),
+                borderRadius: BorderRadius.circular(22),
+                border: Border.all(color: AppColors.borderOf(context)),
+              ),
+              child: Center(
+                child: CircularProgressIndicator(
+                  strokeWidth: 2.2,
+                  color: AppColors.primaryOf(context),
+                ),
+              ),
             );
           }
 

@@ -50,7 +50,7 @@ class _PublicLibraryViewState extends State<_PublicLibraryView> {
   }
 
   void _search(String value) {
-    search = value;
+    setState(() => search = value);
     context.read<CourseCubit>().getCourses(
       search: value,
       tagIds: selectedTagIds,
@@ -59,7 +59,7 @@ class _PublicLibraryViewState extends State<_PublicLibraryView> {
 
   void _filterByTags(List<String>? tagIds) {
     final cleanedTagIds = tagIds?.map((id) => id.trim()).toList();
-    selectedTagIds = cleanedTagIds;
+    setState(() => selectedTagIds = cleanedTagIds);
     context.read<CourseCubit>().getCourses(
       search: search,
       tagIds: cleanedTagIds,
@@ -77,75 +77,92 @@ class _PublicLibraryViewState extends State<_PublicLibraryView> {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
     final topPadding = MediaQuery.paddingOf(context).top;
+    final hasActiveFilters =
+        search.trim().isNotEmpty || (selectedTagIds?.isNotEmpty ?? false);
 
     return Scaffold(
       backgroundColor: AppColors.backgroundOf(context),
-      body: Column(
-        children: [
-          _LibraryPageHeader(
-            topPadding: topPadding,
-            title: localizations.publicLibrary,
-            subtitle: localizations.publicLibraryOptionDesc,
-          ),
-          Expanded(
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 920),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 16),
-                    LibrarySearchBar(onChanged: _search),
-                    LibraryFilters(onTagSelected: _filterByTags),
-                    Expanded(
-                      child: BlocBuilder<CourseCubit, CourseState>(
-                        builder: (context, state) {
-                          if (state is PublicCoursesLoading) {
-                            return const _LibraryLoadingState();
-                          }
-
-                          if (state is PublicCoursesError) {
-                            return _LibraryErrorState(
-                              message: state.errors.isEmpty
-                                  ? localizations.somethingWentWrong
-                                  : state.errors.first,
-                              retryLabel: localizations.retry,
-                              onRetry: _retry,
-                            );
-                          }
-
-                          if (state is PublicCoursesLoaded) {
-                            return Column(
-                              children: [
-                                LibraryResultHeader(
-                                  count: state.courses.length,
-                                ),
-                                Expanded(
-                                  child: state.courses.isEmpty
-                                      ? _LibraryEmptyState(
-                                          title: localizations.noCoursesFound,
-                                          subtitle: localizations
-                                              .publicLibraryOptionDesc,
-                                        )
-                                      : LibraryCoursesGrid(
-                                          courses: state.courses,
-                                          userDemoId: widget.demoId,
-                                        ),
-                                ),
-                              ],
-                            );
-                          }
-
-                          return const SizedBox.shrink();
-                        },
-                      ),
-                    ),
-                  ],
+      body: BlocBuilder<CourseCubit, CourseState>(
+        builder: (context, state) {
+          return CustomScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            slivers: [
+              SliverToBoxAdapter(
+                child: _LibraryPageHeader(
+                  topPadding: topPadding,
+                  title: localizations.publicLibrary,
+                  subtitle: localizations.publicLibraryOptionDesc,
                 ),
               ),
-            ),
-          ),
-        ],
+              SliverToBoxAdapter(
+                child: _LibraryContentBox(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 16),
+                      LibrarySearchBar(onChanged: _search),
+                      LibraryFilters(onTagSelected: _filterByTags),
+                    ],
+                  ),
+                ),
+              ),
+              if (state is PublicCoursesLoading)
+                const SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: _LibraryLoadingState(),
+                )
+              else if (state is PublicCoursesError)
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: _LibraryErrorState(
+                    message: state.errors.isEmpty
+                        ? localizations.somethingWentWrong
+                        : state.errors.first,
+                    retryLabel: localizations.retry,
+                    onRetry: _retry,
+                  ),
+                )
+              else if (state is PublicCoursesLoaded) ...[
+                if (hasActiveFilters)
+                  SliverToBoxAdapter(
+                    child: _LibraryContentBox(
+                      child: LibraryResultHeader(count: state.courses.length),
+                    ),
+                  ),
+                if (state.courses.isEmpty)
+                  SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: _LibraryEmptyState(
+                      title: localizations.noCoursesFound,
+                      subtitle: localizations.publicLibraryOptionDesc,
+                    ),
+                  )
+                else
+                  LibraryCoursesGrid(
+                    courses: state.courses,
+                    userDemoId: widget.demoId,
+                  ),
+              ] else
+                const SliverToBoxAdapter(child: SizedBox.shrink()),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _LibraryContentBox extends StatelessWidget {
+  final Widget child;
+
+  const _LibraryContentBox({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 920),
+        child: child,
       ),
     );
   }
@@ -275,7 +292,7 @@ class _LibraryErrorState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: SingleChildScrollView(
+      child: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -337,7 +354,7 @@ class _LibraryEmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: SingleChildScrollView(
+      child: Padding(
         padding: const EdgeInsets.fromLTRB(24, 12, 24, 40),
         child: Column(
           mainAxisSize: MainAxisSize.min,
