@@ -615,5 +615,7 @@
   "storagePermissionDenied": "تم رفض إذن التخزين",
   "saveFailed": "فشل الحفظ",
   "attachmentDownloaded": "تم تنزيل المرفق بنجاح.",
-"failedToDownloadAttachment": "فشل تنزيل المرفق."
+"failedToDownloadAttachment": "فشل تنزيل المرفق.",
+"unexpectedError": "حدث خطأ غير متوقع",
+  "uploadFailed": "فشل رفع الملف"
 }

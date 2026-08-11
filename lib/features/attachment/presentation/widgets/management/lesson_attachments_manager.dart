@@ -39,6 +39,7 @@ class LessonAttachmentsManagerState extends State<LessonAttachmentsManager> {
   bool get _isPending => widget.lessonId == null;
 
   int get attachmentsCount => _attachments.length;
+  
 
   @override
   void didChangeDependencies() {
@@ -67,10 +68,7 @@ class LessonAttachmentsManagerState extends State<LessonAttachmentsManager> {
   }
 
   Future<File?> _pickAttachmentFile() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'zip', 'txt'],
-    );
+    final result = await FilePicker.platform.pickFiles(type: FileType.any);
     if (result == null || result.files.single.path == null) return null;
     return File(result.files.single.path!);
   }
@@ -359,24 +357,26 @@ class LessonAttachmentsManagerState extends State<LessonAttachmentsManager> {
     BuildContext context,
     AttachmentUploadState state,
   ) {
+    final localizations = AppLocalizations.of(context)!;
     if (state is AttachmentUploadSuccess) {
       setState(() {
         _attachments.add(state.attachment);
       });
       context.read<AttachmentUploadCubit>().reset();
     } else if (state is AttachmentUploadError) {
-      final message = state.errors.isNotEmpty
-          ? state.errors.first
-          : 'Upload failed';
-      SnackbarTheme().newSnackBarError(context, message);
-      context.read<AttachmentUploadCubit>().reset();
-    }
+  final message = state.errors.isNotEmpty
+      ? state.errors.first
+      : localizations.uploadFailed;
+  SnackbarTheme().newSnackBarError(context, message);
+  context.read<AttachmentUploadCubit>().reset();
+}
   }
 
   void _handleLessonAttachmentState(
     BuildContext context,
     LessonAttachmentState state,
   ) {
+    final localizations = AppLocalizations.of(context)!;
     if (state is LessonAttachmentUpdated) {
       setState(() {
         final index = _attachments.indexWhere(
@@ -391,11 +391,12 @@ class LessonAttachmentsManagerState extends State<LessonAttachmentsManager> {
         _attachments.removeWhere((e) => e.id == state.attachmentId);
       });
     } else if (state is LessonAttachmentError) {
-      final message = state.errors.isNotEmpty
-          ? state.errors.first
-          : 'حدث خطأ غير متوقع';
-      SnackbarTheme().newSnackBarError(context, message);
-    }
+  final message = state.errors.isNotEmpty
+      ? state.errors.first
+      : localizations.unexpectedError;
+
+  SnackbarTheme().newSnackBarError(context, message);
+}
   }
 
   @override

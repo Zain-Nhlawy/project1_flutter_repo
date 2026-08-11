@@ -647,6 +647,8 @@
   "storagePermissionDenied": "Storage permission denied",
   "saveFailed": "Save failed",
   "attachmentDownloaded": "Attachment downloaded successfully.",
-"failedToDownloadAttachment": "Failed to download attachment."
+"failedToDownloadAttachment": "Failed to download attachment.",
+"unexpectedError": "An unexpected error occurred",
+  "uploadFailed": "Upload failed"
 
 }

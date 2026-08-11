@@ -162,7 +162,7 @@ class LessonAttachmentsSection extends StatelessWidget {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            'PDF  •  DOC  •  PPT  •  ZIP  •  TXT',
+                            'PDF • DOC • PPT • JPG • PNG • ...',
                             style: AppTextStyles.caption.copyWith(
                               color: AppColors.textSecondaryOf(context),
                               fontWeight: FontWeight.w600,

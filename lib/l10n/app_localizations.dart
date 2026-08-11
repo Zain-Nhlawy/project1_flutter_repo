@@ -3211,6 +3211,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to download attachment.'**
   String get failedToDownloadAttachment;
+
+  /// No description provided for @unexpectedError.
+  ///
+  /// In en, this message translates to:
+  /// **'An unexpected error occurred'**
+  String get unexpectedError;
+
+  /// No description provided for @uploadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload failed'**
+  String get uploadFailed;
 }
 
 class _AppLocalizationsDelegate

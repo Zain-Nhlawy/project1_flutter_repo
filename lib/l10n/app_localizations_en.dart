@@ -1637,4 +1637,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get failedToDownloadAttachment => 'Failed to download attachment.';
+
+  @override
+  String get unexpectedError => 'An unexpected error occurred';
+
+  @override
+  String get uploadFailed => 'Upload failed';
 }
