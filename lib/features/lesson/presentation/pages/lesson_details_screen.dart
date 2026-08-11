@@ -8,6 +8,8 @@ import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/attachment/presentation/cubit/lesson_attachment_cubit.dart';
 import 'package:project1/features/lesson/domain/entities/lesson_entity.dart';
+import 'package:project1/features/lesson/presentation/widgets/datails/lesson_details_header.dart';
+import 'package:project1/features/lesson/presentation/widgets/datails/lesson_navigation_bar.dart';
 import 'package:project1/features/lesson/presentation/widgets/datails/lesson_tabs.dart';
 import 'package:project1/features/lesson/presentation/widgets/datails/video_controls.dart';
 import 'package:project1/l10n/app_localizations.dart';
@@ -137,7 +139,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
         backgroundColor: AppColors.backgroundOf(context),
         body: Column(
           children: [
-            _LessonDetailsPageHeader(
+            LessonDetailsPageHeader(
               topPadding: MediaQuery.paddingOf(context).top,
               title: _currentLesson.title,
               currentLesson: _currentIndex + 1,
@@ -192,7 +194,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _LessonNavigationBar(
+                          LessonNavigationBar(
                             currentLesson: _currentIndex + 1,
                             totalLessons: widget.lessons.length,
                             previousLabel: localizations.previous,
@@ -401,253 +403,6 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
   }
 }
 
-class _LessonDetailsPageHeader extends StatelessWidget {
-  final double topPadding;
-  final String title;
-  final int currentLesson;
-  final int totalLessons;
-
-  const _LessonDetailsPageHeader({
-    required this.topPadding,
-    required this.title,
-    required this.currentLesson,
-    required this.totalLessons,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        gradient: AppColors.headerGradientOf(context),
-        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(30)),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primaryOf(context).withValues(alpha: 0.20),
-            blurRadius: 16,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Stack(
-        children: [
-          PositionedDirectional(
-            end: -34,
-            top: -52,
-            child: Container(
-              width: 128,
-              height: 128,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white.withValues(alpha: 0.06),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(
-              20,
-              topPadding > 0 ? topPadding + 8 : 32,
-              20,
-              18,
-            ),
-            child: Row(
-              children: [
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.16),
-                    borderRadius: BorderRadius.circular(13),
-                    border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.18),
-                    ),
-                  ),
-                  child: IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    padding: EdgeInsets.zero,
-                    icon: const Icon(
-                      Icons.arrow_back_rounded,
-                      color: Colors.white,
-                      size: 19,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 13),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.titleLarge.copyWith(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: -0.25,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        '$currentLesson / $totalLessons',
-                        style: AppTextStyles.caption.copyWith(
-                          color: Colors.white.withValues(alpha: 0.72),
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _LessonNavigationBar extends StatelessWidget {
-  final int currentLesson;
-  final int totalLessons;
-  final String previousLabel;
-  final String nextLabel;
-  final VoidCallback? onPrevious;
-  final VoidCallback? onNext;
-
-  const _LessonNavigationBar({
-    required this.currentLesson,
-    required this.totalLessons,
-    required this.previousLabel,
-    required this.nextLabel,
-    required this.onPrevious,
-    required this.onNext,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: AppColors.surfaceOf(context),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: AppColors.borderOf(context).withValues(alpha: 0.78),
-        ),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: _LessonNavigationButton(
-              label: previousLabel,
-              icon: Icons.arrow_back_rounded,
-              onPressed: onPrevious,
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 8),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
-            decoration: BoxDecoration(
-              color: AppColors.primaryOf(context).withValues(alpha: 0.08),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Text(
-              '$currentLesson/$totalLessons',
-              style: AppTextStyles.label.copyWith(
-                color: AppColors.primaryOf(context),
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-          ),
-          Expanded(
-            child: _LessonNavigationButton(
-              label: nextLabel,
-              icon: Icons.arrow_forward_rounded,
-              iconAtEnd: true,
-              isPrimary: true,
-              onPressed: onNext,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _LessonNavigationButton extends StatelessWidget {
-  final String label;
-  final IconData icon;
-  final VoidCallback? onPressed;
-  final bool iconAtEnd;
-  final bool isPrimary;
-
-  const _LessonNavigationButton({
-    required this.label,
-    required this.icon,
-    required this.onPressed,
-    this.iconAtEnd = false,
-    this.isPrimary = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final enabled = onPressed != null;
-    final primary = AppColors.primaryOf(context);
-
-    final children = [
-      Icon(
-        icon,
-        size: 16,
-        color: enabled
-            ? (isPrimary ? Colors.white : primary)
-            : AppColors.textSecondaryOf(context).withValues(alpha: 0.45),
-      ),
-      const SizedBox(width: 6),
-      Flexible(
-        child: Text(
-          label,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: AppTextStyles.caption.copyWith(
-            color: enabled
-                ? (isPrimary ? Colors.white : primary)
-                : AppColors.textSecondaryOf(context).withValues(alpha: 0.45),
-            fontWeight: FontWeight.w800,
-          ),
-        ),
-      ),
-    ];
-
-    return Container(
-      height: 40,
-      decoration: BoxDecoration(
-        gradient: enabled && isPrimary
-            ? AppColors.buttonGradientOf(context)
-            : null,
-        color: enabled && isPrimary
-            ? null
-            : primary.withValues(alpha: enabled ? 0.07 : 0.03),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onPressed,
-          borderRadius: BorderRadius.circular(12),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 9),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: iconAtEnd ? children.reversed.toList() : children,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 class _LessonSectionTitle extends StatelessWidget {
   final IconData icon;
