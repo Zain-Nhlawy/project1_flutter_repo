@@ -14,34 +14,55 @@ class LessonAttachmentCard extends StatelessWidget {
     required this.onDelete,
   });
 
+  static const _imageExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'heic', 'bmp'];
+  static const _videoExts = ['mp4', 'mov', 'avi', 'mkv', 'webm'];
+  static const _audioExts = ['mp3', 'wav', 'm4a', 'aac', 'ogg'];
+  static const _archiveExts = ['zip', 'rar', '7z'];
+
+  String _extOf(String path) => path.split('.').last.toLowerCase();
+
   IconData _iconFor(String path) {
-    final ext = path.split('.').last.toLowerCase();
+    final ext = _extOf(path);
+    if (_imageExts.contains(ext)) return Icons.image_rounded;
+    if (_videoExts.contains(ext)) return Icons.videocam_rounded;
+    if (_audioExts.contains(ext)) return Icons.audiotrack_rounded;
+    if (_archiveExts.contains(ext)) return Icons.folder_zip;
+
     switch (ext) {
       case 'pdf':
         return Icons.picture_as_pdf;
-      case 'zip':
-        return Icons.folder_zip;
       case 'ppt':
       case 'pptx':
         return Icons.slideshow;
       case 'doc':
       case 'docx':
         return Icons.description;
+      case 'xls':
+      case 'xlsx':
+        return Icons.table_chart_rounded;
+      case 'txt':
+        return Icons.text_snippet_outlined;
       default:
         return Icons.insert_drive_file;
     }
   }
 
   Color _accentFor(BuildContext context, String path) {
-    final ext = path.split('.').last.toLowerCase();
+    final ext = _extOf(path);
+    if (_imageExts.contains(ext)) return const Color(0xFF2E9CCA);
+    if (_videoExts.contains(ext)) return const Color(0xFF8E44AD);
+    if (_audioExts.contains(ext)) return const Color(0xFF16A085);
+    if (_archiveExts.contains(ext)) return AppColors.warning;
+
     switch (ext) {
       case 'pdf':
         return AppColors.error;
-      case 'zip':
-        return AppColors.warning;
       case 'ppt':
       case 'pptx':
         return const Color(0xFFEA6B35);
+      case 'xls':
+      case 'xlsx':
+        return const Color(0xFF1E8E3E);
       default:
         return AppColors.primaryOf(context);
     }

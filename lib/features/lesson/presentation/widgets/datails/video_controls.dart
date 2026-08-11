@@ -11,6 +11,9 @@ class VideoControls extends StatefulWidget {
   final VoidCallback? onPrevious;
   final VoidCallback? onFullscreen;
   final bool isFullscreen;
+  final Map<String, String> qualities;
+  final String currentQuality;
+  final ValueChanged<String>? onQualityChanged;
 
   const VideoControls({
     super.key,
@@ -19,6 +22,9 @@ class VideoControls extends StatefulWidget {
     this.onPrevious,
     this.onFullscreen,
     this.isFullscreen = false,
+    this.qualities = const {},
+    this.currentQuality = 'auto',
+    this.onQualityChanged,
   });
 
   @override
@@ -100,6 +106,10 @@ class _VideoControlsState extends State<VideoControls> {
         ? Duration.zero
         : (target > _duration ? _duration : target);
     widget.player.seek(clamped);
+  }
+
+  String _qualityLabel(String key) {
+    return key == 'auto' ? 'Auto' : '${key}p';
   }
 
   @override
@@ -256,6 +266,43 @@ class _VideoControlsState extends State<VideoControls> {
                         ),
                       ),
                     ),
+                    if (widget.qualities.length > 1) ...[
+                      const SizedBox(width: 6),
+                      PopupMenuButton<String>(
+                        initialValue: widget.currentQuality,
+                        onSelected: widget.onQualityChanged,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: EdgeInsets.zero,
+                        itemBuilder: (_) => widget.qualities.keys
+                            .map(
+                              (q) => PopupMenuItem(
+                                value: q,
+                                child: Text(_qualityLabel(q)),
+                              ),
+                            )
+                            .toList(),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 7,
+                            vertical: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.14),
+                            borderRadius: BorderRadius.circular(9),
+                          ),
+                          child: Text(
+                            _qualityLabel(widget.currentQuality),
+                            style: AppTextStyles.caption.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 10,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                     if (widget.onFullscreen != null) ...[
                       const SizedBox(width: 6),
                       _CompactVideoButton(

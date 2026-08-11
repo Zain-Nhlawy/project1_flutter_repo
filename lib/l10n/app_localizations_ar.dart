@@ -1667,4 +1667,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get saveFailed => 'فشل الحفظ';
+
+  @override
+  String get attachmentDownloaded => 'تم تنزيل المرفق بنجاح.';
+
+  @override
+  String get failedToDownloadAttachment => 'فشل تنزيل المرفق.';
+
+  @override
+  String get unexpectedError => 'حدث خطأ غير متوقع';
+
+  @override
+  String get uploadFailed => 'فشل رفع الملف';
 }
