@@ -1631,4 +1631,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get saveFailed => 'Save failed';
+
+  @override
+  String get attachmentDownloaded => 'Attachment downloaded successfully.';
+
+  @override
+  String get failedToDownloadAttachment => 'Failed to download attachment.';
 }

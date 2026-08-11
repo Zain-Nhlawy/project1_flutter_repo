@@ -3199,6 +3199,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save failed'**
   String get saveFailed;
+
+  /// No description provided for @attachmentDownloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Attachment downloaded successfully.'**
+  String get attachmentDownloaded;
+
+  /// No description provided for @failedToDownloadAttachment.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to download attachment.'**
+  String get failedToDownloadAttachment;
 }
 
 class _AppLocalizationsDelegate

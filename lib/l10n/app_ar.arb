@@ -613,5 +613,7 @@
   "photopeaEditor": "محرر Photopea",
   "pngSaved": "تم حفظ PNG",
   "storagePermissionDenied": "تم رفض إذن التخزين",
-  "saveFailed": "فشل الحفظ"
+  "saveFailed": "فشل الحفظ",
+  "attachmentDownloaded": "تم تنزيل المرفق بنجاح.",
+"failedToDownloadAttachment": "فشل تنزيل المرفق."
 }
