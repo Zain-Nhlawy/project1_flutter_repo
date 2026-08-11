@@ -448,17 +448,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get both => 'Both';
 
   @override
-  String get storagePermissionDenied =>
-      'No storage permission. Please enable it from settings.';
+  String get storagePermissionDenied => 'Storage permission denied';
 
   @override
   String get settings => 'Settings';
 
   @override
-  String get xmlSaved => 'XML saved successfully';
+  String get xmlSaved => 'XML Saved';
 
   @override
-  String get pngSaved => 'PNG saved successfully';
+  String get pngSaved => 'PNG saved';
 
   @override
   String get security => 'Security';
@@ -1595,4 +1594,41 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noAnswersYet => 'No answers yet';
+
+  @override
+  String get clear => 'Clear';
+
+  @override
+  String get viewXml => 'View XML';
+
+  @override
+  String get ready => 'Ready';
+
+  @override
+  String get loading => 'Loading...';
+
+  @override
+  String get saving => 'Saving...';
+
+  @override
+  String get error => 'Error';
+
+  @override
+  String get readyIdle => 'Ready';
+
+  @override
+  String get cleared => 'Cleared';
+
+  @override
+  String get noDiagramYet => 'No Diagram Yet';
+
+  @override
+  String get noDiagramDescription =>
+      'Create a new flowchart or open an existing diagram to start editing.';
+
+  @override
+  String get openEditor => 'Open Editor';
+
+  @override
+  String get saveFailed => 'Save failed';
 }

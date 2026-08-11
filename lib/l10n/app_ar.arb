@@ -589,7 +589,29 @@
 "hideReplies": "إخفاء الردود",
 "viewReplies": "عرض الردود",
 "answers": "إجابات",
-"noAnswersYet": "لا توجد إجابات بعد"
-
-
+"noAnswersYet": "لا توجد إجابات بعد",
+  "diagramEditor": "محرر المخططات",
+  "clear": "مسح",
+  "viewXml": "عرض XML",
+  "ready": "جاهز",
+  "loading": "جارٍ التحميل...",
+  "saving": "جارٍ الحفظ...",
+  "error": "خطأ",
+  "readyIdle": "جاهز",
+  "saveDiagram": "حفظ المخطط",
+  "whatDoYouWantToSave": "ماذا تريد أن تحفظ؟",
+  "xmlOnly": "XML فقط",
+  "pngOnly": "PNG فقط",
+  "both": "كلاهما",
+  "xmlSaved": "تم حفظ XML",
+  "pngSaved": "تم حفظ PNG",
+  "storagePermissionDenied": "تم رفض إذن التخزين",
+  "cleared": "تم المسح",
+  "noDiagramYet": "لا يوجد مخطط بعد",
+  "noDiagramDescription": "أنشئ مخططًا انسيابيًا جديدًا أو افتح مخططًا موجودًا لبدء التعديل.",
+  "openEditor": "فتح المحرر",
+  "photopeaEditor": "محرر Photopea",
+  "pngSaved": "تم حفظ PNG",
+  "storagePermissionDenied": "تم رفض إذن التخزين",
+  "saveFailed": "فشل الحفظ"
 }

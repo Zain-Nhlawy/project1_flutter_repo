@@ -947,7 +947,7 @@ abstract class AppLocalizations {
   /// No description provided for @storagePermissionDenied.
   ///
   /// In en, this message translates to:
-  /// **'No storage permission. Please enable it from settings.'**
+  /// **'Storage permission denied'**
   String get storagePermissionDenied;
 
   /// No description provided for @settings.
@@ -959,13 +959,13 @@ abstract class AppLocalizations {
   /// No description provided for @xmlSaved.
   ///
   /// In en, this message translates to:
-  /// **'XML saved successfully'**
+  /// **'XML Saved'**
   String get xmlSaved;
 
   /// No description provided for @pngSaved.
   ///
   /// In en, this message translates to:
-  /// **'PNG saved successfully'**
+  /// **'PNG saved'**
   String get pngSaved;
 
   /// No description provided for @security.
@@ -3127,6 +3127,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No answers yet'**
   String get noAnswersYet;
+
+  /// No description provided for @clear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clear;
+
+  /// No description provided for @viewXml.
+  ///
+  /// In en, this message translates to:
+  /// **'View XML'**
+  String get viewXml;
+
+  /// No description provided for @ready.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get ready;
+
+  /// No description provided for @loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loading;
+
+  /// No description provided for @saving.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving...'**
+  String get saving;
+
+  /// No description provided for @error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
+
+  /// No description provided for @readyIdle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get readyIdle;
+
+  /// No description provided for @cleared.
+  ///
+  /// In en, this message translates to:
+  /// **'Cleared'**
+  String get cleared;
+
+  /// No description provided for @noDiagramYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No Diagram Yet'**
+  String get noDiagramYet;
+
+  /// No description provided for @noDiagramDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a new flowchart or open an existing diagram to start editing.'**
+  String get noDiagramDescription;
+
+  /// No description provided for @openEditor.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Editor'**
+  String get openEditor;
+
+  /// No description provided for @saveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Save failed'**
+  String get saveFailed;
 }
 
 class _AppLocalizationsDelegate

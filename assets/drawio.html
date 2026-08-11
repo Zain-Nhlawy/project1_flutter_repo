@@ -1,470 +1,97 @@
 <!DOCTYPE html>
-<html lang="en" dir="rtl">
+<html>
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Diagram Editor</title>
-
   <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    :root {
-      --bg: #F4F7FB;
-      --card: #FFFFFF;
-      --primary: #1E4E8C;
-      --primary-dark: #0A2A54;
-      --primary-light: #2F6FB3;
-      --border: #D9E2EF;
-      --text: #0B1220;
-      --muted: #6B7A90;
-      --danger: #E74C3C;
-      --shadow: 0 10px 20px rgba(174, 207, 255, 0.6);
-    }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* ================= TOPBAR ================= */
-    #topbar {
-      height: 64px;
-      background: linear-gradient(90deg, var(--primary-dark), var(--primary-light));
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px;
-      box-shadow: var(--shadow);
-    }
-
-    #topbar .title {
-      font-size: 16px;
-      font-weight: 700;
-    }
-
-    #topbar .subtitle {
-      font-size: 12px;
-      opacity: 0.9;
-    }
-
-    .actions {
-      display: flex;
-      gap: 10px;
-    }
-
-    /* ================= BUTTONS ================= */
-    .btn {
-      padding: 8px 16px;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 600;
-      transition: 0.2s;
-    }
-
-    .btn-primary {
-      background: linear-gradient(90deg, var(--primary-dark), var(--primary-light));
-      color: white;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-1px);
-    }
-
-    .btn-outline {
-      background: white;
-      border: 1px solid var(--border);
-      color: var(--primary);
-    }
-
-    .btn-outline:hover {
-      background: #f0f6ff;
-    }
-
-    .btn-danger {
-      background: #fff;
-      border: 1px solid #ffd1d1;
-      color: var(--danger);
-    }
-
-    /* ================= STATUS BAR ================= */
-    #statusbar {
-      height: 38px;
-      background: var(--card);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      padding: 0 20px;
-      font-size: 12px;
-      color: var(--muted);
-      gap: 8px;
-    }
-
-    #dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #ccc;
-    }
-
-    #dot.ready { background: #22c55e; }
-    #dot.loading { background: #f59e0b; }
-    #dot.saving { background: #3b82f6; }
-    #dot.error { background: #ef4444; }
-
-    /* ================= MAIN ================= */
-    #main {
-      flex: 1;
-      display: flex;
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* ================= PLACEHOLDER ================= */
-    #placeholder {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      gap: 14px;
-    }
-
-    #placeholder h2 {
-      font-size: 20px;
-      font-weight: 700;
-    }
-
-    #placeholder p {
-      color: var(--muted);
-      font-size: 13px;
-      max-width: 320px;
-      line-height: 1.6;
-    }
-
-    /* ================= FRAME ================= */
-    #editorFrame {
-      flex: 1;
-      border: none;
-      display: none;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; overflow: hidden; background: #F4F7FB; }
+    iframe {
       width: 100%;
       height: 100%;
-    }
-
-    /* ================= OVERLAY ================= */
-    #overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(255,255,255,0.7);
-      backdrop-filter: blur(6px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 10px;
-      z-index: 50;
-    }
-
-    .spinner {
-      width: 42px;
-      height: 42px;
-      border: 3px solid #dbeafe;
-      border-top: 3px solid var(--primary);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* ================= TOAST ================= */
-    #toast {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%) translateY(50px);
-      background: white;
-      border: 1px solid var(--border);
-      padding: 10px 18px;
-      border-radius: 12px;
-      font-size: 13px;
-      box-shadow: var(--shadow);
-      transition: 0.3s;
-      opacity: 0;
-    }
-
-    #toast.show {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
-    }
-
-    /* ================= XML MODAL ================= */
-    #xmlModal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.4);
-      display: none;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #xmlBox {
-      width: min(750px, 92vw);
-      background: white;
-      border-radius: 18px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
-
-    #xmlHeader {
-      background: var(--primary);
-      color: white;
-      padding: 14px;
-      font-weight: 700;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    textarea {
-      width: 100%;
-      height: 300px;
       border: none;
-      padding: 14px;
-      font-family: monospace;
-      font-size: 12px;
-      outline: none;
-      background: #f8fbff;
-      direction: ltr;
+      display: block;
     }
-
-    #xmlFooter {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      padding: 12px;
-      border-top: 1px solid var(--border);
-    }
-
   </style>
 </head>
-
 <body>
-
-<!-- TOP BAR -->
-<div id="topbar">
-  <div>
-    <div class="title">Diagram Editor</div>
-    <div class="subtitle">Professional Flow Diagram Editor</div>
-  </div>
-
-  <div class="actions">
-    <button class="btn btn-outline" onclick="openXml()">View XML</button>
-    <button class="btn btn-danger" onclick="clearDiagram()">Clear</button>
-    <button class="btn btn-primary" onclick="openEditor()">Open Editor</button>
-  </div>
-</div>
-
-<!-- STATUS -->
-<div id="statusbar">
-  <div id="dot"></div>
-  <span id="statusText">Ready</span>
-</div>
-
-<!-- MAIN -->
-<div id="main">
-
-  <div id="placeholder">
-    <h2>No Diagram Yet</h2>
-    <p>Create a new flowchart or open an existing diagram to start editing.</p>
-    <button class="btn btn-primary" onclick="openEditor()">Open Editor</button>
-  </div>
-
   <iframe id="editorFrame"></iframe>
 
-  <div id="overlay">
-    <div class="spinner"></div>
-    <div id="overlayText">Loading...</div>
-  </div>
+  <script>
+    const EDITOR_URL = "https://embed.diagrams.net/?embed=1&proto=json&spin=1&libraries=1";
+    const frame = document.getElementById("editorFrame");
 
-</div>
+    let ready = false;
+    let pendingXml = null;
 
-<!-- TOAST -->
-<div id="toast"></div>
-
-<!-- XML MODAL -->
-<div id="xmlModal">
-  <div id="xmlBox">
-    <div id="xmlHeader">
-      XML Viewer
-      <button class="btn btn-outline" onclick="closeXml()">Close</button>
-    </div>
-
-    <textarea id="xmlArea"></textarea>
-
-    <div id="xmlFooter">
-      <button class="btn btn-outline" onclick="copyXml()">Copy</button>
-      <button class="btn btn-primary" onclick="loadXml()">Load</button>
-    </div>
-  </div>
-</div>
-
-<script>
-const URL = "https://embed.diagrams.net/?embed=1&proto=json&spin=1&libraries=1";
-
-let frame = document.getElementById("editorFrame");
-let xml = null;
-let ready = false;
-let listener = null;
-
-/* ================= UI HELPERS ================= */
-function setStatus(type, text){
-  document.getElementById("dot").className = type;
-  document.getElementById("statusText").textContent = text;
-}
-
-function showToast(msg){
-  const t = document.getElementById("toast");
-  t.textContent = msg;
-  t.classList.add("show");
-  setTimeout(()=> t.classList.remove("show"), 2500);
-}
-
-function showOverlay(text){
-  document.getElementById("overlayText").textContent = text;
-  document.getElementById("overlay").style.display = "flex";
-}
-
-function hideOverlay(){
-  document.getElementById("overlay").style.display = "none";
-}
-
-function showEditor(show){
-  document.getElementById("placeholder").style.display = show ? "none" : "flex";
-  frame.style.display = show ? "block" : "none";
-}
-
-/* ================= DRAWIO ================= */
-function openEditor(){
-  if(ready){ showEditor(true); return; }
-
-  frame.src = URL;
-  showOverlay("Loading...");
-  setStatus("loading","Loading...");
-
-  listener = function(e){
-    try {
-      const msg = JSON.parse(e.data);
+    window.addEventListener("message", function (e) {
+      let msg;
+      try {
+        msg = JSON.parse(e.data);
+      } catch (_) {
+        return;
+      }
       handle(msg);
-    } catch {}
-  };
-
-  window.addEventListener("message", listener);
-}
-
-function handle(msg){
-  switch(msg.event){
-    case "init":
-      ready = true;
-      hideOverlay();
-      setStatus("ready","Ready");
-      send({ action:"load", xml: xml || "<mxGraphModel><root><mxCell id='0'/><mxCell id='1' parent='0'/></root></mxGraphModel>"});
-      showEditor(true);
-      break;
-
-    case "save":
-      setStatus("saving","Saving...");
-      showOverlay("Saving...");
-      send({ action:"export", format:"xml" });
-      send({ action:"export", format:"png" });
-      break;
-
-    case "export":
-      xml = msg.xml;
-      hideOverlay();
-      setStatus("ready","Saved");
-      showToast("Saved successfully");
-      if (msg.format === "png") {
-    // ابعت PNG لـ Flutter
-    if (window.FlutterBridge) {
-      FlutterBridge.postMessage(JSON.stringify({ type: 'png', data: msg.data }));
-    }
-  } else {
-    // XML
-    xml = msg.xml || xml;
-    localStorage.setItem("diagram_xml", xml);
-    if (window.FlutterBridge) {
-      FlutterBridge.postMessage(JSON.stringify({ type: 'xml', data: xml }));
-    }
-  }
-  break;
-  }
-}
-
-function send(msg){
-  frame.contentWindow.postMessage(JSON.stringify(msg),"*");
-}
-
-/* ================= XML ================= */
-function openXml(){
-  document.getElementById("xmlArea").value = xml || "";
-  document.getElementById("xmlModal").style.display = "flex";
-}
-
-function closeXml(){
-  document.getElementById("xmlModal").style.display = "none";
-}
-
-function copyXml(){
-  navigator.clipboard.writeText(xml || "");
-  showToast("Copied");
-}
-
-function loadXml(){
-  xml = document.getElementById("xmlArea").value;
-  closeXml();
-  if (ready && frame.contentWindow) {
-    send({
-      action: "load",
-      xml: xml
     });
-  } else {
-    openEditor();
-  }
-}
 
-/* ================= CLEAR ================= */
-function clearDiagram(){
-  xml = null;
-  localStorage.removeItem("diagram_xml");
-  frame.src = "";
-  ready = false;
-  showEditor(false);
-  setStatus("idle","Ready");
-  showToast("Cleared");
-}
+    function handle(msg) {
+      switch (msg.event) {
+        case "init":
+          ready = true;
+          notify("status", "ready");
+          send({
+            action: "load",
+            xml: pendingXml || "<mxGraphModel><root><mxCell id='0'/><mxCell id='1' parent='0'/></root></mxGraphModel>",
+          });
+          break;
 
-/* ================= INIT ================= */
-window.onload = function(){
-  xml = localStorage.getItem("diagram_xml");
-  if(xml){
-    showToast("Loaded saved diagram");
-  }
-};
-</script>
+        case "save":
+          notify("status", "saving");
+          send({ action: "export", format: "xml" });
+          send({ action: "export", format: "png" });
+          break;
 
+        case "export":
+          if (msg.format === "png") {
+            notify("png", msg.data);
+          } else {
+            notify("xml", msg.xml);
+          }
+          break;
+      }
+    }
+
+    function send(msg) {
+      if (frame.contentWindow) {
+        frame.contentWindow.postMessage(JSON.stringify(msg), "*");
+      }
+    }
+
+    function notify(type, data) {
+      if (window.FlutterBridge) {
+        FlutterBridge.postMessage(JSON.stringify({ type: type, data: data }));
+      }
+    }
+
+    window.openEditor = function (xml) {
+      pendingXml = xml || null;
+      ready = false;
+      frame.src = EDITOR_URL;
+    };
+
+    window.loadXmlIntoEditor = function (xml) {
+      pendingXml = xml;
+      if (ready) {
+        send({ action: "load", xml: xml });
+      } else {
+        window.openEditor(xml);
+      }
+    };
+
+    window.clearEditor = function () {
+      pendingXml = null;
+      ready = false;
+      frame.src = "";
+    };
+  </script>
 </body>
 </html>

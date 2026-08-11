@@ -9,6 +9,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   media_kit_libs_linux
   media_kit_video
   printing
+  public_file_saver
   url_launcher_linux
   volume_controller
 )

@@ -436,7 +436,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get saveDiagram => 'حفظ المخطط';
 
   @override
-  String get whatDoYouWantToSave => 'شو بدك تحفظ؟';
+  String get whatDoYouWantToSave => 'ماذا تريد أن تحفظ؟';
 
   @override
   String get xmlOnly => 'XML فقط';
@@ -445,19 +445,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get pngOnly => 'PNG فقط';
 
   @override
-  String get both => 'الاثنين';
+  String get both => 'كلاهما';
 
   @override
-  String get storagePermissionDenied => 'ما عندك إذن تخزين، فعّله من الإعدادات';
+  String get storagePermissionDenied => 'تم رفض إذن التخزين';
 
   @override
   String get settings => 'الإعدادات';
 
   @override
-  String get xmlSaved => 'تم حفظ XML بنجاح';
+  String get xmlSaved => 'تم حفظ XML';
 
   @override
-  String get pngSaved => 'تم حفظ PNG بنجاح';
+  String get pngSaved => 'تم حفظ PNG';
 
   @override
   String get security => 'الأمان';
@@ -1585,4 +1585,41 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get noAnswersYet => 'لا توجد إجابات بعد';
+
+  @override
+  String get clear => 'مسح';
+
+  @override
+  String get viewXml => 'عرض XML';
+
+  @override
+  String get ready => 'جاهز';
+
+  @override
+  String get loading => 'جارٍ التحميل...';
+
+  @override
+  String get saving => 'جارٍ الحفظ...';
+
+  @override
+  String get error => 'خطأ';
+
+  @override
+  String get readyIdle => 'جاهز';
+
+  @override
+  String get cleared => 'تم المسح';
+
+  @override
+  String get noDiagramYet => 'لا يوجد مخطط بعد';
+
+  @override
+  String get noDiagramDescription =>
+      'أنشئ مخططًا انسيابيًا جديدًا أو افتح مخططًا موجودًا لبدء التعديل.';
+
+  @override
+  String get openEditor => 'فتح المحرر';
+
+  @override
+  String get saveFailed => 'فشل الحفظ';
 }

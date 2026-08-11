@@ -1,12 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8">
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #1a1a1a; }
         iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
-    <iframe id="photopea" src="https://www.photopea.com#%7B%22environment%22%3A%7B%22theme%22%3A%22dark%22%7D%7D"></iframe>
+    <iframe id="photopea" src="https://www.photopea.com#%7B%22environment%22%3A%7B%22customIO%22%3A%7B%22save%22%3A%22app.activeDocument.saveToOE('png')%3B%22%7D%7D%7D"></iframe>
+
+    <script>
+        const photopeaFrame = document.getElementById('photopea');
+
+        function arrayBufferToBase64(buffer) {
+            let binary = '';
+            const bytes = new Uint8Array(buffer);
+            const chunkSize = 0x8000;
+            for (let i = 0; i < bytes.length; i += chunkSize) {
+                binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
+            }
+            return btoa(binary);
+        }
+
+        window.addEventListener('message', function(e) {
+            if (e.source !== photopeaFrame.contentWindow) return;
+            if (e.origin !== 'https://www.photopea.com') return;
+
+            if (e.data instanceof ArrayBuffer) {
+                const base64 = arrayBufferToBase64(e.data);
+                if (window.flutter_inappwebview) {
+                    window.flutter_inappwebview.callHandler('onPhotopeaExport', base64);
+                }
+            } else if (e.data === 'done') {
+                if (window.flutter_inappwebview) {
+                    window.flutter_inappwebview.callHandler('onPhotopeaEvent', 'done');
+                }
+            }
+        });
+
+        function runPhotopeaScript(script) {
+            photopeaFrame.contentWindow.postMessage(script, 'https://www.photopea.com');
+        }
+        window.runPhotopeaScript = runPhotopeaScript;
+    </script>
 </body>
 </html>
