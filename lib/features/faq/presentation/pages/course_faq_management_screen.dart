@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/core/presentation/widgets/gradient_action_button.dart';
+import 'package:project1/core/presentation/widgets/gradient_page_app_bar.dart';
 import 'package:project1/features/faq/domain/entities/course_faq_entity.dart';
 import 'package:project1/features/faq/presentation/cubit/course_faq_cubit.dart';
 import 'package:project1/features/faq/presentation/cubit/course_faq_state.dart';
@@ -67,10 +70,12 @@ class _CourseFaqManagementViewState extends State<_CourseFaqManagementView> {
             bottom: MediaQuery.of(sheetContext).viewInsets.bottom,
           ),
           child: Container(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
-            decoration: const BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            padding: const EdgeInsets.fromLTRB(20, 14, 20, 24),
+            decoration: BoxDecoration(
+              color: AppColors.surfaceOf(sheetContext),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(28),
+              ),
             ),
             child: Form(
               key: formKey,
@@ -84,30 +89,73 @@ class _CourseFaqManagementViewState extends State<_CourseFaqManagementView> {
                       height: 4,
                       margin: const EdgeInsets.only(bottom: 16),
                       decoration: BoxDecoration(
-                        color: AppColors.border,
+                        color: AppColors.borderOf(sheetContext),
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
                   ),
-                  Text(
-                    AppLocalizations.of(context)!.addFaq,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.textPrimary,
-                    ),
+                  Row(
+                    children: [
+                      Container(
+                        width: 44,
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryOf(
+                            sheetContext,
+                          ).withValues(alpha: 0.09),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: Icon(
+                          Icons.help_outline_rounded,
+                          color: AppColors.primaryOf(sheetContext),
+                          size: 22,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          AppLocalizations.of(context)!.addFaq,
+                          style: AppTextStyles.titleMedium.copyWith(
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.textPrimaryOf(sheetContext),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 18),
                   TextFormField(
                     controller: questionController,
                     maxLines: 2,
+                    style: TextStyle(
+                      color: AppColors.textPrimaryOf(sheetContext),
+                    ),
                     decoration: InputDecoration(
                       labelText: AppLocalizations.of(context)!.question,
+                      prefixIcon: Icon(
+                        Icons.quiz_outlined,
+                        color: AppColors.primaryOf(sheetContext),
+                      ),
                       filled: true,
-                      fillColor: AppColors.background,
+                      fillColor: AppColors.backgroundOf(sheetContext),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide(
+                          color: AppColors.borderOf(sheetContext),
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide(
+                          color: AppColors.borderOf(sheetContext),
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide(
+                          color: AppColors.primaryOf(sheetContext),
+                          width: 1.7,
+                        ),
                       ),
                     ),
                     validator: (value) {
@@ -121,13 +169,35 @@ class _CourseFaqManagementViewState extends State<_CourseFaqManagementView> {
                   TextFormField(
                     controller: answerController,
                     maxLines: 4,
+                    style: TextStyle(
+                      color: AppColors.textPrimaryOf(sheetContext),
+                    ),
                     decoration: InputDecoration(
                       labelText: AppLocalizations.of(context)!.answer,
+                      prefixIcon: Icon(
+                        Icons.chat_bubble_outline_rounded,
+                        color: AppColors.primaryOf(sheetContext),
+                      ),
                       filled: true,
-                      fillColor: AppColors.background,
+                      fillColor: AppColors.backgroundOf(sheetContext),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide(
+                          color: AppColors.borderOf(sheetContext),
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide(
+                          color: AppColors.borderOf(sheetContext),
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide(
+                          color: AppColors.primaryOf(sheetContext),
+                          width: 1.7,
+                        ),
                       ),
                     ),
                     validator: (value) {
@@ -138,35 +208,21 @@ class _CourseFaqManagementViewState extends State<_CourseFaqManagementView> {
                     },
                   ),
                   const SizedBox(height: 20),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      onPressed: () {
-                        if (formKey.currentState?.validate() != true) return;
+                  GradientActionButton(
+                    label: AppLocalizations.of(context)!.addFaq,
+                    icon: Icons.add_rounded,
+                    expand: true,
+                    onPressed: () {
+                      if (formKey.currentState?.validate() != true) return;
 
-                        context.read<CourseFaqCubit>().createCourseFaq(
-                          courseId: widget.courseId,
-                          question: questionController.text.trim(),
-                          answer: answerController.text.trim(),
-                        );
-                        _hasChanges = true;
-                        Navigator.pop(sheetContext);
-                      },
-                      child: Text(
-                        AppLocalizations.of(context)!.addFaq,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+                      context.read<CourseFaqCubit>().createCourseFaq(
+                        courseId: widget.courseId,
+                        question: questionController.text.trim(),
+                        answer: answerController.text.trim(),
+                      );
+                      _hasChanges = true;
+                      Navigator.pop(sheetContext);
+                    },
                   ),
                 ],
               ),
@@ -199,6 +255,8 @@ class _CourseFaqManagementViewState extends State<_CourseFaqManagementView> {
       ),
     );
 
+    if (!mounted) return;
+
     if (confirmed == true) {
       _hasChanges = true;
       context.read<CourseFaqCubit>().deleteCourseFaq(
@@ -212,60 +270,38 @@ class _CourseFaqManagementViewState extends State<_CourseFaqManagementView> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
         Navigator.pop(context, _hasChanges);
       },
       child: Scaffold(
-        backgroundColor: AppColors.background,
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
-            onPressed: () => Navigator.pop(context, _hasChanges),
-          ),
-          title: Text(
-            AppLocalizations.of(context)!.faqs,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: AppColors.primaryGradient,
-            ),
-          ),
+        backgroundColor: AppColors.backgroundOf(context),
+        appBar: GradientPageAppBar(
+          title: AppLocalizations.of(context)!.faqs,
+          subtitle: widget.courseTitle,
+          onBackPressed: () => Navigator.pop(context, _hasChanges),
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          backgroundColor: AppColors.primary,
+        floatingActionButton: GradientActionButton(
           onPressed: _openAddFaqSheet,
-          icon: const Icon(Icons.add_rounded, color: Colors.white),
-          label: Text(
-            AppLocalizations.of(context)!.addFaq,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          icon: Icons.add_rounded,
+          label: AppLocalizations.of(context)!.addFaq,
         ),
         body: BlocConsumer<CourseFaqCubit, CourseFaqState>(
           listener: (context, state) {
             if (state is CourseFaqActionSuccess) {
-              SnackbarTheme().newSnackBarInfo(
-                context,
-                state.message,
-              );
+              SnackbarTheme().newSnackBarInfo(context, state.message);
               _refresh();
             } else if (state is CourseFaqError) {
-              SnackbarTheme().newSnackBarError(
-                context,
-                state.message,
-              );
+              SnackbarTheme().newSnackBarError(context, state.message);
             }
           },
           builder: (context, state) {
             if (state is CourseFaqLoading || state is CourseFaqInitial) {
-              return const Center(child: CircularProgressIndicator());
+              return Center(
+                child: CircularProgressIndicator(
+                  color: AppColors.primaryOf(context),
+                ),
+              );
             }
 
             if (state is CourseFaqError) {
@@ -278,13 +314,17 @@ class _CourseFaqManagementViewState extends State<_CourseFaqManagementView> {
                       Icon(
                         Icons.error_outline_rounded,
                         size: 40,
-                        color: AppColors.textSecondary.withOpacity(0.5),
+                        color: AppColors.textSecondaryOf(
+                          context,
+                        ).withValues(alpha: 0.5),
                       ),
                       const SizedBox(height: 12),
                       Text(
                         state.message,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(color: AppColors.textSecondary),
+                        style: TextStyle(
+                          color: AppColors.textSecondaryOf(context),
+                        ),
                       ),
                       const SizedBox(height: 16),
                       ElevatedButton(
@@ -304,29 +344,51 @@ class _CourseFaqManagementViewState extends State<_CourseFaqManagementView> {
 
             if (faqs.isEmpty) {
               return Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
+                child: Container(
+                  margin: const EdgeInsets.all(28),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 28,
+                    vertical: 30,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.surfaceOf(context),
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(color: AppColors.borderOf(context)),
+                  ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(
-                        Icons.help_outline_rounded,
-                        size: 48,
-                        color: AppColors.textSecondary.withOpacity(0.4),
+                      Container(
+                        width: 66,
+                        height: 66,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryOf(
+                            context,
+                          ).withValues(alpha: 0.09),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.help_outline_rounded,
+                          size: 31,
+                          color: AppColors.primaryOf(context),
+                        ),
                       ),
                       const SizedBox(height: 12),
                       Text(
                         AppLocalizations.of(context)!.noFaqsYet,
-                        style: const TextStyle(
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
                           fontWeight: FontWeight.w600,
-                          color: AppColors.textPrimary,
+                          color: AppColors.textPrimaryOf(context),
                         ),
                       ),
                       const SizedBox(height: 6),
                       Text(
                         AppLocalizations.of(context)!.tapToAddFaq,
                         style: TextStyle(
-                          color: AppColors.textSecondary.withOpacity(0.8),
+                          color: AppColors.textSecondaryOf(
+                            context,
+                          ).withValues(alpha: 0.82),
                         ),
                       ),
                     ],
@@ -338,7 +400,7 @@ class _CourseFaqManagementViewState extends State<_CourseFaqManagementView> {
             return RefreshIndicator(
               onRefresh: () async => _refresh(),
               child: ListView.separated(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+                padding: const EdgeInsets.fromLTRB(18, 24, 18, 100),
                 itemCount: faqs.length,
                 separatorBuilder: (_, __) => const SizedBox(height: 10),
                 itemBuilder: (context, index) {

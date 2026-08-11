@@ -947,7 +947,7 @@ abstract class AppLocalizations {
   /// No description provided for @storagePermissionDenied.
   ///
   /// In en, this message translates to:
-  /// **'No storage permission. Please enable it from settings.'**
+  /// **'Storage permission denied'**
   String get storagePermissionDenied;
 
   /// No description provided for @settings.
@@ -959,13 +959,13 @@ abstract class AppLocalizations {
   /// No description provided for @xmlSaved.
   ///
   /// In en, this message translates to:
-  /// **'XML saved successfully'**
+  /// **'XML Saved'**
   String get xmlSaved;
 
   /// No description provided for @pngSaved.
   ///
   /// In en, this message translates to:
-  /// **'PNG saved successfully'**
+  /// **'PNG saved'**
   String get pngSaved;
 
   /// No description provided for @security.
@@ -1177,6 +1177,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Private'**
   String get private;
+
+  /// No description provided for @publicVisibilityWarningTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish to the public library?'**
+  String get publicVisibilityWarningTitle;
+
+  /// No description provided for @publicVisibilityWarningMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Choosing Public makes this course available in the public library after you save your changes.'**
+  String get publicVisibilityWarningMessage;
 
   /// No description provided for @tags.
   ///
@@ -1946,6 +1958,96 @@ abstract class AppLocalizations {
   /// **'Chat'**
   String get departmentChat;
 
+  /// No description provided for @departmentLives.
+  ///
+  /// In en, this message translates to:
+  /// **'Lives'**
+  String get departmentLives;
+
+  /// No description provided for @createLiveStream.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Live Stream'**
+  String get createLiveStream;
+
+  /// No description provided for @startLiveStream.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Stream'**
+  String get startLiveStream;
+
+  /// No description provided for @endLiveStream.
+  ///
+  /// In en, this message translates to:
+  /// **'End Stream'**
+  String get endLiveStream;
+
+  /// No description provided for @joinLiveStream.
+  ///
+  /// In en, this message translates to:
+  /// **'Join Stream'**
+  String get joinLiveStream;
+
+  /// No description provided for @liveStreamTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stream Title'**
+  String get liveStreamTitle;
+
+  /// No description provided for @liveStreamDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Stream Description'**
+  String get liveStreamDescription;
+
+  /// No description provided for @scheduleTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled Time'**
+  String get scheduleTime;
+
+  /// No description provided for @liveStatusLive.
+  ///
+  /// In en, this message translates to:
+  /// **'LIVE'**
+  String get liveStatusLive;
+
+  /// No description provided for @liveStatusScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'SCHEDULED'**
+  String get liveStatusScheduled;
+
+  /// No description provided for @liveStatusEnded.
+  ///
+  /// In en, this message translates to:
+  /// **'ENDED'**
+  String get liveStatusEnded;
+
+  /// No description provided for @noLiveStreamsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No live streams available'**
+  String get noLiveStreamsFound;
+
+  /// No description provided for @editLiveStream.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Stream'**
+  String get editLiveStream;
+
+  /// No description provided for @liveStreamCreatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Live stream created successfully'**
+  String get liveStreamCreatedSuccessfully;
+
+  /// No description provided for @liveStreamEnded.
+  ///
+  /// In en, this message translates to:
+  /// **'Live stream ended'**
+  String get liveStreamEnded;
+
   /// No description provided for @departmentMembers.
   ///
   /// In en, this message translates to:
@@ -2276,6 +2378,30 @@ abstract class AppLocalizations {
   /// **'All Filters'**
   String get allFilters;
 
+  /// No description provided for @searchTags.
+  ///
+  /// In en, this message translates to:
+  /// **'Search tags'**
+  String get searchTags;
+
+  /// No description provided for @selectedTagsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} selected'**
+  String selectedTagsCount(int count);
+
+  /// No description provided for @applyFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply Filters'**
+  String get applyFilters;
+
+  /// No description provided for @clearAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear All'**
+  String get clearAll;
+
   /// No description provided for @beginner.
   ///
   /// In en, this message translates to:
@@ -2425,6 +2551,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'AI Response'**
   String get aiResponseTitle;
+
+  /// No description provided for @aiFulfillingRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'AI is fulfilling your request'**
+  String get aiFulfillingRequest;
 
   /// No description provided for @noDataYet.
   ///
@@ -3049,6 +3181,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your Answer'**
   String get yourAnswerLabel;
+
+  /// No description provided for @hideReplies.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide replies'**
+  String get hideReplies;
+
+  /// No description provided for @repliesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Replies'**
+  String repliesCount(Object count);
+
+  /// No description provided for @askAQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask a question'**
+  String get askAQuestion;
+
+  /// No description provided for @viewReplies.
+  ///
+  /// In en, this message translates to:
+  /// **'View replies'**
+  String get viewReplies;
+
+  /// No description provided for @answers.
+  ///
+  /// In en, this message translates to:
+  /// **'answers'**
+  String get answers;
+
+  /// No description provided for @noAnswersYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No answers yet'**
+  String get noAnswersYet;
+
+  /// No description provided for @clear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clear;
+
+  /// No description provided for @viewXml.
+  ///
+  /// In en, this message translates to:
+  /// **'View XML'**
+  String get viewXml;
+
+  /// No description provided for @ready.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get ready;
+
+  /// No description provided for @loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loading;
+
+  /// No description provided for @saving.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving...'**
+  String get saving;
+
+  /// No description provided for @error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
+
+  /// No description provided for @readyIdle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get readyIdle;
+
+  /// No description provided for @cleared.
+  ///
+  /// In en, this message translates to:
+  /// **'Cleared'**
+  String get cleared;
+
+  /// No description provided for @noDiagramYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No Diagram Yet'**
+  String get noDiagramYet;
+
+  /// No description provided for @noDiagramDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a new flowchart or open an existing diagram to start editing.'**
+  String get noDiagramDescription;
+
+  /// No description provided for @openEditor.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Editor'**
+  String get openEditor;
+
+  /// No description provided for @saveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Save failed'**
+  String get saveFailed;
 }
 
 class _AppLocalizationsDelegate

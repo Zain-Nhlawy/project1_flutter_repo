@@ -12,6 +12,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   media_kit_video
   permission_handler_windows
   printing
+  public_file_saver
   url_launcher_windows
   volume_controller
 )

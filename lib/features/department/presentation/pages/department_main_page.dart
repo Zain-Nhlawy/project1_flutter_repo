@@ -9,6 +9,7 @@ import 'package:project1/features/department/presentation/pages/sidebar%20screen
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:animations/animations.dart';
 import 'package:project1/features/department_chat/presentation/pages/department_chat_screen.dart';
+import 'package:project1/features/live_stream/presentation/pages/live_streams_page.dart';
 import '../widgets/department_main_page/department_nav_item.dart';
 import '../widgets/department_main_page/department_sidebar.dart';
 import '../widgets/department_main_page/department_empty_page.dart';
@@ -66,6 +67,9 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
+    final viewportWidth = MediaQuery.sizeOf(context).width;
+    final sidebarWidth = (viewportWidth * 0.72).clamp(0.0, 236.0).toDouble();
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
 
     final navItems = [
       DepartmentNavItem(
@@ -92,6 +96,10 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
         Icons.chat_bubble_outline_rounded,
         localizations.departmentChat,
       ),
+      DepartmentNavItem(
+        Icons.sensors_rounded,
+        localizations.departmentLives,
+      ),
     ];
 
     return Scaffold(
@@ -110,33 +118,49 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
                   child: Row(
                     children: [
                       if (!_isSidebarVisible)
-                        Material(
-                          color: AppColors.textSecondaryOf(
-                            context,
-                          ).withValues(alpha: 0.08),
-                          borderRadius: BorderRadius.circular(14),
-                          child: InkWell(
-                            onTap: _toggleSidebar,
+                        Container(
+                          decoration: BoxDecoration(
+                            gradient: AppColors.headerGradientOf(context),
                             borderRadius: BorderRadius.circular(14),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Icon(
-                                Icons.menu_rounded,
-                                color: AppColors.textPrimaryOf(context),
-                                size: 20,
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.primaryOf(
+                                  context,
+                                ).withValues(alpha: 0.22),
+                                blurRadius: 10,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Material(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(14),
+                            child: InkWell(
+                              onTap: _toggleSidebar,
+                              borderRadius: BorderRadius.circular(14),
+                              child: const Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Icon(
+                                  Icons.menu_rounded,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
                               ),
                             ),
                           ),
                         ),
                       if (!_isSidebarVisible) const SizedBox(width: 12),
                       Material(
-                        color: AppColors.textSecondaryOf(
-                          context,
-                        ).withValues(alpha: 0.08),
-                        borderRadius: BorderRadius.circular(14),
+                        color: AppColors.surfaceOf(context),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                          side: BorderSide(color: AppColors.borderOf(context)),
+                        ),
                         child: InkWell(
                           onTap: () => Navigator.pop(context),
-                          borderRadius: BorderRadius.circular(14),
+                          customBorder: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
                           child: Padding(
                             padding: const EdgeInsets.all(10),
                             child: Icon(
@@ -181,7 +205,7 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
               opacity: _isSidebarVisible ? 1.0 : 0.0,
               child: GestureDetector(
                 onTap: _toggleSidebar,
-                child: Container(color: Colors.black.withValues(alpha: 0.35)),
+                child: Container(color: Colors.black.withValues(alpha: 0.3)),
               ),
             ),
           ),
@@ -189,18 +213,21 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
           AnimatedPositioned(
             duration: const Duration(milliseconds: 300),
             curve: Curves.fastOutSlowIn,
-            left: Directionality.of(context) == TextDirection.rtl
-                ? null
-                : (_isSidebarVisible ? 0 : -95),
-            right: Directionality.of(context) == TextDirection.rtl
-                ? (_isSidebarVisible ? 0 : -95)
+            left: isRtl ? null : (_isSidebarVisible ? 0 : -(sidebarWidth + 12)),
+            right: isRtl
+                ? (_isSidebarVisible ? 0 : -(sidebarWidth + 12))
                 : null,
             top: 0,
             bottom: 0,
             child: DepartmentSidebar(
+              width: sidebarWidth,
               isVisible: _isSidebarVisible,
               currentIndex: context.watch<DepartmentNavigationCubit>().state,
               navItems: navItems,
+              departmentName:
+                  widget.department?.name ?? localizations.departmentMainPage,
+              departmentDescription: widget.department?.description ?? '',
+              navigationLabel: localizations.departmentJourney,
               onPageChanged: (index) {
                 context.read<DepartmentNavigationCubit>().changePage(index);
                 _toggleSidebar();
@@ -250,6 +277,13 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
           key: const ValueKey(5),
           departmentId: widget.department?.id ?? '',
           demoId: widget.demoId ?? '',
+        );
+      case 6:
+        return LiveStreamsPage(
+          key: const ValueKey(6),
+          departmentId: widget.department?.id ?? '',
+          demoId: widget.demoId,
+          canManage: widget.canManage,
         );
       default:
         return const SizedBox.shrink();

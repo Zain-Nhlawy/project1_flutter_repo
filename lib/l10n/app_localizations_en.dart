@@ -448,17 +448,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get both => 'Both';
 
   @override
-  String get storagePermissionDenied =>
-      'No storage permission. Please enable it from settings.';
+  String get storagePermissionDenied => 'Storage permission denied';
 
   @override
   String get settings => 'Settings';
 
   @override
-  String get xmlSaved => 'XML saved successfully';
+  String get xmlSaved => 'XML Saved';
 
   @override
-  String get pngSaved => 'PNG saved successfully';
+  String get pngSaved => 'PNG saved';
 
   @override
   String get security => 'Security';
@@ -571,6 +570,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get private => 'Private';
+
+  @override
+  String get publicVisibilityWarningTitle => 'Publish to the public library?';
+
+  @override
+  String get publicVisibilityWarningMessage =>
+      'Choosing Public makes this course available in the public library after you save your changes.';
 
   @override
   String get tags => 'Tags';
@@ -971,6 +977,52 @@ class AppLocalizationsEn extends AppLocalizations {
   String get departmentChat => 'Chat';
 
   @override
+  String get departmentLives => 'Lives';
+
+  @override
+  String get createLiveStream => 'Create Live Stream';
+
+  @override
+  String get startLiveStream => 'Start Stream';
+
+  @override
+  String get endLiveStream => 'End Stream';
+
+  @override
+  String get joinLiveStream => 'Join Stream';
+
+  @override
+  String get liveStreamTitle => 'Stream Title';
+
+  @override
+  String get liveStreamDescription => 'Stream Description';
+
+  @override
+  String get scheduleTime => 'Scheduled Time';
+
+  @override
+  String get liveStatusLive => 'LIVE';
+
+  @override
+  String get liveStatusScheduled => 'SCHEDULED';
+
+  @override
+  String get liveStatusEnded => 'ENDED';
+
+  @override
+  String get noLiveStreamsFound => 'No live streams available';
+
+  @override
+  String get editLiveStream => 'Edit Stream';
+
+  @override
+  String get liveStreamCreatedSuccessfully =>
+      'Live stream created successfully';
+
+  @override
+  String get liveStreamEnded => 'Live stream ended';
+
+  @override
   String get departmentMembers => 'Members';
 
   @override
@@ -1146,6 +1198,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get allFilters => 'All Filters';
 
   @override
+  String get searchTags => 'Search tags';
+
+  @override
+  String selectedTagsCount(int count) {
+    return '$count selected';
+  }
+
+  @override
+  String get applyFilters => 'Apply Filters';
+
+  @override
+  String get clearAll => 'Clear All';
+
+  @override
   String get beginner => 'Beginner';
 
   @override
@@ -1225,6 +1291,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aiResponseTitle => 'AI Response';
+
+  @override
+  String get aiFulfillingRequest => 'AI is fulfilling your request';
 
   @override
   String get noDataYet =>
@@ -1551,4 +1620,61 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get yourAnswerLabel => 'Your Answer';
+
+  @override
+  String get hideReplies => 'Hide replies';
+
+  @override
+  String repliesCount(Object count) {
+    return '$count Replies';
+  }
+
+  @override
+  String get askAQuestion => 'Ask a question';
+
+  @override
+  String get viewReplies => 'View replies';
+
+  @override
+  String get answers => 'answers';
+
+  @override
+  String get noAnswersYet => 'No answers yet';
+
+  @override
+  String get clear => 'Clear';
+
+  @override
+  String get viewXml => 'View XML';
+
+  @override
+  String get ready => 'Ready';
+
+  @override
+  String get loading => 'Loading...';
+
+  @override
+  String get saving => 'Saving...';
+
+  @override
+  String get error => 'Error';
+
+  @override
+  String get readyIdle => 'Ready';
+
+  @override
+  String get cleared => 'Cleared';
+
+  @override
+  String get noDiagramYet => 'No Diagram Yet';
+
+  @override
+  String get noDiagramDescription =>
+      'Create a new flowchart or open an existing diagram to start editing.';
+
+  @override
+  String get openEditor => 'Open Editor';
+
+  @override
+  String get saveFailed => 'Save failed';
 }

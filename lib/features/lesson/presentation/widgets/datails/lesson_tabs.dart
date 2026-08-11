@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project1/features/q&a/presentation/widgets/qa_card.dart';
+import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/features/attachment/domain/entities/lesson_attachment_entity.dart';
 import 'package:project1/features/attachment/presentation/cubit/lesson_attachment_cubit.dart';
 import 'package:project1/features/attachment/presentation/widgets/details/attachments_tab.dart';
+import 'package:project1/features/q&a/data/models/discussion_question_model.dart';
+import 'package:project1/features/q&a/presentation/cubit/discussion_cubit.dart';
+import 'package:project1/features/q&a/presentation/widgets/discussion_composer.dart';
+import 'package:project1/features/q&a/presentation/widgets/qa_card.dart';
+import 'package:project1/l10n/app_localizations.dart';
 
 class LessonTabs extends StatefulWidget {
   final String lessonId;
@@ -16,12 +22,16 @@ class LessonTabs extends StatefulWidget {
 
 class _LessonTabsState extends State<LessonTabs> {
   List<LessonAttachmentEntity> _attachments = [];
-  bool _loading = true;
+  bool _loadingAttachments = true;
+
+  List<DiscussionQuestionModel> _questions = [];
+  bool _loadingQuestions = true;
 
   @override
   void initState() {
     super.initState();
     _loadAttachments();
+    _loadQuestions();
   }
 
   Future<void> _loadAttachments() async {
@@ -32,29 +42,101 @@ class _LessonTabsState extends State<LessonTabs> {
     if (!mounted) return;
     setState(() {
       _attachments = result;
-      _loading = false;
+      _loadingAttachments = false;
     });
+  }
+
+  Future<void> _loadQuestions() async {
+    final result = await context.read<DiscussionCubit>().getQuestions(
+      lessonId: widget.lessonId,
+    );
+
+    if (!mounted) return;
+    setState(() {
+      _questions = result;
+      _loadingQuestions = false;
+    });
+  }
+
+  Future<void> _postQuestion(String content) async {
+    await context.read<DiscussionCubit>().postQuestion(
+      lessonId: widget.lessonId,
+      content: content,
+    );
+    await _loadQuestions();
   }
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    final primary = AppColors.primaryOf(context);
+
     return DefaultTabController(
       length: 2,
       child: Column(
         children: [
-          const TabBar(
-            indicatorSize: TabBarIndicatorSize.tab,
-            tabs: [
-              Tab(text: "Q&A"),
-              Tab(text: "Attachments"),
-            ],
+          Container(
+            margin: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: AppColors.backgroundOf(context),
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(
+                color: AppColors.borderOf(context).withValues(alpha: 0.70),
+              ),
+            ),
+            child: TabBar(
+              dividerColor: Colors.transparent,
+              indicatorSize: TabBarIndicatorSize.tab,
+              indicator: BoxDecoration(
+                gradient: AppColors.buttonGradientOf(context),
+                borderRadius: BorderRadius.circular(11),
+                boxShadow: [
+                  BoxShadow(
+                    color: primary.withValues(alpha: 0.18),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              labelColor: Colors.white,
+              unselectedLabelColor: AppColors.textSecondaryOf(context),
+              labelStyle: AppTextStyles.label.copyWith(
+                fontWeight: FontWeight.w800,
+              ),
+              unselectedLabelStyle: AppTextStyles.label.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+              tabs: [
+                Tab(
+                  height: 42,
+                  icon: const Icon(Icons.forum_outlined, size: 18),
+                  text: localizations.questionsCount,
+                  iconMargin: const EdgeInsets.only(bottom: 2),
+                ),
+                Tab(
+                  height: 42,
+                  icon: const Icon(Icons.attach_file_rounded, size: 18),
+                  text: localizations.lessonAttachments,
+                  iconMargin: const EdgeInsets.only(bottom: 2),
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 4),
           Expanded(
             child: TabBarView(
               children: [
-                const _QuestionsTab(),
-                AttachmentsTab(attachments: _attachments, loading: _loading),
+                _QuestionsTab(
+                  lessonId: widget.lessonId,
+                  questions: _questions,
+                  loading: _loadingQuestions,
+                  onPostQuestion: _postQuestion,
+                ),
+                _LessonAttachmentsTab(
+                  attachments: _attachments,
+                  loading: _loadingAttachments,
+                ),
               ],
             ),
           ),
@@ -65,42 +147,142 @@ class _LessonTabsState extends State<LessonTabs> {
 }
 
 class _QuestionsTab extends StatelessWidget {
-  const _QuestionsTab();
+  final String lessonId;
+  final List<DiscussionQuestionModel> questions;
+  final bool loading;
+  final ValueChanged<String> onPostQuestion;
+
+  const _QuestionsTab({
+    required this.lessonId,
+    required this.questions,
+    required this.loading,
+    required this.onPostQuestion,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: const [
-        QaCard(
-          userName: "Mohammed",
-          question: "Can you explain the difference between CNN and RNN?",
-          replies: [
-            "CNN is mainly used for image processing.",
-            "RNN is designed for sequential data.",
-            "Nowadays transformers are often preferred.",
-            "Both are still important concepts to learn.",
-          ],
+    final localizations = AppLocalizations.of(context)!;
+
+    if (loading) {
+      return const _LessonTabStatus(isLoading: true);
+    }
+
+    return Column(
+      children: [
+        Expanded(
+          child: questions.isEmpty
+              ? _LessonTabStatus(
+                  icon: Icons.chat_bubble_outline_rounded,
+                  message: localizations.noQuestionsYet,
+                )
+              : ListView.builder(
+                  padding: const EdgeInsets.fromLTRB(10, 8, 10, 12),
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: questions.length,
+                  itemBuilder: (context, index) {
+                    final question = questions[index];
+
+                    return QaCard(
+                      questionId: question.id,
+                      userName: question.authorName,
+                      avatarUrl: question.authorAvatarUrl,
+                      question: question.content,
+                      createdAt: question.createdAt,
+                    );
+                  },
+                ),
         ),
-        QaCard(
-          userName: "Sarah",
-          question: "Will we use TensorFlow later in the course?",
-          replies: [
-            "Yes, TensorFlow will be introduced in the next section.",
-            "You will also see some PyTorch examples.",
-          ],
-        ),
-        QaCard(
-          userName: "Ali",
-          question: "Can I use PyTorch instead of TensorFlow?",
-          replies: [
-            "Absolutely.",
-            "The concepts are framework independent.",
-            "Most assignments can be solved using either.",
-            "PyTorch is actually very popular nowadays.",
-            "Just make sure your output matches the requirements.",
-          ],
+        DiscussionComposer(
+          hintText: localizations.askAQuestion,
+          isPosting: false,
+          onSubmit: onPostQuestion,
         ),
       ],
+    );
+  }
+}
+
+class _LessonAttachmentsTab extends StatelessWidget {
+  final List<LessonAttachmentEntity> attachments;
+  final bool loading;
+
+  const _LessonAttachmentsTab({
+    required this.attachments,
+    required this.loading,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (loading) {
+      return const _LessonTabStatus(isLoading: true);
+    }
+
+    if (attachments.isEmpty) {
+      return _LessonTabStatus(
+        icon: Icons.attach_file_rounded,
+        message: AppLocalizations.of(context)!.noAttachments,
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10, 8, 10, 12),
+      child: AttachmentsTab(attachments: attachments, loading: false),
+    );
+  }
+}
+
+class _LessonTabStatus extends StatelessWidget {
+  final bool isLoading;
+  final IconData icon;
+  final String? message;
+
+  const _LessonTabStatus({
+    this.isLoading = false,
+    this.icon = Icons.info_outline_rounded,
+    this.message,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final primary = AppColors.primaryOf(context);
+
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: isLoading
+            ? SizedBox(
+                width: 26,
+                height: 26,
+                child: CircularProgressIndicator(
+                  color: primary,
+                  strokeWidth: 2.5,
+                ),
+              )
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 54,
+                    height: 54,
+                    decoration: BoxDecoration(
+                      color: primary.withValues(alpha: 0.08),
+                      borderRadius: BorderRadius.circular(17),
+                    ),
+                    child: Icon(icon, color: primary, size: 25),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    message ?? '',
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.textSecondaryOf(context),
+                      fontWeight: FontWeight.w600,
+                      height: 1.4,
+                    ),
+                  ),
+                ],
+              ),
+      ),
     );
   }
 }

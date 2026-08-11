@@ -7,6 +7,7 @@ class AddDemoState {
   final String demoName;
   final String demoDescription;
   final String demoImagePath;
+  final String signatureImagePath;
   final String selectedPlan;
 
   AddDemoState({
@@ -37,6 +38,7 @@ class AddDemoState {
     this.demoName = '',
     this.demoDescription = '',
     this.demoImagePath = '',
+    this.signatureImagePath = '',
     this.selectedPlan = 'STARTER',
   });
 
@@ -46,6 +48,7 @@ class AddDemoState {
     String? demoName,
     String? demoDescription,
     String? demoImagePath,
+    String? signatureImagePath,
     String? selectedPlan,
   }) {
     return AddDemoState(
@@ -56,6 +59,7 @@ class AddDemoState {
       demoName: demoName ?? this.demoName,
       demoDescription: demoDescription ?? this.demoDescription,
       demoImagePath: demoImagePath ?? this.demoImagePath,
+      signatureImagePath: signatureImagePath ?? this.signatureImagePath,
       selectedPlan: selectedPlan ?? this.selectedPlan,
     );
   }

@@ -4,6 +4,8 @@ import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/core/presentation/widgets/gradient_action_button.dart';
+import 'package:project1/core/presentation/widgets/gradient_page_app_bar.dart';
 import 'package:project1/features/quiz/data/models/exam_model.dart';
 import 'package:project1/features/quiz/presentation/cubit/exam_cubit.dart';
 import 'package:project1/features/quiz/presentation/cubit/exam_state.dart';
@@ -40,55 +42,38 @@ class _ExamManagementScreenState extends State<ExamManagementScreen> {
     return BlocProvider.value(
       value: _cubit,
       child: Scaffold(
-        backgroundColor: AppColors.background,
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
-            onPressed: () => Navigator.pop(context),
-          ),
-          title: Text(
-            localizations.quizInformation,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: AppColors.primaryGradient,
-            ),
-          ),
+        backgroundColor: AppColors.backgroundOf(context),
+        appBar: GradientPageAppBar(
+          title: localizations.quizInformation,
+          subtitle: localizations.enterExamDetailsDescription,
+          onBackPressed: () => Navigator.pop(context),
         ),
         body: SafeArea(
           child: BlocBuilder<ExamCubit, ExamState>(
             builder: (context, state) {
               if (state is ExamLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-
-              if (state is ExamError) {
                 return Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: Text(
-                      state.message,
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.error,
-                      ),
-                    ),
+                  child: CircularProgressIndicator(
+                    color: AppColors.primaryOf(context),
                   ),
                 );
               }
 
+              if (state is ExamError) {
+                return _ExamStatusView(
+                  message: state.message,
+                  retryLabel: localizations.retry,
+                  onRetry: () => _cubit.fetchExams(sectionId: widget.sectionId),
+                );
+              }
+
               if (state is ExamLoaded) {
-                final ExamModel? exam =
-                    state.exams.isEmpty ? null : state.exams.first;
+                final ExamModel? exam = state.exams.isEmpty
+                    ? null
+                    : state.exams.first;
 
                 return SingleChildScrollView(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.fromLTRB(18, 24, 18, 54),
                   child: _ExamFormContent(
                     cubit: _cubit,
                     sectionId: widget.sectionId,
@@ -153,16 +138,6 @@ class _ExamFormContentState extends State<_ExamFormContent> {
     super.dispose();
   }
 
-  OutlineInputBorder _buildBorder(bool hasError) {
-    return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(14),
-      borderSide: BorderSide(
-        color: hasError ? Colors.red.shade400 : AppColors.border,
-        width: hasError ? 1.4 : 1,
-      ),
-    );
-  }
-
   Future<void> _save() async {
     final localizations = AppLocalizations.of(context)!;
     final title = _titleController.text.trim();
@@ -202,12 +177,16 @@ class _ExamFormContentState extends State<_ExamFormContent> {
       widget.cubit.fetchExams(sectionId: widget.sectionId);
       SnackbarTheme().newSnackBarSuccess(
         context,
-        _isEditing ? localizations.examUpdatedSuccessfully : localizations.examCreatedSuccessfully,
+        _isEditing
+            ? localizations.examUpdatedSuccessfully
+            : localizations.examCreatedSuccessfully,
       );
     } else {
       SnackbarTheme().newSnackBarError(
         context,
-        _isEditing ? localizations.failedToUpdateExam : localizations.failedToCreateExam,
+        _isEditing
+            ? localizations.failedToUpdateExam
+            : localizations.failedToCreateExam,
       );
     }
   }
@@ -219,160 +198,304 @@ class _ExamFormContentState extends State<_ExamFormContent> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Icon(
-                Icons.quiz_rounded,
-                color: AppColors.primary,
-                size: 24,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    _isEditing ? localizations.editExam : localizations.addExam,
-                    style: AppTextStyles.titleMedium.copyWith(
-                      color: AppColors.textPrimary,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    localizations.enterExamDetailsDescription,
-                    style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+        _ExamIntroCard(
+          title: _isEditing ? localizations.editExam : localizations.addExam,
+          description: localizations.enterExamDetailsDescription,
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 20),
-          child: Divider(height: 1),
+        const SizedBox(height: 18),
+        Container(
+          padding: const EdgeInsets.all(17),
+          decoration: BoxDecoration(
+            color: AppColors.surfaceOf(context),
+            borderRadius: BorderRadius.circular(22),
+            border: Border.all(
+              color: AppColors.borderOf(context).withValues(alpha: 0.82),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.045),
+                blurRadius: 16,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _ExamFormField(
+                label: localizations.examTitle,
+                hintText: localizations.examTitleHint,
+                icon: Icons.title_rounded,
+                controller: _titleController,
+                hasError: _titleError,
+                textInputAction: TextInputAction.next,
+                onChanged: (_) {
+                  if (_titleError) setState(() => _titleError = false);
+                },
+              ),
+              const SizedBox(height: 18),
+              _ExamFormField(
+                label: localizations.numberOfQuestions,
+                hintText: localizations.numberOfQuestionsHint,
+                icon: Icons.format_list_numbered_rounded,
+                controller: _questionsController,
+                hasError: _questionsError,
+                keyboardType: TextInputType.number,
+                textInputAction: TextInputAction.next,
+                onChanged: (_) {
+                  if (_questionsError) {
+                    setState(() => _questionsError = false);
+                  }
+                },
+              ),
+              const SizedBox(height: 18),
+              _ExamFormField(
+                label: localizations.durationMinutes,
+                hintText: localizations.durationMinutesHint,
+                icon: Icons.timer_outlined,
+                controller: _durationController,
+                hasError: _durationError,
+                keyboardType: TextInputType.number,
+                textInputAction: TextInputAction.done,
+                onChanged: (_) {
+                  if (_durationError) {
+                    setState(() => _durationError = false);
+                  }
+                },
+              ),
+            ],
+          ),
         ),
+        const SizedBox(height: 26),
+        GradientActionButton(
+          label: localizations.saveChanges,
+          icon: Icons.check_circle_outline_rounded,
+          isLoading: _isSaving,
+          expand: true,
+          onPressed: _isSaving ? null : _save,
+        ),
+      ],
+    );
+  }
+}
+
+class _ExamIntroCard extends StatelessWidget {
+  final String title;
+  final String description;
+
+  const _ExamIntroCard({required this.title, required this.description});
+
+  @override
+  Widget build(BuildContext context) {
+    final primary = AppColors.primaryOf(context);
+
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceOf(context),
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(
+          color: AppColors.borderOf(context).withValues(alpha: 0.82),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.045),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              gradient: AppColors.buttonGradientOf(context),
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: primary.withValues(alpha: 0.18),
+                  blurRadius: 11,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
+            child: const Icon(
+              Icons.quiz_rounded,
+              color: Colors.white,
+              size: 24,
+            ),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: AppTextStyles.titleMedium.copyWith(
+                    color: AppColors.textPrimaryOf(context),
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  description,
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.textSecondaryOf(context),
+                    height: 1.45,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ExamFormField extends StatelessWidget {
+  final String label;
+  final String hintText;
+  final IconData icon;
+  final TextEditingController controller;
+  final bool hasError;
+  final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final ValueChanged<String> onChanged;
+
+  const _ExamFormField({
+    required this.label,
+    required this.hintText,
+    required this.icon,
+    required this.controller,
+    required this.hasError,
+    required this.onChanged,
+    this.keyboardType,
+    this.textInputAction,
+  });
+
+  OutlineInputBorder _border(BuildContext context, {bool focused = false}) {
+    final color = hasError
+        ? AppColors.error
+        : focused
+        ? AppColors.primaryOf(context)
+        : AppColors.borderOf(context);
+
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(16),
+      borderSide: BorderSide(
+        color: color,
+        width: hasError || focused ? 1.7 : 1.1,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final primary = AppColors.primaryOf(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
         Text(
-          localizations.examTitle,
+          label,
           style: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w600,
+            color: AppColors.textPrimaryOf(context),
+            fontWeight: FontWeight.w700,
           ),
         ),
         const SizedBox(height: 8),
         TextField(
-          controller: _titleController,
-          style: const TextStyle(color: AppColors.textPrimary),
-          onChanged: (_) {
-            if (_titleError) setState(() => _titleError = false);
-          },
+          controller: controller,
+          keyboardType: keyboardType,
+          textInputAction: textInputAction,
+          style: TextStyle(color: AppColors.textPrimaryOf(context)),
+          onChanged: onChanged,
           decoration: InputDecoration(
-            hintText: localizations.examTitleHint,
-            hintStyle: TextStyle(color: AppColors.textSecondary.withOpacity(.7)),
-            filled: true,
-            fillColor: AppColors.surface,
-            border: _buildBorder(_titleError),
-            enabledBorder: _buildBorder(_titleError),
-            focusedBorder: _buildBorder(_titleError),
-            prefixIcon: const Icon(Icons.title, color: AppColors.textSecondary),
-          ),
-        ),
-        const SizedBox(height: 20),
-        Text(
-          localizations.numberOfQuestions,
-          style: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(height: 8),
-        TextField(
-          controller: _questionsController,
-          keyboardType: TextInputType.number,
-          style: const TextStyle(color: AppColors.textPrimary),
-          onChanged: (_) {
-            if (_questionsError) setState(() => _questionsError = false);
-          },
-          decoration: InputDecoration(
-            hintText: localizations.numberOfQuestionsHint,
-            hintStyle: TextStyle(color: AppColors.textSecondary.withOpacity(.7)),
-            filled: true,
-            fillColor: AppColors.surface,
-            border: _buildBorder(_questionsError),
-            enabledBorder: _buildBorder(_questionsError),
-            focusedBorder: _buildBorder(_questionsError),
-            prefixIcon: const Icon(Icons.format_list_numbered, color: AppColors.textSecondary),
-          ),
-        ),
-        const SizedBox(height: 20),
-        Text(
-          localizations.durationMinutes,
-          style: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(height: 8),
-        TextField(
-          controller: _durationController,
-          keyboardType: TextInputType.number,
-          style: const TextStyle(color: AppColors.textPrimary),
-          onChanged: (_) {
-            if (_durationError) setState(() => _durationError = false);
-          },
-          decoration: InputDecoration(
-            hintText: localizations.durationMinutesHint,
-            hintStyle: TextStyle(color: AppColors.textSecondary.withOpacity(.7)),
-            filled: true,
-            fillColor: AppColors.surface,
-            border: _buildBorder(_durationError),
-            enabledBorder: _buildBorder(_durationError),
-            focusedBorder: _buildBorder(_durationError),
-            prefixIcon: const Icon(Icons.timer_outlined, color: AppColors.textSecondary),
-          ),
-        ),
-        const SizedBox(height: 32),
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14),
-              ),
-              elevation: 0,
+            hintText: hintText,
+            hintStyle: TextStyle(
+              color: AppColors.textSecondaryOf(context).withValues(alpha: 0.72),
             ),
-            onPressed: _isSaving ? null : _save,
-            child: _isSaving
-                ? const SizedBox(
-                    width: 22,
-                    height: 22,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2.5,
-                      valueColor: AlwaysStoppedAnimation(Colors.white),
-                    ),
-                  )
-                : Text(
-                    localizations.saveChanges,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
+            filled: true,
+            fillColor: AppColors.backgroundOf(context),
+            prefixIcon: Icon(icon, color: primary, size: 21),
+            border: _border(context),
+            enabledBorder: _border(context),
+            focusedBorder: _border(context, focused: true),
+            errorBorder: _border(context),
+            focusedErrorBorder: _border(context, focused: true),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 14,
+              vertical: 16,
+            ),
           ),
         ),
       ],
+    );
+  }
+}
+
+class _ExamStatusView extends StatelessWidget {
+  final String message;
+  final String retryLabel;
+  final VoidCallback onRetry;
+
+  const _ExamStatusView({
+    required this.message,
+    required this.retryLabel,
+    required this.onRetry,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        margin: const EdgeInsets.all(28),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 26),
+        decoration: BoxDecoration(
+          color: AppColors.surfaceOf(context),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: AppColors.borderOf(context)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 62,
+              height: 62,
+              decoration: BoxDecoration(
+                color: AppColors.error.withValues(alpha: 0.09),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.error_outline_rounded,
+                color: AppColors.error,
+                size: 29,
+              ),
+            ),
+            const SizedBox(height: 15),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.textSecondaryOf(context),
+                fontWeight: FontWeight.w600,
+                height: 1.45,
+              ),
+            ),
+            const SizedBox(height: 18),
+            GradientActionButton(
+              label: retryLabel,
+              icon: Icons.refresh_rounded,
+              onPressed: onRetry,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

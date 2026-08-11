@@ -21,6 +21,16 @@ class PlanAndImageSlide extends StatelessWidget {
     }
   }
 
+  Future<void> _pickSignatureImage(BuildContext context) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      if (context.mounted) {
+        context.read<AddDemoCubit>().updateSignatureImagePath(pickedFile.path);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
@@ -28,31 +38,6 @@ class PlanAndImageSlide extends StatelessWidget {
     final localizations = AppLocalizations.of(context)!;
 
     final plans = [];
-    //   {
-    //     "id": "STARTER",
-    //     "title": "Starter",
-    //     "members": "Up to 20 members",
-    //     "sections": "5 sections",
-    //     "price": "\$20/mo",
-    //     "icon": Icons.rocket_launch_outlined,
-    //   },
-    //   {
-    //     "id": "PRO",
-    //     "title": "Pro",
-    //     "members": "Up to 100 members",
-    //     "sections": "Unlimited sections",
-    //     "price": "\$100/mo",
-    //     "icon": Icons.star_border_rounded,
-    //   },
-    //   {
-    //     "id": "ENTERPRISE",
-    //     "title": "Enterprise",
-    //     "members": "Unlimited members",
-    //     "sections": "Unlimited sections",
-    //     "price": "\$200/mo",
-    //     "icon": Icons.business_center_outlined,
-    //   },
-    // ];
 
     return BlocBuilder<AddDemoCubit, AddDemoState>(
       builder: (context, state) {
@@ -105,11 +90,76 @@ class PlanAndImageSlide extends StatelessWidget {
                         )
                       : ClipRRect(
                           borderRadius: BorderRadius.circular(14),
-                          child: Image.file(
-                            File(state.demoImagePath),
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                          ),
+                          child: state.demoImagePath.startsWith('http://') ||
+                                  state.demoImagePath.startsWith('https://')
+                              ? Image.network(
+                                  state.demoImagePath,
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                )
+                              : Image.file(
+                                  File(state.demoImagePath),
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                ),
+                        ),
+                ),
+              ),
+              SizedBox(height: size.height * 0.03),
+              Text(
+                'Upload Owner Signature',
+                style: AppTextStyles.titleLarge.copyWith(
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: size.height * 0.02),
+              GestureDetector(
+                onTap: () => _pickSignatureImage(context),
+                child: Container(
+                  width: double.infinity,
+                  height: size.height * 0.16,
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: AppColors.primary.withOpacity(0.5),
+                      width: 1.5,
+                      style: BorderStyle.solid,
+                    ),
+                  ),
+                  child: state.signatureImagePath.isEmpty
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.draw_outlined,
+                              size: 36 * textScale,
+                              color: AppColors.primary,
+                            ),
+                            SizedBox(height: size.height * 0.01),
+                            Text(
+                              localizations.tapToUpload,
+                              style: AppTextStyles.bodyMedium.copyWith(
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                          ],
+                        )
+                      : ClipRRect(
+                          borderRadius: BorderRadius.circular(14),
+                          child: state.signatureImagePath.startsWith('http://') ||
+                                  state.signatureImagePath.startsWith('https://')
+                              ? Image.network(
+                                  state.signatureImagePath,
+                                  fit: BoxFit.contain,
+                                  width: double.infinity,
+                                )
+                              : Image.file(
+                                  File(state.signatureImagePath),
+                                  fit: BoxFit.contain,
+                                  width: double.infinity,
+                                ),
                         ),
                 ),
               ),

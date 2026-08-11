@@ -32,18 +32,26 @@ class _SectionCardState extends State<SectionCard> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final primary = AppColors.primaryOf(context);
+    final border = AppColors.borderOf(context);
 
-    return Container(
-      padding: const EdgeInsets.all(16),
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 220),
+      padding: const EdgeInsets.all(17),
       decoration: BoxDecoration(
         color: AppColors.surfaceOf(context),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.borderOf(context)),
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(
+          color: _isExpanded
+              ? primary.withValues(alpha: 0.28)
+              : border.withValues(alpha: 0.82),
+          width: _isExpanded ? 1.2 : 1,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(isDark ? 0.2 : 0.03),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.05),
+            blurRadius: 18,
+            offset: const Offset(0, 7),
           ),
         ],
       ),
@@ -51,7 +59,7 @@ class _SectionCardState extends State<SectionCard> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           InkWell(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(14),
             onTap: () {
               setState(() {
                 _isExpanded = !_isExpanded;
@@ -60,12 +68,20 @@ class _SectionCardState extends State<SectionCard> {
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  width: 44,
+                  height: 44,
                   decoration: BoxDecoration(
-                    color: AppColors.primaryOf(context).withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    gradient: _isExpanded
+                        ? AppColors.buttonGradientOf(context)
+                        : null,
+                    color: _isExpanded ? null : primary.withValues(alpha: 0.09),
+                    borderRadius: BorderRadius.circular(14),
                   ),
-                  child: Icon(widget.icon, color: AppColors.primaryOf(context), size: 20),
+                  child: Icon(
+                    widget.icon,
+                    color: _isExpanded ? Colors.white : primary,
+                    size: 21,
+                  ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -73,16 +89,27 @@ class _SectionCardState extends State<SectionCard> {
                     widget.title,
                     style: AppTextStyles.titleMedium.copyWith(
                       color: AppColors.textPrimaryOf(context),
-                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
                     ),
                   ),
                 ),
-                AnimatedRotation(
-                  turns: _isExpanded ? 0.5 : 0,
-                  duration: const Duration(milliseconds: 250),
-                  child: Icon(
-                    Icons.keyboard_arrow_down_rounded,
-                    color: AppColors.textSecondaryOf(context),
+                Container(
+                  width: 34,
+                  height: 34,
+                  decoration: BoxDecoration(
+                    color: AppColors.backgroundOf(context),
+                    borderRadius: BorderRadius.circular(11),
+                    border: Border.all(color: border.withValues(alpha: 0.72)),
+                  ),
+                  child: AnimatedRotation(
+                    turns: _isExpanded ? 0.5 : 0,
+                    duration: const Duration(milliseconds: 250),
+                    child: Icon(
+                      Icons.keyboard_arrow_down_rounded,
+                      color: AppColors.textSecondaryOf(context),
+                      size: 20,
+                    ),
                   ),
                 ),
               ],
@@ -91,11 +118,14 @@ class _SectionCardState extends State<SectionCard> {
           AnimatedSize(
             duration: const Duration(milliseconds: 250),
             curve: Curves.easeInOut,
+            alignment: Alignment.topCenter,
             child: _isExpanded
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 17),
+                      Divider(height: 1, color: border.withValues(alpha: 0.72)),
+                      const SizedBox(height: 17),
                       ...widget.children,
                     ],
                   )

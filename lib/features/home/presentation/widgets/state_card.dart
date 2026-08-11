@@ -16,39 +16,53 @@ class StatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textScale = MediaQuery.textScalerOf(context).scale(1);
-
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16),
+      constraints: const BoxConstraints(minHeight: 76),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
       decoration: BoxDecoration(
-        color: AppColors.surface.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(20),
+        color: AppColors.surface.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: AppColors.surface.withValues(alpha: 0.14)),
       ),
-      child: Column(
+      child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
-            decoration: const BoxDecoration(
-              color: AppColors.surface,
-              shape: BoxShape.circle,
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: AppColors.surface.withValues(alpha: 0.17),
+              borderRadius: BorderRadius.circular(13),
             ),
-            child: Icon(icon, color: AppColors.primary, size: 20 * textScale),
+            child: Icon(icon, color: AppColors.surface, size: 20),
           ),
-          const SizedBox(height: 12),
-          Text(
-            count,
-            style: AppTextStyles.h2.copyWith(
-              color: AppColors.surface,
-              fontWeight: FontWeight.bold,
-              fontSize: 22 * textScale,
-            ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            label,
-            style: AppTextStyles.label.copyWith(
-              color: AppColors.surface,
-              fontSize: 12 * textScale,
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  count,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.titleLarge.copyWith(
+                    color: AppColors.surface,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 19,
+                    height: 1,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.caption.copyWith(
+                    color: AppColors.surface.withValues(alpha: 0.76),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
             ),
           ),
         ],

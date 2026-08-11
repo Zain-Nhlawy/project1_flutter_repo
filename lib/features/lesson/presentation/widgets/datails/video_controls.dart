@@ -1,7 +1,9 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/config/theme/app_text_styles.dart';
 
 class VideoControls extends StatefulWidget {
   final Player player;
@@ -84,11 +86,11 @@ class _VideoControlsState extends State<VideoControls> {
     if (_visible) _scheduleAutoHide();
   }
 
-  String _formatDuration(Duration d) {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    final hours = d.inHours;
-    final minutes = twoDigits(d.inMinutes.remainder(60));
-    final seconds = twoDigits(d.inSeconds.remainder(60));
+  String _formatDuration(Duration duration) {
+    String twoDigits(int number) => number.toString().padLeft(2, '0');
+    final hours = duration.inHours;
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
     return hours > 0 ? '$hours:$minutes:$seconds' : '$minutes:$seconds';
   }
 
@@ -109,92 +111,90 @@ class _VideoControlsState extends State<VideoControls> {
         fit: StackFit.expand,
         children: [
           if (_visible)
+            const DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0x33000000),
+                    Color(0x10000000),
+                    Color(0xB8000000),
+                  ],
+                  stops: [0, 0.48, 1],
+                ),
+              ),
+            ),
+          if (_visible)
             Center(
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  IconButton(
-                    icon: const Icon(Icons.skip_previous_rounded),
-                    iconSize: 34,
-                    color: widget.onPrevious != null
-                        ? AppColors.primary
-                        : AppColors.textSecondary,
+                  _GlassVideoButton(
+                    icon: Icons.skip_previous_rounded,
+                    enabled: widget.onPrevious != null,
                     onPressed: widget.onPrevious,
                   ),
-                  const SizedBox(width: 6),
-                  IconButton(
-                    icon: const Icon(Icons.replay_10_rounded),
-                    iconSize: 32,
-                    color: AppColors.primary,
-                    onPressed: () => _seekRelative(const Duration(seconds: -10)),
+                  const SizedBox(width: 7),
+                  _GlassVideoButton(
+                    icon: Icons.replay_10_rounded,
+                    onPressed: () =>
+                        _seekRelative(const Duration(seconds: -10)),
                   ),
                   const SizedBox(width: 10),
-                  Container(
-                    decoration: const BoxDecoration(
-                      color: AppColors.primary,
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      icon: Icon(
-                        _playing ? Icons.pause_rounded : Icons.play_arrow_rounded,
-                      ),
-                      iconSize: 40,
-                      color: Colors.white,
-                      onPressed: () => widget.player.playOrPause(),
-                    ),
+                  _PrimaryVideoButton(
+                    icon: _playing
+                        ? Icons.pause_rounded
+                        : Icons.play_arrow_rounded,
+                    onPressed: () => widget.player.playOrPause(),
                   ),
                   const SizedBox(width: 10),
-                  IconButton(
-                    icon: const Icon(Icons.forward_10_rounded),
-                    iconSize: 32,
-                    color: AppColors.primary,
+                  _GlassVideoButton(
+                    icon: Icons.forward_10_rounded,
                     onPressed: () => _seekRelative(const Duration(seconds: 10)),
                   ),
-                  const SizedBox(width: 6),
-                  IconButton(
-                    icon: const Icon(Icons.skip_next_rounded),
-                    iconSize: 34,
-                    color: widget.onNext != null
-                        ? AppColors.primary
-                        : AppColors.textSecondary,
+                  const SizedBox(width: 7),
+                  _GlassVideoButton(
+                    icon: Icons.skip_next_rounded,
+                    enabled: widget.onNext != null,
                     onPressed: widget.onNext,
                   ),
                 ],
               ),
             ),
           if (_visible)
-            Positioned(
-              left: 0,
-              right: 0,
+            PositionedDirectional(
+              start: 0,
+              end: 0,
               bottom: 0,
-              child: Container(
-                padding: const EdgeInsets.fromLTRB(10, 24, 6, 6),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.transparent,
-                      Colors.black.withOpacity(0.65),
-                    ],
-                  ),
-                ),
+              child: Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(12, 20, 10, 8),
                 child: Row(
                   children: [
                     Text(
                       _formatDuration(_position),
-                      style: const TextStyle(fontSize: 11, color: Colors.white),
+                      style: AppTextStyles.caption.copyWith(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                     Expanded(
                       child: SliderTheme(
                         data: SliderTheme.of(context).copyWith(
                           trackHeight: 3,
-                          thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
-                          overlayShape: const RoundSliderOverlayShape(overlayRadius: 14),
-                          activeTrackColor: AppColors.primary,
-                          inactiveTrackColor: Colors.white30,
-                          thumbColor: AppColors.primary,
+                          thumbShape: const RoundSliderThumbShape(
+                            enabledThumbRadius: 5.5,
+                          ),
+                          overlayShape: const RoundSliderOverlayShape(
+                            overlayRadius: 13,
+                          ),
+                          activeTrackColor: AppColors.tertiary,
+                          inactiveTrackColor: Colors.white24,
+                          thumbColor: Colors.white,
+                          overlayColor: AppColors.tertiary.withValues(
+                            alpha: 0.20,
+                          ),
                         ),
                         child: Slider(
                           min: 0,
@@ -205,7 +205,9 @@ class _VideoControlsState extends State<VideoControls> {
                               .clamp(0, _duration.inMilliseconds)
                               .toDouble(),
                           onChanged: (value) {
-                            widget.player.seek(Duration(milliseconds: value.toInt()));
+                            widget.player.seek(
+                              Duration(milliseconds: value.toInt()),
+                            );
                             _scheduleAutoHide();
                           },
                         ),
@@ -213,38 +215,53 @@ class _VideoControlsState extends State<VideoControls> {
                     ),
                     Text(
                       _formatDuration(_duration),
-                      style: const TextStyle(fontSize: 11, color: Colors.white),
+                      style: AppTextStyles.caption.copyWith(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 7),
                     PopupMenuButton<double>(
                       initialValue: _rate,
                       onSelected: (rate) => widget.player.setRate(rate),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                       padding: EdgeInsets.zero,
                       itemBuilder: (_) => [0.5, 0.75, 1.0, 1.25, 1.5, 2.0]
-                          .map((r) => PopupMenuItem(value: r, child: Text("${r}x")))
+                          .map(
+                            (rate) => PopupMenuItem(
+                              value: rate,
+                              child: Text('${rate}x'),
+                            ),
+                          )
                           .toList(),
-                      child: Text(
-                        "${_rate}x",
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 7,
+                          vertical: 5,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.14),
+                          borderRadius: BorderRadius.circular(9),
+                        ),
+                        child: Text(
+                          '${_rate}x',
+                          style: AppTextStyles.caption.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 10,
+                          ),
                         ),
                       ),
                     ),
                     if (widget.onFullscreen != null) ...[
                       const SizedBox(width: 6),
-                      IconButton(
-                        icon: Icon(
-                          widget.isFullscreen
-                              ? Icons.fullscreen_exit_rounded
-                              : Icons.fullscreen_rounded,
-                        ),
-                        iconSize: 20,
-                        color: Colors.white,
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(),
+                      _CompactVideoButton(
+                        icon: widget.isFullscreen
+                            ? Icons.fullscreen_exit_rounded
+                            : Icons.fullscreen_rounded,
                         onPressed: widget.onFullscreen,
                       ),
                     ],
@@ -253,6 +270,98 @@ class _VideoControlsState extends State<VideoControls> {
               ),
             ),
         ],
+      ),
+    );
+  }
+}
+
+class _GlassVideoButton extends StatelessWidget {
+  final IconData icon;
+  final bool enabled;
+  final VoidCallback? onPressed;
+
+  const _GlassVideoButton({
+    required this.icon,
+    this.enabled = true,
+    this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 40,
+      height: 40,
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: enabled ? 0.34 : 0.20),
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: Colors.white.withValues(alpha: enabled ? 0.16 : 0.08),
+        ),
+      ),
+      child: IconButton(
+        onPressed: enabled ? onPressed : null,
+        padding: EdgeInsets.zero,
+        icon: Icon(
+          icon,
+          color: Colors.white.withValues(alpha: enabled ? 0.95 : 0.30),
+          size: 22,
+        ),
+      ),
+    );
+  }
+}
+
+class _PrimaryVideoButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onPressed;
+
+  const _PrimaryVideoButton({required this.icon, required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 56,
+      height: 56,
+      decoration: BoxDecoration(
+        gradient: AppColors.buttonGradient,
+        shape: BoxShape.circle,
+        border: Border.all(color: Colors.white.withValues(alpha: 0.22)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.32),
+            blurRadius: 14,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: IconButton(
+        onPressed: onPressed,
+        padding: EdgeInsets.zero,
+        icon: Icon(icon, color: Colors.white, size: 31),
+      ),
+    );
+  }
+}
+
+class _CompactVideoButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback? onPressed;
+
+  const _CompactVideoButton({required this.icon, this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.white.withValues(alpha: 0.14),
+      borderRadius: BorderRadius.circular(9),
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(9),
+        child: SizedBox(
+          width: 28,
+          height: 28,
+          child: Icon(icon, color: Colors.white, size: 18),
+        ),
       ),
     );
   }

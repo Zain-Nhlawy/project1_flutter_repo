@@ -159,25 +159,29 @@ class _SectionCardState extends State<SectionCard> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
+    final primary = AppColors.primaryOf(context);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 14),
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border, width: 1.2),
+        color: AppColors.surfaceOf(context),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: AppColors.borderOf(context).withValues(alpha: 0.82),
+          width: 1.1,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(.03),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
+            color: Colors.black.withValues(alpha: 0.045),
+            blurRadius: 14,
+            offset: const Offset(0, 5),
           ),
         ],
       ),
       child: Column(
         children: [
           InkWell(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(20),
             onTap: _toggleExpand,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
@@ -186,12 +190,12 @@ class _SectionCardState extends State<SectionCard> {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(.1),
-                      borderRadius: BorderRadius.circular(10),
+                      gradient: AppColors.buttonGradientOf(context),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Icon(
                       Icons.folder_copy_outlined,
-                      color: AppColors.primary,
+                      color: Colors.white,
                       size: 20,
                     ),
                   ),
@@ -201,10 +205,10 @@ class _SectionCardState extends State<SectionCard> {
                       widget.section.title,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.textPrimary,
+                        color: AppColors.textPrimaryOf(context),
                       ),
                     ),
                   ),
@@ -212,17 +216,19 @@ class _SectionCardState extends State<SectionCard> {
                     "#${widget.section.order}",
                     style: TextStyle(
                       fontSize: 12,
-                      color: AppColors.textSecondary.withOpacity(.7),
+                      color: AppColors.textSecondaryOf(
+                        context,
+                      ).withValues(alpha: 0.76),
                     ),
                   ),
                   const SizedBox(width: 6),
                   PopupMenuButton<String>(
                     padding: EdgeInsets.zero,
                     splashRadius: 18,
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.more_vert_rounded,
                       size: 20,
-                      color: AppColors.textSecondary,
+                      color: AppColors.textSecondaryOf(context),
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -242,10 +248,10 @@ class _SectionCardState extends State<SectionCard> {
                         value: 'rename',
                         child: Row(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.drive_file_rename_outline_rounded,
                               size: 18,
-                              color: AppColors.primary,
+                              color: primary,
                             ),
                             const SizedBox(width: 10),
                             Text(localizations.renameSection),
@@ -274,9 +280,9 @@ class _SectionCardState extends State<SectionCard> {
                   AnimatedRotation(
                     turns: expanded ? .5 : 0,
                     duration: const Duration(milliseconds: 220),
-                    child: const Icon(
+                    child: Icon(
                       Icons.keyboard_arrow_down_rounded,
-                      color: AppColors.primary,
+                      color: primary,
                     ),
                   ),
                 ],
@@ -295,7 +301,7 @@ class _SectionCardState extends State<SectionCard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Divider(color: AppColors.border, height: 1),
+                  Divider(color: AppColors.borderOf(context), height: 1),
                   const SizedBox(height: 16),
 
                   if (_loadingLessons)
@@ -312,7 +318,9 @@ class _SectionCardState extends State<SectionCard> {
                         localizations.noLessonsYet,
                         style: TextStyle(
                           fontSize: 13,
-                          color: AppColors.textSecondary.withOpacity(.7),
+                          color: AppColors.textSecondaryOf(
+                            context,
+                          ).withValues(alpha: 0.76),
                         ),
                       ),
                     )
@@ -336,22 +344,18 @@ class _SectionCardState extends State<SectionCard> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                          color: AppColors.primary.withOpacity(.3),
+                          color: primary.withValues(alpha: 0.32),
                         ),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(
-                            Icons.add,
-                            size: 18,
-                            color: AppColors.primary,
-                          ),
+                          Icon(Icons.add, size: 18, color: primary),
                           const SizedBox(width: 6),
                           Text(
                             localizations.addLesson,
-                            style: const TextStyle(
-                              color: AppColors.primary,
+                            style: TextStyle(
+                              color: primary,
                               fontWeight: FontWeight.w600,
                             ),
                           ),

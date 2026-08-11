@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
@@ -14,6 +15,50 @@ import 'package:project1/features/demo/presentation/cubit/invitations_cubit/invi
 class HeaderWidget extends StatelessWidget {
   final DemoEntity demo;
   const HeaderWidget({super.key, required this.demo});
+
+  Widget _buildHeaderImage(String? imagePath) {
+    if (imagePath != null && imagePath.trim().isNotEmpty) {
+      final path = imagePath.trim();
+      if (path.startsWith('http://') || path.startsWith('https://')) {
+        return Image.network(
+          path,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => _fallbackHeaderImage(),
+        );
+      } else if (path.startsWith('assets/')) {
+        return Image.asset(
+          path,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => _fallbackHeaderImage(),
+        );
+      } else {
+        final file = File(path);
+        if (file.existsSync()) {
+          return Image.file(
+            file,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) => _fallbackHeaderImage(),
+          );
+        }
+      }
+    }
+    return _fallbackHeaderImage();
+  }
+
+  Widget _fallbackHeaderImage() {
+    return Image.asset(
+      'assets/images/logo1.png',
+      fit: BoxFit.cover,
+      errorBuilder: (context, error, stackTrace) => Container(
+        color: AppColors.surface.withValues(alpha: 0.2),
+        child: Icon(
+          Icons.business_rounded,
+          color: AppColors.surface.withValues(alpha: 0.9),
+          size: 30,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +106,8 @@ class HeaderWidget extends StatelessWidget {
                 _GhostIconButton(
                   icon: Icons.arrow_back_rounded,
                   textScale: textScale,
+                  iconSize: 17,
+                  buttonSize: 38,
                   onTap: () => Navigator.of(context).pop(),
                 ),
                 Row(
@@ -106,6 +153,8 @@ class HeaderWidget extends StatelessWidget {
                     _GhostIconButton(
                       icon: Icons.notifications_none_rounded,
                       textScale: textScale,
+                      iconSize: 17,
+                      buttonSize: 38,
                       onTap: () {
                         Navigator.push(
                           context,
@@ -143,18 +192,7 @@ class HeaderWidget extends StatelessWidget {
                     ],
                   ),
                   child: ClipOval(
-                    child: Image.asset(
-                      'assets/images/logo1.png',
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => Container(
-                        color: AppColors.surface.withValues(alpha: 0.2),
-                        child: Icon(
-                          Icons.business_rounded,
-                          color: AppColors.surface.withValues(alpha: 0.9),
-                          size: 30,
-                        ),
-                      ),
-                    ),
+                    child: _buildHeaderImage(demo.imagePath),
                   ),
                 ),
                 const SizedBox(width: 14),
@@ -185,7 +223,9 @@ class HeaderWidget extends StatelessWidget {
                             child: Text(
                               l10n.byAuthor(demo.ownerName),
                               style: AppTextStyles.bodyMedium.copyWith(
-                                color: AppColors.surface.withValues(alpha: 0.85),
+                                color: AppColors.surface.withValues(
+                                  alpha: 0.85,
+                                ),
                                 fontSize: 13,
                               ),
                               maxLines: 1,
@@ -295,23 +335,21 @@ class HeaderWidget extends StatelessWidget {
                                   milliseconds: 300,
                                 ),
                                 pageBuilder:
+                                    (context, animation, secondaryAnimation) =>
+                                        UpgradePlanScreen(demoId: demo.id!),
+                                transitionsBuilder:
                                     (
                                       context,
                                       animation,
                                       secondaryAnimation,
-                                    ) => UpgradePlanScreen(demoId: demo.id!),
-                                transitionsBuilder: (
-                                  context,
-                                  animation,
-                                  secondaryAnimation,
-                                  child,
-                                ) {
-                                  return FadeThroughTransition(
-                                    animation: animation,
-                                    secondaryAnimation: secondaryAnimation,
-                                    child: child,
-                                  );
-                                },
+                                      child,
+                                    ) {
+                                      return FadeThroughTransition(
+                                        animation: animation,
+                                        secondaryAnimation: secondaryAnimation,
+                                        child: child,
+                                      );
+                                    },
                               ),
                             );
                           },
@@ -358,33 +396,36 @@ class HeaderWidget extends StatelessWidget {
 class _GhostIconButton extends StatelessWidget {
   final IconData icon;
   final double textScale;
+  final double iconSize;
+  final double buttonSize;
   final VoidCallback onTap;
 
   const _GhostIconButton({
     required this.icon,
     required this.textScale,
+    this.iconSize = 20,
+    this.buttonSize = 44,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: buttonSize,
+      height: buttonSize,
       decoration: BoxDecoration(
         color: AppColors.surface.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(12),
       ),
       child: IconButton(
         onPressed: onTap,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 12,
+        visualDensity: VisualDensity.compact,
+        padding: EdgeInsets.zero,
+        constraints: BoxConstraints.tightFor(
+          width: buttonSize,
+          height: buttonSize,
         ),
-        constraints: const BoxConstraints(),
-        icon: Icon(
-          icon,
-          color: AppColors.surface,
-          size: 20 * textScale,
-        ),
+        icon: Icon(icon, color: AppColors.surface, size: iconSize * textScale),
       ),
     );
   }

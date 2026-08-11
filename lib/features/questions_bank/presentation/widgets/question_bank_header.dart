@@ -11,44 +11,59 @@ class QuestionBankHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          localizations.questionsBank,
-          style: const TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w700,
-            color: AppColors.primary,
-          ),
+    final primary = AppColors.primaryOf(context);
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceOf(context),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: AppColors.borderOf(context).withValues(alpha: 0.82),
         ),
-        const SizedBox(height: 6),
-        Text(
-          localizations.questionsBankDescription,
-          style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
-        ),
-        const SizedBox(height: 18),
-        Container(
-          padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: AppColors.primary.withOpacity(.08),
-            borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 14,
+            offset: const Offset(0, 5),
           ),
-          child: Row(
-            children: [
-              const Icon(
-                Icons.quiz_rounded,
-                color: AppColors.primary,
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 46,
+            height: 46,
+            decoration: BoxDecoration(
+              gradient: AppColors.buttonGradientOf(context),
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: primary.withValues(alpha: 0.17),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: const Icon(
+              Icons.quiz_rounded,
+              color: Colors.white,
+              size: 22,
+            ),
+          ),
+          const SizedBox(width: 13),
+          Expanded(
+            child: Text(
+              "$questionsCount ${localizations.questionsCount}",
+              style: TextStyle(
+                color: AppColors.textPrimaryOf(context),
+                fontSize: 15,
+                fontWeight: FontWeight.w800,
               ),
-              const SizedBox(width: 10),
-              Text(
-                "$questionsCount ${localizations.questionsCount}",
-                style: const TextStyle(fontWeight: FontWeight.w600),
-              ),
-            ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

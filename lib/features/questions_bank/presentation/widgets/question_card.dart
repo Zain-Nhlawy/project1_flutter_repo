@@ -7,22 +7,31 @@ class QuestionCard extends StatelessWidget {
   final QuestionBankModel question;
   final VoidCallback onDelete;
 
-  const QuestionCard({required this.question, required this.onDelete});
+  const QuestionCard({
+    super.key,
+    required this.question,
+    required this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final primary = AppColors.primaryOf(context);
+
     return Container(
       margin: const EdgeInsets.only(bottom: 14),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(17),
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border, width: 1.2),
+        color: AppColors.surfaceOf(context),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: AppColors.borderOf(context).withValues(alpha: 0.82),
+          width: 1.1,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(.03),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
+            color: Colors.black.withValues(alpha: .045),
+            blurRadius: 14,
+            offset: const Offset(0, 5),
           ),
         ],
       ),
@@ -32,12 +41,30 @@ class QuestionCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: primary.withValues(alpha: 0.09),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  Icons.help_outline_rounded,
+                  color: primary,
+                  size: 19,
+                ),
+              ),
+              const SizedBox(width: 11),
               Expanded(
-                child: Text(
-                  question.question,
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w600,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 7),
+                  child: Text(
+                    question.question,
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.textPrimaryOf(context),
+                      fontWeight: FontWeight.w700,
+                      height: 1.35,
+                    ),
                   ),
                 ),
               ),
@@ -60,7 +87,7 @@ class QuestionCard extends StatelessWidget {
             Text(
               question.note,
               style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.textSecondary,
+                color: AppColors.textSecondaryOf(context),
                 fontStyle: FontStyle.italic,
               ),
             ),
@@ -78,7 +105,9 @@ class QuestionCard extends StatelessWidget {
                     size: 16,
                     color: choice.isCorrect
                         ? AppColors.success
-                        : AppColors.textSecondary.withOpacity(.5),
+                        : AppColors.textSecondaryOf(
+                            context,
+                          ).withValues(alpha: .5),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
@@ -87,7 +116,7 @@ class QuestionCard extends StatelessWidget {
                       style: AppTextStyles.bodyMedium.copyWith(
                         color: choice.isCorrect
                             ? AppColors.success
-                            : AppColors.textSecondary,
+                            : AppColors.textSecondaryOf(context),
                         fontWeight: choice.isCorrect
                             ? FontWeight.w600
                             : FontWeight.normal,

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
 import 'package:project1/features/course/presentation/cubit/course_state.dart';
 import 'package:project1/features/course/presentation/cubit/tags_cubit.dart';
 import 'package:project1/features/course/presentation/widgets/library/library_courses_grid.dart';
 import 'package:project1/features/course/presentation/widgets/library/library_filters.dart';
-import 'package:project1/features/course/presentation/widgets/library/library_header.dart';
 import 'package:project1/features/course/presentation/widgets/library/library_result_header.dart';
 import 'package:project1/features/course/presentation/widgets/library/library_search_bar.dart';
 import 'package:project1/l10n/app_localizations.dart';
@@ -21,12 +21,8 @@ class PublicLibraryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (_) => getIt<CourseCubit>(),
-        ),
-        BlocProvider(
-          create: (_) => getIt<TagsCubit>(),
-        ),
+        BlocProvider(create: (_) => getIt<CourseCubit>()),
+        BlocProvider(create: (_) => getIt<TagsCubit>()),
       ],
       child: _PublicLibraryView(demoId: demoId),
     );
@@ -54,97 +50,351 @@ class _PublicLibraryViewState extends State<_PublicLibraryView> {
   }
 
   void _search(String value) {
-    search = value;
+    setState(() => search = value);
     context.read<CourseCubit>().getCourses(
-          search: value,
-          tagIds: selectedTagIds,
-        );
+      search: value,
+      tagIds: selectedTagIds,
+    );
   }
 
   void _filterByTags(List<String>? tagIds) {
     final cleanedTagIds = tagIds?.map((id) => id.trim()).toList();
-    selectedTagIds = cleanedTagIds;
+    setState(() => selectedTagIds = cleanedTagIds);
     context.read<CourseCubit>().getCourses(
-          search: search,
-          tagIds: cleanedTagIds,
-        );
+      search: search,
+      tagIds: cleanedTagIds,
+    );
+  }
+
+  void _retry() {
+    context.read<CourseCubit>().getCourses(
+      search: search,
+      tagIds: selectedTagIds,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
+    final topPadding = MediaQuery.paddingOf(context).top;
+    final hasActiveFilters =
+        search.trim().isNotEmpty || (selectedTagIds?.isNotEmpty ?? false);
 
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.white,
+      backgroundColor: AppColors.backgroundOf(context),
+      body: BlocBuilder<CourseCubit, CourseState>(
+        builder: (context, state) {
+          return CustomScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            slivers: [
+              SliverToBoxAdapter(
+                child: _LibraryPageHeader(
+                  topPadding: topPadding,
+                  title: localizations.publicLibrary,
+                  subtitle: localizations.publicLibraryOptionDesc,
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: _LibraryContentBox(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 16),
+                      LibrarySearchBar(onChanged: _search),
+                      LibraryFilters(onTagSelected: _filterByTags),
+                    ],
+                  ),
+                ),
+              ),
+              if (state is PublicCoursesLoading)
+                const SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: _LibraryLoadingState(),
+                )
+              else if (state is PublicCoursesError)
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: _LibraryErrorState(
+                    message: state.errors.isEmpty
+                        ? localizations.somethingWentWrong
+                        : state.errors.first,
+                    retryLabel: localizations.retry,
+                    onRetry: _retry,
+                  ),
+                )
+              else if (state is PublicCoursesLoaded) ...[
+                if (hasActiveFilters)
+                  SliverToBoxAdapter(
+                    child: _LibraryContentBox(
+                      child: LibraryResultHeader(count: state.courses.length),
+                    ),
+                  ),
+                if (state.courses.isEmpty)
+                  SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: _LibraryEmptyState(
+                      title: localizations.noCoursesFound,
+                      subtitle: localizations.publicLibraryOptionDesc,
+                    ),
+                  )
+                else
+                  LibraryCoursesGrid(
+                    courses: state.courses,
+                    userDemoId: widget.demoId,
+                  ),
+              ] else
+                const SliverToBoxAdapter(child: SizedBox.shrink()),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _LibraryContentBox extends StatelessWidget {
+  final Widget child;
+
+  const _LibraryContentBox({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 920),
+        child: child,
+      ),
+    );
+  }
+}
+
+class _LibraryPageHeader extends StatelessWidget {
+  final double topPadding;
+  final String title;
+  final String subtitle;
+
+  const _LibraryPageHeader({
+    required this.topPadding,
+    required this.title,
+    required this.subtitle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        gradient: AppColors.headerGradientOf(context),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(32)),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primaryOf(context).withValues(alpha: 0.2),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
           ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+        ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.only(
+          top: topPadding > 0 ? topPadding + 8 : 32,
+          left: 20,
+          right: 20,
+          bottom: 18,
         ),
-        title: Text(
-          localizations.publicLibrary,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: AppColors.primaryGradient,
-          ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.surface.withValues(alpha: 0.25),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: IconButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    visualDensity: VisualDensity.compact,
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints.tightFor(
+                      width: 38,
+                      height: 38,
+                    ),
+                    icon: const Icon(
+                      Icons.arrow_back_rounded,
+                      color: AppColors.surface,
+                      size: 17,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: AppTextStyles.h3.copyWith(
+                      color: AppColors.surface,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 21,
+                      letterSpacing: -0.3,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Text(
+              subtitle,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.surface.withValues(alpha: 0.85),
+                fontSize: 13,
+              ),
+            ),
+          ],
         ),
       ),
-      body: Column(
+    );
+  }
+}
+
+class _LibraryLoadingState extends StatelessWidget {
+  const _LibraryLoadingState();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          const LibraryHeader(),
-          LibrarySearchBar(
-            onChanged: _search,
-          ),
-          LibraryFilters(
-            onTagSelected: _filterByTags,
-          ),
-          Expanded(
-            child: BlocBuilder<CourseCubit, CourseState>(
-              builder: (context, state) {
-                if (state is PublicCoursesLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                if (state is PublicCoursesError) {
-                  return Center(
-                    child: Text(
-                      state.errors.first,
-                      style: const TextStyle(
-                        color: Colors.red,
-                      ),
-                    ),
-                  );
-                }
-                if (state is PublicCoursesLoaded) {
-                  return Column(
-                    children: [
-                      LibraryResultHeader(
-                        count: state.courses.length,
-                      ),
-                      Expanded(
-                        child: LibraryCoursesGrid(
-                          courses: state.courses,
-                          userDemoId: widget.demoId,
-                        ),
-                      ),
-                    ],
-                  );
-                }
-                return const SizedBox();
-              },
+          SizedBox(
+            width: 34,
+            height: 34,
+            child: CircularProgressIndicator(
+              strokeWidth: 3,
+              color: AppColors.primaryOf(context),
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _LibraryErrorState extends StatelessWidget {
+  final String message;
+  final String retryLabel;
+  final VoidCallback onRetry;
+
+  const _LibraryErrorState({
+    required this.message,
+    required this.retryLabel,
+    required this.onRetry,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: Theme.of(
+                  context,
+                ).colorScheme.error.withValues(alpha: 0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.cloud_off_rounded,
+                size: 38,
+                color: Theme.of(context).colorScheme.error,
+              ),
+            ),
+            const SizedBox(height: 18),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: AppColors.textPrimaryOf(context),
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 18),
+            FilledButton.icon(
+              onPressed: onRetry,
+              style: FilledButton.styleFrom(
+                backgroundColor: AppColors.primaryOf(context),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              icon: const Icon(Icons.refresh_rounded, size: 19),
+              label: Text(retryLabel),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _LibraryEmptyState extends StatelessWidget {
+  final String title;
+  final String subtitle;
+
+  const _LibraryEmptyState({required this.title, required this.subtitle});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(24, 12, 24, 40),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 88,
+              height: 88,
+              decoration: BoxDecoration(
+                gradient: AppColors.headerGradientOf(context),
+                shape: BoxShape.circle,
+                boxShadow: [AppColors.primaryShadowOf(context)],
+              ),
+              child: const Icon(
+                Icons.auto_stories_outlined,
+                color: Colors.white,
+                size: 40,
+              ),
+            ),
+            const SizedBox(height: 22),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: AppColors.textPrimaryOf(context),
+                fontSize: 19,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              subtitle,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: AppColors.textSecondaryOf(context),
+                fontSize: 13,
+                height: 1.5,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

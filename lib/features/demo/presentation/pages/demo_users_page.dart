@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/demo/domain/use%20case/demo_users_usecase.dart';
 import 'package:project1/features/demo/presentation/cubit/search%20for%20users/serach_user_cubit.dart';
@@ -26,16 +27,10 @@ class DemoUsersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final topPadding = MediaQuery.paddingOf(context).top;
 
     return Scaffold(
-      appBar: AppBar(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(36)),
-        ),
-        centerTitle: true,
-        title: Text(l10n.demoMembers),
-        scrolledUnderElevation: 0,
-      ),
+      backgroundColor: AppColors.backgroundOf(context),
       floatingActionButton: Container(
         decoration: BoxDecoration(
           gradient: AppColors.headerGradientOf(context),
@@ -43,7 +38,7 @@ class DemoUsersScreen extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: (isDark ? AppColors.darkSecondary : AppColors.secondary)
-                  .withOpacity(0.35),
+                  .withValues(alpha: 0.35),
               blurRadius: 16,
               offset: const Offset(0, 6),
             ),
@@ -82,37 +77,140 @@ class DemoUsersScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: BlocBuilder<DemoUserCubit, DemoUsersState>(
-        builder: (context, state) {
-          if (state is DemoUserInitial || state is GetDemoUsersLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      body: Column(
+        children: [
+          _DemoUsersHeader(
+            topPadding: topPadding,
+            title: l10n.demoMembers,
+            subtitle: l10n.usersTabOptionDesc,
+          ),
+          Expanded(
+            child: BlocBuilder<DemoUserCubit, DemoUsersState>(
+              builder: (context, state) {
+                if (state is DemoUserInitial || state is GetDemoUsersLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-          if (state is GetDemoUsersError) {
-            return _ErrorState(message: state.message, l10n: l10n);
-          }
+                if (state is GetDemoUsersError) {
+                  return _ErrorState(message: state.message, l10n: l10n);
+                }
 
-          if (state is GetDemoUsersLoaded) {
-            if (state.users.isEmpty) {
-              return _EmptyState(l10n: l10n);
-            }
-            return ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              itemCount: state.users.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 10),
-              itemBuilder: (context, index) {
-                final user = state.users[index];
-                return UserCard(
-                  user: user,
-                  isOwner: isOwner,
-                  onTap: onUserTap != null ? () => onUserTap!(user) : null,
-                );
+                if (state is GetDemoUsersLoaded) {
+                  if (state.users.isEmpty) {
+                    return _EmptyState(l10n: l10n);
+                  }
+                  return ListView.separated(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                    itemCount: state.users.length,
+                    separatorBuilder: (_, __) => const SizedBox(height: 10),
+                    itemBuilder: (context, index) {
+                      final user = state.users[index];
+                      return UserCard(
+                        user: user,
+                        isOwner: isOwner,
+                        onTap: onUserTap != null
+                            ? () => onUserTap!(user)
+                            : null,
+                      );
+                    },
+                  );
+                }
+
+                return const SizedBox.shrink();
               },
-            );
-          }
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
-          return const SizedBox.shrink();
-        },
+class _DemoUsersHeader extends StatelessWidget {
+  final double topPadding;
+  final String title;
+  final String subtitle;
+
+  const _DemoUsersHeader({
+    required this.topPadding,
+    required this.title,
+    required this.subtitle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        gradient: AppColors.headerGradientOf(context),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(32)),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primaryOf(context).withValues(alpha: 0.2),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.only(
+          top: topPadding > 0 ? topPadding + 8 : 32,
+          left: 20,
+          right: 20,
+          bottom: 18,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.surface.withValues(alpha: 0.25),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: IconButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    visualDensity: VisualDensity.compact,
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints.tightFor(
+                      width: 38,
+                      height: 38,
+                    ),
+                    icon: const Icon(
+                      Icons.arrow_back_rounded,
+                      color: AppColors.surface,
+                      size: 17,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: AppTextStyles.h3.copyWith(
+                      color: AppColors.surface,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 21,
+                      letterSpacing: -0.3,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Text(
+              subtitle,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.surface.withValues(alpha: 0.85),
+                fontSize: 13,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

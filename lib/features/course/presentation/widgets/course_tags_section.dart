@@ -10,12 +10,14 @@ class CourseTagsSection extends StatelessWidget {
   final Set<String> selectedTagIds;
   final ValueChanged<String> onToggle;
   final bool enabled;
+  final bool showTitle;
 
   const CourseTagsSection({
     super.key,
     required this.selectedTagIds,
     required this.onToggle,
     required this.enabled,
+    this.showTitle = true,
   });
 
   @override
@@ -25,15 +27,17 @@ class CourseTagsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          localizations.tags,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 14,
-            color: AppColors.textPrimary,
+        if (showTitle) ...[
+          Text(
+            localizations.tags,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+              color: AppColors.textPrimaryOf(context),
+            ),
           ),
-        ),
-        const SizedBox(height: 10),
+          const SizedBox(height: 10),
+        ],
 
         BlocBuilder<TagsCubit, TagsState>(
           builder: (context, state) {

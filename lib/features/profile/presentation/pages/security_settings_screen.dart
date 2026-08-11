@@ -28,6 +28,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
     final authCubit = context.read<AuthCubit>();
     final state = context.watch<UserCubit>().state;
     final user = state is UserLoaded ? state.user : null;
+    final topPadding = MediaQuery.paddingOf(context).top;
 
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) async {
@@ -59,117 +60,204 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
               ? state.message
               : (state as TurnOff2FASuccess).message;
 
-          SnackbarTheme().newSnackBarInfo(
-            context,
-            msg,
-          );
+          SnackbarTheme().newSnackBarInfo(context, msg);
         }
         if (state is AuthError && state.errors.isNotEmpty) {
-          SnackbarTheme().newSnackBarError(
-            context,
-            state.errors.first,
-          );
+          SnackbarTheme().newSnackBarError(context, state.errors.first);
         }
       },
       child: Scaffold(
-        backgroundColor: AppColors.background,
-        appBar: AppBar(
-          title: Text(local.security),
-          backgroundColor: AppColors.primary,
-          foregroundColor: Colors.white,
-          elevation: 0,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: AppColors.surface,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: ListTile(
-                  leading: const CircleAvatar(
-                    backgroundColor: Color(0xFFE3F2FD),
-                    child: Icon(Icons.lock_outline, color: Colors.blue),
-                  ),
-                  title: Text(
-                    local.changePassword,
-                    style: AppTextStyles.titleMedium,
-                  ),
-                  subtitle: Text(local.enterPasswordToContinue),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const ChangePasswordScreen(),
+        backgroundColor: AppColors.backgroundOf(context),
+        body: Column(
+          children: [
+            _SecurityHeader(
+              topPadding: topPadding,
+              title: local.security,
+              subtitle: local.extraSecurityLayer,
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.surface,
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                    );
-                  },
-                ),
-              ),
-
-              const SizedBox(height: 16),
-
-              Container(
-                decoration: BoxDecoration(
-                  color: AppColors.surface,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: SwitchListTile(
-                  value: user?.isTwoFactorEnabled ?? false,
-                  activeColor: AppColors.primary,
-                  secondary: const CircleAvatar(
-                    backgroundColor: Color(0xFFE8F5E9),
-                    child: Icon(Icons.security, color: Colors.green),
-                  ),
-                  title: Text(
-                    local.twoFactorAuth,
-                    style: AppTextStyles.titleMedium,
-                  ),
-                  subtitle: Text(local.extraSecurityLayer),
-
-                  onChanged: isLoading
-                      ? null
-                      : (value) async {
-                          setState(() {
-                            isLoading = true;
-                          });
-
-                          if (!value) {
-                            await authCubit.turnOff2FA();
-                            return;
-                          }
-
-                          if (user == null) {
-                            setState(() {
-                              isLoading = false;
-                            });
-                            return;
-                          }
-
-                          final password = await showDialog<String>(
-                            context: context,
-                            builder: (_) => const Enable2FAPasswordDialog(),
-                          );
-
-                          if (password == null || password.isEmpty) {
-                            setState(() {
-                              isLoading = false;
-                            });
-                            return;
-                          }
-
-                          await authCubit.generate2FA(
-                            email: user.email,
-                            password: password,
+                      child: ListTile(
+                        leading: const CircleAvatar(
+                          backgroundColor: Color(0xFFE3F2FD),
+                          child: Icon(Icons.lock_outline, color: Colors.blue),
+                        ),
+                        title: Text(
+                          local.changePassword,
+                          style: AppTextStyles.titleMedium,
+                        ),
+                        subtitle: Text(local.enterPasswordToContinue),
+                        trailing: const Icon(Icons.chevron_right),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const ChangePasswordScreen(),
+                            ),
                           );
                         },
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.surface,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: SwitchListTile(
+                        value: user?.isTwoFactorEnabled ?? false,
+                        activeThumbColor: AppColors.primary,
+                        secondary: const CircleAvatar(
+                          backgroundColor: Color(0xFFE8F5E9),
+                          child: Icon(Icons.security, color: Colors.green),
+                        ),
+                        title: Text(
+                          local.twoFactorAuth,
+                          style: AppTextStyles.titleMedium,
+                        ),
+                        subtitle: Text(local.extraSecurityLayer),
+
+                        onChanged: isLoading
+                            ? null
+                            : (value) async {
+                                setState(() {
+                                  isLoading = true;
+                                });
+
+                                if (!value) {
+                                  await authCubit.turnOff2FA();
+                                  return;
+                                }
+
+                                if (user == null) {
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                  return;
+                                }
+
+                                final password = await showDialog<String>(
+                                  context: context,
+                                  builder: (_) =>
+                                      const Enable2FAPasswordDialog(),
+                                );
+
+                                if (password == null || password.isEmpty) {
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                  return;
+                                }
+
+                                await authCubit.generate2FA(
+                                  email: user.email,
+                                  password: password,
+                                );
+                              },
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SecurityHeader extends StatelessWidget {
+  final double topPadding;
+  final String title;
+  final String subtitle;
+
+  const _SecurityHeader({
+    required this.topPadding,
+    required this.title,
+    required this.subtitle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        gradient: AppColors.headerGradientOf(context),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(32)),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primaryOf(context).withValues(alpha: 0.2),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
           ),
+        ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.only(
+          top: topPadding > 0 ? topPadding + 8 : 32,
+          left: 20,
+          right: 20,
+          bottom: 18,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.surface.withValues(alpha: 0.25),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: IconButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    visualDensity: VisualDensity.compact,
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints.tightFor(
+                      width: 38,
+                      height: 38,
+                    ),
+                    icon: const Icon(
+                      Icons.arrow_back_rounded,
+                      color: AppColors.surface,
+                      size: 17,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: AppTextStyles.h3.copyWith(
+                      color: AppColors.surface,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 21,
+                      letterSpacing: -0.3,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Text(
+              subtitle,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.surface.withValues(alpha: 0.85),
+                fontSize: 13,
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project1/config/theme/app_theme.dart';
+import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class CourseHeader extends StatelessWidget {
@@ -26,87 +27,183 @@ class CourseHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formattedDuration = formatDuration(totalDurationSeconds);
-    final l10n = AppLocalizations.of(context)!;
+    final localizations = AppLocalizations.of(context)!;
 
-    return SizedBox(
-      height: 310,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Container(
-            height: 250,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.grey.shade200,
-              image: imageUrl.isNotEmpty
-                  ? DecorationImage(
-                      image: NetworkImage(imageUrl),
-                      fit: BoxFit.cover,
-                    )
-                  : null,
+    return Padding(
+      padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
+      child: Container(
+        height: 248,
+        width: double.infinity,
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(26),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.primaryOf(context).withValues(alpha: 0.18),
+              blurRadius: 22,
+              offset: const Offset(0, 10),
             ),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 20,
-            right: 20,
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 20),
+          ],
+        ),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            if (imageUrl.isNotEmpty)
+              Image.network(
+                imageUrl,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => const _CourseImageFallback(),
+              )
+            else
+              const _CourseImageFallback(),
+            const DecoratedBox(
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: Theme.of(context).primaryColor.withOpacity(0.3),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0x08000000),
+                    Color(0x26000000),
+                    Color(0xCC07182D),
+                  ],
+                  stops: [0, 0.48, 1],
                 ),
-                boxShadow: const [AppTheme.primaryShadow],
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _infoItem(
-                    Icons.access_time,
-                    formattedDuration,
-                    l10n.duration,
-                    context,
+            ),
+            PositionedDirectional(
+              top: 16,
+              end: 16,
+              child: Container(
+                width: 42,
+                height: 42,
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.16),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.20),
                   ),
-                  _infoItem(
-                    Icons.play_circle_outline,
-                    '$totalLessons',
-                    l10n.lessons,
-                    context,
+                ),
+                child: const Icon(
+                  Icons.auto_stories_rounded,
+                  color: Colors.white,
+                  size: 21,
+                ),
+              ),
+            ),
+            PositionedDirectional(
+              start: 16,
+              end: 16,
+              bottom: 16,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: _CourseInfoPill(
+                      icon: Icons.schedule_rounded,
+                      value: formattedDuration,
+                      label: localizations.duration,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: _CourseInfoPill(
+                      icon: Icons.play_lesson_outlined,
+                      value: totalLessons.toString(),
+                      label: localizations.lessons,
+                    ),
                   ),
                 ],
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _CourseImageFallback extends StatelessWidget {
+  const _CourseImageFallback();
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(gradient: AppColors.headerGradientOf(context)),
+      child: Center(
+        child: Icon(
+          Icons.menu_book_rounded,
+          size: 64,
+          color: Colors.white.withValues(alpha: 0.72),
+        ),
+      ),
+    );
+  }
+}
+
+class _CourseInfoPill extends StatelessWidget {
+  final IconData icon;
+  final String value;
+  final String label;
+
+  const _CourseInfoPill({
+    required this.icon,
+    required this.value,
+    required this.label,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.16),
+        borderRadius: BorderRadius.circular(17),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.18)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.16),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, color: Colors.white, size: 19),
+          ),
+          const SizedBox(width: 9),
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text(
+                    value,
+                    maxLines: 1,
+                    style: AppTextStyles.label.copyWith(
+                      color: Colors.white,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.caption.copyWith(
+                    color: Colors.white.withValues(alpha: 0.72),
+                    fontSize: 10,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
       ),
     );
   }
-
-  Widget _infoItem(
-    IconData icon,
-    String val,
-    String label,
-    BuildContext context,
-  ) => Column(
-    children: [
-      Row(
-        children: [
-          Icon(icon, color: Theme.of(context).primaryColor, size: 28),
-          const SizedBox(width: 8),
-          Text(
-            val,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-              color: Theme.of(context).primaryColor,
-            ),
-          ),
-        ],
-      ),
-      const SizedBox(height: 4),
-      Text(label, style: TextStyle(color: Colors.grey[600], fontSize: 14)),
-    ],
-  );
 }

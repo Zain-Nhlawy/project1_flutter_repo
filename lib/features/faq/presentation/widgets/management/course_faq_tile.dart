@@ -6,21 +6,24 @@ class FaqTile extends StatelessWidget {
   final CourseFaqEntity faq;
   final VoidCallback onDelete;
 
-  const FaqTile({required this.faq, required this.onDelete});
+  const FaqTile({super.key, required this.faq, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.border, width: 1.2),
+        color: AppColors.surfaceOf(context),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: AppColors.borderOf(context).withValues(alpha: 0.82),
+          width: 1.1,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 6,
-            offset: const Offset(0, 2),
+            color: Colors.black.withValues(alpha: 0.045),
+            blurRadius: 14,
+            offset: const Offset(0, 5),
           ),
         ],
       ),
@@ -31,12 +34,12 @@ class FaqTile extends StatelessWidget {
             margin: const EdgeInsets.only(top: 2),
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(10),
+              gradient: AppColors.buttonGradientOf(context),
+              borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(
               Icons.help_outline_rounded,
-              color: AppColors.primary,
+              color: Colors.white,
               size: 18,
             ),
           ),
@@ -47,10 +50,10 @@ class FaqTile extends StatelessWidget {
               children: [
                 Text(
                   faq.question,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
-                    color: AppColors.textPrimary,
+                    color: AppColors.textPrimaryOf(context),
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -58,19 +61,30 @@ class FaqTile extends StatelessWidget {
                   faq.answer,
                   style: TextStyle(
                     fontSize: 13,
-                    color: AppColors.textSecondary.withOpacity(0.9),
+                    color: AppColors.textSecondaryOf(
+                      context,
+                    ).withValues(alpha: 0.92),
                   ),
                 ),
               ],
             ),
           ),
-          IconButton(
-            icon: const Icon(
-              Icons.delete_outline_rounded,
-              color: Colors.red,
-              size: 20,
+          Container(
+            width: 38,
+            height: 38,
+            decoration: BoxDecoration(
+              color: AppColors.error.withValues(alpha: 0.08),
+              borderRadius: BorderRadius.circular(12),
             ),
-            onPressed: onDelete,
+            child: IconButton(
+              icon: const Icon(
+                Icons.delete_outline_rounded,
+                color: AppColors.error,
+                size: 19,
+              ),
+              padding: EdgeInsets.zero,
+              onPressed: onDelete,
+            ),
           ),
         ],
       ),

@@ -15,29 +15,27 @@ class LessonTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final primary = AppColors.primaryOf(context);
+
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: AppColors.backgroundOf(context),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.border, width: 1),
+        border: Border.all(color: AppColors.borderOf(context), width: 1),
       ),
       child: Row(
         children: [
-          const Icon(
-            Icons.play_circle_outline_rounded,
-            size: 18,
-            color: AppColors.primary,
-          ),
+          Icon(Icons.play_circle_outline_rounded, size: 18, color: primary),
           const SizedBox(width: 10),
           Expanded(
             child: Text(
               title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
-                color: AppColors.textPrimary,
+                color: AppColors.textPrimaryOf(context),
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -45,10 +43,10 @@ class LessonTile extends StatelessWidget {
           ),
           IconButton(
             onPressed: onEdit,
-            icon: const Icon(
+            icon: Icon(
               Icons.edit_outlined,
               size: 18,
-              color: AppColors.textSecondary,
+              color: AppColors.textSecondaryOf(context),
             ),
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(),

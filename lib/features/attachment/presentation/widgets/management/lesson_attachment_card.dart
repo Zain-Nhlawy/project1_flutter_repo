@@ -32,34 +32,122 @@ class LessonAttachmentCard extends StatelessWidget {
     }
   }
 
+  Color _accentFor(BuildContext context, String path) {
+    final ext = path.split('.').last.toLowerCase();
+    switch (ext) {
+      case 'pdf':
+        return AppColors.error;
+      case 'zip':
+        return AppColors.warning;
+      case 'ppt':
+      case 'pptx':
+        return const Color(0xFFEA6B35);
+      default:
+        return AppColors.primaryOf(context);
+    }
+  }
+
+  String _extensionFor(String path) {
+    final parts = path.split('.');
+    return parts.length > 1 ? parts.last.toUpperCase() : 'FILE';
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(top: 10),
-      elevation: 1,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: AppColors.primary,
-          child: Icon(_iconFor(attachment.path), color: Colors.white),
+    final primary = AppColors.primaryOf(context);
+    final accent = _accentFor(context, attachment.path);
+
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppColors.backgroundOf(context),
+        borderRadius: BorderRadius.circular(17),
+        border: Border.all(
+          color: AppColors.borderOf(context).withValues(alpha: 0.78),
         ),
-        title: Text(
-          attachment.name,
-          style: const TextStyle(fontWeight: FontWeight.w600),
-        ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 46,
+            height: 46,
+            decoration: BoxDecoration(
+              color: accent.withValues(alpha: 0.10),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Icon(_iconFor(attachment.path), color: accent, size: 22),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  attachment.name,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: AppColors.textPrimaryOf(context),
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    height: 1.25,
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 7,
+                    vertical: 3,
+                  ),
+                  decoration: BoxDecoration(
+                    color: accent.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(7),
+                  ),
+                  child: Text(
+                    _extensionFor(attachment.path),
+                    style: TextStyle(
+                      color: accent,
+                      fontSize: 9,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              color: primary.withValues(alpha: 0.08),
+              borderRadius: BorderRadius.circular(11),
+            ),
+            child: IconButton(
               onPressed: onEdit,
-              icon: const Icon(Icons.edit_outlined, color: AppColors.primary),
+              padding: EdgeInsets.zero,
+              icon: Icon(Icons.edit_outlined, color: primary, size: 18),
             ),
-            IconButton(
+          ),
+          const SizedBox(width: 7),
+          Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              color: AppColors.error.withValues(alpha: 0.08),
+              borderRadius: BorderRadius.circular(11),
+            ),
+            child: IconButton(
               onPressed: onDelete,
-              icon: Icon(Icons.delete_outline, color: Colors.red.shade400),
+              padding: EdgeInsets.zero,
+              icon: const Icon(
+                Icons.delete_outline_rounded,
+                color: AppColors.error,
+                size: 18,
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

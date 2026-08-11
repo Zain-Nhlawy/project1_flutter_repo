@@ -16,11 +16,7 @@ class InquiriesPage extends StatelessWidget {
   final String demoId;
   final bool isOwner;
 
-  const InquiriesPage({
-    super.key,
-    required this.demoId,
-    required this.isOwner,
-  });
+  const InquiriesPage({super.key, required this.demoId, required this.isOwner});
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +39,7 @@ class _InquiriesPageView extends StatefulWidget {
   final String demoId;
   final bool isOwner;
 
-  const _InquiriesPageView({
-    required this.demoId,
-    required this.isOwner,
-  });
+  const _InquiriesPageView({required this.demoId, required this.isOwner});
 
   @override
   State<_InquiriesPageView> createState() => _InquiriesPageViewState();
@@ -117,8 +110,9 @@ class _InquiriesPageViewState extends State<_InquiriesPageView> {
             width: double.infinity,
             decoration: BoxDecoration(
               gradient: AppColors.headerGradientOf(context),
-              borderRadius:
-                  const BorderRadius.vertical(bottom: Radius.circular(32)),
+              borderRadius: const BorderRadius.vertical(
+                bottom: Radius.circular(32),
+              ),
               boxShadow: [
                 BoxShadow(
                   color: AppColors.primaryOf(context).withValues(alpha: 0.2),
@@ -129,10 +123,10 @@ class _InquiriesPageViewState extends State<_InquiriesPageView> {
             ),
             child: Padding(
               padding: EdgeInsets.only(
-                top: topPadding > 0 ? topPadding + 12 : 36,
+                top: topPadding > 0 ? topPadding + 8 : 32,
                 left: 20,
                 right: 20,
-                bottom: 24,
+                bottom: 18,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,10 +140,16 @@ class _InquiriesPageViewState extends State<_InquiriesPageView> {
                         ),
                         child: IconButton(
                           onPressed: () => Navigator.of(context).pop(),
+                          visualDensity: VisualDensity.compact,
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints.tightFor(
+                            width: 38,
+                            height: 38,
+                          ),
                           icon: const Icon(
                             Icons.arrow_back_rounded,
                             color: AppColors.surface,
-                            size: 20,
+                            size: 17,
                           ),
                         ),
                       ),
@@ -160,18 +160,19 @@ class _InquiriesPageViewState extends State<_InquiriesPageView> {
                           style: AppTextStyles.h3.copyWith(
                             color: AppColors.surface,
                             fontWeight: FontWeight.bold,
+                            fontSize: 21,
                             letterSpacing: -0.3,
                           ),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 10),
                   Text(
                     l10n.inquiriesDescription,
                     style: AppTextStyles.bodyMedium.copyWith(
                       color: AppColors.surface.withValues(alpha: 0.85),
-                      fontSize: 13.5,
+                      fontSize: 13,
                     ),
                   ),
                 ],
@@ -216,9 +217,7 @@ class _InquiriesPageViewState extends State<_InquiriesPageView> {
                 }
 
                 if (state is InquiryLoading && _inquiries.isEmpty) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 if (_inquiries.isEmpty) {
@@ -236,8 +235,9 @@ class _InquiriesPageViewState extends State<_InquiriesPageView> {
                                 Container(
                                   padding: const EdgeInsets.all(20),
                                   decoration: BoxDecoration(
-                                    color: AppColors.primaryOf(context)
-                                        .withValues(alpha: 0.08),
+                                    color: AppColors.primaryOf(
+                                      context,
+                                    ).withValues(alpha: 0.08),
                                     shape: BoxShape.circle,
                                   ),
                                   child: Icon(

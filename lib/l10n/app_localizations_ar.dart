@@ -436,7 +436,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get saveDiagram => 'حفظ المخطط';
 
   @override
-  String get whatDoYouWantToSave => 'شو بدك تحفظ؟';
+  String get whatDoYouWantToSave => 'ماذا تريد أن تحفظ؟';
 
   @override
   String get xmlOnly => 'XML فقط';
@@ -445,19 +445,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get pngOnly => 'PNG فقط';
 
   @override
-  String get both => 'الاثنين';
+  String get both => 'كلاهما';
 
   @override
-  String get storagePermissionDenied => 'ما عندك إذن تخزين، فعّله من الإعدادات';
+  String get storagePermissionDenied => 'تم رفض إذن التخزين';
 
   @override
   String get settings => 'الإعدادات';
 
   @override
-  String get xmlSaved => 'تم حفظ XML بنجاح';
+  String get xmlSaved => 'تم حفظ XML';
 
   @override
-  String get pngSaved => 'تم حفظ PNG بنجاح';
+  String get pngSaved => 'تم حفظ PNG';
 
   @override
   String get security => 'الأمان';
@@ -569,6 +569,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get private => 'خاص';
+
+  @override
+  String get publicVisibilityWarningTitle => 'النشر في المكتبة العامة؟';
+
+  @override
+  String get publicVisibilityWarningMessage =>
+      'اختيار عام يجعل هذا الكورس متاحاً في المكتبة العامة بعد حفظ التعديلات.';
 
   @override
   String get tags => 'التاغات';
@@ -967,6 +974,51 @@ class AppLocalizationsAr extends AppLocalizations {
   String get departmentChat => 'المحادثة';
 
   @override
+  String get departmentLives => 'البث المباشر';
+
+  @override
+  String get createLiveStream => 'إنشاء بث مباشر';
+
+  @override
+  String get startLiveStream => 'بدء البث';
+
+  @override
+  String get endLiveStream => 'إنهاء البث';
+
+  @override
+  String get joinLiveStream => 'الانضمام للبث';
+
+  @override
+  String get liveStreamTitle => 'عنوان البث';
+
+  @override
+  String get liveStreamDescription => 'وصف البث';
+
+  @override
+  String get scheduleTime => 'موعد البث';
+
+  @override
+  String get liveStatusLive => 'مباشر الان';
+
+  @override
+  String get liveStatusScheduled => 'مجدول';
+
+  @override
+  String get liveStatusEnded => 'منتهي';
+
+  @override
+  String get noLiveStreamsFound => 'لا يوجد بث مباشر حالياً';
+
+  @override
+  String get editLiveStream => 'تعديل البث';
+
+  @override
+  String get liveStreamCreatedSuccessfully => 'تم إنشاء البث المباشر بنجاح';
+
+  @override
+  String get liveStreamEnded => 'تم إنهاء البث المباشر';
+
+  @override
   String get departmentMembers => 'الأعضاء';
 
   @override
@@ -1141,6 +1193,20 @@ class AppLocalizationsAr extends AppLocalizations {
   String get allFilters => 'كل الفلاتر';
 
   @override
+  String get searchTags => 'البحث في الوسوم';
+
+  @override
+  String selectedTagsCount(int count) {
+    return 'تم تحديد $count';
+  }
+
+  @override
+  String get applyFilters => 'تطبيق الفلاتر';
+
+  @override
+  String get clearAll => 'مسح الكل';
+
+  @override
   String get beginner => 'مبتدئ';
 
   @override
@@ -1219,6 +1285,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get aiResponseTitle => 'استجابة الذكاء الاصطناعي';
+
+  @override
+  String get aiFulfillingRequest => 'الذكاء الاصطناعي ينفذ طلبك';
 
   @override
   String get noDataYet => 'اطرح سؤالاً أو أنشئ اختباراً لرؤية النتائج هنا.';
@@ -1541,4 +1610,61 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get yourAnswerLabel => 'إجابتك';
+
+  @override
+  String get hideReplies => 'إخفاء الردود';
+
+  @override
+  String repliesCount(Object count) {
+    return '$count ردود';
+  }
+
+  @override
+  String get askAQuestion => 'اطرح سؤالاً';
+
+  @override
+  String get viewReplies => 'عرض الردود';
+
+  @override
+  String get answers => 'إجابات';
+
+  @override
+  String get noAnswersYet => 'لا توجد إجابات بعد';
+
+  @override
+  String get clear => 'مسح';
+
+  @override
+  String get viewXml => 'عرض XML';
+
+  @override
+  String get ready => 'جاهز';
+
+  @override
+  String get loading => 'جارٍ التحميل...';
+
+  @override
+  String get saving => 'جارٍ الحفظ...';
+
+  @override
+  String get error => 'خطأ';
+
+  @override
+  String get readyIdle => 'جاهز';
+
+  @override
+  String get cleared => 'تم المسح';
+
+  @override
+  String get noDiagramYet => 'لا يوجد مخطط بعد';
+
+  @override
+  String get noDiagramDescription =>
+      'أنشئ مخططًا انسيابيًا جديدًا أو افتح مخططًا موجودًا لبدء التعديل.';
+
+  @override
+  String get openEditor => 'فتح المحرر';
+
+  @override
+  String get saveFailed => 'فشل الحفظ';
 }
