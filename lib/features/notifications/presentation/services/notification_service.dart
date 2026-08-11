@@ -30,11 +30,11 @@ class NotificationService {
 
   static const AndroidNotificationChannel _androidChannel =
       AndroidNotificationChannel(
-    'high_importance_channel',
-    'High Importance Notifications',
-    description: 'This channel is used for important notifications.',
-    importance: Importance.high,
-  );
+        'high_importance_channel',
+        'High Importance Notifications',
+        description: 'This channel is used for important notifications.',
+        importance: Importance.high,
+      );
 
   NotificationService({
     required this.registerFcmTokenUseCase,
@@ -49,7 +49,7 @@ class NotificationService {
       _setupForegroundHandler();
       _setupNotificationTapHandlers();
       _setupTokenRefreshListener();
-      
+
       FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
       await checkInitialMessage();
@@ -69,11 +69,15 @@ class NotificationService {
       sound: true,
     );
 
-    debugPrint('User notification permission status: ${settings.authorizationStatus}');
+    debugPrint(
+      'User notification permission status: ${settings.authorizationStatus}',
+    );
   }
 
   Future<void> _initializeLocalNotifications() async {
-    const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const androidSettings = AndroidInitializationSettings(
+      '@mipmap/ic_launcher',
+    );
     const iosSettings = DarwinInitializationSettings();
     const initSettings = InitializationSettings(
       android: androidSettings,
@@ -100,7 +104,8 @@ class NotificationService {
 
     await _localNotifications
         .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+          AndroidFlutterLocalNotificationsPlugin
+        >()
         ?.createNotificationChannel(_androidChannel);
   }
 
@@ -119,14 +124,15 @@ class NotificationService {
       }
 
       final deviceModel = await deviceInfoDataSource.getDeviceModel();
-      
+
       final result = await registerFcmTokenUseCase(
         token: fcmToken,
         deviceModel: deviceModel,
       );
 
       result.fold(
-        (failure) => debugPrint('Failed to register FCM token: ${failure.message}'),
+        (failure) =>
+            debugPrint('Failed to register FCM token: ${failure.message}'),
         (_) => debugPrint('FCM token registered successfully.'),
       );
     } catch (e) {
@@ -165,7 +171,9 @@ class NotificationService {
   Future<void> checkInitialMessage() async {
     final initialMessage = await _firebaseMessaging.getInitialMessage();
     if (initialMessage != null) {
-      final payload = NotificationPayloadModel.fromRemoteMessage(initialMessage);
+      final payload = NotificationPayloadModel.fromRemoteMessage(
+        initialMessage,
+      );
       NotificationNavigationHandler.handleNotificationTap(payload);
     }
   }
@@ -194,12 +202,14 @@ class NotificationService {
       payload.title,
       payload.body,
       notificationDetails,
-      payload: Uri(queryParameters: {
-        'title': payload.title,
-        'body': payload.body,
-        'type': payload.type,
-        ...payload.data.map((key, value) => MapEntry(key, value.toString())),
-      }).query,
+      payload: Uri(
+        queryParameters: {
+          'title': payload.title,
+          'body': payload.body,
+          'type': payload.type,
+          ...payload.data.map((key, value) => MapEntry(key, value.toString())),
+        },
+      ).query,
     );
   }
 

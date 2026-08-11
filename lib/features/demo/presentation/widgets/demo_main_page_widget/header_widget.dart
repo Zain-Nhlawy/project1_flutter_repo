@@ -72,8 +72,9 @@ class HeaderWidget extends StatelessWidget {
     final daysPassed = DateTime.now().difference(createdAt).inDays;
     final int daysLeft = (14 - daysPassed) > 0 ? (14 - daysPassed) : 0;
 
-    final currentPlan = demo.plan?.toLowerCase() ?? 'starter';
-    final isFreePlan = currentPlan == 'starter' || currentPlan == 'free';
+    final currentPlan = demo.plan?.trim().toLowerCase() ?? 'free';
+    final isFree = currentPlan == 'free' || currentPlan == 'trial' || currentPlan.isEmpty;
+    final isEnterprise = currentPlan == 'enterprise';
 
     return Container(
       width: size.width,
@@ -278,7 +279,7 @@ class HeaderWidget extends StatelessWidget {
             ),
 
             // Trial / Plan Upgrade Banner
-            if (demo.isOwner && isFreePlan) ...[
+            if (demo.isOwner && !isEnterprise) ...[
               const SizedBox(height: 18),
               ClipRRect(
                 borderRadius: BorderRadius.circular(18),
@@ -309,23 +310,28 @@ class HeaderWidget extends StatelessWidget {
                             color: Colors.amber.withValues(alpha: 0.25),
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(
-                            Icons.timer_outlined,
+                          child: Icon(
+                            isFree ? Icons.timer_outlined : Icons.bolt_rounded,
                             color: Colors.amberAccent,
                             size: 16,
                           ),
                         ),
-                        const SizedBox(width: 10),
+                        const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            l10n.daysLeftText(daysLeft),
+                            isFree
+                                ? l10n.daysLeftText(daysLeft)
+                                : l10n.levelUpYourPlan,
                             style: AppTextStyles.label.copyWith(
                               color: AppColors.surface,
                               fontWeight: FontWeight.w600,
                               fontSize: 12 * textScale,
                             ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
+                        const SizedBox(width: 8),
                         InkWell(
                           onTap: () {
                             Navigator.push(
@@ -336,7 +342,10 @@ class HeaderWidget extends StatelessWidget {
                                 ),
                                 pageBuilder:
                                     (context, animation, secondaryAnimation) =>
-                                        UpgradePlanScreen(demoId: demo.id!),
+                                        UpgradePlanScreen(
+                                          demoId: demo.id!,
+                                          currentPlan: demo.plan,
+                                        ),
                                 transitionsBuilder:
                                     (
                                       context,
@@ -355,8 +364,8 @@ class HeaderWidget extends StatelessWidget {
                           },
                           borderRadius: BorderRadius.circular(12),
                           child: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: size.width * 0.035,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
                               vertical: 7,
                             ),
                             decoration: BoxDecoration(
@@ -377,6 +386,8 @@ class HeaderWidget extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 12 * textScale,
                               ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ),

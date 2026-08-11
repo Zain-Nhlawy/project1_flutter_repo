@@ -85,6 +85,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tileNotifications => 'Notifications';
 
   @override
+  String get tileMyCertificates => 'My Certificate';
+
+  @override
   String get notifOn => 'On';
 
   @override
@@ -181,6 +184,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get upgradePlan => 'Upgrade Plan';
 
   @override
+  String get levelUpYourPlan => 'Level Up your plan';
+
+  @override
+  String get currentPlan => 'Current Plan';
+
+  @override
+  String get restricted => 'Restricted';
+
+  @override
   String daysLeftText(int days) {
     return '$days days left in free trial';
   }
@@ -224,10 +236,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'This plan limit has been reached , please upgrade the plan';
 
   @override
-  String get addSection => 'Add Section';
+  String get addSection => 'Add Department';
 
   @override
-  String get noSectionFound => 'No section found';
+  String get noSectionFound => 'No department found';
 
   @override
   String get demoMembers => 'Demo Members';
@@ -513,13 +525,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get byAhmadAhmad => 'By Ahmad Ahmad';
 
   @override
-  String get sections => 'Sections';
+  String get sections => 'Departments';
 
   @override
   String get groups => 'Groups';
 
   @override
-  String get yourSections => 'Your Sections';
+  String get yourSections => 'Your Departments';
 
   @override
   String get restrictedSections => 'Restricted Sections';
@@ -603,7 +615,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get manageFaq => 'Manage FAQ';
 
   @override
-  String get manageSections => 'Manage Sections';
+  String get manageSections => 'Manage Departments';
 
   @override
   String get saveChanges => 'Save Changes';
@@ -619,7 +631,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get coursesInProgress => 'Courses in Progress';
 
   @override
-  String get noSectionsYet => 'No sections yet';
+  String get noSectionsYet => 'No departments yet';
 
   @override
   String get addLesson => 'Add Lesson';
@@ -640,11 +652,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get save => 'Save';
 
   @override
-  String get deleteSection => 'Delete Section';
+  String get deleteSection => 'Delete Department';
 
   @override
   String get deleteSectionConfirmation =>
-      'Are you sure you want to delete this section? This action cannot be undone.';
+      'Are you sure you want to delete this department? This action cannot be undone.';
 
   @override
   String get createLesson => 'Create Lesson';
@@ -956,7 +968,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseSelectManager => 'Please select a manager';
 
   @override
-  String get departmentAddedSuccessfully => 'Section added successfully';
+  String get departmentAddedSuccessfully => 'Department added successfully';
 
   @override
   String get requiredField => 'Fields is required';
@@ -1072,10 +1084,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get removeDepartment => 'Remove Department';
 
   @override
-  String get departmentUpdatedSuccessfully => 'Section updated successfully';
+  String get departmentUpdatedSuccessfully => 'Department updated successfully';
 
   @override
-  String get departmentDeletedSuccessfully => 'Section deleted successfully';
+  String get departmentDeletedSuccessfully => 'Department deleted successfully';
 
   @override
   String get departmentLearningPath => 'Learning Path';

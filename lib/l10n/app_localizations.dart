@@ -242,6 +242,12 @@ abstract class AppLocalizations {
   /// **'Notifications'**
   String get tileNotifications;
 
+  /// No description provided for @tileMyCertificates.
+  ///
+  /// In en, this message translates to:
+  /// **'My Certificate'**
+  String get tileMyCertificates;
+
   /// No description provided for @notifOn.
   ///
   /// In en, this message translates to:
@@ -422,6 +428,24 @@ abstract class AppLocalizations {
   /// **'Upgrade Plan'**
   String get upgradePlan;
 
+  /// No description provided for @levelUpYourPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Level Up your plan'**
+  String get levelUpYourPlan;
+
+  /// No description provided for @currentPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Plan'**
+  String get currentPlan;
+
+  /// No description provided for @restricted.
+  ///
+  /// In en, this message translates to:
+  /// **'Restricted'**
+  String get restricted;
+
   /// No description provided for @daysLeftText.
   ///
   /// In en, this message translates to:
@@ -503,13 +527,13 @@ abstract class AppLocalizations {
   /// No description provided for @addSection.
   ///
   /// In en, this message translates to:
-  /// **'Add Section'**
+  /// **'Add Department'**
   String get addSection;
 
   /// No description provided for @noSectionFound.
   ///
   /// In en, this message translates to:
-  /// **'No section found'**
+  /// **'No department found'**
   String get noSectionFound;
 
   /// No description provided for @demoMembers.
@@ -1067,7 +1091,7 @@ abstract class AppLocalizations {
   /// No description provided for @sections.
   ///
   /// In en, this message translates to:
-  /// **'Sections'**
+  /// **'Departments'**
   String get sections;
 
   /// No description provided for @groups.
@@ -1079,7 +1103,7 @@ abstract class AppLocalizations {
   /// No description provided for @yourSections.
   ///
   /// In en, this message translates to:
-  /// **'Your Sections'**
+  /// **'Your Departments'**
   String get yourSections;
 
   /// No description provided for @restrictedSections.
@@ -1241,7 +1265,7 @@ abstract class AppLocalizations {
   /// No description provided for @manageSections.
   ///
   /// In en, this message translates to:
-  /// **'Manage Sections'**
+  /// **'Manage Departments'**
   String get manageSections;
 
   /// No description provided for @saveChanges.
@@ -1271,7 +1295,7 @@ abstract class AppLocalizations {
   /// No description provided for @noSectionsYet.
   ///
   /// In en, this message translates to:
-  /// **'No sections yet'**
+  /// **'No departments yet'**
   String get noSectionsYet;
 
   /// No description provided for @addLesson.
@@ -1313,13 +1337,13 @@ abstract class AppLocalizations {
   /// No description provided for @deleteSection.
   ///
   /// In en, this message translates to:
-  /// **'Delete Section'**
+  /// **'Delete Department'**
   String get deleteSection;
 
   /// No description provided for @deleteSectionConfirmation.
   ///
   /// In en, this message translates to:
-  /// **'Are you sure you want to delete this section? This action cannot be undone.'**
+  /// **'Are you sure you want to delete this department? This action cannot be undone.'**
   String get deleteSectionConfirmation;
 
   /// No description provided for @createLesson.
@@ -1919,7 +1943,7 @@ abstract class AppLocalizations {
   /// No description provided for @departmentAddedSuccessfully.
   ///
   /// In en, this message translates to:
-  /// **'Section added successfully'**
+  /// **'Department added successfully'**
   String get departmentAddedSuccessfully;
 
   /// No description provided for @requiredField.
@@ -2147,13 +2171,13 @@ abstract class AppLocalizations {
   /// No description provided for @departmentUpdatedSuccessfully.
   ///
   /// In en, this message translates to:
-  /// **'Section updated successfully'**
+  /// **'Department updated successfully'**
   String get departmentUpdatedSuccessfully;
 
   /// No description provided for @departmentDeletedSuccessfully.
   ///
   /// In en, this message translates to:
-  /// **'Section deleted successfully'**
+  /// **'Department deleted successfully'**
   String get departmentDeletedSuccessfully;
 
   /// No description provided for @departmentLearningPath.

@@ -85,6 +85,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get tileNotifications => 'الإشعارات';
 
   @override
+  String get tileMyCertificates => 'شهاداتي';
+
+  @override
   String get notifOn => 'مفعلة';
 
   @override
@@ -178,6 +181,15 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get upgradePlan => 'ترقية الخطة';
+
+  @override
+  String get levelUpYourPlan => 'ارتقِ بخطتك';
+
+  @override
+  String get currentPlan => 'الخطة الحالية';
+
+  @override
+  String get restricted => 'مقيدة';
 
   @override
   String daysLeftText(int days) {

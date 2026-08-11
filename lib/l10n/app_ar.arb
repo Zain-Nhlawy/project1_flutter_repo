@@ -30,6 +30,7 @@
 "tileLanguage": "اللغة",
 "langEnglish": "الإنجليزية",
 "tileNotifications": "الإشعارات",
+"tileMyCertificates": "شهاداتي",
 "notifOn": "مفعلة",
 "secSupport": "الدعم الفني",
 "tileMessageAdmins": "مراسلة المسؤولين",
@@ -60,6 +61,9 @@
   "tapToUpload": "اضغط لرفع الصورة",
   "selectPlan": "اختر الخطة",
 "upgradePlan": "ترقية الخطة",
+"levelUpYourPlan": "ارتقِ بخطتك",
+"currentPlan": "الخطة الحالية",
+"restricted": "مقيدة",
   "daysLeftText": "متبقي {days} أيام مجانية",
   "@daysLeftText": {
     "placeholders": {

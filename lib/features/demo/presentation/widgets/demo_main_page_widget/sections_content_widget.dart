@@ -95,37 +95,47 @@ class SectionsContentWidget extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Text(
-                        l10n.yourSections,
-                        style: AppTextStyles.titleLarge.copyWith(
-                          color: AppColors.textPrimaryOf(context),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 2,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryOf(
-                            context,
-                          ).withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          departments.length.toString(),
-                          style: AppTextStyles.label.copyWith(
-                            color: AppColors.primaryOf(context),
-                            fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              l10n.yourSections,
+                              style: AppTextStyles.titleLarge.copyWith(
+                                color: AppColors.textPrimaryOf(context),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 2,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryOf(
+                              context,
+                            ).withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            departments.length.toString(),
+                            style: AppTextStyles.label.copyWith(
+                              color: AppColors.primaryOf(context),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
+                  const SizedBox(width: 8),
                   if (demo.isOwner)
                     InkWell(
                       onTap: isLimitReached
@@ -306,7 +316,7 @@ class SectionsContentWidget extends StatelessWidget {
       builder: (dialogContext) {
         return AlertDialog(
           title: Text(
-            l10n.deleteSection,
+            l10n.removeDepartment,
             style: AppTextStyles.titleLarge.copyWith(
               color: AppColors.textPrimaryOf(context),
             ),

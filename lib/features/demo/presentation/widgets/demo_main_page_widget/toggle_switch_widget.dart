@@ -76,34 +76,42 @@ class ToggleSwitchWidget extends StatelessWidget {
                       splashColor: Colors.transparent,
                       highlightColor: Colors.transparent,
                       child: Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.grid_view_rounded,
-                              size: 18,
-                              color: isSectionsActive
-                                  ? Colors.white
-                                  : AppColors.textSecondaryOf(context),
-                            ),
-                            const SizedBox(width: 8),
-                            AnimatedDefaultTextStyle(
-                              duration: const Duration(milliseconds: 200),
-                              style: AppTextStyles.label.copyWith(
-                                fontFamily:
-                                    theme.textTheme.bodyMedium?.fontFamily ??
-                                    AppTextStyles.fontFamily,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.grid_view_rounded,
+                                size: 18,
                                 color: isSectionsActive
                                     ? Colors.white
                                     : AppColors.textSecondaryOf(context),
-                                fontWeight: isSectionsActive
-                                    ? FontWeight.w700
-                                    : FontWeight.w600,
-                                fontSize: 14,
                               ),
-                              child: Text(l10n.sections),
-                            ),
-                          ],
+                              const SizedBox(width: 6),
+                              Flexible(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: AnimatedDefaultTextStyle(
+                                    duration: const Duration(milliseconds: 200),
+                                    style: AppTextStyles.label.copyWith(
+                                      fontFamily:
+                                          theme.textTheme.bodyMedium?.fontFamily ??
+                                          AppTextStyles.fontFamily,
+                                      color: isSectionsActive
+                                          ? Colors.white
+                                          : AppColors.textSecondaryOf(context),
+                                      fontWeight: isSectionsActive
+                                          ? FontWeight.w700
+                                          : FontWeight.w600,
+                                      fontSize: 13,
+                                    ),
+                                    child: Text(l10n.sections),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -115,34 +123,42 @@ class ToggleSwitchWidget extends StatelessWidget {
                       splashColor: Colors.transparent,
                       highlightColor: Colors.transparent,
                       child: Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.groups_rounded,
-                              size: 20,
-                              color: !isSectionsActive
-                                  ? Colors.white
-                                  : AppColors.textSecondaryOf(context),
-                            ),
-                            const SizedBox(width: 8),
-                            AnimatedDefaultTextStyle(
-                              duration: const Duration(milliseconds: 200),
-                              style: AppTextStyles.label.copyWith(
-                                fontFamily:
-                                    theme.textTheme.bodyMedium?.fontFamily ??
-                                    AppTextStyles.fontFamily,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.groups_rounded,
+                                size: 18,
                                 color: !isSectionsActive
                                     ? Colors.white
                                     : AppColors.textSecondaryOf(context),
-                                fontWeight: !isSectionsActive
-                                    ? FontWeight.w700
-                                    : FontWeight.w600,
-                                fontSize: 14,
                               ),
-                              child: Text(l10n.groups),
-                            ),
-                          ],
+                              const SizedBox(width: 6),
+                              Flexible(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: AnimatedDefaultTextStyle(
+                                    duration: const Duration(milliseconds: 200),
+                                    style: AppTextStyles.label.copyWith(
+                                      fontFamily:
+                                          theme.textTheme.bodyMedium?.fontFamily ??
+                                          AppTextStyles.fontFamily,
+                                      color: !isSectionsActive
+                                          ? Colors.white
+                                          : AppColors.textSecondaryOf(context),
+                                      fontWeight: !isSectionsActive
+                                          ? FontWeight.w700
+                                          : FontWeight.w600,
+                                      fontSize: 13,
+                                    ),
+                                    child: Text(l10n.groups),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
