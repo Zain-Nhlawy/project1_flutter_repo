@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +11,7 @@ import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/attachment/presentation/cubit/lesson_attachment_cubit.dart';
 import 'package:project1/features/lesson/domain/entities/lesson_entity.dart';
+import 'package:project1/features/lesson/presentation/widgets/datails/hls_url_helper.dart';
 import 'package:project1/features/lesson/presentation/widgets/datails/lesson_details_header.dart';
 import 'package:project1/features/lesson/presentation/widgets/datails/lesson_navigation_bar.dart';
 import 'package:project1/features/lesson/presentation/widgets/datails/lesson_tabs.dart';
@@ -31,11 +35,15 @@ class LessonDetailsScreen extends StatefulWidget {
 class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
   late final Player _player;
   late final VideoController _videoController;
+  late final Dio _dio;
   late int _currentIndex;
 
   bool _isDownloadingVideo = false;
   bool _hasVideoError = false;
   bool _isFullscreen = false;
+
+  Map<String, String> _qualities = {};
+  String _currentQuality = 'auto';
 
   LessonEntity get _currentLesson => widget.lessons[_currentIndex];
   bool get _hasNext => _currentIndex < widget.lessons.length - 1;
@@ -47,6 +55,12 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
     _currentIndex = widget.initialIndex;
     _player = Player();
     _videoController = VideoController(_player);
+    _dio = Dio(
+      BaseOptions(
+        connectTimeout: const Duration(seconds: 5),
+        receiveTimeout: const Duration(seconds: 5),
+      ),
+    );
     _loadCurrentVideo();
   }
 
@@ -59,26 +73,82 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
     super.dispose();
   }
 
+  int _loadToken = 0;
+
   Future<void> _loadCurrentVideo() async {
     final lesson = _currentLesson;
+    final token = ++_loadToken;
 
     setState(() {
       _isDownloadingVideo = true;
       _hasVideoError = false;
+      _qualities = {};
+      _currentQuality = 'auto';
     });
+
+    final masterUrl = HlsUrlHelper.buildMasterUrl(lesson.videoUrl);
+
+    try {
+      await _player.open(Media(masterUrl));
+      if (!mounted || token != _loadToken) return;
+      setState(() => _isDownloadingVideo = false);
+
+      _loadQualitiesInBackground(lesson.videoUrl, masterUrl, token);
+      return;
+    } catch (_) {
+    }
 
     try {
       await _player.open(Media(lesson.videoUrl));
-
-      if (!mounted) return;
+      if (!mounted || token != _loadToken) return;
       setState(() => _isDownloadingVideo = false);
     } catch (e) {
-      if (!mounted) return;
+      if (!mounted || token != _loadToken) return;
       setState(() {
         _isDownloadingVideo = false;
         _hasVideoError = true;
       });
     }
+  }
+
+  Future<void> _loadQualitiesInBackground(
+    String mp4Url,
+    String masterUrl,
+    int token,
+  ) async {
+    final fetchedQualities = await HlsUrlHelper.fetchQualities(
+      mp4Url: mp4Url,
+      dio: _dio,
+    );
+
+    if (!mounted || token != _loadToken) return;
+    if (fetchedQualities.isEmpty) return;
+
+    setState(() {
+      _qualities = fetchedQualities;
+      _currentQuality = 'auto';
+    });
+  }
+
+  Future<void> _changeQuality(String qualityKey) async {
+    final url = _qualities[qualityKey];
+    if (url == null || qualityKey == _currentQuality) return;
+
+    final position = _player.state.position;
+    final wasPlaying = _player.state.playing;
+
+    setState(() => _currentQuality = qualityKey);
+
+    await _player.open(Media(url), play: false);
+
+    late final StreamSubscription durationSub;
+    durationSub = _player.stream.duration.listen((duration) {
+      if (duration > Duration.zero) {
+        _player.seek(position);
+        if (wasPlaying) _player.play();
+        durationSub.cancel();
+      }
+    });
   }
 
   Future<void> _toggleFullscreen() async {
@@ -397,12 +467,14 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
           onPrevious: _hasPrevious ? _goToPrevious : null,
           onFullscreen: _toggleFullscreen,
           isFullscreen: _isFullscreen,
+          qualities: _qualities,
+          currentQuality: _currentQuality,
+          onQualityChanged: _changeQuality,
         ),
       ],
     );
   }
 }
-
 
 class _LessonSectionTitle extends StatelessWidget {
   final IconData icon;
