@@ -36,6 +36,7 @@ class LessonDetailsScreen extends StatefulWidget {
 
 class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
   late final BetterPlayerController _betterPlayerController;
+  late final GlobalKey _betterPlayerGlobalKey;
   late final Dio _dio;
   late int _currentIndex;
 
@@ -61,7 +62,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
         receiveTimeout: const Duration(seconds: 5),
       ),
     );
-
+  _betterPlayerGlobalKey = GlobalKey();
     _betterPlayerController = BetterPlayerController(
       const BetterPlayerConfiguration(
         autoPlay: false,
@@ -537,9 +538,9 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
       fit: StackFit.expand,
       children: [
         BetterPlayer(
-          key: ValueKey(_currentLesson.id),
-          controller: _betterPlayerController,
-        ),
+  key: _betterPlayerGlobalKey,
+  controller: _betterPlayerController,
+),
         if (_isDownloadingVideo)
           const ColoredBox(
             color: Colors.black45,
@@ -563,6 +564,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
           qualities: _qualities,
           currentQuality: _currentQuality,
           onQualityChanged: _changeQuality,
+          betterPlayerGlobalKey: _betterPlayerGlobalKey,
         ),
       ],
     );
