@@ -236,7 +236,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'This plan limit has been reached , please upgrade the plan';
 
   @override
-  String get addSection => 'Add Department';
+  String get addSection => 'Add Section';
 
   @override
   String get noSectionFound => 'No department found';
@@ -525,7 +525,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get byAhmadAhmad => 'By Ahmad Ahmad';
 
   @override
-  String get sections => 'Departments';
+  String get sections => 'Sections';
 
   @override
   String get groups => 'Groups';
@@ -631,7 +631,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get coursesInProgress => 'Courses in Progress';
 
   @override
-  String get noSectionsYet => 'No departments yet';
+  String get noSectionsYet => 'No sections yet';
 
   @override
   String get addLesson => 'Add Lesson';
@@ -652,7 +652,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get save => 'Save';
 
   @override
-  String get deleteSection => 'Delete Department';
+  String get deleteSection => 'Delete Section';
 
   @override
   String get deleteSectionConfirmation =>

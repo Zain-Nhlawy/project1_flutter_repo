@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
-import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/core/presentation/widgets/gradient_action_button.dart';
@@ -9,6 +8,9 @@ import 'package:project1/core/presentation/widgets/gradient_page_app_bar.dart';
 import 'package:project1/features/quiz/data/models/exam_model.dart';
 import 'package:project1/features/quiz/presentation/cubit/exam_cubit.dart';
 import 'package:project1/features/quiz/presentation/cubit/exam_state.dart';
+import 'package:project1/features/quiz/presentation/widgets/management/exam_form_field.dart';
+import 'package:project1/features/quiz/presentation/widgets/management/exam_intro_card.dart';
+import 'package:project1/features/quiz/presentation/widgets/management/exam_status_view.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class ExamManagementScreen extends StatefulWidget {
@@ -60,7 +62,7 @@ class _ExamManagementScreenState extends State<ExamManagementScreen> {
               }
 
               if (state is ExamError) {
-                return _ExamStatusView(
+                return ExamStatusView(
                   message: state.message,
                   retryLabel: localizations.retry,
                   onRetry: () => _cubit.fetchExams(sectionId: widget.sectionId),
@@ -145,61 +147,69 @@ class _ExamFormContentState extends State<_ExamFormContent> {
   }
 
   Future<void> _save() async {
-    final localizations = AppLocalizations.of(context)!;
-    final title = _titleController.text.trim();
-    final numberOfQuestions = int.tryParse(_questionsController.text.trim());
-    final durationMinutes = int.tryParse(_durationController.text.trim());
-    final passingScore = int.tryParse(_passingScoreController.text.trim());
+  final localizations = AppLocalizations.of(context)!;
 
-    setState(() {
-      _titleError = title.isEmpty;
-      _questionsError = numberOfQuestions == null || numberOfQuestions <= 0;
-      _durationError = durationMinutes == null || durationMinutes <= 0;
-      _passingScoreError = passingScore == null || passingScore < 0 || passingScore > 100;
-    });
+  final title = _titleController.text.trim();
+  final numberOfQuestions =
+      int.tryParse(_questionsController.text.trim());
+  final durationMinutes =
+      int.tryParse(_durationController.text.trim());
+  final passingScore =
+      int.tryParse(_passingScoreController.text.trim());
 
-    if (_titleError || _questionsError || _durationError || _passingScoreError) return;
+  setState(() {
+    _titleError = title.isEmpty;
+    _questionsError =
+        numberOfQuestions == null || numberOfQuestions <= 0;
+    _durationError =
+        durationMinutes == null || durationMinutes <= 0;
+    _passingScoreError =
+        passingScore == null ||
+        passingScore < 0 ||
+        passingScore > 100;
+  });
 
-    setState(() => _isSaving = true);
-
-    final success = _isEditing
-        ? await widget.cubit.updateExam(
-            sectionId: widget.sectionId,
-            examId: widget.exam!.id,
-            title: title,
-            numberOfQuestions: numberOfQuestions!,
-            durationMinutes: durationMinutes!,
-            passingScore: passingScore!,
-          )
-        : await widget.cubit.createExam(
-            sectionId: widget.sectionId,
-            title: title,
-            numberOfQuestions: numberOfQuestions!,
-            durationMinutes: durationMinutes!,
-            passingScore: passingScore!,
-          );
-
-    if (!mounted) return;
-
-    setState(() => _isSaving = false);
-
-    if (success) {
-      widget.cubit.fetchExams(sectionId: widget.sectionId);
-      SnackbarTheme().newSnackBarSuccess(
-        context,
-        _isEditing
-            ? localizations.examUpdatedSuccessfully
-            : localizations.examCreatedSuccessfully,
-      );
-    } else {
-      SnackbarTheme().newSnackBarError(
-        context,
-        _isEditing
-            ? localizations.failedToUpdateExam
-            : localizations.failedToCreateExam,
-      );
-    }
+  if (_titleError ||
+      _questionsError ||
+      _durationError ||
+      _passingScoreError) {
+    return;
   }
+
+  setState(() => _isSaving = true);
+
+  final success = _isEditing
+      ? await widget.cubit.updateExam(
+          sectionId: widget.sectionId,
+          examId: widget.exam!.id,
+          title: title,
+          numberOfQuestions: numberOfQuestions!,
+          durationMinutes: durationMinutes!,
+          passingScore: passingScore!,
+        )
+      : await widget.cubit.createExam(
+          sectionId: widget.sectionId,
+          title: title,
+          numberOfQuestions: numberOfQuestions!,
+          durationMinutes: durationMinutes!,
+          passingScore: passingScore!,
+        );
+
+  if (!mounted) return;
+
+  setState(() => _isSaving = false);
+
+  if (success) {
+    Navigator.pop(context, true);
+  } else {
+    SnackbarTheme().newSnackBarError(
+      context,
+      _isEditing
+          ? localizations.failedToUpdateExam
+          : localizations.failedToCreateExam,
+    );
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -208,7 +218,7 @@ class _ExamFormContentState extends State<_ExamFormContent> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _ExamIntroCard(
+        ExamIntroCard(
           title: _isEditing ? localizations.editExam : localizations.addExam,
           description: localizations.enterExamDetailsDescription,
         ),
@@ -232,7 +242,7 @@ class _ExamFormContentState extends State<_ExamFormContent> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _ExamFormField(
+              ExamFormField(
                 label: localizations.examTitle,
                 hintText: localizations.examTitleHint,
                 icon: Icons.title_rounded,
@@ -244,7 +254,7 @@ class _ExamFormContentState extends State<_ExamFormContent> {
                 },
               ),
               const SizedBox(height: 18),
-              _ExamFormField(
+              ExamFormField(
                 label: localizations.numberOfQuestions,
                 hintText: localizations.numberOfQuestionsHint,
                 icon: Icons.format_list_numbered_rounded,
@@ -259,7 +269,7 @@ class _ExamFormContentState extends State<_ExamFormContent> {
                 },
               ),
               const SizedBox(height: 18),
-              _ExamFormField(
+              ExamFormField(
                 label: localizations.durationMinutes,
                 hintText: localizations.durationMinutesHint,
                 icon: Icons.timer_outlined,
@@ -274,7 +284,7 @@ class _ExamFormContentState extends State<_ExamFormContent> {
                 },
               ),
               const SizedBox(height: 18),
-              _ExamFormField(
+              ExamFormField(
                 label: 'Passing Score (%)',
                 hintText: 'Enter passing score (0-100)',
                 icon: Icons.trending_up_rounded,
@@ -300,227 +310,6 @@ class _ExamFormContentState extends State<_ExamFormContent> {
           onPressed: _isSaving ? null : _save,
         ),
       ],
-    );
-  }
-}
-
-class _ExamIntroCard extends StatelessWidget {
-  final String title;
-  final String description;
-
-  const _ExamIntroCard({required this.title, required this.description});
-
-  @override
-  Widget build(BuildContext context) {
-    final primary = AppColors.primaryOf(context);
-
-    return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: AppColors.surfaceOf(context),
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(
-          color: AppColors.borderOf(context).withValues(alpha: 0.82),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.045),
-            blurRadius: 16,
-            offset: const Offset(0, 6),
-          ),
-        ],
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              gradient: AppColors.buttonGradientOf(context),
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: primary.withValues(alpha: 0.18),
-                  blurRadius: 11,
-                  offset: const Offset(0, 5),
-                ),
-              ],
-            ),
-            child: const Icon(
-              Icons.quiz_rounded,
-              color: Colors.white,
-              size: 24,
-            ),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: AppTextStyles.titleMedium.copyWith(
-                    color: AppColors.textPrimaryOf(context),
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  description,
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textSecondaryOf(context),
-                    height: 1.45,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ExamFormField extends StatelessWidget {
-  final String label;
-  final String hintText;
-  final IconData icon;
-  final TextEditingController controller;
-  final bool hasError;
-  final TextInputType? keyboardType;
-  final TextInputAction? textInputAction;
-  final ValueChanged<String> onChanged;
-
-  const _ExamFormField({
-    required this.label,
-    required this.hintText,
-    required this.icon,
-    required this.controller,
-    required this.hasError,
-    required this.onChanged,
-    this.keyboardType,
-    this.textInputAction,
-  });
-
-  OutlineInputBorder _border(BuildContext context, {bool focused = false}) {
-    final color = hasError
-        ? AppColors.error
-        : focused
-        ? AppColors.primaryOf(context)
-        : AppColors.borderOf(context);
-
-    return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(16),
-      borderSide: BorderSide(
-        color: color,
-        width: hasError || focused ? 1.7 : 1.1,
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final primary = AppColors.primaryOf(context);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.textPrimaryOf(context),
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        const SizedBox(height: 8),
-        TextField(
-          controller: controller,
-          keyboardType: keyboardType,
-          textInputAction: textInputAction,
-          style: TextStyle(color: AppColors.textPrimaryOf(context)),
-          onChanged: onChanged,
-          decoration: InputDecoration(
-            hintText: hintText,
-            hintStyle: TextStyle(
-              color: AppColors.textSecondaryOf(context).withValues(alpha: 0.72),
-            ),
-            filled: true,
-            fillColor: AppColors.backgroundOf(context),
-            prefixIcon: Icon(icon, color: primary, size: 21),
-            border: _border(context),
-            enabledBorder: _border(context),
-            focusedBorder: _border(context, focused: true),
-            errorBorder: _border(context),
-            focusedErrorBorder: _border(context, focused: true),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 14,
-              vertical: 16,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _ExamStatusView extends StatelessWidget {
-  final String message;
-  final String retryLabel;
-  final VoidCallback onRetry;
-
-  const _ExamStatusView({
-    required this.message,
-    required this.retryLabel,
-    required this.onRetry,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        margin: const EdgeInsets.all(28),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 26),
-        decoration: BoxDecoration(
-          color: AppColors.surfaceOf(context),
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: AppColors.borderOf(context)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 62,
-              height: 62,
-              decoration: BoxDecoration(
-                color: AppColors.error.withValues(alpha: 0.09),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.error_outline_rounded,
-                color: AppColors.error,
-                size: 29,
-              ),
-            ),
-            const SizedBox(height: 15),
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.textSecondaryOf(context),
-                fontWeight: FontWeight.w600,
-                height: 1.45,
-              ),
-            ),
-            const SizedBox(height: 18),
-            GradientActionButton(
-              label: retryLabel,
-              icon: Icons.refresh_rounded,
-              onPressed: onRetry,
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

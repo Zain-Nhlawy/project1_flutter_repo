@@ -527,7 +527,7 @@ abstract class AppLocalizations {
   /// No description provided for @addSection.
   ///
   /// In en, this message translates to:
-  /// **'Add Department'**
+  /// **'Add Section'**
   String get addSection;
 
   /// No description provided for @noSectionFound.
@@ -1091,7 +1091,7 @@ abstract class AppLocalizations {
   /// No description provided for @sections.
   ///
   /// In en, this message translates to:
-  /// **'Departments'**
+  /// **'Sections'**
   String get sections;
 
   /// No description provided for @groups.
@@ -1295,7 +1295,7 @@ abstract class AppLocalizations {
   /// No description provided for @noSectionsYet.
   ///
   /// In en, this message translates to:
-  /// **'No departments yet'**
+  /// **'No sections yet'**
   String get noSectionsYet;
 
   /// No description provided for @addLesson.
@@ -1337,7 +1337,7 @@ abstract class AppLocalizations {
   /// No description provided for @deleteSection.
   ///
   /// In en, this message translates to:
-  /// **'Delete Department'**
+  /// **'Delete Section'**
   String get deleteSection;
 
   /// No description provided for @deleteSectionConfirmation.
