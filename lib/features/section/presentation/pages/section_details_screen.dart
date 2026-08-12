@@ -15,13 +15,13 @@ import 'package:project1/l10n/app_localizations.dart';
 
 class SectionLessonsExpansionTile extends StatefulWidget {
   final SectionEntity section;
-  final String? demoId;
+  final String demoId;
   final bool lessonsLocked;
 
   const SectionLessonsExpansionTile({
     super.key,
     required this.section,
-    this.demoId,
+    required this.demoId,
     this.lessonsLocked = false,
   });
 
@@ -94,10 +94,14 @@ class _SectionLessonsExpansionTileState
       context,
       MaterialPageRoute(
         builder: (_) =>
-            LessonDetailsScreen(lessons: _lessons, initialIndex: index),
-      ),
-    );
-  }
+            LessonDetailsScreen(
+              lessons: _lessons,
+              initialIndex: index,
+              demoId: widget.demoId,
+            ),
+        ),
+      );
+    }
 
   @override
   Widget build(BuildContext context) {

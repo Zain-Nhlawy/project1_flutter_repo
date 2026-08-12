@@ -1,12 +1,11 @@
 import 'dart:async';
-
+import 'package:better_player_plus/better_player_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:media_kit/media_kit.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 
 class VideoControls extends StatefulWidget {
-  final Player player;
+  final BetterPlayerController controller;
   final VoidCallback? onNext;
   final VoidCallback? onPrevious;
   final VoidCallback? onFullscreen;
@@ -17,7 +16,7 @@ class VideoControls extends StatefulWidget {
 
   const VideoControls({
     super.key,
-    required this.player,
+    required this.controller,
     this.onNext,
     this.onPrevious,
     this.onFullscreen,
@@ -38,45 +37,83 @@ class _VideoControlsState extends State<VideoControls> {
   double _rate = 1.0;
   bool _visible = true;
   Timer? _hideTimer;
+  Timer? _progressTimer;
 
-  StreamSubscription? _playingSub;
-  StreamSubscription? _positionSub;
-  StreamSubscription? _durationSub;
-  StreamSubscription? _rateSub;
+  BetterPlayerController get _controller => widget.controller;
 
   @override
   void initState() {
     super.initState();
-    _playing = widget.player.state.playing;
-    _position = widget.player.state.position;
-    _duration = widget.player.state.duration;
-    _rate = widget.player.state.rate;
-
-    _playingSub = widget.player.stream.playing.listen((playing) {
-      if (mounted) setState(() => _playing = playing);
-      _scheduleAutoHide();
-    });
-    _positionSub = widget.player.stream.position.listen((position) {
-      if (mounted) setState(() => _position = position);
-    });
-    _durationSub = widget.player.stream.duration.listen((duration) {
-      if (mounted) setState(() => _duration = duration);
-    });
-    _rateSub = widget.player.stream.rate.listen((rate) {
-      if (mounted) setState(() => _rate = rate);
-    });
-
+    _controller.addEventsListener(_onPlayerEvent);
+    _syncFromController();
     _scheduleAutoHide();
   }
 
   @override
+  void didUpdateWidget(covariant VideoControls oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      oldWidget.controller.removeEventsListener(_onPlayerEvent);
+      _controller.addEventsListener(_onPlayerEvent);
+      _syncFromController();
+    }
+  }
+
+  @override
   void dispose() {
-    _playingSub?.cancel();
-    _positionSub?.cancel();
-    _durationSub?.cancel();
-    _rateSub?.cancel();
+    _controller.removeEventsListener(_onPlayerEvent);
     _hideTimer?.cancel();
+    _progressTimer?.cancel();
     super.dispose();
+  }
+
+  void _syncFromController() {
+    final value = _controller.videoPlayerController?.value;
+    if (value != null) {
+      _playing = value.isPlaying;
+      _position = value.position;
+      _duration = value.duration ?? Duration.zero;
+      _rate = value.speed;
+    }
+    _startProgressTicker();
+  }
+
+  void _startProgressTicker() {
+    _progressTimer?.cancel();
+    _progressTimer = Timer.periodic(const Duration(milliseconds: 300), (_) {
+      final value = _controller.videoPlayerController?.value;
+      if (value == null || !mounted) return;
+      setState(() {
+        _position = value.position;
+        _duration = value.duration ?? Duration.zero;
+        _playing = value.isPlaying;
+      });
+    });
+  }
+
+  void _onPlayerEvent(BetterPlayerEvent event) {
+    if (!mounted) return;
+    switch (event.betterPlayerEventType) {
+      case BetterPlayerEventType.play:
+        setState(() => _playing = true);
+        _scheduleAutoHide();
+        break;
+      case BetterPlayerEventType.pause:
+      case BetterPlayerEventType.finished:
+        setState(() => _playing = false);
+        _hideTimer?.cancel();
+        break;
+      case BetterPlayerEventType.setSpeed:
+        final speed = _controller.videoPlayerController?.value.speed;
+        if (speed != null) setState(() => _rate = speed);
+        break;
+      case BetterPlayerEventType.setupDataSource:
+      case BetterPlayerEventType.changedResolution:
+        _syncFromController();
+        break;
+      default:
+        break;
+    }
   }
 
   void _scheduleAutoHide() {
@@ -100,12 +137,20 @@ class _VideoControlsState extends State<VideoControls> {
     return hours > 0 ? '$hours:$minutes:$seconds' : '$minutes:$seconds';
   }
 
+  void _playOrPause() {
+    if (_playing) {
+      _controller.pause();
+    } else {
+      _controller.play();
+    }
+  }
+
   void _seekRelative(Duration offset) {
     final target = _position + offset;
     final clamped = target < Duration.zero
         ? Duration.zero
         : (target > _duration ? _duration : target);
-    widget.player.seek(clamped);
+    _controller.seekTo(clamped);
   }
 
   String _qualityLabel(String key) {
@@ -156,12 +201,13 @@ class _VideoControlsState extends State<VideoControls> {
                     icon: _playing
                         ? Icons.pause_rounded
                         : Icons.play_arrow_rounded,
-                    onPressed: () => widget.player.playOrPause(),
+                    onPressed: _playOrPause,
                   ),
                   const SizedBox(width: 10),
                   _GlassVideoButton(
                     icon: Icons.forward_10_rounded,
-                    onPressed: () => _seekRelative(const Duration(seconds: 10)),
+                    onPressed: () =>
+                        _seekRelative(const Duration(seconds: 10)),
                   ),
                   const SizedBox(width: 7),
                   _GlassVideoButton(
@@ -215,7 +261,7 @@ class _VideoControlsState extends State<VideoControls> {
                               .clamp(0, _duration.inMilliseconds)
                               .toDouble(),
                           onChanged: (value) {
-                            widget.player.seek(
+                            _controller.seekTo(
                               Duration(milliseconds: value.toInt()),
                             );
                             _scheduleAutoHide();
@@ -234,7 +280,7 @@ class _VideoControlsState extends State<VideoControls> {
                     const SizedBox(width: 7),
                     PopupMenuButton<double>(
                       initialValue: _rate,
-                      onSelected: (rate) => widget.player.setRate(rate),
+                      onSelected: (rate) => _controller.setSpeed(rate),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),

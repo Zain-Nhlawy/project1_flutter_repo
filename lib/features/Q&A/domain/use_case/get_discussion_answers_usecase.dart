@@ -10,10 +10,12 @@ class GetDiscussionAnswersUseCase {
 
   Future<Either<Failure, PaginatedDiscussionAnswers>> call({
     required String questionId,
+    required String demoId,
     String? cursor,
   }) {
     return repository.getAnswers(
       questionId: questionId,
+      demoId: demoId,
       cursor: cursor,
     );
   }

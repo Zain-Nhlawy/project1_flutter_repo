@@ -1,20 +1,22 @@
 import 'package:dartz/dartz.dart';
 import 'package:project1/core/errors/failures.dart';
-import 'package:project1/features/q&a/data/models/discussion_question_model.dart';
+import 'package:project1/features/q&a/data/models/paginated_discussion_questions.dart';
 import 'package:project1/features/q&a/domain/repositories/discussion_repository.dart';
 
-class GetDiscussionQuestionUseCase {
+class GetDiscussionQuestionsUseCase {
   final DiscussionRepository repository;
 
-  GetDiscussionQuestionUseCase(this.repository);
+  GetDiscussionQuestionsUseCase(this.repository);
 
-  Future<Either<Failure, DiscussionQuestionModel>> call({
+  Future<Either<Failure, PaginatedDiscussionQuestions>> call({
     required String lessonId,
-    required String questionId,
+    required String demoId,
+    String? cursor,
   }) {
-    return repository.getQuestion(
+    return repository.getQuestions(
       lessonId: lessonId,
-      questionId: questionId,
+      demoId: demoId,
+      cursor: cursor,
     );
   }
 }

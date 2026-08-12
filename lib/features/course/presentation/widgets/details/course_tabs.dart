@@ -13,13 +13,13 @@ import 'package:project1/features/section/presentation/pages/section_details_scr
 import 'package:project1/l10n/app_localizations.dart';
 
 class CourseTabs extends StatefulWidget {
-  final String? demoId;
+  final String demoId;
   final String courseId;
   final bool lessonsLocked;
 
   const CourseTabs({
     super.key,
-    this.demoId,
+    required this.demoId,
     required this.courseId,
     this.lessonsLocked = false,
   });

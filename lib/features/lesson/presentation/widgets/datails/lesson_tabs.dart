@@ -13,8 +13,13 @@ import 'package:project1/l10n/app_localizations.dart';
 
 class LessonTabs extends StatefulWidget {
   final String lessonId;
+  final String demoId;
 
-  const LessonTabs({super.key, required this.lessonId});
+  const LessonTabs({
+    super.key,
+    required this.lessonId,
+    required this.demoId,
+  });
 
   @override
   State<LessonTabs> createState() => _LessonTabsState();
@@ -30,16 +35,21 @@ class _LessonTabsState extends State<LessonTabs> {
   @override
   void initState() {
     super.initState();
-    _loadAttachments();
-    _loadQuestions();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadAttachments();
+      _loadQuestions();
+    });
   }
 
   Future<void> _loadAttachments() async {
-    final result = await context.read<LessonAttachmentCubit>().getAttachments(
-      lessonId: widget.lessonId,
-    );
+    final result =
+        await context.read<LessonAttachmentCubit>().getAttachments(
+              lessonId: widget.lessonId,
+            );
 
     if (!mounted) return;
+
     setState(() {
       _attachments = result;
       _loadingAttachments = false;
@@ -48,10 +58,12 @@ class _LessonTabsState extends State<LessonTabs> {
 
   Future<void> _loadQuestions() async {
     final result = await context.read<DiscussionCubit>().getQuestions(
-      lessonId: widget.lessonId,
-    );
+          lessonId: widget.lessonId,
+          demoId: widget.demoId,
+        );
 
     if (!mounted) return;
+
     setState(() {
       _questions = result;
       _loadingQuestions = false;
@@ -60,9 +72,11 @@ class _LessonTabsState extends State<LessonTabs> {
 
   Future<void> _postQuestion(String content) async {
     await context.read<DiscussionCubit>().postQuestion(
-      lessonId: widget.lessonId,
-      content: content,
-    );
+          lessonId: widget.lessonId,
+          content: content,
+          demoId: widget.demoId,
+        );
+
     await _loadQuestions();
   }
 
@@ -82,7 +96,8 @@ class _LessonTabsState extends State<LessonTabs> {
               color: AppColors.backgroundOf(context),
               borderRadius: BorderRadius.circular(15),
               border: Border.all(
-                color: AppColors.borderOf(context).withValues(alpha: 0.70),
+                color: AppColors.borderOf(context)
+                    .withValues(alpha: 0.70),
               ),
             ),
             child: TabBar(
@@ -100,7 +115,8 @@ class _LessonTabsState extends State<LessonTabs> {
                 ],
               ),
               labelColor: Colors.white,
-              unselectedLabelColor: AppColors.textSecondaryOf(context),
+              unselectedLabelColor:
+                  AppColors.textSecondaryOf(context),
               labelStyle: AppTextStyles.label.copyWith(
                 fontWeight: FontWeight.w800,
               ),
@@ -110,13 +126,19 @@ class _LessonTabsState extends State<LessonTabs> {
               tabs: [
                 Tab(
                   height: 42,
-                  icon: const Icon(Icons.forum_outlined, size: 18),
+                  icon: const Icon(
+                    Icons.forum_outlined,
+                    size: 18,
+                  ),
                   text: localizations.questionsCount,
                   iconMargin: const EdgeInsets.only(bottom: 2),
                 ),
                 Tab(
                   height: 42,
-                  icon: const Icon(Icons.attach_file_rounded, size: 18),
+                  icon: const Icon(
+                    Icons.attach_file_rounded,
+                    size: 18,
+                  ),
                   text: localizations.lessonAttachments,
                   iconMargin: const EdgeInsets.only(bottom: 2),
                 ),
@@ -129,6 +151,7 @@ class _LessonTabsState extends State<LessonTabs> {
               children: [
                 _QuestionsTab(
                   lessonId: widget.lessonId,
+                  demoId: widget.demoId,
                   questions: _questions,
                   loading: _loadingQuestions,
                   onPostQuestion: _postQuestion,
@@ -148,12 +171,14 @@ class _LessonTabsState extends State<LessonTabs> {
 
 class _QuestionsTab extends StatelessWidget {
   final String lessonId;
+  final String demoId;
   final List<DiscussionQuestionModel> questions;
   final bool loading;
   final ValueChanged<String> onPostQuestion;
 
   const _QuestionsTab({
     required this.lessonId,
+    required this.demoId,
     required this.questions,
     required this.loading,
     required this.onPostQuestion,
@@ -164,7 +189,9 @@ class _QuestionsTab extends StatelessWidget {
     final localizations = AppLocalizations.of(context)!;
 
     if (loading) {
-      return const _LessonTabStatus(isLoading: true);
+      return const _LessonTabStatus(
+        isLoading: true,
+      );
     }
 
     return Column(
@@ -176,7 +203,12 @@ class _QuestionsTab extends StatelessWidget {
                   message: localizations.noQuestionsYet,
                 )
               : ListView.builder(
-                  padding: const EdgeInsets.fromLTRB(10, 8, 10, 12),
+                  padding: const EdgeInsets.fromLTRB(
+                    10,
+                    8,
+                    10,
+                    12,
+                  ),
                   physics: const BouncingScrollPhysics(),
                   itemCount: questions.length,
                   itemBuilder: (context, index) {
@@ -184,10 +216,18 @@ class _QuestionsTab extends StatelessWidget {
 
                     return QaCard(
                       questionId: question.id,
+                      demoId: demoId,
                       userName: question.authorName,
                       avatarUrl: question.authorAvatarUrl,
                       question: question.content,
                       createdAt: question.createdAt,
+                      onSubmitReply: (questionId, content) async {
+                        await context.read<DiscussionCubit>().postAnswer(
+                          questionId: questionId,
+                          content: content,
+                          demoId: demoId,
+                        );
+                      },
                     );
                   },
                 ),
@@ -214,7 +254,9 @@ class _LessonAttachmentsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (loading) {
-      return const _LessonTabStatus(isLoading: true);
+      return const _LessonTabStatus(
+        isLoading: true,
+      );
     }
 
     if (attachments.isEmpty) {
@@ -226,7 +268,10 @@ class _LessonAttachmentsTab extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(10, 8, 10, 12),
-      child: AttachmentsTab(attachments: attachments, loading: false),
+      child: AttachmentsTab(
+        attachments: attachments,
+        loading: false,
+      ),
     );
   }
 }
@@ -268,14 +313,19 @@ class _LessonTabStatus extends StatelessWidget {
                       color: primary.withValues(alpha: 0.08),
                       borderRadius: BorderRadius.circular(17),
                     ),
-                    child: Icon(icon, color: primary, size: 25),
+                    child: Icon(
+                      icon,
+                      color: primary,
+                      size: 25,
+                    ),
                   ),
                   const SizedBox(height: 12),
                   Text(
                     message ?? '',
                     textAlign: TextAlign.center,
                     style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.textSecondaryOf(context),
+                      color:
+                          AppColors.textSecondaryOf(context),
                       fontWeight: FontWeight.w600,
                       height: 1.4,
                     ),

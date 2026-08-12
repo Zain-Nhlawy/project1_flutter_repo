@@ -34,17 +34,17 @@ class CourseDetailsScreen extends StatefulWidget {
     super.key,
     required this.courseId,
     required this.userDemoId,
-  }) : mode = CourseDetailsMode.library,
-       demoId = null,
-       assetId = null;
+  })  : mode = CourseDetailsMode.library,
+        demoId = null,
+        assetId = null;
 
   const CourseDetailsScreen.fromDemo({
     super.key,
     required this.demoId,
     required this.assetId,
-  }) : mode = CourseDetailsMode.demo,
-       courseId = null,
-       userDemoId = null;
+  })  : mode = CourseDetailsMode.demo,
+        courseId = null,
+        userDemoId = null;
 
   @override
   State<CourseDetailsScreen> createState() => _CourseDetailsScreenState();
@@ -55,6 +55,14 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
   bool _ownershipChecked = false;
   bool _alreadyOwned = false;
 
+  String get _effectiveDemoId {
+    if (widget.mode == CourseDetailsMode.demo) {
+      return widget.demoId!;
+    }
+
+    return widget.userDemoId!;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -64,12 +72,19 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
     if (widget.mode == CourseDetailsMode.library) {
       cubit.getCourse(widget.courseId!);
     } else {
-      cubit.getDemoCourse(demoId: widget.demoId!, assetId: widget.assetId!);
+      cubit.getDemoCourse(
+        demoId: widget.demoId!,
+        assetId: widget.assetId!,
+      );
     }
   }
 
-  Future<void> _checkIfAlreadyOwned(String demoId, String courseId) async {
+  Future<void> _checkIfAlreadyOwned(
+    String demoId,
+    String courseId,
+  ) async {
     if (_checkingOwnership || _ownershipChecked) return;
+
     _checkingOwnership = true;
 
     try {
@@ -78,32 +93,34 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
 
       result.fold(
         (failure) {
-          if (mounted) {
-            setState(() {
-              _alreadyOwned = false;
-              _checkingOwnership = false;
-              _ownershipChecked = true;
-            });
-          }
+          if (!mounted) return;
+
+          setState(() {
+            _alreadyOwned = false;
+            _checkingOwnership = false;
+            _ownershipChecked = true;
+          });
         },
         (demoCourses) {
-          if (mounted) {
-            setState(() {
-              _alreadyOwned = demoCourses.any((c) => c.id == courseId);
-              _checkingOwnership = false;
-              _ownershipChecked = true;
-            });
-          }
+          if (!mounted) return;
+
+          setState(() {
+            _alreadyOwned = demoCourses.any(
+              (c) => c.id == courseId,
+            );
+            _checkingOwnership = false;
+            _ownershipChecked = true;
+          });
         },
       );
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _alreadyOwned = false;
-          _checkingOwnership = false;
-          _ownershipChecked = true;
-        });
-      }
+    } catch (_) {
+      if (!mounted) return;
+
+      setState(() {
+        _alreadyOwned = false;
+        _checkingOwnership = false;
+        _ownershipChecked = true;
+      });
     }
   }
 
@@ -113,27 +130,34 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => const Center(child: CircularProgressIndicator()),
+      builder: (_) => const Center(
+        child: CircularProgressIndicator(),
+      ),
     );
 
     try {
-      final session = await getIt<PaymentRemoteDataSource>().checkoutCourse(
-        demoId: widget.userDemoId ?? '',
+      final session =
+          await getIt<PaymentRemoteDataSource>().checkoutCourse(
+        demoId: widget.userDemoId!,
         courseId: course.id,
       );
 
       if (!context.mounted) return;
+
       Navigator.pop(context);
 
-      final bool isFreeCourse = course.price == null || course.price == 0;
+      final bool isFreeCourse =
+          course.price == null || course.price == 0;
+
       final bool hasCheckoutUrl = session.url.isNotEmpty;
 
       if (isFreeCourse && !hasCheckoutUrl) {
         await Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) =>
-                CoursePurchaseSuccessScreen(courseTitle: course.title),
+            builder: (_) => CoursePurchaseSuccessScreen(
+              courseTitle: course.title,
+            ),
           ),
         );
         return;
@@ -151,10 +175,15 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
           ),
         ),
       );
-    } catch (e) {
+    } catch (_) {
       if (!context.mounted) return;
+
       Navigator.pop(context);
-      SnackbarTheme().newSnackBarError(context, localizations.checkoutError);
+
+      SnackbarTheme().newSnackBarError(
+        context,
+        localizations.checkoutError,
+      );
     }
   }
 
@@ -189,7 +218,9 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
               builder: (context, state) {
                 if (state is CourseDetailsLoading ||
                     state is CourseAssetLoading) {
-                  return const _CourseDetailsStatus(isLoading: true);
+                  return const _CourseDetailsStatus(
+                    isLoading: true,
+                  );
                 }
 
                 if (state is CourseDetailsError) {
@@ -216,45 +247,65 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                       widget.mode == CourseDetailsMode.library &&
                       widget.userDemoId != null;
 
-                  if (needsOwnershipCheck && !_ownershipChecked) {
+                  if (needsOwnershipCheck &&
+                      !_ownershipChecked) {
                     if (!_checkingOwnership) {
                       WidgetsBinding.instance.addPostFrameCallback((_) {
-                        _checkIfAlreadyOwned(widget.userDemoId!, course.id);
+                        _checkIfAlreadyOwned(
+                          widget.userDemoId!,
+                          course.id,
+                        );
                       });
                     }
-                    return const _CourseDetailsStatus(isLoading: true);
+
+                    return const _CourseDetailsStatus(
+                      isLoading: true,
+                    );
                   }
 
-                  final bool isFree = course.price == null || course.price == 0;
+                  final bool isFree =
+                      course.price == null || course.price == 0;
+
                   final bool showEnrollBar =
                       widget.mode == CourseDetailsMode.library;
 
                   return SingleChildScrollView(
-                    padding: EdgeInsets.only(bottom: showEnrollBar ? 112 : 36),
+                    padding: EdgeInsets.only(
+                      bottom: showEnrollBar ? 112 : 36,
+                    ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment:
+                          CrossAxisAlignment.start,
                       children: [
                         CourseHeader(
                           imageUrl: course.imagePath,
                           totalLessons: course.totalLessons,
-                          totalDurationSeconds: course.totalDuration,
+                          totalDurationSeconds:
+                              course.totalDuration,
                         ),
                         const SizedBox(height: 26),
                         Padding(
-                          padding: const EdgeInsetsDirectional.symmetric(
+                          padding:
+                              const EdgeInsetsDirectional.symmetric(
                             horizontal: 20,
                           ),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment:
+                                CrossAxisAlignment.start,
                             children: [
                               Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment:
+                                    CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
                                     child: Text(
                                       course.title,
-                                      style: AppTextStyles.h2.copyWith(
-                                        color: AppColors.textPrimaryOf(context),
+                                      style:
+                                          AppTextStyles.h2.copyWith(
+                                        color:
+                                            AppColors.textPrimaryOf(
+                                          context,
+                                        ),
                                         fontSize: 26,
                                         height: 1.2,
                                         fontWeight: FontWeight.w800,
@@ -264,7 +315,9 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                   ),
                                   if (isFree) ...[
                                     const SizedBox(width: 10),
-                                    _FreeCourseBadge(label: localizations.free),
+                                    _FreeCourseBadge(
+                                      label: localizations.free,
+                                    ),
                                   ],
                                 ],
                               ),
@@ -274,7 +327,11 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                   spacing: 8,
                                   runSpacing: 8,
                                   children: course.tags
-                                      .map((tag) => CourseTag(text: tag))
+                                      .map(
+                                        (tag) => CourseTag(
+                                          text: tag,
+                                        ),
+                                      )
                                       .toList(),
                                 ),
                               ],
@@ -283,14 +340,16 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                   .isNotEmpty) ...[
                                 const SizedBox(height: 18),
                                 _CourseProducerCard(
-                                  label: localizations.producedBy,
+                                  label:
+                                      localizations.producedBy,
                                   name: course.demo!.name,
                                 ),
                               ],
                               const SizedBox(height: 28),
                               _CourseDetailsSectionTitle(
                                 icon: Icons.subject_rounded,
-                                title: localizations.aboutThisCourse,
+                                title:
+                                    localizations.aboutThisCourse,
                               ),
                               const SizedBox(height: 12),
                               _CourseDescriptionCard(
@@ -299,15 +358,18 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                               const SizedBox(height: 28),
                               _CourseDetailsSectionTitle(
                                 icon: Icons.account_tree_outlined,
-                                title: localizations.courseContent,
+                                title:
+                                    localizations.courseContent,
                               ),
                               const SizedBox(height: 14),
                               Container(
                                 height: 480,
                                 clipBehavior: Clip.antiAlias,
                                 decoration: BoxDecoration(
-                                  color: AppColors.surfaceOf(context),
-                                  borderRadius: BorderRadius.circular(22),
+                                  color:
+                                      AppColors.surfaceOf(context),
+                                  borderRadius:
+                                      BorderRadius.circular(22),
                                   border: Border.all(
                                     color: AppColors.borderOf(
                                       context,
@@ -317,10 +379,11 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                     BoxShadow(
                                       color: Colors.black.withValues(
                                         alpha:
-                                            Theme.of(context).brightness ==
-                                                Brightness.dark
-                                            ? 0.18
-                                            : 0.05,
+                                            Theme.of(context)
+                                                        .brightness ==
+                                                    Brightness.dark
+                                                ? 0.18
+                                                : 0.05,
                                       ),
                                       blurRadius: 16,
                                       offset: const Offset(0, 6),
@@ -328,14 +391,16 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                   ],
                                 ),
                                 child: BlocProvider(
-                                  create: (_) => getIt<SectionCubit>(),
+                                  create: (_) =>
+                                      getIt<SectionCubit>(),
                                   child: CourseTabs(
-                                    demoId: widget.demoId ?? '',
+                                    demoId: _effectiveDemoId,
                                     courseId: course.id,
                                     lessonsLocked:
                                         widget.mode ==
-                                            CourseDetailsMode.library &&
-                                        !_alreadyOwned,
+                                                CourseDetailsMode
+                                                    .library &&
+                                            !_alreadyOwned,
                                   ),
                                 ),
                               ),
@@ -353,26 +418,37 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
           ),
         ],
       ),
-      floatingActionButton: widget.mode == CourseDetailsMode.demo
-          ? BlocBuilder<CourseCubit, CourseState>(
-              builder: (context, state) {
-                if (state is! CourseAssetLoaded) {
-                  return const SizedBox.shrink();
-                }
-                final course = state.course;
-                return FloatingActionButton(
-                  heroTag: 'rag_fab',
-                  tooltip: localizations.aiAssistantTitle,
-                  backgroundColor: AppColors.primaryOf(context),
-                  elevation: 5,
-                  onPressed: () => _openRagScreen(course.id),
-                  child: const Icon(Icons.auto_awesome, color: Colors.white),
-                );
-              },
-            )
-          : null,
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      bottomNavigationBar: BlocBuilder<CourseCubit, CourseState>(
+      floatingActionButton:
+          widget.mode == CourseDetailsMode.demo
+              ? BlocBuilder<CourseCubit, CourseState>(
+                  builder: (context, state) {
+                    if (state is! CourseAssetLoaded) {
+                      return const SizedBox.shrink();
+                    }
+
+                    final course = state.course;
+
+                    return FloatingActionButton(
+                      heroTag: 'rag_fab',
+                      tooltip:
+                          localizations.aiAssistantTitle,
+                      backgroundColor:
+                          AppColors.primaryOf(context),
+                      elevation: 5,
+                      onPressed: () =>
+                          _openRagScreen(course.id),
+                      child: const Icon(
+                        Icons.auto_awesome,
+                        color: Colors.white,
+                      ),
+                    );
+                  },
+                )
+              : null,
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.endFloat,
+      bottomNavigationBar:
+          BlocBuilder<CourseCubit, CourseState>(
         builder: (context, state) {
           if (widget.mode != CourseDetailsMode.library) {
             return const SizedBox.shrink();
@@ -387,23 +463,33 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
           }
 
           final course = state.course;
-          final bool isFree = course.price == null || course.price == 0;
+
+          final bool isFree =
+              course.price == null || course.price == 0;
 
           return Container(
-            padding: const EdgeInsetsDirectional.fromSTEB(20, 12, 20, 10),
+            padding: const EdgeInsetsDirectional.fromSTEB(
+              20,
+              12,
+              20,
+              10,
+            ),
             decoration: BoxDecoration(
               color: AppColors.surfaceOf(context),
               border: Border(
                 top: BorderSide(
-                  color: AppColors.borderOf(context).withValues(alpha: 0.76),
+                  color: AppColors.borderOf(context)
+                      .withValues(alpha: 0.76),
                 ),
               ),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(
-                    alpha: Theme.of(context).brightness == Brightness.dark
-                        ? 0.26
-                        : 0.09,
+                    alpha:
+                        Theme.of(context).brightness ==
+                                Brightness.dark
+                            ? 0.26
+                            : 0.09,
                   ),
                   blurRadius: 18,
                   offset: const Offset(0, -6),
@@ -421,15 +507,19 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                         vertical: 10,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.success.withValues(alpha: 0.10),
-                        borderRadius: BorderRadius.circular(13),
+                        color: AppColors.success
+                            .withValues(alpha: 0.10),
+                        borderRadius:
+                            BorderRadius.circular(13),
                         border: Border.all(
-                          color: AppColors.success.withValues(alpha: 0.24),
+                          color: AppColors.success
+                              .withValues(alpha: 0.24),
                         ),
                       ),
                       child: Text(
                         localizations.free,
-                        style: AppTextStyles.titleMedium.copyWith(
+                        style:
+                            AppTextStyles.titleMedium.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.w800,
                           color: AppColors.success,
@@ -442,7 +532,8 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w800,
-                        color: AppColors.primaryOf(context),
+                        color:
+                            AppColors.primaryOf(context),
                       ),
                     ),
                   const SizedBox(width: 16),
@@ -461,7 +552,9 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                   Colors.grey.shade500,
                                 ],
                               )
-                            : AppColors.buttonGradientOf(context),
+                            : AppColors.buttonGradientOf(
+                                context,
+                              ),
                         expand: true,
                         onPressed: _alreadyOwned
                             ? null
@@ -492,18 +585,23 @@ class _CourseDetailsStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = accentColor ?? AppColors.primaryOf(context);
+    final color =
+        accentColor ?? AppColors.primaryOf(context);
 
     return Center(
       child: Container(
         margin: const EdgeInsets.all(24),
         padding: const EdgeInsets.all(22),
-        constraints: const BoxConstraints(minWidth: 150, minHeight: 112),
+        constraints: const BoxConstraints(
+          minWidth: 150,
+          minHeight: 112,
+        ),
         decoration: BoxDecoration(
           color: AppColors.surfaceOf(context),
           borderRadius: BorderRadius.circular(22),
           border: Border.all(
-            color: AppColors.borderOf(context).withValues(alpha: 0.78),
+            color: AppColors.borderOf(context)
+                .withValues(alpha: 0.78),
           ),
           boxShadow: [
             BoxShadow(
@@ -532,7 +630,8 @@ class _CourseDetailsStatus extends StatelessWidget {
                     height: 46,
                     decoration: BoxDecoration(
                       color: color.withValues(alpha: 0.09),
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius:
+                          BorderRadius.circular(15),
                     ),
                     child: Icon(
                       Icons.error_outline_rounded,
@@ -545,8 +644,11 @@ class _CourseDetailsStatus extends StatelessWidget {
                     child: Text(
                       message ?? '',
                       textAlign: TextAlign.start,
-                      style: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.textSecondaryOf(context),
+                      style:
+                          AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.textSecondaryOf(
+                          context,
+                        ),
                         fontWeight: FontWeight.w600,
                         height: 1.4,
                       ),
@@ -562,16 +664,23 @@ class _CourseDetailsStatus extends StatelessWidget {
 class _FreeCourseBadge extends StatelessWidget {
   final String label;
 
-  const _FreeCourseBadge({required this.label});
+  const _FreeCourseBadge({
+    required this.label,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 7),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 11,
+        vertical: 7,
+      ),
       decoration: BoxDecoration(
         color: AppColors.success.withValues(alpha: 0.10),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.success.withValues(alpha: 0.22)),
+        border: Border.all(
+          color: AppColors.success.withValues(alpha: 0.22),
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -599,7 +708,10 @@ class _CourseProducerCard extends StatelessWidget {
   final String label;
   final String name;
 
-  const _CourseProducerCard({required this.label, required this.name});
+  const _CourseProducerCard({
+    required this.label,
+    required this.name,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -612,7 +724,8 @@ class _CourseProducerCard extends StatelessWidget {
         color: AppColors.surfaceOf(context),
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: AppColors.borderOf(context).withValues(alpha: 0.78),
+          color: AppColors.borderOf(context)
+              .withValues(alpha: 0.78),
         ),
       ),
       child: Row(
@@ -621,7 +734,8 @@ class _CourseProducerCard extends StatelessWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              gradient: AppColors.buttonGradientOf(context),
+              gradient:
+                  AppColors.buttonGradientOf(context),
               borderRadius: BorderRadius.circular(15),
               boxShadow: [
                 BoxShadow(
@@ -640,12 +754,14 @@ class _CourseProducerCard extends StatelessWidget {
           const SizedBox(width: 13),
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
               children: [
                 Text(
                   label,
                   style: AppTextStyles.caption.copyWith(
-                    color: AppColors.textSecondaryOf(context),
+                    color:
+                        AppColors.textSecondaryOf(context),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -655,7 +771,8 @@ class _CourseProducerCard extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: AppTextStyles.bodyLarge.copyWith(
-                    color: AppColors.textPrimaryOf(context),
+                    color:
+                        AppColors.textPrimaryOf(context),
                     fontWeight: FontWeight.w800,
                     height: 1.25,
                   ),
@@ -673,7 +790,10 @@ class _CourseDetailsSectionTitle extends StatelessWidget {
   final IconData icon;
   final String title;
 
-  const _CourseDetailsSectionTitle({required this.icon, required this.title});
+  const _CourseDetailsSectionTitle({
+    required this.icon,
+    required this.title,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -683,10 +803,15 @@ class _CourseDetailsSectionTitle extends StatelessWidget {
           width: 40,
           height: 40,
           decoration: BoxDecoration(
-            color: AppColors.primaryOf(context).withValues(alpha: 0.09),
+            color: AppColors.primaryOf(context)
+                .withValues(alpha: 0.09),
             borderRadius: BorderRadius.circular(13),
           ),
-          child: Icon(icon, color: AppColors.primaryOf(context), size: 20),
+          child: Icon(
+            icon,
+            color: AppColors.primaryOf(context),
+            size: 20,
+          ),
         ),
         const SizedBox(width: 11),
         Expanded(
@@ -708,7 +833,9 @@ class _CourseDetailsSectionTitle extends StatelessWidget {
 class _CourseDescriptionCard extends StatelessWidget {
   final String description;
 
-  const _CourseDescriptionCard({required this.description});
+  const _CourseDescriptionCard({
+    required this.description,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -719,7 +846,8 @@ class _CourseDescriptionCard extends StatelessWidget {
         color: AppColors.surfaceOf(context),
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: AppColors.borderOf(context).withValues(alpha: 0.78),
+          color: AppColors.borderOf(context)
+              .withValues(alpha: 0.78),
         ),
       ),
       child: Text(
@@ -751,10 +879,13 @@ class _CourseDetailsPageHeader extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         gradient: AppColors.headerGradientOf(context),
-        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(32)),
+        borderRadius: const BorderRadius.vertical(
+          bottom: Radius.circular(32),
+        ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primaryOf(context).withValues(alpha: 0.2),
+            color: AppColors.primaryOf(context)
+                .withValues(alpha: 0.2),
             blurRadius: 16,
             offset: const Offset(0, 8),
           ),
@@ -762,26 +893,34 @@ class _CourseDetailsPageHeader extends StatelessWidget {
       ),
       child: Padding(
         padding: EdgeInsets.only(
-          top: topPadding > 0 ? topPadding + 8 : 32,
+          top: topPadding > 0
+              ? topPadding + 8
+              : 32,
           left: 20,
           right: 20,
           bottom: 18,
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment:
+              CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: AppColors.surface.withValues(alpha: 0.25),
-                    borderRadius: BorderRadius.circular(12),
+                    color: AppColors.surface
+                        .withValues(alpha: 0.25),
+                    borderRadius:
+                        BorderRadius.circular(12),
                   ),
                   child: IconButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    visualDensity: VisualDensity.compact,
+                    onPressed: () =>
+                        Navigator.of(context).pop(),
+                    visualDensity:
+                        VisualDensity.compact,
                     padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints.tightFor(
+                    constraints:
+                        const BoxConstraints.tightFor(
                       width: 38,
                       height: 38,
                     ),
@@ -810,7 +949,8 @@ class _CourseDetailsPageHeader extends StatelessWidget {
             Text(
               subtitle,
               style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.surface.withValues(alpha: 0.85),
+                color: AppColors.surface
+                    .withValues(alpha: 0.85),
                 fontSize: 13,
               ),
             ),

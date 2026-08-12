@@ -11,10 +11,12 @@ class CreateDiscussionQuestionUseCase {
   Future<Either<Failure, DiscussionQuestionModel>> call({
     required String lessonId,
     required String content,
+    required String demoId,
   }) {
     return repository.createQuestion(
       lessonId: lessonId,
       content: content,
+      demoId: demoId,
     );
   }
 }

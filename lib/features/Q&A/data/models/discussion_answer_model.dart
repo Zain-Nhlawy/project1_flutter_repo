@@ -11,32 +11,29 @@ class DiscussionAnswerModel extends DiscussionAnswerEntity {
     required super.updatedAt,
   });
 
-  factory DiscussionAnswerModel.fromJson(Map<String, dynamic> json) {
-    final author = json['author'] as Map<String, dynamic>? ??
-        json['user'] as Map<String, dynamic>? ??
-        json['demoMember'] as Map<String, dynamic>?;
+factory DiscussionAnswerModel.fromJson(Map<String, dynamic> json) {
+  final demoMember = json['demoMember'] as Map<String, dynamic>?;
+  final user = demoMember?['user'] as Map<String, dynamic>?;
 
-    final authorName = author?['name'] as String? ??
-        author?['fullName'] as String? ??
-        json['authorName'] as String? ??
-        'Unknown';
+  final firstName = user?['firstName'] as String? ?? '';
+  final lastName = user?['lastName'] as String? ?? '';
 
-    final authorAvatarUrl = author?['avatarUrl'] as String? ??
-        author?['photoUrl'] as String? ??
-        json['authorAvatarUrl'] as String?;
+  final authorName = '$firstName $lastName'.trim();
 
-    return DiscussionAnswerModel(
-      id: json['id'] as String? ?? '',
-      questionId: json['questionId'] as String? ?? '',
-      content: json['content'] as String? ?? '',
-      authorName: authorName,
-      authorAvatarUrl: authorAvatarUrl,
-      createdAt:
-          DateTime.tryParse(json['createdAt'] as String? ?? '') ??
-              DateTime.now(),
-      updatedAt:
-          DateTime.tryParse(json['updatedAt'] as String? ?? '') ??
-              DateTime.now(),
-    );
-  }
+  final authorAvatarUrl = user?['imagePath'] as String?;
+
+  return DiscussionAnswerModel(
+    id: json['id'] as String? ?? '',
+    questionId: json['questionId'] as String? ?? '',
+    content: json['content'] as String? ?? '',
+    authorName: authorName.isNotEmpty ? authorName : 'Unknown',
+    authorAvatarUrl: authorAvatarUrl,
+    createdAt:
+        DateTime.tryParse(json['createdAt'] as String? ?? '') ??
+            DateTime.now(),
+    updatedAt:
+        DateTime.tryParse(json['updatedAt'] as String? ?? '') ??
+            DateTime.now(),
+  );
+}
 }

@@ -47,32 +47,28 @@ class HlsUrlHelper {
       qualities['auto'] = masterUrl;
 
       final baseUri = Uri.parse(masterUrl);
-      final basePath = baseUri.pathSegments.sublist(
-        0,
-        baseUri.pathSegments.length - 1,
-      );
 
-      final lines = content.split('\n').map((l) => l.trim()).toList();
+      final lines = content
+          .split('\n')
+          .map((l) => l.trim())
+          .where((l) => l.isNotEmpty)
+          .toList();
 
       for (var i = 0; i < lines.length; i++) {
         final line = lines[i];
+
         if (!line.startsWith('#EXT-X-STREAM-INF')) continue;
         if (i + 1 >= lines.length) continue;
 
         final variantPath = lines[i + 1];
-        if (variantPath.isEmpty || variantPath.startsWith('#')) continue;
+        if (variantPath.startsWith('#')) continue;
+
+        final resolvedUri = baseUri.resolve(variantPath);
 
         final heightMatch = RegExp(r'RESOLUTION=\d+x(\d+)').firstMatch(line);
         final label = heightMatch != null
             ? heightMatch.group(1)!
             : 'variant_$i';
-
-        final variantUri = Uri.parse(variantPath);
-        final resolvedUri = variantUri.hasScheme
-            ? variantUri
-            : baseUri.replace(
-                pathSegments: [...basePath, ...variantUri.pathSegments],
-              );
 
         qualities[label] = resolvedUri.toString();
       }

@@ -1,11 +1,10 @@
 import 'dart:async';
 
+import 'package:better_player_plus/better_player_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:media_kit/media_kit.dart';
-import 'package:media_kit_video/media_kit_video.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/core/di/service_locator.dart';
@@ -17,15 +16,18 @@ import 'package:project1/features/lesson/presentation/widgets/datails/lesson_nav
 import 'package:project1/features/lesson/presentation/widgets/datails/lesson_tabs.dart';
 import 'package:project1/features/lesson/presentation/widgets/datails/video_controls.dart';
 import 'package:project1/l10n/app_localizations.dart';
+import 'package:project1/features/q&a/presentation/cubit/discussion_cubit.dart';
 
 class LessonDetailsScreen extends StatefulWidget {
   final List<LessonEntity> lessons;
   final int initialIndex;
+  final String demoId;
 
   const LessonDetailsScreen({
     super.key,
     required this.lessons,
     required this.initialIndex,
+    required this.demoId,
   });
 
   @override
@@ -33,8 +35,7 @@ class LessonDetailsScreen extends StatefulWidget {
 }
 
 class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
-  late final Player _player;
-  late final VideoController _videoController;
+  late final BetterPlayerController _betterPlayerController;
   late final Dio _dio;
   late int _currentIndex;
 
@@ -53,14 +54,26 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
   void initState() {
     super.initState();
     _currentIndex = widget.initialIndex;
-    _player = Player();
-    _videoController = VideoController(_player);
     _dio = Dio(
       BaseOptions(
         connectTimeout: const Duration(seconds: 5),
         receiveTimeout: const Duration(seconds: 5),
       ),
     );
+
+    _betterPlayerController = BetterPlayerController(
+      const BetterPlayerConfiguration(
+        autoPlay: false,
+        controlsConfiguration: BetterPlayerControlsConfiguration(
+          showControls: false,
+        ),
+        fit: BoxFit.contain,
+        handleLifecycle: true,
+        autoDispose: false,
+      ),
+    );
+
+    _betterPlayerController.addEventsListener(_onPlayerEvent);
     _loadCurrentVideo();
   }
 
@@ -69,8 +82,26 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
     if (_isFullscreen) {
       _restoreSystemUi();
     }
-    _player.dispose();
+    _betterPlayerController.removeEventsListener(_onPlayerEvent);
+    _betterPlayerController.dispose(forceDispose: true);
     super.dispose();
+  }
+
+  void _onPlayerEvent(BetterPlayerEvent event) {
+    if (!mounted) return;
+    switch (event.betterPlayerEventType) {
+      case BetterPlayerEventType.exception:
+        setState(() {
+          _isDownloadingVideo = false;
+          _hasVideoError = true;
+        });
+        break;
+      case BetterPlayerEventType.initialized:
+        setState(() => _isDownloadingVideo = false);
+        break;
+      default:
+        break;
+    }
   }
 
   int _loadToken = 0;
@@ -87,28 +118,34 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
     });
 
     final masterUrl = HlsUrlHelper.buildMasterUrl(lesson.videoUrl);
-
     try {
-      await _player.open(Media(masterUrl));
+      final dataSource = BetterPlayerDataSource(
+        BetterPlayerDataSourceType.network,
+        masterUrl,
+      );
+      await _betterPlayerController.setupDataSource(dataSource);
       if (!mounted || token != _loadToken) return;
-      setState(() => _isDownloadingVideo = false);
-
-      _loadQualitiesInBackground(lesson.videoUrl, masterUrl, token);
-      return;
+      _betterPlayerController.play();
     } catch (_) {
+      try {
+        final fallbackSource = BetterPlayerDataSource(
+          BetterPlayerDataSourceType.network,
+          lesson.videoUrl,
+        );
+        await _betterPlayerController.setupDataSource(fallbackSource);
+        if (!mounted || token != _loadToken) return;
+        _betterPlayerController.play();
+      } catch (e) {
+        if (!mounted || token != _loadToken) return;
+        setState(() {
+          _isDownloadingVideo = false;
+          _hasVideoError = true;
+        });
+        return;
+      }
     }
 
-    try {
-      await _player.open(Media(lesson.videoUrl));
-      if (!mounted || token != _loadToken) return;
-      setState(() => _isDownloadingVideo = false);
-    } catch (e) {
-      if (!mounted || token != _loadToken) return;
-      setState(() {
-        _isDownloadingVideo = false;
-        _hasVideoError = true;
-      });
-    }
+    _loadQualitiesInBackground(lesson.videoUrl, masterUrl, token);
   }
 
   Future<void> _loadQualitiesInBackground(
@@ -134,21 +171,18 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
     final url = _qualities[qualityKey];
     if (url == null || qualityKey == _currentQuality) return;
 
-    final position = _player.state.position;
-    final wasPlaying = _player.state.playing;
-
-    setState(() => _currentQuality = qualityKey);
-
-    await _player.open(Media(url), play: false);
-
-    late final StreamSubscription durationSub;
-    durationSub = _player.stream.duration.listen((duration) {
-      if (duration > Duration.zero) {
-        _player.seek(position);
-        if (wasPlaying) _player.play();
-        durationSub.cancel();
-      }
+    setState(() {
+      _currentQuality = qualityKey;
+      _isDownloadingVideo = true;
     });
+
+    try {
+      await _betterPlayerController.setResolution(url);
+    } catch (e) {
+      debugPrint('Quality change error: $e');
+    } finally {
+      if (mounted) setState(() => _isDownloadingVideo = false);
+    }
   }
 
   Future<void> _toggleFullscreen() async {
@@ -203,8 +237,15 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
       );
     }
 
-    return BlocProvider(
-      create: (_) => getIt<LessonAttachmentCubit>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<LessonAttachmentCubit>(
+          create: (_) => getIt<LessonAttachmentCubit>(),
+        ),
+        BlocProvider<DiscussionCubit>(
+          create: (_) => getIt<DiscussionCubit>(),
+        ),
+      ],
       child: Scaffold(
         backgroundColor: AppColors.backgroundOf(context),
         body: Column(
@@ -354,9 +395,9 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
                                   color: Colors.black.withValues(
                                     alpha:
                                         Theme.of(context).brightness ==
-                                            Brightness.dark
-                                        ? 0.18
-                                        : 0.05,
+                                                Brightness.dark
+                                            ? 0.18
+                                            : 0.05,
                                   ),
                                   blurRadius: 16,
                                   offset: const Offset(0, 6),
@@ -366,6 +407,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
                             child: LessonTabs(
                               key: ValueKey(_currentLesson.id),
                               lessonId: _currentLesson.id,
+                              demoId: widget.demoId,
                             ),
                           ),
                         ],
@@ -437,32 +479,29 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
       );
     }
 
-    if (_isDownloadingVideo) {
-      return const ColoredBox(
-        color: Colors.black,
-        child: Center(
-          child: SizedBox(
-            width: 34,
-            height: 34,
-            child: CircularProgressIndicator(
-              color: Colors.white,
-              strokeWidth: 2.7,
-            ),
-          ),
-        ),
-      );
-    }
-
     return Stack(
       fit: StackFit.expand,
       children: [
-        Video(
+        BetterPlayer(
           key: ValueKey(_currentLesson.id),
-          controller: _videoController,
-          controls: NoVideoControls,
+          controller: _betterPlayerController,
         ),
+        if (_isDownloadingVideo)
+          const ColoredBox(
+            color: Colors.black45,
+            child: Center(
+              child: SizedBox(
+                width: 34,
+                height: 34,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2.7,
+                ),
+              ),
+            ),
+          ),
         VideoControls(
-          player: _player,
+          controller: _betterPlayerController,
           onNext: _hasNext ? _goToNext : null,
           onPrevious: _hasPrevious ? _goToPrevious : null,
           onFullscreen: _toggleFullscreen,

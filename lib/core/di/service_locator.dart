@@ -139,6 +139,14 @@ import 'package:project1/features/profile/data/data_sources/profile_remote_datas
 import 'package:project1/features/profile/data/repository/profile_repository_impl.dart';
 import 'package:project1/features/profile/domain/repository/profile_repository.dart';
 import 'package:project1/features/profile/domain/use_case/update_profile_image_usecase.dart';
+import 'package:project1/features/q&a/data/data_sources/discussion_remote_data_source.dart';
+import 'package:project1/features/q&a/data/repositories/discussion_repository_impl.dart';
+import 'package:project1/features/q&a/domain/repositories/discussion_repository.dart';
+import 'package:project1/features/q&a/domain/use_case/create_discussion_answer_usecase.dart';
+import 'package:project1/features/q&a/domain/use_case/create_discussion_question_usecase.dart';
+import 'package:project1/features/q&a/domain/use_case/get_discussion_answers_usecase.dart';
+import 'package:project1/features/q&a/domain/use_case/get_discussion_questions_usecase.dart';
+import 'package:project1/features/q&a/presentation/cubit/discussion_cubit.dart';
 import 'package:project1/features/questions_bank/data/data_sources/question_bank_remote_data_source.dart';
 import 'package:project1/features/questions_bank/data/repository/question_bank_repository_impl.dart';
 import 'package:project1/features/questions_bank/domain/repository/question_bank_repository.dart';
@@ -181,7 +189,6 @@ import 'package:project1/features/section/domain/use_case/get_section_usecase.da
 import 'package:project1/features/section/domain/use_case/get_sections_usecase.dart';
 import 'package:project1/features/section/domain/use_case/update_section_usecase.dart';
 import 'package:project1/features/section/presentation/cubit/section_cubit.dart';
-
 import 'package:project1/features/department_chat/data/data_sources/department_chat_remote_datasource.dart';
 import 'package:project1/features/department_chat/data/data_sources/department_chat_socket_datasource.dart';
 import 'package:project1/features/department_chat/data/repository/department_chat_repository_impl.dart';
@@ -1022,5 +1029,44 @@ getIt.registerFactory<ExamAttemptsHistoryCubit>(() => ExamAttemptsHistoryCubit(
     ),
   );
   //////////////////////// Notifications ////////////////////////
+
+
+
+  //////////////////////// Q&A ////////////////////////
+
+getIt.registerLazySingleton<DiscussionRemoteDataSource>(
+  () => DiscussionRemoteDataSource(getIt()),
+);
+
+getIt.registerLazySingleton<DiscussionRepository>(
+  () => DiscussionRepositoryImpl(getIt()),
+);
+
+getIt.registerLazySingleton<GetDiscussionQuestionsUseCase>(
+  () => GetDiscussionQuestionsUseCase(getIt()),
+);
+
+getIt.registerLazySingleton<CreateDiscussionQuestionUseCase>(
+  () => CreateDiscussionQuestionUseCase(getIt()),
+);
+
+getIt.registerLazySingleton<GetDiscussionAnswersUseCase>(
+  () => GetDiscussionAnswersUseCase(getIt()),
+);
+
+getIt.registerLazySingleton<CreateDiscussionAnswerUseCase>(
+  () => CreateDiscussionAnswerUseCase(getIt()),
+);
+
+getIt.registerFactory<DiscussionCubit>(
+  () => DiscussionCubit(
+    getDiscussionQuestionsUseCase: getIt(),
+    createDiscussionQuestionUseCase: getIt(),
+    getDiscussionAnswersUseCase: getIt(),
+    createDiscussionAnswerUseCase: getIt(),
+  ),
+);
+
+//////////////////////// Q&A ////////////////////////
 
 }

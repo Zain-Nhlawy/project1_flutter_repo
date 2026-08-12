@@ -22,7 +22,6 @@ import path_provider_foundation
 import printing
 import public_file_saver
 import url_launcher_macos
-import volume_controller
 import wakelock_plus
 import webview_flutter_wkwebview
 
@@ -44,7 +43,6 @@ func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   PrintingPlugin.register(with: registry.registrar(forPlugin: "PrintingPlugin"))
   PublicFileSaverPlugin.register(with: registry.registrar(forPlugin: "PublicFileSaverPlugin"))
   UrlLauncherPlugin.register(with: registry.registrar(forPlugin: "UrlLauncherPlugin"))
-  VolumeControllerPlugin.register(with: registry.registrar(forPlugin: "VolumeControllerPlugin"))
   WakelockPlusMacosPlugin.register(with: registry.registrar(forPlugin: "WakelockPlusMacosPlugin"))
   WebViewFlutterPlugin.register(with: registry.registrar(forPlugin: "WebViewFlutterPlugin"))
 }
