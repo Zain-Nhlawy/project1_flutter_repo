@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
@@ -21,6 +22,50 @@ class DemoSidePanel extends StatelessWidget {
     required this.isRestricted,
     required this.daysLeft,
   });
+
+  Widget _buildImage(String? imagePath, double avatarSize) {
+    if (imagePath != null && imagePath.trim().isNotEmpty) {
+      final path = imagePath.trim();
+      if (path.startsWith('http://') || path.startsWith('https://')) {
+        return Image.network(
+          path,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => _fallbackImage(avatarSize),
+        );
+      } else if (path.startsWith('assets/')) {
+        return Image.asset(
+          path,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => _fallbackImage(avatarSize),
+        );
+      } else {
+        final file = File(path);
+        if (file.existsSync()) {
+          return Image.file(
+            file,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) => _fallbackImage(avatarSize),
+          );
+        }
+      }
+    }
+    return _fallbackImage(avatarSize);
+  }
+
+  Widget _fallbackImage(double avatarSize) {
+    return Image.asset(
+      'assets/images/logo1.png',
+      fit: BoxFit.cover,
+      errorBuilder: (context, error, stackTrace) => Container(
+        color: AppColors.textSecondary.withOpacity(0.08),
+        child: Icon(
+          Icons.business_rounded,
+          color: AppColors.textSecondary.withOpacity(0.4),
+          size: avatarSize * 0.4,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,18 +95,7 @@ class DemoSidePanel extends StatelessWidget {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(16.5),
-            child: Image.asset(
-              'assets/images/logo1.png',
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) => Container(
-                color: AppColors.textSecondary.withOpacity(0.08),
-                child: Icon(
-                  Icons.image_not_supported_rounded,
-                  color: AppColors.textSecondary.withOpacity(0.4),
-                  size: avatarSize * 0.4,
-                ),
-              ),
-            ),
+            child: _buildImage(demo.imagePath, avatarSize),
           ),
         ),
         if (demo.isOwner) ...[

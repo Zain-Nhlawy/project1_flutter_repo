@@ -75,6 +75,7 @@ dependencies:
   pdf: ^3.12.0
   printing: ^5.14.3
   public_file_saver: ^1.1.0
+  jitsi_meet_flutter_sdk: ^11.6.0
 
 dev_dependencies:
   flutter_test:

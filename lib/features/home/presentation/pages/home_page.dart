@@ -20,9 +20,7 @@ class HomePage extends StatelessWidget {
     final localizations = AppLocalizations.of(context)!;
 
     return BlocProvider(
-      create: (context) =>
-          DemoCubit(getDemosUseCase: GetIt.instance<GetDemosUseCase>())
-            ..fetchDemos(),
+      create: (context) => GetIt.instance<DemoCubit>()..fetchDemos(),
       child: Scaffold(
         backgroundColor: AppColors.backgroundOf(context),
         body: RefreshIndicator(

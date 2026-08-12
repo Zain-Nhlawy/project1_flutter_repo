@@ -9,6 +9,7 @@ import 'package:project1/features/department/presentation/pages/sidebar%20screen
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:animations/animations.dart';
 import 'package:project1/features/department_chat/presentation/pages/department_chat_screen.dart';
+import 'package:project1/features/live_stream/presentation/pages/live_streams_page.dart';
 import '../widgets/department_main_page/department_nav_item.dart';
 import '../widgets/department_main_page/department_sidebar.dart';
 import '../widgets/department_main_page/department_empty_page.dart';
@@ -94,6 +95,10 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
       DepartmentNavItem(
         Icons.chat_bubble_outline_rounded,
         localizations.departmentChat,
+      ),
+      DepartmentNavItem(
+        Icons.sensors_rounded,
+        localizations.departmentLives,
       ),
     ];
 
@@ -272,6 +277,13 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
           key: const ValueKey(5),
           departmentId: widget.department?.id ?? '',
           demoId: widget.demoId ?? '',
+        );
+      case 6:
+        return LiveStreamsPage(
+          key: const ValueKey(6),
+          departmentId: widget.department?.id ?? '',
+          demoId: widget.demoId,
+          canManage: widget.canManage,
         );
       default:
         return const SizedBox.shrink();

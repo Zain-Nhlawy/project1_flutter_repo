@@ -85,6 +85,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get tileNotifications => 'الإشعارات';
 
   @override
+  String get tileMyCertificates => 'شهاداتي';
+
+  @override
   String get notifOn => 'مفعلة';
 
   @override
@@ -178,6 +181,15 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get upgradePlan => 'ترقية الخطة';
+
+  @override
+  String get levelUpYourPlan => 'ارتقِ بخطتك';
+
+  @override
+  String get currentPlan => 'الخطة الحالية';
+
+  @override
+  String get restricted => 'مقيدة';
 
   @override
   String daysLeftText(int days) {
@@ -972,6 +984,51 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get departmentChat => 'المحادثة';
+
+  @override
+  String get departmentLives => 'البث المباشر';
+
+  @override
+  String get createLiveStream => 'إنشاء بث مباشر';
+
+  @override
+  String get startLiveStream => 'بدء البث';
+
+  @override
+  String get endLiveStream => 'إنهاء البث';
+
+  @override
+  String get joinLiveStream => 'الانضمام للبث';
+
+  @override
+  String get liveStreamTitle => 'عنوان البث';
+
+  @override
+  String get liveStreamDescription => 'وصف البث';
+
+  @override
+  String get scheduleTime => 'موعد البث';
+
+  @override
+  String get liveStatusLive => 'مباشر الان';
+
+  @override
+  String get liveStatusScheduled => 'مجدول';
+
+  @override
+  String get liveStatusEnded => 'منتهي';
+
+  @override
+  String get noLiveStreamsFound => 'لا يوجد بث مباشر حالياً';
+
+  @override
+  String get editLiveStream => 'تعديل البث';
+
+  @override
+  String get liveStreamCreatedSuccessfully => 'تم إنشاء البث المباشر بنجاح';
+
+  @override
+  String get liveStreamEnded => 'تم إنهاء البث المباشر';
 
   @override
   String get departmentMembers => 'الأعضاء';

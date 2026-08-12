@@ -3,6 +3,7 @@ class DemoEntity {
   final String name;
   final String description;
   final String? imagePath;
+  final String? signatureImagePath;
   final String ownerName;
   final bool isOwner;
   final String? plan;
@@ -14,6 +15,7 @@ class DemoEntity {
     this.name = '',
     this.description = '',
     this.imagePath,
+    this.signatureImagePath,
     this.ownerName = '',
     this.isOwner = false,
     this.plan,

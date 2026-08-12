@@ -19,6 +19,10 @@ class AddDemoCubit extends Cubit<AddDemoState> {
     emit(state.copyWith(demoImagePath: path));
   }
 
+  void updateSignatureImagePath(String path) {
+    emit(state.copyWith(signatureImagePath: path));
+  }
+
   void updatePlan(String plan) {
     emit(state.copyWith(selectedPlan: plan));
   }

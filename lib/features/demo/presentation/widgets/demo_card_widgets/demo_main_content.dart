@@ -26,7 +26,9 @@ class DemoMainContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final canOpen = !isRestricted;
-    final canUpgrade = isRestricted && demo.isOwner;
+    final currentPlan = demo.plan?.toLowerCase() ?? 'starter';
+    final isEnterprise = currentPlan == 'enterprise';
+    final canUpgrade = isRestricted && demo.isOwner && !isEnterprise;
 
     return Expanded(
       child: Column(
@@ -127,7 +129,10 @@ class DemoMainContent extends StatelessWidget {
                             ),
                             pageBuilder:
                                 (context, animation, secondaryAnimation) =>
-                                    UpgradePlanScreen(demoId: demo.id!),
+                                    UpgradePlanScreen(
+                                      demoId: demo.id!,
+                                      currentPlan: demo.plan,
+                                    ),
                             transitionsBuilder:
                                 (
                                   context,

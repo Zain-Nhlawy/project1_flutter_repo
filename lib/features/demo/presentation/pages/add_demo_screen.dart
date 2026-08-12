@@ -137,7 +137,11 @@ class AddDemoScreen extends StatelessWidget {
                                   description: state.demoDescription,
                                   imagePath: state.demoImagePath.isNotEmpty
                                       ? state.demoImagePath
-                                      : 'assets/images/demo_placeholder.png',
+                                      : null,
+                                  signatureImagePath:
+                                      state.signatureImagePath.isNotEmpty
+                                          ? state.signatureImagePath
+                                          : null,
                                   ownerName: 'Owner Name',
                                   isOwner: true,
                                   plan: state.selectedPlan,

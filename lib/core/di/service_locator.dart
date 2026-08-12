@@ -103,6 +103,17 @@ import 'package:project1/features/department/data/repository/roadmap_repository_
 import 'package:project1/features/department/domain/repository/roadmap_repository.dart';
 import 'package:project1/features/department/domain/use_case/roadmap_usecase.dart';
 import 'package:project1/features/department/presentation/cubit/roadmap_cubit/roadmap_cubit.dart';
+import 'package:project1/features/live_stream/data/data_sources/live_stream_remote_data_source.dart';
+import 'package:project1/features/live_stream/data/repository/live_stream_repository_impl.dart';
+import 'package:project1/features/live_stream/domain/repository/live_stream_repository.dart';
+import 'package:project1/features/live_stream/domain/use_cases/create_live_stream_usecase.dart';
+import 'package:project1/features/live_stream/domain/use_cases/end_live_stream_usecase.dart';
+import 'package:project1/features/live_stream/domain/use_cases/get_live_stream_details_usecase.dart';
+import 'package:project1/features/live_stream/domain/use_cases/get_live_stream_token_usecase.dart';
+import 'package:project1/features/live_stream/domain/use_cases/get_live_streams_usecase.dart';
+import 'package:project1/features/live_stream/domain/use_cases/start_live_stream_usecase.dart';
+import 'package:project1/features/live_stream/domain/use_cases/update_live_stream_usecase.dart';
+import 'package:project1/features/live_stream/presentation/cubit/live_stream_cubit.dart';
 import 'package:project1/features/department/data/data_sources/department_member_datasource.dart';
 import 'package:project1/features/department/data/repository/department_member_repo_impl.dart';
 import 'package:project1/features/department/domain/repository/department_member_repository.dart';
@@ -372,7 +383,10 @@ void setupDI() {
     () => GetDemosUseCase(getIt<DemoRepository>()),
   );
   getIt.registerFactory(
-    () => DemoCubit(getDemosUseCase: getIt<GetDemosUseCase>()),
+    () => DemoCubit(
+      getDemosUseCase: getIt<GetDemosUseCase>(),
+      uploadPhotoUseCase: getIt<UploadPhotoUseCase>(),
+    ),
   );
 
   getIt.registerLazySingleton<DemoPaymentRepository>(
@@ -1030,6 +1044,50 @@ getIt.registerFactory<ExamAttemptsHistoryCubit>(() => ExamAttemptsHistoryCubit(
   );
   //////////////////////// Notifications ////////////////////////
 
+  //////////////////////// Live Stream ////////////////////////
+  getIt.registerLazySingleton<LiveStreamRemoteDataSource>(
+    () => LiveStreamRemoteDataSourceImpl(getIt<DioClient>()),
+  );
+
+  getIt.registerLazySingleton<LiveStreamRepository>(
+    () => LiveStreamRepositoryImpl(getIt<LiveStreamRemoteDataSource>()),
+  );
+
+  getIt.registerLazySingleton<GetLiveStreamsUseCase>(
+    () => GetLiveStreamsUseCase(getIt<LiveStreamRepository>()),
+  );
+  getIt.registerLazySingleton<GetLiveStreamDetailsUseCase>(
+    () => GetLiveStreamDetailsUseCase(getIt<LiveStreamRepository>()),
+  );
+  getIt.registerLazySingleton<CreateLiveStreamUseCase>(
+    () => CreateLiveStreamUseCase(getIt<LiveStreamRepository>()),
+  );
+  getIt.registerLazySingleton<UpdateLiveStreamUseCase>(
+    () => UpdateLiveStreamUseCase(getIt<LiveStreamRepository>()),
+  );
+  getIt.registerLazySingleton<StartLiveStreamUseCase>(
+    () => StartLiveStreamUseCase(getIt<LiveStreamRepository>()),
+  );
+  getIt.registerLazySingleton<EndLiveStreamUseCase>(
+    () => EndLiveStreamUseCase(getIt<LiveStreamRepository>()),
+  );
+  getIt.registerLazySingleton<GetLiveStreamTokenUseCase>(
+    () => GetLiveStreamTokenUseCase(getIt<LiveStreamRepository>()),
+  );
+
+  getIt.registerFactory<LiveStreamCubit>(
+    () => LiveStreamCubit(
+      getLiveStreamsUseCase: getIt<GetLiveStreamsUseCase>(),
+      getLiveStreamDetailsUseCase: getIt<GetLiveStreamDetailsUseCase>(),
+      createLiveStreamUseCase: getIt<CreateLiveStreamUseCase>(),
+      updateLiveStreamUseCase: getIt<UpdateLiveStreamUseCase>(),
+      startLiveStreamUseCase: getIt<StartLiveStreamUseCase>(),
+      endLiveStreamUseCase: getIt<EndLiveStreamUseCase>(),
+      getLiveStreamTokenUseCase: getIt<GetLiveStreamTokenUseCase>(),
+    ),
+  );
+  //////////////////////// Live Stream ////////////////////////
+  
 
 
   //////////////////////// Q&A ////////////////////////
@@ -1068,5 +1126,6 @@ getIt.registerFactory<DiscussionCubit>(
 );
 
 //////////////////////// Q&A ////////////////////////
+
 
 }

@@ -757,6 +757,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.20.2"
+  jitsi_meet_flutter_sdk:
+    dependency: "direct main"
+    description:
+      name: jitsi_meet_flutter_sdk
+      sha256: b111b7aac40c7c18d4542b32af5492e2c109669a35cdc4314049351144459043
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "11.6.0"
   json_annotation:
     dependency: transitive
     description:
@@ -1041,10 +1049,10 @@ packages:
     dependency: transitive
     description:
       name: permission_handler_apple
-      sha256: "70f86e18790e73975ce58d4ae7afc6d7d5c9e30b3e6da1e39a6e3c73b4505f3f"
+      sha256: f49cb15a064ea9d974fc7fbb302099353b7b170d07284e86e264561579e5bcf8
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "9.5.1"
+    version: "9.6.1"
   permission_handler_html:
     dependency: transitive
     description:

@@ -29,7 +29,7 @@ android {
     defaultConfig {
         applicationId = "com.lincolms.app"
 
-        minSdk = flutter.minSdkVersion
+        minSdk = 26
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -42,10 +42,6 @@ android {
     }
 }
 
-dependencies {
-    // Required by flutter_local_notifications
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
-}
 
 flutter {
     source = "../.."

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
@@ -15,6 +16,50 @@ class HeaderWidget extends StatelessWidget {
   final DemoEntity demo;
   const HeaderWidget({super.key, required this.demo});
 
+  Widget _buildHeaderImage(String? imagePath) {
+    if (imagePath != null && imagePath.trim().isNotEmpty) {
+      final path = imagePath.trim();
+      if (path.startsWith('http://') || path.startsWith('https://')) {
+        return Image.network(
+          path,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => _fallbackHeaderImage(),
+        );
+      } else if (path.startsWith('assets/')) {
+        return Image.asset(
+          path,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => _fallbackHeaderImage(),
+        );
+      } else {
+        final file = File(path);
+        if (file.existsSync()) {
+          return Image.file(
+            file,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) => _fallbackHeaderImage(),
+          );
+        }
+      }
+    }
+    return _fallbackHeaderImage();
+  }
+
+  Widget _fallbackHeaderImage() {
+    return Image.asset(
+      'assets/images/logo1.png',
+      fit: BoxFit.cover,
+      errorBuilder: (context, error, stackTrace) => Container(
+        color: AppColors.surface.withValues(alpha: 0.2),
+        child: Icon(
+          Icons.business_rounded,
+          color: AppColors.surface.withValues(alpha: 0.9),
+          size: 30,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
@@ -27,8 +72,9 @@ class HeaderWidget extends StatelessWidget {
     final daysPassed = DateTime.now().difference(createdAt).inDays;
     final int daysLeft = (14 - daysPassed) > 0 ? (14 - daysPassed) : 0;
 
-    final currentPlan = demo.plan?.toLowerCase() ?? 'starter';
-    final isFreePlan = currentPlan == 'starter' || currentPlan == 'free';
+    final currentPlan = demo.plan?.trim().toLowerCase() ?? 'free';
+    final isFree = currentPlan == 'free' || currentPlan == 'trial' || currentPlan.isEmpty;
+    final isEnterprise = currentPlan == 'enterprise';
 
     return Container(
       width: size.width,
@@ -147,18 +193,7 @@ class HeaderWidget extends StatelessWidget {
                     ],
                   ),
                   child: ClipOval(
-                    child: Image.asset(
-                      'assets/images/logo1.png',
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => Container(
-                        color: AppColors.surface.withValues(alpha: 0.2),
-                        child: Icon(
-                          Icons.business_rounded,
-                          color: AppColors.surface.withValues(alpha: 0.9),
-                          size: 30,
-                        ),
-                      ),
-                    ),
+                    child: _buildHeaderImage(demo.imagePath),
                   ),
                 ),
                 const SizedBox(width: 14),
@@ -244,7 +279,7 @@ class HeaderWidget extends StatelessWidget {
             ),
 
             // Trial / Plan Upgrade Banner
-            if (demo.isOwner && isFreePlan) ...[
+            if (demo.isOwner && !isEnterprise) ...[
               const SizedBox(height: 18),
               ClipRRect(
                 borderRadius: BorderRadius.circular(18),
@@ -275,23 +310,28 @@ class HeaderWidget extends StatelessWidget {
                             color: Colors.amber.withValues(alpha: 0.25),
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(
-                            Icons.timer_outlined,
+                          child: Icon(
+                            isFree ? Icons.timer_outlined : Icons.bolt_rounded,
                             color: Colors.amberAccent,
                             size: 16,
                           ),
                         ),
-                        const SizedBox(width: 10),
+                        const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            l10n.daysLeftText(daysLeft),
+                            isFree
+                                ? l10n.daysLeftText(daysLeft)
+                                : l10n.levelUpYourPlan,
                             style: AppTextStyles.label.copyWith(
                               color: AppColors.surface,
                               fontWeight: FontWeight.w600,
                               fontSize: 12 * textScale,
                             ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
+                        const SizedBox(width: 8),
                         InkWell(
                           onTap: () {
                             Navigator.push(
@@ -302,7 +342,10 @@ class HeaderWidget extends StatelessWidget {
                                 ),
                                 pageBuilder:
                                     (context, animation, secondaryAnimation) =>
-                                        UpgradePlanScreen(demoId: demo.id!),
+                                        UpgradePlanScreen(
+                                          demoId: demo.id!,
+                                          currentPlan: demo.plan,
+                                        ),
                                 transitionsBuilder:
                                     (
                                       context,
@@ -321,8 +364,8 @@ class HeaderWidget extends StatelessWidget {
                           },
                           borderRadius: BorderRadius.circular(12),
                           child: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: size.width * 0.035,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
                               vertical: 7,
                             ),
                             decoration: BoxDecoration(
@@ -343,6 +386,8 @@ class HeaderWidget extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 12 * textScale,
                               ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ),
