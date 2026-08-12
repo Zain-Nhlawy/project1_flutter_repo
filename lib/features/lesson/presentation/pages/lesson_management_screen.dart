@@ -4,8 +4,8 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:media_kit/media_kit.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
+import 'package:project1/features/lesson/presentation/widgets/management/video_duration_helper.dart';
 import 'package:project1/features/lesson/presentation/widgets/management/lesson_management_view.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:project1/core/di/service_locator.dart';
@@ -130,25 +130,17 @@ class _LessonManagementScreenState extends State<LessonManagementScreen> {
     final result = await ImagePicker().pickVideo(source: ImageSource.gallery);
     if (result == null) return;
     final file = File(result.path);
-    final player = Player();
-    try {
-      await player.open(Media(file.path));
-      Duration duration = player.state.duration;
-      var attempts = 0;
-      while (duration == Duration.zero && attempts < 10) {
-        await Future.delayed(const Duration(milliseconds: 200));
-        duration = player.state.duration;
-        attempts++;
-      }
-      if (!mounted) return;
-      setState(() {
-        newVideoFile = file;
-        _videoDuration = duration;
-      });
-      await _generateThumbnail();
-    } finally {
-      await player.dispose();
-    }
+
+    final duration = await VideoDurationHelper.getDuration(file);
+
+    if (!mounted) return;
+
+    setState(() {
+      newVideoFile = file;
+      _videoDuration = duration;
+    });
+
+    await _generateThumbnail();
   }
 
   bool get isValid {

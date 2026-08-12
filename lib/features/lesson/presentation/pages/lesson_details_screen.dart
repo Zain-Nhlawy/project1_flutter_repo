@@ -45,6 +45,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
 
   Map<String, String> _qualities = {};
   String _currentQuality = 'auto';
+  bool _isChangingQuality = false;
 
   LessonEntity get _currentLesson => widget.lessons[_currentIndex];
   bool get _hasNext => _currentIndex < widget.lessons.length - 1;
@@ -97,7 +98,19 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
         });
         break;
       case BetterPlayerEventType.initialized:
-        setState(() => _isDownloadingVideo = false);
+
+        if (!_isChangingQuality) {
+          setState(() => _isDownloadingVideo = false);
+        }
+        break;
+      case BetterPlayerEventType.bufferingStart:
+
+        setState(() => _isDownloadingVideo = true);
+        break;
+      case BetterPlayerEventType.bufferingEnd:
+        if (!_isChangingQuality) {
+          setState(() => _isDownloadingVideo = false);
+        }
         break;
       default:
         break;
@@ -118,6 +131,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
     });
 
     final masterUrl = HlsUrlHelper.buildMasterUrl(lesson.videoUrl);
+
     try {
       final dataSource = BetterPlayerDataSource(
         BetterPlayerDataSourceType.network,
@@ -165,23 +179,63 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
       _qualities = fetchedQualities;
       _currentQuality = 'auto';
     });
+
   }
 
   Future<void> _changeQuality(String qualityKey) async {
     final url = _qualities[qualityKey];
     if (url == null || qualityKey == _currentQuality) return;
 
+    final currentSource = _betterPlayerController.betterPlayerDataSource;
+    if (currentSource == null) return;
+
+
+    final position =
+        _betterPlayerController.videoPlayerController?.value.position ??
+        Duration.zero;
+    final wasPlaying = _betterPlayerController.isPlaying() ?? false;
+
     setState(() {
       _currentQuality = qualityKey;
       _isDownloadingVideo = true;
+      _isChangingQuality = true;
     });
 
+    final completer = Completer<void>();
+    void initListener(BetterPlayerEvent event) {
+      if (event.betterPlayerEventType == BetterPlayerEventType.initialized &&
+          !completer.isCompleted) {
+        completer.complete();
+      }
+    }
+
+    _betterPlayerController.addEventsListener(initListener);
+
     try {
-      await _betterPlayerController.setResolution(url);
+      await _betterPlayerController.setupDataSource(
+        currentSource.copyWith(url: url),
+      );
+
+      await completer.future.timeout(
+        const Duration(seconds: 15),
+        onTimeout: () {},
+      );
+
+      await _betterPlayerController.seekTo(position);
+
+      if (wasPlaying) {
+        _betterPlayerController.play();
+      }
     } catch (e) {
       debugPrint('Quality change error: $e');
     } finally {
-      if (mounted) setState(() => _isDownloadingVideo = false);
+      _betterPlayerController.removeEventsListener(initListener);
+      if (mounted) {
+        setState(() {
+          _isDownloadingVideo = false;
+          _isChangingQuality = false;
+        });
+      }
     }
   }
 

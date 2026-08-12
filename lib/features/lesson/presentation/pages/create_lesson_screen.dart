@@ -3,10 +3,10 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:media_kit/media_kit.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/features/lesson/presentation/widgets/management/video_duration_helper.dart';
 import 'package:project1/features/attachment/presentation/cubit/lesson_attachment_cubit.dart';
 import 'package:project1/features/attachment/presentation/widgets/management/lesson_attachments_manager.dart';
 import 'package:project1/features/attachment/upload/presentation/cubit/attachment_upload_cubit.dart';
@@ -59,29 +59,17 @@ class _CreateLessonScreenState extends State<CreateLessonScreen> {
     if (result == null) return;
 
     final file = File(result.path);
-    final player = Player();
 
-    try {
-      await player.open(Media(file.path));
-      Duration duration = player.state.duration;
-      var attempts = 0;
-      while (duration == Duration.zero && attempts < 10) {
-        await Future.delayed(const Duration(milliseconds: 200));
-        duration = player.state.duration;
-        attempts++;
-      }
+    final duration = await VideoDurationHelper.getDuration(file);
 
-      if (!mounted) return;
+    if (!mounted) return;
 
-      setState(() {
-        selectedFile = file;
-        _videoDuration = duration;
-      });
+    setState(() {
+      selectedFile = file;
+      _videoDuration = duration;
+    });
 
-      await _generateThumbnail(file);
-    } finally {
-      await player.dispose();
-    }
+    await _generateThumbnail(file);
   }
 
   Future<void> _generateThumbnail(File file) async {
