@@ -636,5 +636,10 @@
   "attachmentDownloaded": "تم تنزيل المرفق بنجاح.",
 "failedToDownloadAttachment": "فشل تنزيل المرفق.",
 "unexpectedError": "حدث خطأ غير متوقع",
-  "uploadFailed": "فشل رفع الملف"
+  "uploadFailed": "فشل رفع الملف",
+  "edit": "تعديل",
+"deleteQuestionTitle": "حذف السؤال",
+"deleteQuestionConfirm": "هل أنت متأكد إنك بدك تحذف هالسؤال؟ ما رح تقدر ترجعه بعدين.",
+"deleteAnswerTitle": "حذف الرد",
+"deleteAnswerConfirm": "هل أنت متأكد إنك بدك تحذف هالرد؟ ما رح تقدر ترجعه بعدين."
 }

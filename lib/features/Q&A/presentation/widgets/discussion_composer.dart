@@ -8,11 +8,14 @@ class DiscussionComposer extends StatefulWidget {
   final bool isPosting;
   final ValueChanged<String> onSubmit;
 
+  final TextEditingController? controller;
+
   const DiscussionComposer({
     super.key,
     required this.hintText,
     required this.isPosting,
     required this.onSubmit,
+    this.controller,
   });
 
   @override
@@ -20,11 +23,16 @@ class DiscussionComposer extends StatefulWidget {
 }
 
 class _DiscussionComposerState extends State<DiscussionComposer> {
-  final _controller = TextEditingController();
+  late final TextEditingController _controller =
+      widget.controller ?? TextEditingController();
+
+  bool get _ownsController => widget.controller == null;
 
   @override
   void dispose() {
-    _controller.dispose();
+    if (_ownsController) {
+      _controller.dispose();
+    }
     super.dispose();
   }
 
@@ -92,8 +100,7 @@ class _DiscussionComposerState extends State<DiscussionComposer> {
                         height: 18,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(
+                          valueColor: AlwaysStoppedAnimation<Color>(
                             Colors.white,
                           ),
                         ),

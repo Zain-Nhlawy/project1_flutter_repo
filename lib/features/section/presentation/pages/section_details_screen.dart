@@ -80,7 +80,11 @@ class _SectionLessonsExpansionTileState
   }
 
   void _openLesson(LessonEntity lesson) {
-    if (widget.lessonsLocked) {
+    // Allow first 2 lessons of first section as free trial even if course is locked
+    final isFirstSection = widget.section.order == 1;
+    final isFreeTrialLesson = widget.lessonsLocked && isFirstSection && lesson.order <= 2;
+    
+    if (widget.lessonsLocked && !isFreeTrialLesson) {
       SnackbarTheme().newSnackBarInfo(
         context,
         AppLocalizations.of(context)!.enrollToWatchLesson,
@@ -224,6 +228,9 @@ class _SectionLessonsExpansionTileState
                     final index = entry.key;
                     final lesson = entry.value;
                     final isLast = index == _lessons.length - 1;
+                    // First 2 lessons in first section are free trial (not locked)
+                    final isFirstSection = widget.section.order == 1;
+                    final isLockedLesson = widget.lessonsLocked && (!isFirstSection || lesson.order > 2);
 
                     return LessonConnector(
                       num: index + 1,
@@ -237,7 +244,7 @@ class _SectionLessonsExpansionTileState
                             child: LessonTile(
                               num: index + 1,
                               title: lesson.title,
-                              locked: widget.lessonsLocked,
+                              locked: isLockedLesson,
                             ),
                           ),
                           if (isLast && _hasExam && _examId != null)

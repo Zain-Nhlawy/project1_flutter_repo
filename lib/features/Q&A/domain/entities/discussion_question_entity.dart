@@ -6,6 +6,7 @@ class DiscussionQuestionEntity {
   final String? authorAvatarUrl;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final String authorId;
 
   const DiscussionQuestionEntity({
     required this.id,
@@ -15,5 +16,6 @@ class DiscussionQuestionEntity {
     required this.authorAvatarUrl,
     required this.createdAt,
     required this.updatedAt,
+    required this.authorId
   });
 }

@@ -3337,6 +3337,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Upload failed'**
   String get uploadFailed;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// No description provided for @deleteQuestionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Question'**
+  String get deleteQuestionTitle;
+
+  /// No description provided for @deleteQuestionConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this question? This action cannot be undone.'**
+  String get deleteQuestionConfirm;
+
+  /// No description provided for @deleteAnswerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Answer'**
+  String get deleteAnswerTitle;
+
+  /// No description provided for @deleteAnswerConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this answer? This action cannot be undone.'**
+  String get deleteAnswerConfirm;
 }
 
 class _AppLocalizationsDelegate

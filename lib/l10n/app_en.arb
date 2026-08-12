@@ -668,6 +668,11 @@
   "attachmentDownloaded": "Attachment downloaded successfully.",
 "failedToDownloadAttachment": "Failed to download attachment.",
 "unexpectedError": "An unexpected error occurred",
-  "uploadFailed": "Upload failed"
+  "uploadFailed": "Upload failed",
+  "edit": "Edit",
+"deleteQuestionTitle": "Delete Question",
+"deleteQuestionConfirm": "Are you sure you want to delete this question? This action cannot be undone.",
+"deleteAnswerTitle": "Delete Answer",
+"deleteAnswerConfirm": "Are you sure you want to delete this answer? This action cannot be undone."
 
 }

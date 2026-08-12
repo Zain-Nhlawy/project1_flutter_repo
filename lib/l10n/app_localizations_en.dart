@@ -1701,4 +1701,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get uploadFailed => 'Upload failed';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get deleteQuestionTitle => 'Delete Question';
+
+  @override
+  String get deleteQuestionConfirm =>
+      'Are you sure you want to delete this question? This action cannot be undone.';
+
+  @override
+  String get deleteAnswerTitle => 'Delete Answer';
+
+  @override
+  String get deleteAnswerConfirm =>
+      'Are you sure you want to delete this answer? This action cannot be undone.';
 }

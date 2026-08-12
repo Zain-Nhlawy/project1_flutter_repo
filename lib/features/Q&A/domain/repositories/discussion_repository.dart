@@ -41,4 +41,30 @@ abstract class DiscussionRepository {
     required String answerId,
     required String demoId,
   });
+
+  Future<Either<Failure, DiscussionQuestionModel>> updateQuestion({
+  required String lessonId,
+  required String questionId,
+  required String content,
+  required String demoId,
+});
+
+Future<Either<Failure, void>> deleteQuestion({
+  required String lessonId,
+  required String questionId,
+  required String demoId,
+});
+
+Future<Either<Failure, DiscussionAnswerModel>> updateAnswer({
+  required String questionId,
+  required String answerId,
+  required String content,
+  required String demoId,
+});
+
+Future<Either<Failure, void>> deleteAnswer({
+  required String questionId,
+  required String answerId,
+  required String demoId,
+});
 }

@@ -126,4 +126,84 @@ class DiscussionRepositoryImpl implements DiscussionRepository {
       return Left(mapExceptionToFailure(e));
     }
   }
+
+  @override
+Future<Either<Failure, DiscussionQuestionModel>> updateQuestion({
+  required String lessonId,
+  required String questionId,
+  required String content,
+  required String demoId,
+}) async {
+  try {
+    final result = await remoteDataSource.updateQuestion(
+      lessonId: lessonId,
+      questionId: questionId,
+      content: content,
+      demoId: demoId,
+    );
+
+    return Right(result);
+  } on Exception catch (e) {
+    return Left(mapExceptionToFailure(e));
+  }
+}
+
+@override
+Future<Either<Failure, void>> deleteQuestion({
+  required String lessonId,
+  required String questionId,
+  required String demoId,
+}) async {
+  try {
+    await remoteDataSource.deleteQuestion(
+      lessonId: lessonId,
+      questionId: questionId,
+      demoId: demoId,
+    );
+
+    return const Right(null);
+  } on Exception catch (e) {
+    return Left(mapExceptionToFailure(e));
+  }
+}
+
+@override
+Future<Either<Failure, DiscussionAnswerModel>> updateAnswer({
+  required String questionId,
+  required String answerId,
+  required String content,
+  required String demoId,
+}) async {
+  try {
+    final result = await remoteDataSource.updateAnswer(
+      questionId: questionId,
+      answerId: answerId,
+      content: content,
+      demoId: demoId,
+    );
+
+    return Right(result);
+  } on Exception catch (e) {
+    return Left(mapExceptionToFailure(e));
+  }
+}
+
+@override
+Future<Either<Failure, void>> deleteAnswer({
+  required String questionId,
+  required String answerId,
+  required String demoId,
+}) async {
+  try {
+    await remoteDataSource.deleteAnswer(
+      questionId: questionId,
+      answerId: answerId,
+      demoId: demoId,
+    );
+
+    return const Right(null);
+  } on Exception catch (e) {
+    return Left(mapExceptionToFailure(e));
+  }
+}
 }

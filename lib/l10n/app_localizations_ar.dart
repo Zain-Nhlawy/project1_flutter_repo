@@ -1691,4 +1691,21 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get uploadFailed => 'فشل رفع الملف';
+
+  @override
+  String get edit => 'تعديل';
+
+  @override
+  String get deleteQuestionTitle => 'حذف السؤال';
+
+  @override
+  String get deleteQuestionConfirm =>
+      'هل أنت متأكد إنك بدك تحذف هالسؤال؟ ما رح تقدر ترجعه بعدين.';
+
+  @override
+  String get deleteAnswerTitle => 'حذف الرد';
+
+  @override
+  String get deleteAnswerConfirm =>
+      'هل أنت متأكد إنك بدك تحذف هالرد؟ ما رح تقدر ترجعه بعدين.';
 }

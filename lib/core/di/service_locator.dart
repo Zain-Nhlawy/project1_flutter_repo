@@ -155,8 +155,12 @@ import 'package:project1/features/q&a/data/repositories/discussion_repository_im
 import 'package:project1/features/q&a/domain/repositories/discussion_repository.dart';
 import 'package:project1/features/q&a/domain/use_case/create_discussion_answer_usecase.dart';
 import 'package:project1/features/q&a/domain/use_case/create_discussion_question_usecase.dart';
+import 'package:project1/features/q&a/domain/use_case/delete_discussion_answer_usecase.dart';
+import 'package:project1/features/q&a/domain/use_case/delete_discussion_question_usecase.dart';
 import 'package:project1/features/q&a/domain/use_case/get_discussion_answers_usecase.dart';
 import 'package:project1/features/q&a/domain/use_case/get_discussion_questions_usecase.dart';
+import 'package:project1/features/q&a/domain/use_case/update_discussion_answer_usecase.dart';
+import 'package:project1/features/q&a/domain/use_case/update_discussion_question_usecase.dart';
 import 'package:project1/features/q&a/presentation/cubit/discussion_cubit.dart';
 import 'package:project1/features/questions_bank/data/data_sources/question_bank_remote_data_source.dart';
 import 'package:project1/features/questions_bank/data/repository/question_bank_repository_impl.dart';
@@ -1116,12 +1120,32 @@ getIt.registerLazySingleton<CreateDiscussionAnswerUseCase>(
   () => CreateDiscussionAnswerUseCase(getIt()),
 );
 
+getIt.registerLazySingleton<UpdateDiscussionQuestionUseCase>(
+  () => UpdateDiscussionQuestionUseCase(getIt()),
+);
+
+getIt.registerLazySingleton<DeleteDiscussionQuestionUseCase>(
+  () => DeleteDiscussionQuestionUseCase(getIt()),
+);
+
+getIt.registerLazySingleton<UpdateDiscussionAnswerUseCase>(
+  () => UpdateDiscussionAnswerUseCase(getIt()),
+);
+
+getIt.registerLazySingleton<DeleteDiscussionAnswerUseCase>(
+  () => DeleteDiscussionAnswerUseCase(getIt()),
+);
+
 getIt.registerFactory<DiscussionCubit>(
   () => DiscussionCubit(
     getDiscussionQuestionsUseCase: getIt(),
     createDiscussionQuestionUseCase: getIt(),
     getDiscussionAnswersUseCase: getIt(),
     createDiscussionAnswerUseCase: getIt(),
+    updateDiscussionQuestionUseCase: getIt(),
+    deleteDiscussionQuestionUseCase: getIt(),
+    updateDiscussionAnswerUseCase: getIt(),
+    deleteDiscussionAnswerUseCase: getIt(),
   ),
 );
 
