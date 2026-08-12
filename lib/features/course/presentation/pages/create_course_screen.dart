@@ -33,6 +33,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
 
   String visibility = 'PUBLIC';
   File? selectedImage;
+  bool _isSubmitting = false; 
 
   final Set<String> selectedTagIds = {};
 
@@ -58,6 +59,8 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
       return;
     }
 
+    setState(() => _isSubmitting = true);
+
     String imagePath = '';
 
     if (selectedImage != null) {
@@ -66,6 +69,9 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
           .uploadPhoto(selectedImage!);
 
       if (uploadedUrl == null) {
+        if (mounted) {
+          setState(() => _isSubmitting = false);
+        }
         SnackbarTheme().newSnackBarError(
           context,
           AppLocalizations.of(context)!.failedToUploadImage,
@@ -128,6 +134,9 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
           Navigator.pop(context, true);
         }
         if (state is CourseCreateError) {
+          if (mounted) {
+            setState(() => _isSubmitting = false);
+          }
           SnackbarTheme().newSnackBarError(
             context,
             state.errors.isNotEmpty ? state.errors.first : '',
@@ -210,7 +219,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
               const SizedBox(height: 30),
               BlocBuilder<CourseCubit, CourseState>(
                 builder: (context, state) {
-                  final loading = state is CourseCreating;
+                  final loading = state is CourseCreating || _isSubmitting;
                   return GradientActionButton(
                     label: loading ? "Creating..." : localizations.createCourse,
                     icon: Icons.add_circle_outline_rounded,

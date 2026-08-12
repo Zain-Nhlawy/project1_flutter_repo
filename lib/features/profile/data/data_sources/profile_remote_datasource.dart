@@ -61,9 +61,14 @@ class ProfileRemoteDataSource {
 
   Future<void> updateProfileImage(String userId, String url) async {
     try {
-      await dioClient.dio.patch('/users/$userId', data: {"imagePath": url});
-    } on DioException catch (e) {
-      throw mapDioException(e);
-    }
+  await dioClient.dio.patch(
+    '/users/me',
+    data: {
+      "imagePath": url,
+    },
+  );
+} on DioException catch (e) {
+  throw mapDioException(e);
+}
   }
 }
