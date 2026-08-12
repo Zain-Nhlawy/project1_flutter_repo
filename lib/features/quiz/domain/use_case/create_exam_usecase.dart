@@ -13,12 +13,14 @@ class CreateExamUseCase {
     required String title,
     required int numberOfQuestions,
     required int durationMinutes,
+    required int passingScore,
   }) {
     return repository.createExam(
       sectionId: sectionId,
       title: title,
       numberOfQuestions: numberOfQuestions,
       durationMinutes: durationMinutes,
+      passingScore: passingScore,
     );
   }
 }

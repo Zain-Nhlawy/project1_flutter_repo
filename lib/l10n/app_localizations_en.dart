@@ -615,7 +615,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get manageFaq => 'Manage FAQ';
 
   @override
-  String get manageSections => 'Manage Departments';
+  String get manageSections => 'Manage Sections';
 
   @override
   String get saveChanges => 'Save Changes';

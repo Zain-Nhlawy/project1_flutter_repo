@@ -9,6 +9,7 @@ abstract class ExamRepository {
     required String title,
     required int numberOfQuestions,
     required int durationMinutes,
+    required int passingScore,
   });
 
   Future<Either<Failure, PaginatedExams>> getExams({
@@ -27,6 +28,7 @@ abstract class ExamRepository {
     required String title,
     required int numberOfQuestions,
     required int durationMinutes,
+    required int passingScore,
   });
 
   Future<Either<Failure, void>> deleteExam({

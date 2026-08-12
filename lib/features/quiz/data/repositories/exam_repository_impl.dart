@@ -17,6 +17,7 @@ class ExamRepositoryImpl implements ExamRepository {
     required String title,
     required int numberOfQuestions,
     required int durationMinutes,
+    required int passingScore,
   }) async {
     try {
       final result = await remoteDataSource.createExam(
@@ -24,6 +25,7 @@ class ExamRepositoryImpl implements ExamRepository {
         title: title,
         numberOfQuestions: numberOfQuestions,
         durationMinutes: durationMinutes,
+        passingScore: passingScore,
       );
       return Right(result);
     } on Exception catch (e) {
@@ -70,6 +72,7 @@ class ExamRepositoryImpl implements ExamRepository {
     required String title,
     required int numberOfQuestions,
     required int durationMinutes,
+    required int passingScore,
   }) async {
     try {
       final result = await remoteDataSource.updateExam(
@@ -78,6 +81,7 @@ class ExamRepositoryImpl implements ExamRepository {
         title: title,
         numberOfQuestions: numberOfQuestions,
         durationMinutes: durationMinutes,
+        passingScore: passingScore,
       );
       return Right(result);
     } on Exception catch (e) {

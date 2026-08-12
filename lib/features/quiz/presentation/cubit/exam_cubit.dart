@@ -44,12 +44,14 @@ class ExamCubit extends Cubit<ExamState> {
     required String title,
     required int numberOfQuestions,
     required int durationMinutes,
+    required int passingScore,
   }) async {
     final result = await createExamUseCase(
       sectionId: sectionId,
       title: title,
       numberOfQuestions: numberOfQuestions,
       durationMinutes: durationMinutes,
+      passingScore: passingScore,
     );
 
     return result.fold(
@@ -72,6 +74,7 @@ class ExamCubit extends Cubit<ExamState> {
     required String title,
     required int numberOfQuestions,
     required int durationMinutes,
+    required int passingScore,
   }) async {
     final result = await updateExamUseCase(
       sectionId: sectionId,
@@ -79,6 +82,7 @@ class ExamCubit extends Cubit<ExamState> {
       title: title,
       numberOfQuestions: numberOfQuestions,
       durationMinutes: durationMinutes,
+      passingScore: passingScore,
     );
 
     return result.fold(

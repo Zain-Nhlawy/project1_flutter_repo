@@ -1265,7 +1265,7 @@ abstract class AppLocalizations {
   /// No description provided for @manageSections.
   ///
   /// In en, this message translates to:
-  /// **'Manage Departments'**
+  /// **'Manage Sections'**
   String get manageSections;
 
   /// No description provided for @saveChanges.

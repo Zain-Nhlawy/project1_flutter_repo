@@ -110,10 +110,12 @@ class _ExamFormContentState extends State<_ExamFormContent> {
   late final TextEditingController _titleController;
   late final TextEditingController _questionsController;
   late final TextEditingController _durationController;
+  late final TextEditingController _passingScoreController;
 
   bool _titleError = false;
   bool _questionsError = false;
   bool _durationError = false;
+  bool _passingScoreError = false;
   bool _isSaving = false;
 
   bool get _isEditing => widget.exam != null;
@@ -128,6 +130,9 @@ class _ExamFormContentState extends State<_ExamFormContent> {
     _durationController = TextEditingController(
       text: widget.exam != null ? '${widget.exam!.durationMinutes}' : '',
     );
+    _passingScoreController = TextEditingController(
+      text: widget.exam != null ? '${widget.exam!.passingScore}' : '',
+    );
   }
 
   @override
@@ -135,6 +140,7 @@ class _ExamFormContentState extends State<_ExamFormContent> {
     _titleController.dispose();
     _questionsController.dispose();
     _durationController.dispose();
+    _passingScoreController.dispose();
     super.dispose();
   }
 
@@ -143,14 +149,16 @@ class _ExamFormContentState extends State<_ExamFormContent> {
     final title = _titleController.text.trim();
     final numberOfQuestions = int.tryParse(_questionsController.text.trim());
     final durationMinutes = int.tryParse(_durationController.text.trim());
+    final passingScore = int.tryParse(_passingScoreController.text.trim());
 
     setState(() {
       _titleError = title.isEmpty;
       _questionsError = numberOfQuestions == null || numberOfQuestions <= 0;
       _durationError = durationMinutes == null || durationMinutes <= 0;
+      _passingScoreError = passingScore == null || passingScore < 0 || passingScore > 100;
     });
 
-    if (_titleError || _questionsError || _durationError) return;
+    if (_titleError || _questionsError || _durationError || _passingScoreError) return;
 
     setState(() => _isSaving = true);
 
@@ -161,12 +169,14 @@ class _ExamFormContentState extends State<_ExamFormContent> {
             title: title,
             numberOfQuestions: numberOfQuestions!,
             durationMinutes: durationMinutes!,
+            passingScore: passingScore!,
           )
         : await widget.cubit.createExam(
             sectionId: widget.sectionId,
             title: title,
             numberOfQuestions: numberOfQuestions!,
             durationMinutes: durationMinutes!,
+            passingScore: passingScore!,
           );
 
     if (!mounted) return;
@@ -256,10 +266,25 @@ class _ExamFormContentState extends State<_ExamFormContent> {
                 controller: _durationController,
                 hasError: _durationError,
                 keyboardType: TextInputType.number,
-                textInputAction: TextInputAction.done,
+                textInputAction: TextInputAction.next,
                 onChanged: (_) {
                   if (_durationError) {
                     setState(() => _durationError = false);
+                  }
+                },
+              ),
+              const SizedBox(height: 18),
+              _ExamFormField(
+                label: 'Passing Score (%)',
+                hintText: 'Enter passing score (0-100)',
+                icon: Icons.trending_up_rounded,
+                controller: _passingScoreController,
+                hasError: _passingScoreError,
+                keyboardType: TextInputType.number,
+                textInputAction: TextInputAction.done,
+                onChanged: (_) {
+                  if (_passingScoreError) {
+                    setState(() => _passingScoreError = false);
                   }
                 },
               ),
