@@ -746,6 +746,48 @@ abstract class AppLocalizations {
   /// **'Please enter new password'**
   String get pleaseEnterNewPassword;
 
+  /// No description provided for @passwordRequirementsError.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 8 characters and include uppercase, lowercase, a number, and a special character (@\$!%*?&)'**
+  String get passwordRequirementsError;
+
+  /// No description provided for @passwordMissingRequirements.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing'**
+  String get passwordMissingRequirements;
+
+  /// No description provided for @passwordRequirementMinLength.
+  ///
+  /// In en, this message translates to:
+  /// **'at least 8 characters'**
+  String get passwordRequirementMinLength;
+
+  /// No description provided for @passwordRequirementLowercase.
+  ///
+  /// In en, this message translates to:
+  /// **'a lowercase letter'**
+  String get passwordRequirementLowercase;
+
+  /// No description provided for @passwordRequirementUppercase.
+  ///
+  /// In en, this message translates to:
+  /// **'an uppercase letter'**
+  String get passwordRequirementUppercase;
+
+  /// No description provided for @passwordRequirementNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'a number'**
+  String get passwordRequirementNumber;
+
+  /// No description provided for @passwordRequirementSpecialCharacter.
+  ///
+  /// In en, this message translates to:
+  /// **'a special character (@\$!%*?&)'**
+  String get passwordRequirementSpecialCharacter;
+
   /// No description provided for @passwordsDoNotMatch.
   ///
   /// In en, this message translates to:

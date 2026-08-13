@@ -158,6 +158,13 @@
 "signUpLink": "Sign Up",
 
 "pleaseEnterNewPassword": "Please enter new password",
+"passwordRequirementsError": "Password must be at least 8 characters and include uppercase, lowercase, a number, and a special character (@$!%*?&)",
+"passwordMissingRequirements": "Missing",
+"passwordRequirementMinLength": "at least 8 characters",
+"passwordRequirementLowercase": "a lowercase letter",
+"passwordRequirementUppercase": "an uppercase letter",
+"passwordRequirementNumber": "a number",
+"passwordRequirementSpecialCharacter": "a special character (@$!%*?&)",
 "passwordsDoNotMatch": "Passwords do not match",
 "successTitle": "Success",
 "goToLoginBtn": "Go to Login",

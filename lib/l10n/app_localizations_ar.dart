@@ -347,6 +347,28 @@ class AppLocalizationsAr extends AppLocalizations {
   String get pleaseEnterNewPassword => 'يرجى إدخال كلمة المرور الجديدة';
 
   @override
+  String get passwordRequirementsError =>
+      'يجب أن تتكون كلمة المرور من 8 أحرف على الأقل، وأن تتضمن حرفاً كبيراً وحرفاً صغيراً ورقماً ورمزاً خاصاً (@\$!%*?&)';
+
+  @override
+  String get passwordMissingRequirements => 'المتطلبات الناقصة';
+
+  @override
+  String get passwordRequirementMinLength => '8 أحرف على الأقل';
+
+  @override
+  String get passwordRequirementLowercase => 'حرف صغير';
+
+  @override
+  String get passwordRequirementUppercase => 'حرف كبير';
+
+  @override
+  String get passwordRequirementNumber => 'رقم';
+
+  @override
+  String get passwordRequirementSpecialCharacter => 'رمز خاص (@\$!%*?&)';
+
+  @override
   String get passwordsDoNotMatch => 'كلمتا المرور غير متطابقتين';
 
   @override

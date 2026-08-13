@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
+import 'package:project1/features/auth/domain/validators/password_validator.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_state.dart';
 import 'package:project1/features/auth/presentation/widgets/custom_text_field.dart';
+import 'package:project1/features/auth/presentation/widgets/password_requirements_hint.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:project1/features/auth/presentation/pages/login_screen.dart';
 
@@ -33,6 +35,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       SnackbarTheme().newSnackBarError(
         context,
         localizations.pleaseEnterNewPassword,
+      );
+      return;
+    }
+
+    if (!PasswordValidator.isValid(passwordController.text)) {
+      SnackbarTheme().newSnackBarError(
+        context,
+        localizations.passwordRequirementsError,
       );
       return;
     }
@@ -79,10 +89,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             ),
           );
         } else if (state is AuthError && state.errors.isNotEmpty) {
-          SnackbarTheme().newSnackBarError(
-            context,
-            state.errors.first,
-          );
+          SnackbarTheme().newSnackBarError(context, state.errors.first);
         }
       },
       child: Scaffold(
@@ -139,6 +146,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         icon: Icons.lock_outline,
                         controller: passwordController,
                       ),
+                      PasswordRequirementsHint(controller: passwordController),
                       const SizedBox(height: 16),
                       CustomTextField(
                         hintText: localizations.confirmPasswordHint,

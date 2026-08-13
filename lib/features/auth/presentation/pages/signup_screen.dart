@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
+import 'package:project1/features/auth/domain/validators/password_validator.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_state.dart';
 import 'package:project1/features/auth/presentation/pages/login_screen.dart';
@@ -10,6 +11,7 @@ import 'package:project1/features/auth/presentation/pages/verify_email_screen.da
 import 'package:project1/features/auth/presentation/widgets/custom_text_field.dart';
 import 'package:project1/features/auth/presentation/widgets/date_picker_field.dart';
 import 'package:project1/features/auth/presentation/widgets/image_picker_widget.dart';
+import 'package:project1/features/auth/presentation/widgets/password_requirements_hint.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class SignupScreen extends StatelessWidget {
@@ -32,10 +34,7 @@ class SignupScreen extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is RegisterSuccess) {
-          SnackbarTheme().newSnackBarSuccess(
-            context,
-            state.message,
-          );
+          SnackbarTheme().newSnackBarSuccess(context, state.message);
 
           Navigator.push(
             context,
@@ -45,10 +44,7 @@ class SignupScreen extends StatelessWidget {
           );
         }
         if (state is AuthError && state.errors.isNotEmpty) {
-          SnackbarTheme().newSnackBarError(
-            context,
-            state.errors.first,
-          );
+          SnackbarTheme().newSnackBarError(context, state.errors.first);
         }
       },
       builder: (context, state) {
@@ -151,6 +147,9 @@ class SignupScreen extends StatelessWidget {
                               isPassword: true,
                               icon: Icons.lock_outline,
                             ),
+                            PasswordRequirementsHint(
+                              controller: passwordController,
+                            ),
 
                             const SizedBox(height: 16),
 
@@ -185,6 +184,17 @@ class SignupScreen extends StatelessWidget {
                                       ),
                                       child: ElevatedButton(
                                         onPressed: () {
+                                          if (!PasswordValidator.isValid(
+                                            passwordController.text,
+                                          )) {
+                                            SnackbarTheme().newSnackBarError(
+                                              context,
+                                              localizations
+                                                  .passwordRequirementsError,
+                                            );
+                                            return;
+                                          }
+
                                           if (passwordController.text !=
                                               confirmPasswordController.text) {
                                             SnackbarTheme().newSnackBarError(

@@ -348,6 +348,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseEnterNewPassword => 'Please enter new password';
 
   @override
+  String get passwordRequirementsError =>
+      'Password must be at least 8 characters and include uppercase, lowercase, a number, and a special character (@\$!%*?&)';
+
+  @override
+  String get passwordMissingRequirements => 'Missing';
+
+  @override
+  String get passwordRequirementMinLength => 'at least 8 characters';
+
+  @override
+  String get passwordRequirementLowercase => 'a lowercase letter';
+
+  @override
+  String get passwordRequirementUppercase => 'an uppercase letter';
+
+  @override
+  String get passwordRequirementNumber => 'a number';
+
+  @override
+  String get passwordRequirementSpecialCharacter =>
+      'a special character (@\$!%*?&)';
+
+  @override
   String get passwordsDoNotMatch => 'Passwords do not match';
 
   @override

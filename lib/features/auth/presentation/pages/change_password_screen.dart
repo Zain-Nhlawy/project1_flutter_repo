@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
+import 'package:project1/features/auth/domain/validators/password_validator.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_state.dart';
 import 'package:project1/features/auth/presentation/widgets/custom_text_field.dart';
+import 'package:project1/features/auth/presentation/widgets/password_requirements_hint.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
@@ -39,6 +41,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       return;
     }
 
+    if (!PasswordValidator.isValid(newPasswordController.text)) {
+      SnackbarTheme().newSnackBarError(
+        context,
+        localizations.passwordRequirementsError,
+      );
+      return;
+    }
+
     if (newPasswordController.text != confirmPasswordController.text) {
       SnackbarTheme().newSnackBarError(
         context,
@@ -62,16 +72,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthChangePasswordSuccess) {
-          SnackbarTheme().newSnackBarSuccess(
-            context,
-            state.message,
-          );
+          SnackbarTheme().newSnackBarSuccess(context, state.message);
           Navigator.pop(context);
         } else if (state is AuthError && state.errors.isNotEmpty) {
-          SnackbarTheme().newSnackBarError(
-            context,
-            state.errors.first,
-          );
+          SnackbarTheme().newSnackBarError(context, state.errors.first);
         }
       },
       child: Scaffold(
@@ -132,6 +136,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         hintText: localizations.newPasswordHint,
                         isPassword: true,
                         icon: Icons.lock_outline,
+                        controller: newPasswordController,
+                      ),
+                      PasswordRequirementsHint(
                         controller: newPasswordController,
                       ),
                       const SizedBox(height: 16),
