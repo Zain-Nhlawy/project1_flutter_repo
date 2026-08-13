@@ -213,8 +213,10 @@ import 'package:project1/features/department_chat/domain/use_case/delete_departm
 import 'package:project1/features/department_chat/domain/use_case/disconnect_department_chat_usecase.dart';
 import 'package:project1/features/department_chat/domain/use_case/edit_department_message_usecase.dart';
 import 'package:project1/features/department_chat/domain/use_case/get_message_history_usecase.dart';
+import 'package:project1/features/department_chat/domain/use_case/request_department_attachment_upload_usecase.dart';
 import 'package:project1/features/department_chat/domain/use_case/send_department_message_usecase.dart';
 import 'package:project1/features/department_chat/domain/use_case/set_typing_status_usecase.dart';
+import 'package:project1/features/department_chat/domain/use_case/upload_department_attachment_file_usecase.dart';
 import 'package:project1/features/department_chat/presentation/cubit/department_chat_cubit.dart';
 
 final getIt = GetIt.instance;
@@ -880,7 +882,6 @@ getIt.registerFactory<RagCubit>(
   //////////////////////// Department Chat ////////////////////////
   getIt.registerLazySingleton<DepartmentChatRemoteDataSource>(
     () => DepartmentChatRemoteDataSourceImpl(
-      getIt<DioClient>(),
       dio: getIt<DioClient>().dio,
     ),
   );
@@ -917,6 +918,16 @@ getIt.registerFactory<RagCubit>(
   getIt.registerLazySingleton<SetTypingStatusUseCase>(
     () => SetTypingStatusUseCase(getIt<DepartmentChatRepository>()),
   );
+  getIt.registerLazySingleton<RequestDepartmentAttachmentUploadUseCase>(
+    () => RequestDepartmentAttachmentUploadUseCase(
+      getIt<DepartmentChatRepository>(),
+    ),
+  );
+  getIt.registerLazySingleton<UploadDepartmentAttachmentFileUseCase>(
+    () => UploadDepartmentAttachmentFileUseCase(
+      getIt<DepartmentChatRepository>(),
+    ),
+  );
 
   getIt.registerFactory<DepartmentChatCubit>(
     () => DepartmentChatCubit(
@@ -927,6 +938,10 @@ getIt.registerFactory<RagCubit>(
       editDepartmentMessageUseCase: getIt<EditDepartmentMessageUseCase>(),
       deleteDepartmentMessageUseCase: getIt<DeleteDepartmentMessageUseCase>(),
       setTypingStatusUseCase: getIt<SetTypingStatusUseCase>(),
+      requestDepartmentAttachmentUploadUseCase:
+          getIt<RequestDepartmentAttachmentUploadUseCase>(),
+      uploadDepartmentAttachmentFileUseCase:
+          getIt<UploadDepartmentAttachmentFileUseCase>(),
       repository: getIt<DepartmentChatRepository>(),
       getMeUseCase: getIt<GetMeUseCase>(),
       departmentMemberRepository: getIt<DepartmentMemberRepository>(),

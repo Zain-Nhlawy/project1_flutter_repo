@@ -1375,6 +1375,32 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chatEditMessageHint => 'Edit message...';
 
   @override
+  String get chatAddAttachment => 'Add photo or PDF';
+
+  @override
+  String get chatAttachmentReadFailed => 'Could not read the selected file.';
+
+  @override
+  String get chatUploadingAttachment => 'Uploading attachment...';
+
+  @override
+  String get chatPhoto => 'Photo';
+
+  @override
+  String get chatFile => 'File';
+
+  @override
+  String get chatOpenAttachmentFailed => 'Could not open attachment.';
+
+  @override
+  String chatOnlineCount(int count) {
+    return '$count online';
+  }
+
+  @override
+  String get chatOnlineMembersTitle => 'Online members';
+
+  @override
   String chatReplyingTo(String name) {
     return 'Replying to $name';
   }

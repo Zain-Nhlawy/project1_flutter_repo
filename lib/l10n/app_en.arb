@@ -526,6 +526,19 @@
   "chatDelete": "Delete",
   "chatTypeMessageHint": "Type a message...",
   "chatEditMessageHint": "Edit message...",
+  "chatAddAttachment": "Add photo or PDF",
+  "chatAttachmentReadFailed": "Could not read the selected file.",
+  "chatUploadingAttachment": "Uploading attachment...",
+  "chatPhoto": "Photo",
+  "chatFile": "File",
+  "chatOpenAttachmentFailed": "Could not open attachment.",
+  "chatOnlineCount": "{count} online",
+  "@chatOnlineCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "chatOnlineMembersTitle": "Online members",
   "chatReplyingTo": "Replying to {name}",
   "@chatReplyingTo": {
     "placeholders": {

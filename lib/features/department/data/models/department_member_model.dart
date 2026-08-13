@@ -26,7 +26,7 @@ class DepartmentMemberModel extends DepartmentMemberEntity {
       firstName: userJson['firstName'] ?? '',
       lastName: userJson['lastName'] ?? '',
       email: userJson['email'] ?? '',
-      imagePath: userJson['imagePath'],
+      imagePath: userJson['imagePath']?.toString() ?? '',
     );
   }
 }

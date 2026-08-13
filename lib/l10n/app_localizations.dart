@@ -2708,6 +2708,54 @@ abstract class AppLocalizations {
   /// **'Edit message...'**
   String get chatEditMessageHint;
 
+  /// No description provided for @chatAddAttachment.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photo or PDF'**
+  String get chatAddAttachment;
+
+  /// No description provided for @chatAttachmentReadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not read the selected file.'**
+  String get chatAttachmentReadFailed;
+
+  /// No description provided for @chatUploadingAttachment.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploading attachment...'**
+  String get chatUploadingAttachment;
+
+  /// No description provided for @chatPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo'**
+  String get chatPhoto;
+
+  /// No description provided for @chatFile.
+  ///
+  /// In en, this message translates to:
+  /// **'File'**
+  String get chatFile;
+
+  /// No description provided for @chatOpenAttachmentFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open attachment.'**
+  String get chatOpenAttachmentFailed;
+
+  /// No description provided for @chatOnlineCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} online'**
+  String chatOnlineCount(int count);
+
+  /// No description provided for @chatOnlineMembersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Online members'**
+  String get chatOnlineMembersTitle;
+
   /// No description provided for @chatReplyingTo.
   ///
   /// In en, this message translates to:

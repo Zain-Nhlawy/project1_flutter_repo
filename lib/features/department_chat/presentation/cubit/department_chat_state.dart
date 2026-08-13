@@ -1,3 +1,5 @@
+import '../../../department/domain/entities/department_member_entity.dart';
+import '../../domain/entities/department_attachment_file_entity.dart';
 import '../../domain/entities/department_message_entity.dart';
 import '../../domain/entities/socket_connection_status.dart';
 
@@ -10,8 +12,12 @@ class DepartmentChatState {
   final SocketConnectionStatus connectionStatus;
   final Map<String, bool> typingMembers;
   final Set<String> onlineMembers;
+  final List<DepartmentMemberEntity> departmentMembers;
   final DepartmentMessageEntity? replyingToMessage;
   final DepartmentMessageEntity? editingMessage;
+  final DepartmentAttachmentFileEntity? pendingAttachment;
+  final bool isUploadingAttachment;
+  final double attachmentUploadProgress;
   final String? errorMessage;
   final String? currentUserId;
   final String? currentDepartmentMemberId;
@@ -28,8 +34,12 @@ class DepartmentChatState {
     this.connectionStatus = SocketConnectionStatus.initial,
     this.typingMembers = const {},
     this.onlineMembers = const {},
+    this.departmentMembers = const [],
     this.replyingToMessage,
     this.editingMessage,
+    this.pendingAttachment,
+    this.isUploadingAttachment = false,
+    this.attachmentUploadProgress = 0,
     this.errorMessage,
     this.currentUserId,
     this.currentDepartmentMemberId,
@@ -47,8 +57,12 @@ class DepartmentChatState {
     SocketConnectionStatus? connectionStatus,
     Map<String, bool>? typingMembers,
     Set<String>? onlineMembers,
+    List<DepartmentMemberEntity>? departmentMembers,
     DepartmentMessageEntity? Function()? replyingToMessage,
     DepartmentMessageEntity? Function()? editingMessage,
+    DepartmentAttachmentFileEntity? Function()? pendingAttachment,
+    bool? isUploadingAttachment,
+    double? attachmentUploadProgress,
     String? Function()? errorMessage,
     String? currentUserId,
     String? currentDepartmentMemberId,
@@ -65,13 +79,21 @@ class DepartmentChatState {
       connectionStatus: connectionStatus ?? this.connectionStatus,
       typingMembers: typingMembers ?? this.typingMembers,
       onlineMembers: onlineMembers ?? this.onlineMembers,
+      departmentMembers: departmentMembers ?? this.departmentMembers,
       replyingToMessage: replyingToMessage != null
           ? replyingToMessage()
           : this.replyingToMessage,
-      editingMessage:
-          editingMessage != null ? editingMessage() : this.editingMessage,
-      errorMessage:
-          errorMessage != null ? errorMessage() : this.errorMessage,
+      editingMessage: editingMessage != null
+          ? editingMessage()
+          : this.editingMessage,
+      pendingAttachment: pendingAttachment != null
+          ? pendingAttachment()
+          : this.pendingAttachment,
+      isUploadingAttachment:
+          isUploadingAttachment ?? this.isUploadingAttachment,
+      attachmentUploadProgress:
+          attachmentUploadProgress ?? this.attachmentUploadProgress,
+      errorMessage: errorMessage != null ? errorMessage() : this.errorMessage,
       currentUserId: currentUserId ?? this.currentUserId,
       currentDepartmentMemberId:
           currentDepartmentMemberId ?? this.currentDepartmentMemberId,
@@ -81,4 +103,3 @@ class DepartmentChatState {
     );
   }
 }
-

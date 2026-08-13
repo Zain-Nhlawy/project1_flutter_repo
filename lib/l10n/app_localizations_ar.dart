@@ -1366,6 +1366,32 @@ class AppLocalizationsAr extends AppLocalizations {
   String get chatEditMessageHint => 'تعديل الرسالة...';
 
   @override
+  String get chatAddAttachment => 'إضافة صورة أو ملف PDF';
+
+  @override
+  String get chatAttachmentReadFailed => 'تعذر قراءة الملف المحدد.';
+
+  @override
+  String get chatUploadingAttachment => 'جارٍ رفع المرفق...';
+
+  @override
+  String get chatPhoto => 'صورة';
+
+  @override
+  String get chatFile => 'ملف';
+
+  @override
+  String get chatOpenAttachmentFailed => 'تعذر فتح المرفق.';
+
+  @override
+  String chatOnlineCount(int count) {
+    return '$count متصل';
+  }
+
+  @override
+  String get chatOnlineMembersTitle => 'الأعضاء المتصلون';
+
+  @override
   String chatReplyingTo(String name) {
     return 'الرد على $name';
   }

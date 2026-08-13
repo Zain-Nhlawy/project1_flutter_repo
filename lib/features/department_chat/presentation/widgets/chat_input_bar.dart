@@ -1,14 +1,23 @@
 import 'dart:async';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/l10n/app_localizations.dart';
+import '../../domain/entities/department_attachment_file_entity.dart';
 import '../../domain/entities/department_message_entity.dart';
+
+typedef ChatSubmitCallback = Future<bool> Function(String content);
 
 class ChatInputBar extends StatefulWidget {
   final DepartmentMessageEntity? replyingToMessage;
   final DepartmentMessageEntity? editingMessage;
-  final ValueChanged<String> onSubmit;
+  final DepartmentAttachmentFileEntity? pendingAttachment;
+  final bool isUploadingAttachment;
+  final double attachmentUploadProgress;
+  final ChatSubmitCallback onSubmit;
   final ValueChanged<bool> onTyping;
+  final ValueChanged<DepartmentAttachmentFileEntity> onAttachmentSelected;
+  final VoidCallback onRemoveAttachment;
   final VoidCallback onCancelReply;
   final VoidCallback onCancelEdit;
 
@@ -16,8 +25,13 @@ class ChatInputBar extends StatefulWidget {
     super.key,
     this.replyingToMessage,
     this.editingMessage,
+    this.pendingAttachment,
+    this.isUploadingAttachment = false,
+    this.attachmentUploadProgress = 0,
     required this.onSubmit,
     required this.onTyping,
+    required this.onAttachmentSelected,
+    required this.onRemoveAttachment,
     required this.onCancelReply,
     required this.onCancelEdit,
   });
@@ -30,7 +44,26 @@ class _ChatInputBarState extends State<ChatInputBar> {
   final TextEditingController _controller = TextEditingController();
   Timer? _debounceTimer;
   bool _isTypingSent = false;
+  bool _isSubmitting = false;
   TextDirection? _currentTextDirection;
+
+  static const _allowedExtensions = [
+    'pdf',
+    'jpg',
+    'jpeg',
+    'png',
+    'gif',
+    'webp',
+  ];
+
+  static const _mimeTypes = {
+    'pdf': 'application/pdf',
+    'jpg': 'image/jpeg',
+    'jpeg': 'image/jpeg',
+    'png': 'image/png',
+    'gif': 'image/gif',
+    'webp': 'image/webp',
+  };
 
   @override
   void initState() {
@@ -89,9 +122,69 @@ class _ChatInputBarState extends State<ChatInputBar> {
     });
   }
 
-  void _handleSend() {
+  Future<void> _pickAttachment() async {
+    if (_isSubmitting ||
+        widget.isUploadingAttachment ||
+        widget.editingMessage != null) {
+      return;
+    }
+
+    final localizations = AppLocalizations.of(context);
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: _allowedExtensions,
+        allowMultiple: false,
+        withData: true,
+      );
+      if (result == null || !mounted) return;
+
+      final file = result.files.single;
+      final bytes = file.bytes;
+      final extension = (file.extension ?? file.name.split('.').last)
+          .toLowerCase();
+      final mimeType = _mimeTypes[extension];
+
+      if (bytes == null || mimeType == null) {
+        _showPickerError(
+          localizations?.chatAttachmentReadFailed ??
+              'Could not read the selected file.',
+        );
+        return;
+      }
+
+      widget.onAttachmentSelected(
+        DepartmentAttachmentFileEntity(
+          fileName: file.name,
+          mimeType: mimeType,
+          bytes: bytes,
+        ),
+      );
+    } catch (_) {
+      if (mounted) {
+        _showPickerError(
+          localizations?.chatAttachmentReadFailed ??
+              'Could not read the selected file.',
+        );
+      }
+    }
+  }
+
+  void _showPickerError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), backgroundColor: AppColors.error),
+    );
+  }
+
+  Future<void> _handleSend() async {
+    if (_isSubmitting || widget.isUploadingAttachment) return;
+
     final text = _controller.text.trim();
-    if (text.isEmpty && widget.editingMessage == null) return;
+    if (text.isEmpty &&
+        widget.editingMessage == null &&
+        widget.pendingAttachment == null) {
+      return;
+    }
 
     _debounceTimer?.cancel();
     if (_isTypingSent) {
@@ -99,11 +192,15 @@ class _ChatInputBarState extends State<ChatInputBar> {
       widget.onTyping(false);
     }
 
-    widget.onSubmit(text);
-    _controller.clear();
-    setState(() {
+    setState(() => _isSubmitting = true);
+    final wasSubmitted = await widget.onSubmit(text);
+    if (!mounted) return;
+
+    if (wasSubmitted) {
+      _controller.clear();
       _currentTextDirection = null;
-    });
+    }
+    setState(() => _isSubmitting = false);
   }
 
   @override
@@ -111,6 +208,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
     final localizations = AppLocalizations.of(context);
     final isEditing = widget.editingMessage != null;
     final isReplying = widget.replyingToMessage != null;
+    final isBusy = _isSubmitting || widget.isUploadingAttachment;
     final inputDir =
         _currentTextDirection ?? _calculateTextDirection(_controller.text);
 
@@ -137,6 +235,13 @@ class _ChatInputBarState extends State<ChatInputBar> {
             icon: Icons.edit_outlined,
             onClose: widget.onCancelEdit,
           ),
+        if (widget.pendingAttachment != null)
+          _buildAttachmentPreview(
+            context,
+            attachment: widget.pendingAttachment!,
+            isUploading: widget.isUploadingAttachment,
+            progress: widget.attachmentUploadProgress,
+          ),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
@@ -145,6 +250,16 @@ class _ChatInputBarState extends State<ChatInputBar> {
           ),
           child: Row(
             children: [
+              IconButton(
+                tooltip: localizations?.chatAddAttachment ?? 'Add photo or PDF',
+                onPressed: isBusy || isEditing ? null : _pickAttachment,
+                icon: Icon(
+                  Icons.attach_file_rounded,
+                  color: isBusy || isEditing
+                      ? AppColors.textSecondaryOf(context)
+                      : AppColors.primaryOf(context),
+                ),
+              ),
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 0),
@@ -155,8 +270,11 @@ class _ChatInputBarState extends State<ChatInputBar> {
                   ),
                   child: TextField(
                     controller: _controller,
+                    enabled: !isBusy,
                     onChanged: _onTextChanged,
-                    onSubmitted: (_) => _handleSend(),
+                    onSubmitted: (_) {
+                      _handleSend();
+                    },
                     maxLines: 4,
                     minLines: 1,
                     textDirection: inputDir,
@@ -206,14 +324,23 @@ class _ChatInputBarState extends State<ChatInputBar> {
                   shape: const CircleBorder(),
                   child: InkWell(
                     customBorder: const CircleBorder(),
-                    onTap: _handleSend,
-                    child: const Padding(
-                      padding: EdgeInsets.all(12),
-                      child: Icon(
-                        Icons.send_rounded,
-                        color: Colors.white,
-                        size: 20,
-                      ),
+                    onTap: isBusy ? null : _handleSend,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: isBusy
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
+                          : const Icon(
+                              Icons.send_rounded,
+                              color: Colors.white,
+                              size: 20,
+                            ),
                     ),
                   ),
                 ),
@@ -223,6 +350,102 @@ class _ChatInputBarState extends State<ChatInputBar> {
         ),
       ],
     );
+  }
+
+  Widget _buildAttachmentPreview(
+    BuildContext context, {
+    required DepartmentAttachmentFileEntity attachment,
+    required bool isUploading,
+    required double progress,
+  }) {
+    final localizations = AppLocalizations.of(context);
+
+    return Container(
+      color: AppColors.surfaceOf(context),
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: AppColors.backgroundOf(context),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppColors.borderOf(context)),
+        ),
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: attachment.isImage
+                  ? Image.memory(
+                      attachment.bytes,
+                      width: 48,
+                      height: 48,
+                      fit: BoxFit.cover,
+                    )
+                  : Container(
+                      width: 48,
+                      height: 48,
+                      color: AppColors.error.withValues(alpha: 0.1),
+                      child: const Icon(
+                        Icons.picture_as_pdf_rounded,
+                        color: AppColors.error,
+                      ),
+                    ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    attachment.fileName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: AppColors.textPrimaryOf(context),
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    isUploading
+                        ? (localizations?.chatUploadingAttachment ??
+                              'Uploading attachment...')
+                        : _formatFileSize(attachment.fileSize),
+                    style: TextStyle(
+                      color: AppColors.textSecondaryOf(context),
+                      fontSize: 11,
+                    ),
+                  ),
+                  if (isUploading) ...[
+                    const SizedBox(height: 6),
+                    LinearProgressIndicator(
+                      value: progress > 0
+                          ? progress.clamp(0.0, 1.0).toDouble()
+                          : null,
+                      minHeight: 3,
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            IconButton(
+              onPressed: isUploading ? null : widget.onRemoveAttachment,
+              icon: const Icon(Icons.close_rounded, size: 19),
+              visualDensity: VisualDensity.compact,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _formatFileSize(int bytes) {
+    if (bytes < 1024) return '$bytes B';
+    final kilobytes = bytes / 1024;
+    if (kilobytes < 1024) return '${kilobytes.toStringAsFixed(1)} KB';
+    return '${(kilobytes / 1024).toStringAsFixed(1)} MB';
   }
 
   Widget _buildBanner(
