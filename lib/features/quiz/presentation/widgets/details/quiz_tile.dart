@@ -26,10 +26,7 @@ class QuizTile extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => QuizScreen(
-                    demoId: demoId!,
-                    examId: examId,
-                  ),
+                  builder: (_) => QuizScreen(demoId: demoId!, examId: examId),
                 ),
               );
             },
@@ -39,9 +36,7 @@ class QuizTile extends StatelessWidget {
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(15),
-          border: Border.all(
-            color: Colors.grey.withOpacity(0.1),
-          ),
+          border: Border.all(color: Colors.grey.withValues(alpha: 0.1)),
         ),
         child: Row(
           children: [
@@ -57,9 +52,7 @@ class QuizTile extends StatelessWidget {
               ),
             ),
             Icon(
-              locked
-                  ? Icons.lock_outline
-                  : Icons.quiz_outlined,
+              locked ? Icons.lock_outline : Icons.quiz_outlined,
               size: 20,
               color: locked ? Colors.grey : theme.primaryColor,
             ),

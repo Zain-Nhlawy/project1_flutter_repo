@@ -18,22 +18,54 @@ class QuizBottomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 10, 16, 16),
-      child: SizedBox(
-        width: double.infinity,
+    final canSubmit = enabled && !isLoading;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(18, 12, 18, 18),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceOf(context),
+        border: Border(
+          top: BorderSide(
+            color: AppColors.borderOf(context).withValues(alpha: 0.75),
+          ),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.045),
+            blurRadius: 18,
+            offset: const Offset(0, -4),
+          ),
+        ],
+      ),
+      child: Container(
         height: 56,
-        child: ElevatedButton(
-          onPressed: !enabled || isLoading
+        decoration: BoxDecoration(
+          gradient: canSubmit ? AppColors.buttonGradientOf(context) : null,
+          color: canSubmit
               ? null
-              : onPressed,
+              : AppColors.primaryOf(context).withValues(alpha: 0.2),
+          borderRadius: BorderRadius.circular(17),
+          boxShadow: canSubmit
+              ? [
+                  BoxShadow(
+                    color: AppColors.primaryOf(context).withValues(alpha: 0.2),
+                    blurRadius: 14,
+                    offset: const Offset(0, 6),
+                  ),
+                ]
+              : null,
+        ),
+        child: ElevatedButton(
+          onPressed: canSubmit ? onPressed : null,
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primary,
-            disabledBackgroundColor:
-                AppColors.primary.withOpacity(.35),
-            elevation: 0,
+            backgroundColor: Colors.transparent,
+            disabledBackgroundColor: Colors.transparent,
+            shadowColor: Colors.transparent,
+            foregroundColor: Colors.white,
+            disabledForegroundColor: Colors.white.withValues(alpha: 0.72),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18),
+              borderRadius: BorderRadius.circular(17),
             ),
           ),
           child: isLoading
@@ -42,10 +74,7 @@ class QuizBottomButton extends StatelessWidget {
                   height: 22,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    valueColor:
-                        AlwaysStoppedAnimation<Color>(
-                      Colors.white,
-                    ),
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                   ),
                 )
               : Row(
@@ -55,7 +84,7 @@ class QuizBottomButton extends StatelessWidget {
                       text,
                       style: AppTextStyles.bodyMedium.copyWith(
                         color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                     const SizedBox(width: 8),

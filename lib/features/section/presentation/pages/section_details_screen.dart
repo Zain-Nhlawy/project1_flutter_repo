@@ -82,8 +82,9 @@ class _SectionLessonsExpansionTileState
   void _openLesson(LessonEntity lesson) {
     // Allow first 2 lessons of first section as free trial even if course is locked
     final isFirstSection = widget.section.order == 1;
-    final isFreeTrialLesson = widget.lessonsLocked && isFirstSection && lesson.order <= 2;
-    
+    final isFreeTrialLesson =
+        widget.lessonsLocked && isFirstSection && lesson.order <= 2;
+
     if (widget.lessonsLocked && !isFreeTrialLesson) {
       SnackbarTheme().newSnackBarInfo(
         context,
@@ -97,15 +98,14 @@ class _SectionLessonsExpansionTileState
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) =>
-            LessonDetailsScreen(
-              lessons: _lessons,
-              initialIndex: index,
-              demoId: widget.demoId,
-            ),
+        builder: (_) => LessonDetailsScreen(
+          lessons: _lessons,
+          initialIndex: index,
+          demoId: widget.demoId,
         ),
-      );
-    }
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -194,33 +194,14 @@ class _SectionLessonsExpansionTileState
                 ),
               )
             else if (_lessons.isEmpty)
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: AppColors.backgroundOf(context),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.play_disabled_outlined,
-                      color: AppColors.textSecondaryOf(context),
-                      size: 20,
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        AppLocalizations.of(context)!.noLessonsYet,
-                        style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.textSecondaryOf(context),
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
+              if (_hasExam && _examId != null)
+                QuizTile(
+                  examId: _examId!,
+                  demoId: widget.demoId,
+                  locked: widget.lessonsLocked,
+                )
+              else
+                const SizedBox.shrink()
             else
               Column(
                 children: [
@@ -230,7 +211,9 @@ class _SectionLessonsExpansionTileState
                     final isLast = index == _lessons.length - 1;
                     // First 2 lessons in first section are free trial (not locked)
                     final isFirstSection = widget.section.order == 1;
-                    final isLockedLesson = widget.lessonsLocked && (!isFirstSection || lesson.order > 2);
+                    final isLockedLesson =
+                        widget.lessonsLocked &&
+                        (!isFirstSection || lesson.order > 2);
 
                     return LessonConnector(
                       num: index + 1,

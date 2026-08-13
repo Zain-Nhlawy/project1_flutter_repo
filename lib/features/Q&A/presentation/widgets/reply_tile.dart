@@ -58,14 +58,15 @@ class _ReplyTileState extends State<ReplyTile> {
     );
 
     if (confirmed != true) return;
+    if (!mounted) return;
 
     setState(() => _deleting = true);
 
     final success = await context.read<DiscussionCubit>().deleteAnswer(
-          questionId: widget.reply.questionId,
-          answerId: widget.reply.id,
-          demoId: widget.demoId,
-        );
+      questionId: widget.reply.questionId,
+      answerId: widget.reply.id,
+      demoId: widget.demoId,
+    );
 
     if (!mounted) return;
 
@@ -86,11 +87,14 @@ class _ReplyTileState extends State<ReplyTile> {
 
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.all(13),
       decoration: BoxDecoration(
         color: AppColors.backgroundOf(context),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: AppColors.borderOf(context).withValues(alpha: 0.72),
+        ),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,7 +117,7 @@ class _ReplyTileState extends State<ReplyTile> {
                         style: AppTextStyles.label.copyWith(
                           fontFamily: AppTextStyles.fontFamily,
                           color: AppColors.textPrimaryOf(context),
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w800,
                         ),
                       ),
                     ),
@@ -147,8 +151,11 @@ class _ReplyTileState extends State<ReplyTile> {
                             value: 'delete',
                             child: Row(
                               children: [
-                                const Icon(Icons.delete_outline,
-                                    size: 16, color: Colors.red),
+                                const Icon(
+                                  Icons.delete_outline,
+                                  size: 16,
+                                  color: Colors.red,
+                                ),
                                 const SizedBox(width: 8),
                                 Text(
                                   localizations.delete,
@@ -168,6 +175,7 @@ class _ReplyTileState extends State<ReplyTile> {
                     fontFamily: AppTextStyles.fontFamily,
                     color: AppColors.textPrimaryOf(context),
                     height: 1.4,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ],

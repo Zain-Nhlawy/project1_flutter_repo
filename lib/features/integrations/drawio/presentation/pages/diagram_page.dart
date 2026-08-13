@@ -2,13 +2,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/core/presentation/widgets/gradient_page_app_bar.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:project1/features/integrations/drawio/data/diagram_storage.dart';
 import 'xml_preview_page.dart';
 
-enum _EditorStatus { idle, loading, ready, saving, error }
+enum _EditorStatus { loading, ready, saving }
 
 class DrawioPage extends StatefulWidget {
   const DrawioPage({super.key});
@@ -22,7 +23,6 @@ class _DrawioPageState extends State<DrawioPage> {
   final DiagramStorageService _storage = DiagramStorageService();
 
   bool _isPageLoading = true;
-  bool _isEditorOpen = true;
   _EditorStatus _status = _EditorStatus.loading;
 
   String? _savedXml;
@@ -43,7 +43,6 @@ class _DrawioPageState extends State<DrawioPage> {
 
             setState(() {
               _isPageLoading = false;
-              _isEditorOpen = true;
               _status = _EditorStatus.loading;
             });
 
@@ -53,8 +52,7 @@ class _DrawioPageState extends State<DrawioPage> {
       )
       ..addJavaScriptChannel(
         'FlutterBridge',
-        onMessageReceived: (message) =>
-            _handleDrawioMessage(message.message),
+        onMessageReceived: (message) => _handleDrawioMessage(message.message),
       )
       ..loadFlutterAsset('assets/drawio.html');
   }
@@ -71,18 +69,16 @@ class _DrawioPageState extends State<DrawioPage> {
     final type = parsed['type'];
     final data = parsed['data'];
 
-    if (data == null) return;
-
-    if (type == 'status') {
-      _handleStatus(data as String);
+    if (type == 'status' && data is String) {
+      _handleStatus(data);
       return;
     }
 
+    if (data is! String) return;
+
     if (type == 'xml') {
       _pendingXml = data;
-    }
-
-    if (type == 'png') {
+    } else if (type == 'png') {
       _pendingPng = data;
     }
 
@@ -110,7 +106,6 @@ class _DrawioPageState extends State<DrawioPage> {
       switch (status) {
         case 'ready':
           _status = _EditorStatus.ready;
-          _isEditorOpen = true;
           break;
 
         case 'saving':
@@ -118,7 +113,7 @@ class _DrawioPageState extends State<DrawioPage> {
           break;
 
         default:
-          _status = _EditorStatus.idle;
+          _status = _EditorStatus.loading;
       }
     });
   }
@@ -127,31 +122,12 @@ class _DrawioPageState extends State<DrawioPage> {
     if (!mounted) return;
 
     setState(() {
-      _isEditorOpen = true;
       _status = _EditorStatus.loading;
     });
 
     final xmlArg = _savedXml != null ? jsonEncode(_savedXml) : 'null';
 
-    _controller.runJavaScript(
-      'window.openEditor($xmlArg);',
-    );
-  }
-
-  void _clearDiagram() {
-    _controller.runJavaScript('window.clearEditor();');
-
-    if (!mounted) return;
-
-    setState(() {
-      _savedXml = null;
-      _savedFilePath = null;
-      _status = _EditorStatus.loading;
-    });
-
-    _showToast(
-      AppLocalizations.of(context)?.cleared ?? 'Cleared',
-    );
+    _controller.runJavaScript('window.openEditor($xmlArg);');
   }
 
   Future<void> _showSaveDialog(String xml, String png) async {
@@ -162,45 +138,54 @@ class _DrawioPageState extends State<DrawioPage> {
     final result = await showDialog<String>(
       context: context,
       builder: (ctx) => AlertDialog(
+        backgroundColor: AppColors.surfaceOf(ctx),
+        surfaceTintColor: Colors.transparent,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        titlePadding: const EdgeInsets.fromLTRB(22, 22, 22, 0),
+        contentPadding: const EdgeInsets.fromLTRB(22, 16, 22, 4),
+        actionsPadding: const EdgeInsets.fromLTRB(14, 8, 14, 14),
         title: Text(
           l10n?.saveDiagram ?? 'Save Diagram',
-          style: AppTextStyles.h3,
+          style: AppTextStyles.titleLarge.copyWith(
+            color: AppColors.textPrimaryOf(ctx),
+            fontWeight: FontWeight.w800,
+          ),
         ),
         content: Text(
-          l10n?.whatDoYouWantToSave ??
-              'What do you want to save?',
-          style: AppTextStyles.bodyMedium,
+          l10n?.whatDoYouWantToSave ?? 'What do you want to save?',
+          style: AppTextStyles.bodyMedium.copyWith(
+            color: AppColors.textSecondaryOf(ctx),
+            height: 1.45,
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, 'xml'),
-            child: Text(
-              l10n?.xmlOnly ?? 'XML only',
-            ),
+            child: Text(l10n?.xmlOnly ?? 'XML only'),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, 'png'),
-            child: Text(
-              l10n?.pngOnly ?? 'PNG only',
-            ),
+            child: Text(l10n?.pngOnly ?? 'PNG only'),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
+              backgroundColor: AppColors.primaryOf(ctx),
+              foregroundColor: Colors.white,
+              elevation: 0,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 11),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
             onPressed: () => Navigator.pop(ctx, 'both'),
             child: Text(
               l10n?.both ?? 'Both',
-              style: const TextStyle(
-                color: Colors.white,
-              ),
+              style: const TextStyle(color: Colors.white),
             ),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, 'cancel'),
-            child: Text(
-              l10n?.cancel ?? 'Cancel',
-            ),
+            child: Text(l10n?.cancel ?? 'Cancel'),
           ),
         ],
       ),
@@ -219,23 +204,16 @@ class _DrawioPageState extends State<DrawioPage> {
           });
         }
 
-        _showToast(
-          l10n?.xmlSaved ?? 'XML Saved',
-        );
+        _showToast(l10n?.xmlSaved ?? 'XML Saved');
       }
 
       if (result == 'png' || result == 'both') {
         await _storage.savePng(png);
 
-        _showToast(
-          l10n?.pngSaved ?? 'PNG Saved',
-        );
+        _showToast(l10n?.pngSaved ?? 'PNG Saved');
       }
     } else {
-      _showToast(
-        l10n?.storagePermissionDenied ??
-            'Permission Denied',
-      );
+      _showToast(l10n?.storagePermissionDenied ?? 'Permission Denied');
     }
   }
 
@@ -247,88 +225,30 @@ class _DrawioPageState extends State<DrawioPage> {
   void _showToast(String msg) {
     if (!mounted) return;
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(msg),
-      ),
-    );
-  }
-
-  Color get _statusColor {
-    switch (_status) {
-      case _EditorStatus.ready:
-        return Colors.green;
-
-      case _EditorStatus.loading:
-        return Colors.orange;
-
-      case _EditorStatus.saving:
-        return Colors.blue;
-
-      case _EditorStatus.error:
-        return Colors.red;
-
-      case _EditorStatus.idle:
-        return Colors.grey;
-    }
-  }
-
-  String _statusText(AppLocalizations? l10n) {
-    switch (_status) {
-      case _EditorStatus.ready:
-        return l10n?.ready ?? 'Ready';
-
-      case _EditorStatus.loading:
-        return l10n?.loading ?? 'Loading...';
-
-      case _EditorStatus.saving:
-        return l10n?.saving ?? 'Saving...';
-
-      case _EditorStatus.error:
-        return l10n?.error ?? 'Error';
-
-      case _EditorStatus.idle:
-        return l10n?.readyIdle ?? 'Ready';
-    }
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final isCompact = MediaQuery.sizeOf(context).shortestSide < 600;
+    final isSaving = _status == _EditorStatus.saving;
+    final isBusy = _isPageLoading || _status != _EditorStatus.ready;
+    final shadowOpacity = Theme.of(context).brightness == Brightness.dark
+        ? 0.2
+        : 0.07;
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.primary,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          l10n?.diagramEditor ?? 'Diagram Editor',
-          style: AppTextStyles.titleLarge.copyWith(
-            color: Colors.white,
-          ),
-        ),
+      backgroundColor: AppColors.backgroundOf(context),
+      appBar: GradientPageAppBar(
+        title: l10n?.diagramEditor ?? 'Diagram Editor',
+        onBackPressed: () => Navigator.pop(context),
+        bottomRadius: 0,
         actions: [
-          if (_isEditorOpen)
-            IconButton(
-              tooltip: l10n?.clear ?? 'Clear',
-              icon: const Icon(
-                Icons.delete_outline,
-                color: Colors.white,
-              ),
-              onPressed: _clearDiagram,
-            ),
           if (_savedXml != null)
-            IconButton(
+            _HeaderAction(
+              icon: Icons.code_rounded,
               tooltip: l10n?.viewXml ?? 'View XML',
-              icon: const Icon(
-                Icons.visibility,
-                color: Colors.white,
-              ),
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -339,67 +259,136 @@ class _DrawioPageState extends State<DrawioPage> {
                 ),
               ),
             ),
+          const SizedBox(width: 12),
         ],
       ),
-      body: Column(
-        children: [
-          Container(
-            height: 36,
-            color: Colors.white,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-            ),
-            child: Row(
-              children: [
-                Container(
-                  width: 8,
-                  height: 8,
-                  decoration: BoxDecoration(
-                    color: _statusColor,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  _statusText(l10n),
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const Divider(height: 1),
-          Expanded(
-            child: Stack(
-              children: [
-                WebViewWidget(
-                  controller: _controller,
-                ),
-                if (_isPageLoading ||
-                    _status == _EditorStatus.loading)
-                  Container(
-                    color: Colors.white70,
-                    child: Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CircularProgressIndicator(
-                            color: AppColors.primary,
-                          ),
-                          const SizedBox(height: 12),
-                          Text(
-                            l10n?.loading ?? 'Loading...',
-                            style: AppTextStyles.bodyMedium,
-                          ),
-                        ],
-                      ),
+      body: SafeArea(
+        top: false,
+        child: Padding(
+          padding: isCompact
+              ? EdgeInsets.zero
+              : const EdgeInsets.fromLTRB(16, 18, 16, 16),
+          child: Container(
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              color: AppColors.surfaceOf(context),
+              borderRadius: isCompact
+                  ? BorderRadius.zero
+                  : BorderRadius.circular(22),
+              border: isCompact
+                  ? null
+                  : Border.all(
+                      color: AppColors.borderOf(
+                        context,
+                      ).withValues(alpha: 0.82),
                     ),
+              boxShadow: isCompact
+                  ? null
+                  : [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: shadowOpacity),
+                        blurRadius: 20,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
+            ),
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                WebViewWidget(controller: _controller),
+                if (isBusy)
+                  _EditorLoadingView(
+                    label: isSaving
+                        ? (l10n?.saving ?? 'Saving...')
+                        : (l10n?.loading ?? 'Loading...'),
                   ),
               ],
             ),
           ),
-        ],
+        ),
+      ),
+    );
+  }
+}
+
+class _HeaderAction extends StatelessWidget {
+  final IconData icon;
+  final String tooltip;
+  final VoidCallback onPressed;
+
+  const _HeaderAction({
+    required this.icon,
+    required this.tooltip,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsetsDirectional.only(start: 7),
+      child: Tooltip(
+        message: tooltip,
+        child: Material(
+          color: Colors.white.withValues(alpha: 0.16),
+          borderRadius: BorderRadius.circular(12),
+          child: InkWell(
+            onTap: onPressed,
+            borderRadius: BorderRadius.circular(12),
+            child: SizedBox(
+              width: 38,
+              height: 38,
+              child: Icon(icon, color: Colors.white, size: 19),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _EditorLoadingView extends StatelessWidget {
+  final String label;
+
+  const _EditorLoadingView({required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    final primary = AppColors.primaryOf(context);
+
+    return ColoredBox(
+      color: AppColors.surfaceOf(context).withValues(alpha: 0.94),
+      child: Center(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+          decoration: BoxDecoration(
+            color: AppColors.backgroundOf(context),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: AppColors.borderOf(context).withValues(alpha: 0.8),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: 30,
+                height: 30,
+                child: CircularProgressIndicator(
+                  color: primary,
+                  strokeWidth: 2.6,
+                ),
+              ),
+              const SizedBox(height: 13),
+              Text(
+                label,
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: AppColors.textSecondaryOf(context),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
