@@ -1,30 +1,46 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:project1/features/auth/presentation/cubit/session_cubit.dart';
+import 'package:project1/features/auth/presentation/pages/session_gate.dart';
 
-import 'package:project1/main.dart';
+import 'helpers/auth_test_fakes.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+  testWidgets('session gate switches between login and authenticated content', (
+    tester,
+  ) async {
+    final getMe = StubGetMeUseCase(const Right(testUser));
+    final userCubit = createTestUserCubit(getMe);
+    final sessionCubit = SessionCubit(
+      storage: FakeSecureStorage(),
+      getMeUseCase: getMe,
+      userCubit: userCubit,
+    );
+    addTearDown(sessionCubit.close);
+    addTearDown(userCubit.close);
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    await tester.pumpWidget(
+      BlocProvider.value(
+        value: sessionCubit,
+        child: MaterialApp(
+          home: SessionGate(
+            authenticatedBuilder: (_) => const Text('authenticated'),
+            unauthenticatedBuilder: (_) => const Text('login'),
+          ),
+        ),
+      ),
+    );
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+    expect(find.byKey(const Key('session-loading')), findsOneWidget);
+
+    await sessionCubit.clearSession();
     await tester.pump();
+    expect(find.text('login'), findsOneWidget);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    sessionCubit.startSession(testUser);
+    await tester.pump();
+    expect(find.text('authenticated'), findsOneWidget);
   });
 }

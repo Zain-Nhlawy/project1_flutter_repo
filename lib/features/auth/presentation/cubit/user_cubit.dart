@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project1/features/auth/domain/entities/user_entity.dart';
 import 'package:project1/features/auth/domain/use_case/get_me_usecase.dart';
 import 'package:project1/features/profile/domain/use_case/update_profile_image_usecase.dart';
 import 'package:project1/features/auth/presentation/cubit/user_state.dart';
@@ -41,5 +42,13 @@ class UserCubit extends Cubit<UserState> {
         await getMe();
       },
     );
+  }
+
+  void setUser(UserEntity user) {
+    emit(UserLoaded(user));
+  }
+
+  void clearUser() {
+    emit(const UserInitial());
   }
 }

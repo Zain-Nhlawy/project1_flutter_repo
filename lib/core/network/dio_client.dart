@@ -7,167 +7,152 @@ import '../storage/storage_keys.dart';
 class DioClient extends Api {
   final AppSecureStorage storage;
   final Future<Map<String, dynamic>?> Function() refreshToken;
+  final Future<void> Function()? onSessionExpired;
+
   Future<void>? _refreshFuture;
 
-  DioClient({required this.storage, required this.refreshToken}) : super() {
+  DioClient({
+    required this.storage,
+    required this.refreshToken,
+    this.onSessionExpired,
+  }) : super() {
     dio.interceptors.clear();
-
-    Future<void> doRefresh() async {
-      print('🟢 Starting refresh...');
-      try {
-        final storedRefresh = await storage.read(StorageKeys.refreshToken);
-        print('🟢 Refresh response: $storedRefresh');
-        if (storedRefresh == null || storedRefresh.isEmpty) return;
-
-        final data = await refreshToken();
-        if (data != null) {
-          final newAccess = data['accessToken'];
-          final newRefresh = data['refreshToken'];
-          if (newAccess != null)
-            await storage.write(StorageKeys.token, newAccess);
-          if (newRefresh != null)
-            await storage.write(StorageKeys.refreshToken, newRefresh);
-        }
-      } catch (e) {
-        print('🔴 Refresh failed: $e');
-        await storage.delete(StorageKeys.token);
-        await storage.delete(StorageKeys.refreshToken);
-        rethrow;
-      } finally {
-        _refreshFuture = null;
-      }
-    }
-
-    Future<void> handleRefresh() {
-      if (_refreshFuture != null) {
-        print(
-          '🟡 handleRefresh() -> reusing EXISTING refresh future (race avoided)',
-        );
-      } else {
-        print('🟡 handleRefresh() -> starting NEW refresh future');
-      }
-      return _refreshFuture ??= doRefresh();
-    }
-
-    bool shouldRefresh(String? token) {
-      if (token == null || token.isEmpty) return false;
-      try {
-        final expired = JwtDecoder.isExpired(token);
-        final remaining = JwtDecoder.getRemainingTime(token).inSeconds;
-        final result = expired || remaining < 60;
-        print(
-          '🟣 shouldRefresh: expired=$expired, remaining=${remaining}s, result=$result',
-        );
-        return result;
-      } catch (e) {
-        print('❌ shouldRefresh EXCEPTION: $e');
-        return false;
-      }
-    }
 
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          print('➡️ REQUEST: ${options.method} ${options.path}');
-          print('➡️ BODY: ${options.data}');
           options.headers.addAll({
             'User-Agent': 'Flutter-Mobile-App',
             'X-Platform': 'mobile',
             'isWeb': 'false',
             'Accept': 'application/json',
           });
-          final noAuth = options.extra['noAuth'] == true;
-          if (!noAuth) {
-            final token = await storage.read(StorageKeys.token);
-            print(
-              '➡️ [${options.path}] current access token = ${token == null ? "NULL" : "present (len=${token.length})"}',
+
+          if (options.extra['noAuth'] != true) {
+            final accessToken = await storage.read(StorageKeys.token);
+            final storedRefreshToken = await storage.read(
+              StorageKeys.refreshToken,
             );
-            if (token != null && token.isNotEmpty) {
-              if (shouldRefresh(token)) {
-                print(
-                  '⚠️ [${options.path}] Token needs refresh, calling handleRefresh()',
-                );
-                await handleRefresh();
-              }
-              final updatedToken = await storage.read(StorageKeys.token);
-              if (updatedToken != null && updatedToken.isNotEmpty) {
-                options.headers['Authorization'] = 'Bearer $updatedToken';
-              }
+            final canRefresh =
+                storedRefreshToken != null && storedRefreshToken.isNotEmpty;
+            final needsRefresh =
+                accessToken == null ||
+                accessToken.isEmpty ||
+                _shouldRefresh(accessToken);
+
+            if (canRefresh && needsRefresh) {
+              await _handleRefresh();
             }
-          } else {
-            print('➡️ [${options.path}] noAuth=true, skipping token logic');
+
+            final updatedAccessToken = await storage.read(StorageKeys.token);
+            if (updatedAccessToken != null && updatedAccessToken.isNotEmpty) {
+              options.headers['Authorization'] = 'Bearer $updatedAccessToken';
+            }
           }
-          print('➡️ Headers:');
-          options.headers.forEach((key, value) {
-            print('   $key: $value');
-          });
-          return handler.next(options);
+
+          handler.next(options);
         },
-        onError: (DioException error, handler) async {
-          print(
-            '🔴 ERROR: ${error.requestOptions.path} -> status=${error.response?.statusCode}',
-          );
-          print('🔴 Response body: ${error.response?.data}');
-
-          final is401 = error.response?.statusCode == 401;
-          final retried = error.requestOptions.extra['retried'] == true;
-          final noAuth = error.requestOptions.extra['noAuth'] == true;
-
-          final responseData = error.response?.data;
-
-          String? errorType;
-          if (responseData is Map<String, dynamic>) {
-            errorType = responseData['error']?.toString();
-          }
-
-          final isTokenAuthError = errorType == 'UnauthorizedException';
-
-          print(
-            '🔴 [${error.requestOptions.path}] '
-            'is401=$is401, '
-            'errorType=$errorType, '
-            'isTokenAuthError=$isTokenAuthError, '
-            'retried=$retried, '
-            'noAuth=$noAuth',
+        onError: (error, handler) async {
+          final isUnauthorized = error.response?.statusCode == 401;
+          final wasRetried = error.requestOptions.extra['retried'] == true;
+          final skipsAuthentication =
+              error.requestOptions.extra['noAuth'] == true;
+          final isRefreshRequest = error.requestOptions.path.endsWith(
+            '/authentication/refresh-tokens',
           );
 
-          if (!is401 || !isTokenAuthError || retried || noAuth) {
-            return handler.next(error);
+          if (!isUnauthorized ||
+              wasRetried ||
+              skipsAuthentication ||
+              isRefreshRequest) {
+            handler.next(error);
+            return;
           }
 
           try {
-            print(
-              '🔁 [${error.requestOptions.path}] Attempting refresh + retry...',
-            );
+            await _handleRefresh();
 
-            await handleRefresh();
-
-            final newToken = await storage.read(StorageKeys.token);
-
-            if (newToken == null || newToken.isEmpty) {
-              print('🔴 No new token after refresh');
-              return handler.next(error);
+            final newAccessToken = await storage.read(StorageKeys.token);
+            if (newAccessToken == null || newAccessToken.isEmpty) {
+              handler.next(error);
+              return;
             }
 
             final request = error.requestOptions;
-
             final response = await dio.fetch(
               request.copyWith(
                 headers: {
                   ...request.headers,
-                  'Authorization': 'Bearer $newToken',
+                  'Authorization': 'Bearer $newAccessToken',
                 },
                 extra: {...request.extra, 'retried': true},
               ),
             );
 
-            return handler.resolve(response);
-          } catch (e) {
-            print('❌ Retry failed: $e');
-            return handler.next(error);
+            handler.resolve(response);
+          } catch (_) {
+            handler.next(error);
           }
         },
       ),
     );
+  }
+
+  Future<void> _handleRefresh() {
+    return _refreshFuture ??= _refreshAccessToken();
+  }
+
+  Future<void> _refreshAccessToken() async {
+    try {
+      final storedRefreshToken = await storage.read(StorageKeys.refreshToken);
+      if (storedRefreshToken == null || storedRefreshToken.isEmpty) {
+        await _expireSession();
+        throw StateError('No refresh token is available.');
+      }
+
+      final data = await refreshToken();
+      final newAccessToken = data?['accessToken'];
+      final newRefreshToken = data?['refreshToken'];
+
+      if (newAccessToken is! String ||
+          newAccessToken.isEmpty ||
+          newRefreshToken is! String ||
+          newRefreshToken.isEmpty) {
+        throw StateError('The token refresh response is incomplete.');
+      }
+
+      // Store the rotated refresh token first. If the app is interrupted
+      // between writes, the next launch can still obtain a new access token.
+      await storage.write(StorageKeys.refreshToken, newRefreshToken);
+      await storage.write(StorageKeys.token, newAccessToken);
+    } catch (error) {
+      if (_isRejectedRefresh(error)) {
+        await _expireSession();
+      }
+      rethrow;
+    } finally {
+      _refreshFuture = null;
+    }
+  }
+
+  bool _shouldRefresh(String token) {
+    try {
+      return JwtDecoder.isExpired(token) ||
+          JwtDecoder.getRemainingTime(token).inSeconds < 60;
+    } catch (_) {
+      return true;
+    }
+  }
+
+  bool _isRejectedRefresh(Object error) {
+    if (error is! DioException) return false;
+    final statusCode = error.response?.statusCode;
+    return statusCode == 400 || statusCode == 401 || statusCode == 403;
+  }
+
+  Future<void> _expireSession() async {
+    await storage.delete(StorageKeys.token);
+    await storage.delete(StorageKeys.refreshToken);
+    await onSessionExpired?.call();
   }
 }

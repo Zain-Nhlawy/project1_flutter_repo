@@ -24,8 +24,8 @@ class AuthRepositoryImpl implements AuthRepository {
 
   Future<void> _saveTokens(LoginResponse res) async {
     if (res.accessToken != null && res.refreshToken != null) {
-      await storage.write(StorageKeys.token, res.accessToken!);
       await storage.write(StorageKeys.refreshToken, res.refreshToken!);
+      await storage.write(StorageKeys.token, res.accessToken!);
     }
   }
 
@@ -102,9 +102,12 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, void>> logout() {
     return _handle(() async {
-      await remote.logout();
-      await storage.delete(StorageKeys.token);
-      await storage.delete(StorageKeys.refreshToken);
+      try {
+        await remote.logout();
+      } finally {
+        await storage.delete(StorageKeys.token);
+        await storage.delete(StorageKeys.refreshToken);
+      }
     });
   }
 

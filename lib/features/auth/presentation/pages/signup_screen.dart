@@ -6,7 +6,6 @@ import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/features/auth/domain/validators/password_validator.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_state.dart';
-import 'package:project1/features/auth/presentation/pages/login_screen.dart';
 import 'package:project1/features/auth/presentation/pages/verify_email_screen.dart';
 import 'package:project1/features/auth/presentation/widgets/custom_text_field.dart';
 import 'package:project1/features/auth/presentation/widgets/date_picker_field.dart';
@@ -276,12 +275,9 @@ class SignupScreen extends StatelessWidget {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.pushReplacement(
+                                    Navigator.of(
                                       context,
-                                      MaterialPageRoute(
-                                        builder: (_) => const LoginScreen(),
-                                      ),
-                                    );
+                                    ).popUntil((route) => route.isFirst);
                                   },
                                   child: Text(
                                     localizations.logInLink,

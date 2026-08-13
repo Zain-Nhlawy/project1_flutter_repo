@@ -15,7 +15,7 @@ import 'package:project1/features/auth/domain/use_case/turnOn2FA_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/verify2FA_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/verify_email_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/google_login_usecase.dart';
-import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
+import 'package:project1/features/auth/presentation/cubit/session_cubit.dart';
 import 'package:project1/features/auth/upload_photo/domain/use_case/upload_photo_usecase.dart';
 import 'auth_state.dart';
 
@@ -29,7 +29,7 @@ class AuthCubit extends Cubit<AuthState> {
   final ChangePasswordUseCase changePasswordUseCase;
   final GoogleLoginUseCase googleLoginUseCase;
   final ResendVerificationEmailUseCase resendVerificationEmailUseCase;
-  final UserCubit userCubit;
+  final SessionCubit sessionCubit;
   final UploadPhotoUseCase uploadPhotoUseCase;
   final Verify2FAUseCase verify2FAUseCase;
   final Generate2FAUseCase generate2FAUseCase;
@@ -48,7 +48,7 @@ class AuthCubit extends Cubit<AuthState> {
     required this.changePasswordUseCase,
     required this.googleLoginUseCase,
     required this.resendVerificationEmailUseCase,
-    required this.userCubit,
+    required this.sessionCubit,
     required this.uploadPhotoUseCase,
     required this.verify2FAUseCase,
     required this.generate2FAUseCase,
@@ -99,8 +99,13 @@ class AuthCubit extends Cubit<AuthState> {
         emit(LoginRequires2FA(res.twoFactorToken!));
         return;
       }
-      await userCubit.getMe();
-      emit(LoginSuccess(res.user));
+      final user = res.user;
+      if (user == null) {
+        emit(const AuthError(['Unable to load the signed-in user.']));
+        return;
+      }
+      sessionCubit.startSession(user);
+      emit(LoginSuccess(user));
     });
   }
 
@@ -122,8 +127,13 @@ class AuthCubit extends Cubit<AuthState> {
       }
       final result = await googleLoginUseCase(idToken);
       result.fold((failure) => _emitFailure(failure), (res) async {
-        await userCubit.getMe();
-        emit(LoginSuccess(res.user));
+        final user = res.user;
+        if (user == null) {
+          emit(const AuthError(['Unable to load the signed-in user.']));
+          return;
+        }
+        sessionCubit.startSession(user);
+        emit(LoginSuccess(user));
       });
     } catch (e) {
       emit(AuthError([e.toString()]));
@@ -133,6 +143,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> logout() async {
     emit(AuthLoading());
     final result = await logoutUseCase();
+    await sessionCubit.clearSession();
     result.fold((failure) => _emitFailure(failure), (_) => emit(AuthInitial()));
   }
 
@@ -201,8 +212,13 @@ class AuthCubit extends Cubit<AuthState> {
       tfaCode: tfaCode,
     );
     result.fold((failure) => _emitFailure(failure), (res) async {
-      await userCubit.getMe();
-      emit(LoginSuccess(res.user));
+      final user = res.user;
+      if (user == null) {
+        emit(const AuthError(['Unable to load the signed-in user.']));
+        return;
+      }
+      sessionCubit.startSession(user);
+      emit(LoginSuccess(user));
     });
   }
 

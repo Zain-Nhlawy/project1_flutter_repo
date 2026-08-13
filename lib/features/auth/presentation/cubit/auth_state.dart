@@ -1,3 +1,5 @@
+import 'package:project1/features/auth/domain/entities/user_entity.dart';
+
 abstract class AuthState {
   const AuthState();
 }
@@ -23,7 +25,7 @@ class RegisterSuccess extends AuthState {
 }
 
 class LoginSuccess extends AuthState {
-  final dynamic user;
+  final UserEntity user;
 
   const LoginSuccess(this.user);
 }

@@ -46,6 +46,7 @@ import 'package:project1/features/auth/domain/use_case/turnOn2FA_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/verify2FA_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/verify_email_usecase.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:project1/features/auth/presentation/cubit/session_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:project1/features/auth/upload_photo/data/data_sources/upload_photo_remote_datasource.dart';
 import 'package:project1/features/auth/upload_photo/data/repository/upload_photo_repository_impl.dart';
@@ -249,6 +250,11 @@ void setupDI() {
         );
         return res.data['data'];
       },
+      onSessionExpired: () async {
+        if (getIt.isRegistered<SessionCubit>()) {
+          getIt<SessionCubit>().markSessionExpired();
+        }
+      },
     ),
   );
   ////////////////////////Dio+refresh////////////////////////
@@ -324,6 +330,13 @@ void setupDI() {
       updateProfileImageUseCase: getIt<UpdateProfileImageUseCase>(),
     ),
   );
+  getIt.registerLazySingleton(
+    () => SessionCubit(
+      storage: getIt<AppSecureStorage>(),
+      getMeUseCase: getIt<GetMeUseCase>(),
+      userCubit: getIt<UserCubit>(),
+    ),
+  );
   getIt.registerFactory(
     () => AuthCubit(
       registerUseCase: getIt<RegisterUseCase>(),
@@ -335,7 +348,7 @@ void setupDI() {
       changePasswordUseCase: getIt<ChangePasswordUseCase>(),
       googleLoginUseCase: getIt<GoogleLoginUseCase>(),
       resendVerificationEmailUseCase: getIt<ResendVerificationEmailUseCase>(),
-      userCubit: getIt<UserCubit>(),
+      sessionCubit: getIt<SessionCubit>(),
       uploadPhotoUseCase: getIt<UploadPhotoUseCase>(),
       verify2FAUseCase: getIt<Verify2FAUseCase>(),
       generate2FAUseCase: getIt<Generate2FAUseCase>(),

@@ -6,10 +6,11 @@ import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/features/auth/domain/validators/password_validator.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_state.dart';
+import 'package:project1/features/auth/presentation/cubit/session_cubit.dart';
+import 'package:project1/features/auth/presentation/pages/session_gate.dart';
 import 'package:project1/features/auth/presentation/widgets/custom_text_field.dart';
 import 'package:project1/features/auth/presentation/widgets/password_requirements_hint.dart';
 import 'package:project1/l10n/app_localizations.dart';
-import 'package:project1/features/auth/presentation/pages/login_screen.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   final String token;
@@ -76,10 +77,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               content: Text(state.message),
               actions: [
                 TextButton(
-                  onPressed: () {
+                  onPressed: () async {
                     Navigator.pop(context);
+                    await context.read<SessionCubit>().clearSession();
+                    if (!context.mounted) return;
                     Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (_) => const LoginScreen()),
+                      MaterialPageRoute(builder: (_) => const SessionGate()),
                       (route) => false,
                     );
                   },

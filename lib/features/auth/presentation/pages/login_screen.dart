@@ -8,7 +8,6 @@ import 'package:project1/features/auth/presentation/cubit/auth_state.dart';
 import 'package:project1/features/auth/presentation/pages/forgot_password_screen.dart';
 import 'package:project1/features/auth/presentation/pages/signup_screen.dart';
 import 'package:project1/features/auth/presentation/widgets/custom_text_field.dart';
-import 'package:project1/features/home/presentation/pages/navigations_tabs.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:project1/features/auth/presentation/pages/verify_2fa_screen.dart';
 
@@ -70,14 +69,6 @@ class _LoginScreenState extends State<LoginScreen> {
             context,
             localizations.loginSuccessful,
           );
-          Future.delayed(const Duration(milliseconds: 500), () {
-            if (mounted) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (_) => const NavigationsTabs()),
-              );
-            }
-          });
         } else if (state is AuthError && state.errors.isNotEmpty) {
           SnackbarTheme().newSnackBarError(
             context,
