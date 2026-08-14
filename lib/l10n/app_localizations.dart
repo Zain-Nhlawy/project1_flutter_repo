@@ -1145,7 +1145,7 @@ abstract class AppLocalizations {
   /// No description provided for @sections.
   ///
   /// In en, this message translates to:
-  /// **'Departments'**
+  /// **'Sections'**
   String get sections;
 
   /// No description provided for @groups.
@@ -1403,7 +1403,7 @@ abstract class AppLocalizations {
   /// No description provided for @sectionName.
   ///
   /// In en, this message translates to:
-  /// **'Department name'**
+  /// **'Section name'**
   String get sectionName;
 
   /// No description provided for @save.

@@ -554,7 +554,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get department => 'Department';
 
   @override
-  String get sections => 'Departments';
+  String get sections => 'Sections';
 
   @override
   String get groups => 'Groups';
@@ -687,7 +687,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get departmentName => 'Department name';
 
   @override
-  String get sectionName => 'Department name';
+  String get sectionName => 'Section name';
 
   @override
   String get save => 'Save';
