@@ -4,6 +4,7 @@ class ExamEntity {
   final String title;
   final int numberOfQuestions;
   final int durationMinutes;
+  final int passingScore;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -13,6 +14,7 @@ class ExamEntity {
     required this.title,
     required this.numberOfQuestions,
     required this.durationMinutes,
+    required this.passingScore,
     required this.createdAt,
     required this.updatedAt,
   });

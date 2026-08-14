@@ -27,15 +27,12 @@ class DiscussionRemoteDataSource {
         ),
       );
 
-      print('🟢 CREATE QUESTION RESPONSE: ${res.data}');
-
       final data = res.data as Map<String, dynamic>;
 
       return DiscussionQuestionModel.fromJson(
         data['data'] as Map<String, dynamic>,
       );
     } on DioException catch (e) {
-      print('🔴 CREATE QUESTION ERROR: ${e.response?.data}');
       throw mapDioException(e);
     }
   }
@@ -56,13 +53,10 @@ class DiscussionRemoteDataSource {
         ),
       );
 
-      print('🟢 GET QUESTIONS RESPONSE: ${res.data}');
-
       return PaginatedDiscussionQuestions.fromJson(
         res.data as Map<String, dynamic>,
       );
     } on DioException catch (e) {
-      print('🔴 GET QUESTIONS ERROR: ${e.response?.data}');
       throw mapDioException(e);
     }
   }
@@ -82,15 +76,12 @@ class DiscussionRemoteDataSource {
         ),
       );
 
-      print('🟢 GET QUESTION RESPONSE: ${res.data}');
-
       final data = res.data as Map<String, dynamic>;
 
       return DiscussionQuestionModel.fromJson(
         data['data'] as Map<String, dynamic>,
       );
     } on DioException catch (e) {
-      print('🔴 GET QUESTION ERROR: ${e.response?.data}');
       throw mapDioException(e);
     }
   }
@@ -111,15 +102,12 @@ class DiscussionRemoteDataSource {
         ),
       );
 
-      print('🟢 CREATE ANSWER RESPONSE: ${res.data}');
-
       final data = res.data as Map<String, dynamic>;
 
       return DiscussionAnswerModel.fromJson(
         data['data'] as Map<String, dynamic>,
       );
     } on DioException catch (e) {
-      print('🔴 CREATE ANSWER ERROR: ${e.response?.data}');
       throw mapDioException(e);
     }
   }
@@ -140,13 +128,10 @@ class DiscussionRemoteDataSource {
         ),
       );
 
-      print('🟢 GET ANSWERS RESPONSE: ${res.data}');
-
       return PaginatedDiscussionAnswers.fromJson(
         res.data as Map<String, dynamic>,
       );
     } on DioException catch (e) {
-      print('🔴 GET ANSWERS ERROR: ${e.response?.data}');
       throw mapDioException(e);
     }
   }
@@ -166,16 +151,112 @@ class DiscussionRemoteDataSource {
         ),
       );
 
-      print('🟢 GET ANSWER RESPONSE: ${res.data}');
-
       final data = res.data as Map<String, dynamic>;
 
       return DiscussionAnswerModel.fromJson(
         data['data'] as Map<String, dynamic>,
       );
     } on DioException catch (e) {
-      print('🔴 GET ANSWER ERROR: ${e.response?.data}');
       throw mapDioException(e);
     }
   }
+
+  Future<DiscussionQuestionModel> updateQuestion({
+  required String lessonId,
+  required String questionId,
+  required String content,
+  required String demoId,
+}) async {
+  try {
+    final res = await dioClient.dio.patch(
+      '/lessons/$lessonId/discussionQuestions/$questionId',
+      data: {
+        'content': content,
+      },
+      options: Options(
+        headers: {
+          'x-demo-id': demoId,
+        },
+      ),
+    );
+
+
+    final data = res.data as Map<String, dynamic>;
+
+    return DiscussionQuestionModel.fromJson(
+      data['data'] as Map<String, dynamic>,
+    );
+  } on DioException catch (e) {
+    throw mapDioException(e);
+  }
+}
+
+Future<void> deleteQuestion({
+  required String lessonId,
+  required String questionId,
+  required String demoId,
+}) async {
+  try {
+    await dioClient.dio.delete(
+      '/lessons/$lessonId/discussionQuestions/$questionId',
+      options: Options(
+        headers: {
+          'x-demo-id': demoId,
+        },
+      ),
+    );
+
+  } on DioException catch (e) {
+    throw mapDioException(e);
+  }
+}
+
+Future<DiscussionAnswerModel> updateAnswer({
+  required String questionId,
+  required String answerId,
+  required String content,
+  required String demoId,
+}) async {
+  try {
+    final res = await dioClient.dio.patch(
+      '/discussionQuestions/$questionId/answers/$answerId',
+      data: {
+        'content': content,
+      },
+      options: Options(
+        headers: {
+          'x-demo-id': demoId,
+        },
+      ),
+    );
+
+    final data = res.data as Map<String, dynamic>;
+
+    return DiscussionAnswerModel.fromJson(
+      data['data'] as Map<String, dynamic>,
+    );
+  } on DioException catch (e) {
+    throw mapDioException(e);
+  }
+}
+
+Future<void> deleteAnswer({
+  required String questionId,
+  required String answerId,
+  required String demoId,
+}) async {
+  try {
+    await dioClient.dio.delete(
+      '/discussionQuestions/$questionId/answers/$answerId',
+      options: Options(
+        headers: {
+          'x-demo-id': demoId,
+        },
+      ),
+    );
+
+  } on DioException catch (e) {
+    throw mapDioException(e);
+  }
+}
 }

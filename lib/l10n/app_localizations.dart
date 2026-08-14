@@ -524,11 +524,17 @@ abstract class AppLocalizations {
   /// **'This plan limit has been reached , please upgrade the plan'**
   String get limitReachedSnackBar;
 
-  /// No description provided for @addSection.
+  /// No description provided for @addDepartment.
   ///
   /// In en, this message translates to:
-  /// **'Add Department'**
-  String get addSection;
+  /// **'Add'**
+  String get addDepartment;
+
+  /// No description provided for @noDepartmentFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No department found'**
+  String get noDepartmentFound;
 
   /// No description provided for @noSectionFound.
   ///
@@ -1088,6 +1094,12 @@ abstract class AppLocalizations {
   /// **'By Ahmad Ahmad'**
   String get byAhmadAhmad;
 
+  /// No description provided for @department.
+  ///
+  /// In en, this message translates to:
+  /// **'Department'**
+  String get department;
+
   /// No description provided for @sections.
   ///
   /// In en, this message translates to:
@@ -1100,16 +1112,28 @@ abstract class AppLocalizations {
   /// **'Groups'**
   String get groups;
 
+  /// No description provided for @yourDepartments.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Departments'**
+  String get yourDepartments;
+
   /// No description provided for @yourSections.
   ///
   /// In en, this message translates to:
   /// **'Your Departments'**
   String get yourSections;
 
+  /// No description provided for @restrictedDepartments.
+  ///
+  /// In en, this message translates to:
+  /// **'Restricted Departments'**
+  String get restrictedDepartments;
+
   /// No description provided for @restrictedSections.
   ///
   /// In en, this message translates to:
-  /// **'Restricted Sections'**
+  /// **'Restricted Departments'**
   String get restrictedSections;
 
   /// No description provided for @myGroups.
@@ -1265,7 +1289,7 @@ abstract class AppLocalizations {
   /// No description provided for @manageSections.
   ///
   /// In en, this message translates to:
-  /// **'Manage Departments'**
+  /// **'Manage Sections'**
   String get manageSections;
 
   /// No description provided for @saveChanges.
@@ -1292,10 +1316,16 @@ abstract class AppLocalizations {
   /// **'Courses in Progress'**
   String get coursesInProgress;
 
+  /// No description provided for @addSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Section'**
+  String get addSection;
+
   /// No description provided for @noSectionsYet.
   ///
   /// In en, this message translates to:
-  /// **'No departments yet'**
+  /// **'No sections yet'**
   String get noSectionsYet;
 
   /// No description provided for @addLesson.
@@ -1322,10 +1352,16 @@ abstract class AppLocalizations {
   /// **'Rename Section'**
   String get renameSection;
 
+  /// No description provided for @departmentName.
+  ///
+  /// In en, this message translates to:
+  /// **'Department name'**
+  String get departmentName;
+
   /// No description provided for @sectionName.
   ///
   /// In en, this message translates to:
-  /// **'Section name'**
+  /// **'Department name'**
   String get sectionName;
 
   /// No description provided for @save.
@@ -1337,8 +1373,14 @@ abstract class AppLocalizations {
   /// No description provided for @deleteSection.
   ///
   /// In en, this message translates to:
-  /// **'Delete Department'**
+  /// **'Delete Section'**
   String get deleteSection;
+
+  /// No description provided for @deleteDepartmantConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this department? This action cannot be undone.'**
+  String get deleteDepartmantConfirmation;
 
   /// No description provided for @deleteSectionConfirmation.
   ///
@@ -1910,10 +1952,16 @@ abstract class AppLocalizations {
   /// **'Enter section name'**
   String get enterSectionName;
 
+  /// No description provided for @departmentDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Department Description'**
+  String get departmentDescription;
+
   /// No description provided for @sectionDescription.
   ///
   /// In en, this message translates to:
-  /// **'Section Description'**
+  /// **'Department Description'**
   String get sectionDescription;
 
   /// No description provided for @enterSectionDescription.
@@ -3337,6 +3385,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Upload failed'**
   String get uploadFailed;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// No description provided for @deleteQuestionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Question'**
+  String get deleteQuestionTitle;
+
+  /// No description provided for @deleteQuestionConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this question? This action cannot be undone.'**
+  String get deleteQuestionConfirm;
+
+  /// No description provided for @deleteAnswerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Answer'**
+  String get deleteAnswerTitle;
+
+  /// No description provided for @deleteAnswerConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this answer? This action cannot be undone.'**
+  String get deleteAnswerConfirm;
 }
 
 class _AppLocalizationsDelegate

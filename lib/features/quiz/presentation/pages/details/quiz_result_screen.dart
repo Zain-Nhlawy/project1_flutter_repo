@@ -23,26 +23,21 @@ class QuizResultScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
 
-    final percent = score / 100;
-
-    final isGreat = percent >= 0.8;
-    final isGood = percent >= 0.5;
-
-    final title = isGreat
+    final passed = score >= exam.passingScore;
+    
+    final title = passed
         ? localizations.excellent
-        : isGood
-            ? localizations.goodJob
-            : localizations.keepPracticing;
+        : localizations.keepPracticing;
 
-    final subtitle = percent >= 0.6
+    final subtitle = passed
         ? localizations.youDidGreat
         : localizations.keepPracticingYoullImprove;
 
-    final image = percent >= 0.6
+    final image = passed
         ? "assets/images/celebrating3.png"
         : "assets/images/sad3.png";
 
-    final accentColor = percent >= 0.6
+    final accentColor = passed
         ? AppColors.primaryOf(context)
         : AppColors.error;
 
@@ -98,6 +93,39 @@ class QuizResultScreen extends StatelessWidget {
                           fontFamily: AppTextStyles.fontFamily,
                           color: AppColors.textSecondaryOf(context),
                           fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 22),
+
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: accentColor.withOpacity(0.08),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: accentColor.withOpacity(0.2)),
+                ),
+                child: Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: passed ? '✓ Passed ' : '✗ Failed ',
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          fontFamily: AppTextStyles.fontFamily,
+                          color: accentColor,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      TextSpan(
+                        text: '(Required: ${exam.passingScore}%)',
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          fontFamily: AppTextStyles.fontFamily,
+                          color: AppColors.textSecondaryOf(context),
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ],

@@ -7,6 +7,7 @@ class ExamModel extends ExamEntity {
     required super.title,
     required super.numberOfQuestions,
     required super.durationMinutes,
+    required super.passingScore,
     required super.createdAt,
     required super.updatedAt,
   });
@@ -18,6 +19,7 @@ class ExamModel extends ExamEntity {
       title: json['title'] as String? ?? '',
       numberOfQuestions: json['numberOfQuestions'] as int? ?? 0,
       durationMinutes: json['durationMinutes'] as int? ?? 0,
+      passingScore: json['passingScore'] as int? ?? 0,
       createdAt: DateTime.tryParse(json['createdAt'] as String? ?? '') ??
           DateTime.now(),
       updatedAt: DateTime.tryParse(json['updatedAt'] as String? ?? '') ??
@@ -30,6 +32,7 @@ class ExamModel extends ExamEntity {
       'title': title,
       'numberOfQuestions': numberOfQuestions,
       'durationMinutes': durationMinutes,
+      'passingScore': passingScore,
     };
   }
 }

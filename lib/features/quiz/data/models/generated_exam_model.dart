@@ -8,6 +8,7 @@ class GeneratedExamModel extends GeneratedExamEntity {
     required super.title,
     required super.durationMinutes,
     required super.numberOfQuestions,
+    required super.passingScore,
     required List<ExamAttemptQuestionModel> super.questions,
   });
 
@@ -18,6 +19,7 @@ class GeneratedExamModel extends GeneratedExamEntity {
       title: json['title'] as String? ?? '',
       durationMinutes: json['durationMinutes'] as int? ?? 0,
       numberOfQuestions: json['numberOfQuestions'] as int? ?? 0,
+      passingScore: json['passingScore'] as int? ?? 0,
       questions: (json['questions'] as List<dynamic>? ?? [])
           .map((e) =>
               ExamAttemptQuestionModel.fromJson(e as Map<String, dynamic>))

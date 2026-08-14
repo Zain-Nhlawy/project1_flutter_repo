@@ -14,6 +14,7 @@ class ExamRemoteDataSource {
     required String title,
     required int numberOfQuestions,
     required int durationMinutes,
+    required int passingScore,
   }) async {
     try {
       final res = await dioClient.dio.post(
@@ -22,6 +23,7 @@ class ExamRemoteDataSource {
           'title': title,
           'numberOfQuestions': numberOfQuestions,
           'durationMinutes': durationMinutes,
+          'passingScore': passingScore,
         },
       );
       final data = res.data as Map<String, dynamic>;
@@ -67,6 +69,7 @@ class ExamRemoteDataSource {
     required String title,
     required int numberOfQuestions,
     required int durationMinutes,
+    required int passingScore,
   }) async {
     try {
       final res = await dioClient.dio.patch(
@@ -75,6 +78,7 @@ class ExamRemoteDataSource {
           'title': title,
           'numberOfQuestions': numberOfQuestions,
           'durationMinutes': durationMinutes,
+          'passingScore': passingScore,
         },
       );
       final data = res.data as Map<String, dynamic>;

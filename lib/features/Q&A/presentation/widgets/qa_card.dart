@@ -12,23 +12,36 @@ import 'package:project1/l10n/app_localizations.dart';
 class QaCard extends StatefulWidget {
   final String questionId;
   final String demoId;
+  final String lessonId;
   final String userName;
   final String? avatarUrl;
   final String question;
   final DateTime createdAt;
 
+  final bool isOwner;
+
+  final String? currentUserId;
+
   final Future<void> Function(String questionId, String content)?
       onSubmitReply;
+
+  final VoidCallback? onQuestionDeleted;
+  final void Function(String newContent)? onQuestionUpdated;
 
   const QaCard({
     super.key,
     required this.questionId,
     required this.demoId,
+    required this.lessonId,
     required this.userName,
     required this.avatarUrl,
     required this.question,
     required this.createdAt,
+    this.isOwner = false,
+    this.currentUserId,
     this.onSubmitReply,
+    this.onQuestionDeleted,
+    this.onQuestionUpdated,
   });
 
   @override
@@ -38,10 +51,34 @@ class QaCard extends StatefulWidget {
 class _QaCardState extends State<QaCard> {
   bool _expanded = false;
   bool _loadingReplies = false;
+
   bool _replying = false;
   bool _postingReply = false;
+  DiscussionAnswerModel? _editingAnswer;
+  final TextEditingController _replyController = TextEditingController();
+
+  bool _editingQuestion = false;
+  bool _savingQuestion = false;
+  bool _deletingQuestion = false;
+  late TextEditingController _editController;
+
+  late String _questionText;
 
   List<DiscussionAnswerModel>? _replies;
+
+  @override
+  void initState() {
+    super.initState();
+    _questionText = widget.question;
+    _editController = TextEditingController(text: _questionText);
+  }
+
+  @override
+  void dispose() {
+    _editController.dispose();
+    _replyController.dispose();
+    super.dispose();
+  }
 
   Future<void> _toggle() async {
     setState(() => _expanded = !_expanded);
@@ -63,31 +100,48 @@ class _QaCardState extends State<QaCard> {
     });
   }
 
-  void _toggleReply() {
+  void _toggleReplyComposer() {
     setState(() {
-      _replying = !_replying;
+      if (_replying) {
+        _replying = false;
+        _editingAnswer = null;
+      } else {
+        _replying = true;
+        _editingAnswer = null;
+        _replyController.clear();
+      }
     });
   }
 
-  Future<void> _submitReply(String content) async {
+  void _startEditAnswer(DiscussionAnswerModel answer) {
+    setState(() {
+      _editingAnswer = answer;
+      _replyController.text = answer.content;
+      _replying = true;
+    });
+  }
+
+  Future<void> _handleComposerSubmit(String content) async {
+    if (_editingAnswer != null) {
+      await _saveAnswerEdit(content);
+    } else {
+      await _submitNewReply(content);
+    }
+  }
+
+  Future<void> _submitNewReply(String content) async {
     if (widget.onSubmitReply == null || _postingReply) return;
 
-    setState(() {
-      _postingReply = true;
-    });
+    setState(() => _postingReply = true);
 
     try {
-      await widget.onSubmitReply!(
-        widget.questionId,
-        content,
-      );
+      await widget.onSubmitReply!(widget.questionId, content);
 
       if (!mounted) return;
 
       setState(() {
         _replying = false;
         _postingReply = false;
-        _replies = null;
       });
 
       if (!_expanded) {
@@ -106,11 +160,122 @@ class _QaCardState extends State<QaCard> {
       }
     } catch (_) {
       if (!mounted) return;
-
-      setState(() {
-        _postingReply = false;
-      });
+      setState(() => _postingReply = false);
     }
+  }
+
+  Future<void> _saveAnswerEdit(String content) async {
+    final answer = _editingAnswer;
+    if (answer == null || _postingReply) return;
+
+    setState(() => _postingReply = true);
+
+    final updated = await context.read<DiscussionCubit>().updateAnswer(
+          questionId: answer.questionId,
+          answerId: answer.id,
+          content: content,
+          demoId: widget.demoId,
+        );
+
+    if (!mounted) return;
+
+    setState(() {
+      _postingReply = false;
+      if (updated != null) {
+        final i = _replies?.indexWhere((a) => a.id == answer.id) ?? -1;
+        if (i != -1) {
+          _replies![i] = updated;
+        }
+        _replying = false;
+        _editingAnswer = null;
+      }
+    });
+  }
+
+  void _startEditQuestion() {
+    setState(() {
+      _editController.text = _questionText;
+      _editingQuestion = true;
+    });
+  }
+
+  void _cancelEditQuestion() {
+    setState(() => _editingQuestion = false);
+  }
+
+  Future<void> _saveQuestionEdit() async {
+    final newContent = _editController.text.trim();
+    if (newContent.isEmpty || _savingQuestion) return;
+
+    setState(() => _savingQuestion = true);
+
+    final updated = await context.read<DiscussionCubit>().updateQuestion(
+          lessonId: widget.lessonId,
+          questionId: widget.questionId,
+          content: newContent,
+          demoId: widget.demoId,
+        );
+
+    if (!mounted) return;
+
+    setState(() {
+      _savingQuestion = false;
+      if (updated != null) {
+        _questionText = updated.content;
+        _editingQuestion = false;
+        widget.onQuestionUpdated?.call(_questionText);
+      }
+    });
+  }
+
+  Future<void> _confirmDeleteQuestion() async {
+    final localizations = AppLocalizations.of(context)!;
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(localizations.deleteQuestionTitle),
+        content: Text(localizations.deleteQuestionConfirm),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(localizations.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(
+              localizations.delete,
+              style: const TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true) return;
+
+    setState(() => _deletingQuestion = true);
+
+    final success = await context.read<DiscussionCubit>().deleteQuestion(
+          lessonId: widget.lessonId,
+          questionId: widget.questionId,
+          demoId: widget.demoId,
+        );
+
+    if (!mounted) return;
+
+    if (success) {
+      widget.onQuestionDeleted?.call();
+    } else {
+      setState(() => _deletingQuestion = false);
+    }
+  }
+
+  String _repliesLabel(AppLocalizations localizations) {
+    if (_replies == null) {
+      return localizations.answers;
+    }
+    return '${_replies!.length} ${localizations.answers}';
   }
 
   @override
@@ -118,6 +283,10 @@ class _QaCardState extends State<QaCard> {
     final localizations = AppLocalizations.of(context)!;
 
     final replies = _replies ?? const <DiscussionAnswerModel>[];
+
+    if (_deletingQuestion) {
+      return const SizedBox.shrink();
+    }
 
     return Container(
       margin: const EdgeInsets.only(bottom: 14),
@@ -163,19 +332,98 @@ class _QaCardState extends State<QaCard> {
                   ],
                 ),
               ),
+              if (widget.isOwner && !_editingQuestion)
+                PopupMenuButton<String>(
+                  icon: Icon(
+                    Icons.more_vert,
+                    color: AppColors.textSecondaryOf(context),
+                  ),
+                  onSelected: (value) {
+                    if (value == 'edit') {
+                      _startEditQuestion();
+                    } else if (value == 'delete') {
+                      _confirmDeleteQuestion();
+                    }
+                  },
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      value: 'edit',
+                      child: Row(
+                        children: [
+                          const Icon(Icons.edit_outlined, size: 18),
+                          const SizedBox(width: 8),
+                          Text(localizations.edit),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: 'delete',
+                      child: Row(
+                        children: [
+                          const Icon(Icons.delete_outline,
+                              size: 18, color: Colors.red),
+                          const SizedBox(width: 8),
+                          Text(
+                            localizations.delete,
+                            style: const TextStyle(color: Colors.red),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
             ],
           ),
 
           const SizedBox(height: 14),
 
-          Text(
-            widget.question,
-            style: AppTextStyles.bodyLarge.copyWith(
-              fontFamily: AppTextStyles.fontFamily,
-              color: AppColors.textPrimaryOf(context),
-              height: 1.4,
+          if (_editingQuestion) ...[
+            TextField(
+              controller: _editController,
+              maxLines: null,
+              autofocus: true,
+              style: AppTextStyles.bodyLarge.copyWith(
+                fontFamily: AppTextStyles.fontFamily,
+                color: AppColors.textPrimaryOf(context),
+                height: 1.4,
+              ),
+              decoration: InputDecoration(
+                isDense: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
             ),
-          ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: _savingQuestion ? null : _cancelEditQuestion,
+                  child: Text(localizations.cancel),
+                ),
+                const SizedBox(width: 4),
+                ElevatedButton(
+                  onPressed: _savingQuestion ? null : _saveQuestionEdit,
+                  child: _savingQuestion
+                      ? const SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : Text(localizations.save),
+                ),
+              ],
+            ),
+          ] else
+            Text(
+              _questionText,
+              style: AppTextStyles.bodyLarge.copyWith(
+                fontFamily: AppTextStyles.fontFamily,
+                color: AppColors.textPrimaryOf(context),
+                height: 1.4,
+              ),
+            ),
 
           const SizedBox(height: 12),
 
@@ -183,7 +431,7 @@ class _QaCardState extends State<QaCard> {
             children: [
               InkWell(
                 borderRadius: BorderRadius.circular(8),
-                onTap: _toggleReply,
+                onTap: _toggleReplyComposer,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 6,
@@ -193,9 +441,7 @@ class _QaCardState extends State<QaCard> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(
-                        _replying
-                            ? Icons.close
-                            : Icons.reply_outlined,
+                        _replying ? Icons.close : Icons.reply_outlined,
                         size: 18,
                         color: AppColors.primaryOf(context),
                       ),
@@ -235,11 +481,7 @@ class _QaCardState extends State<QaCard> {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        _expanded
-                            ? localizations.hideReplies
-                            : (_replies == null
-                                ? localizations.viewReplies
-                                : '${replies.length} ${localizations.answers}'),
+                        _repliesLabel(localizations),
                         style: AppTextStyles.bodyMedium.copyWith(
                           fontFamily: AppTextStyles.fontFamily,
                           fontWeight: FontWeight.w600,
@@ -255,11 +497,13 @@ class _QaCardState extends State<QaCard> {
 
           if (_replying) ...[
             const SizedBox(height: 8),
-
             DiscussionComposer(
-              hintText: 'Write a reply...',
+              controller: _replyController,
+              hintText: _editingAnswer != null
+                  ? 'Edit your reply...'
+                  : 'Write a reply...',
               isPosting: _postingReply,
-              onSubmit: _submitReply,
+              onSubmit: _handleComposerSubmit,
             ),
           ],
 
@@ -286,19 +530,36 @@ class _QaCardState extends State<QaCard> {
                                 ),
                                 child: Text(
                                   localizations.noAnswersYet,
-                                  style:
-                                      AppTextStyles.bodyMedium.copyWith(
-                                    fontFamily:
-                                        AppTextStyles.fontFamily,
-                                    color: AppColors
-                                        .textSecondaryOf(context),
+                                  style: AppTextStyles.bodyMedium.copyWith(
+                                    fontFamily: AppTextStyles.fontFamily,
+                                    color:
+                                        AppColors.textSecondaryOf(context),
                                   ),
                                 ),
                               )
                             : Column(
                                 children: replies
                                     .map(
-                                      (r) => ReplyTile(reply: r),
+                                      (r) => ReplyTile(
+                                        key: ValueKey(r.id),
+                                        reply: r,
+                                        demoId: widget.demoId,
+                                        isOwner: widget.currentUserId !=
+                                                null &&
+                                            r.authorId ==
+                                                widget.currentUserId,
+                                        onEdit: () => _startEditAnswer(r),
+                                        onDeleted: () {
+                                          setState(() {
+                                            _replies!.removeWhere(
+                                                (a) => a.id == r.id);
+                                            if (_editingAnswer?.id == r.id) {
+                                              _editingAnswer = null;
+                                              _replying = false;
+                                            }
+                                          });
+                                        },
+                                      ),
                                     )
                                     .toList(),
                               ),

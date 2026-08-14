@@ -5,6 +5,8 @@ import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/features/attachment/domain/entities/lesson_attachment_entity.dart';
 import 'package:project1/features/attachment/presentation/cubit/lesson_attachment_cubit.dart';
 import 'package:project1/features/attachment/presentation/widgets/details/attachments_tab.dart';
+import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
+import 'package:project1/features/auth/presentation/cubit/user_state.dart';
 import 'package:project1/features/q&a/data/models/discussion_question_model.dart';
 import 'package:project1/features/q&a/presentation/cubit/discussion_cubit.dart';
 import 'package:project1/features/q&a/presentation/widgets/discussion_composer.dart';
@@ -80,6 +82,21 @@ class _LessonTabsState extends State<LessonTabs> {
     await _loadQuestions();
   }
 
+  void _onQuestionDeleted(String questionId) {
+    setState(() {
+      _questions.removeWhere((q) => q.id == questionId);
+    });
+  }
+
+  void _onQuestionUpdated(String questionId, String newContent) {
+    setState(() {
+      final i = _questions.indexWhere((q) => q.id == questionId);
+      if (i != -1) {
+        _questions[i] = _questions[i].copyWith(content: newContent);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
@@ -96,8 +113,7 @@ class _LessonTabsState extends State<LessonTabs> {
               color: AppColors.backgroundOf(context),
               borderRadius: BorderRadius.circular(15),
               border: Border.all(
-                color: AppColors.borderOf(context)
-                    .withValues(alpha: 0.70),
+                color: AppColors.borderOf(context).withValues(alpha: 0.70),
               ),
             ),
             child: TabBar(
@@ -115,8 +131,7 @@ class _LessonTabsState extends State<LessonTabs> {
                 ],
               ),
               labelColor: Colors.white,
-              unselectedLabelColor:
-                  AppColors.textSecondaryOf(context),
+              unselectedLabelColor: AppColors.textSecondaryOf(context),
               labelStyle: AppTextStyles.label.copyWith(
                 fontWeight: FontWeight.w800,
               ),
@@ -155,6 +170,8 @@ class _LessonTabsState extends State<LessonTabs> {
                   questions: _questions,
                   loading: _loadingQuestions,
                   onPostQuestion: _postQuestion,
+                  onQuestionDeleted: _onQuestionDeleted,
+                  onQuestionUpdated: _onQuestionUpdated,
                 ),
                 _LessonAttachmentsTab(
                   attachments: _attachments,
@@ -175,6 +192,8 @@ class _QuestionsTab extends StatelessWidget {
   final List<DiscussionQuestionModel> questions;
   final bool loading;
   final ValueChanged<String> onPostQuestion;
+  final ValueChanged<String> onQuestionDeleted;
+  final void Function(String questionId, String newContent) onQuestionUpdated;
 
   const _QuestionsTab({
     required this.lessonId,
@@ -182,6 +201,8 @@ class _QuestionsTab extends StatelessWidget {
     required this.questions,
     required this.loading,
     required this.onPostQuestion,
+    required this.onQuestionDeleted,
+    required this.onQuestionUpdated,
   });
 
   @override
@@ -214,18 +235,35 @@ class _QuestionsTab extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final question = questions[index];
 
-                    return QaCard(
-                      questionId: question.id,
-                      demoId: demoId,
-                      userName: question.authorName,
-                      avatarUrl: question.authorAvatarUrl,
-                      question: question.content,
-                      createdAt: question.createdAt,
-                      onSubmitReply: (questionId, content) async {
-                        await context.read<DiscussionCubit>().postAnswer(
-                          questionId: questionId,
-                          content: content,
+                    return BlocBuilder<UserCubit, UserState>(
+                      builder: (context, userState) {
+                        final currentUserId = userState is UserLoaded
+                            ? userState.user.id
+                            : null;
+
+                        return QaCard(
+                          key: ValueKey(question.id),
+                          questionId: question.id,
                           demoId: demoId,
+                          lessonId: lessonId,
+                          userName: question.authorName,
+                          avatarUrl: question.authorAvatarUrl,
+                          question: question.content,
+                          createdAt: question.createdAt,
+                          isOwner: currentUserId != null &&
+                              question.authorId == currentUserId,
+                          currentUserId: currentUserId,
+                          onSubmitReply: (questionId, content) async {
+                            await context.read<DiscussionCubit>().postAnswer(
+                                  questionId: questionId,
+                                  content: content,
+                                  demoId: demoId,
+                                );
+                          },
+                          onQuestionDeleted: () =>
+                              onQuestionDeleted(question.id),
+                          onQuestionUpdated: (newContent) =>
+                              onQuestionUpdated(question.id, newContent),
                         );
                       },
                     );
@@ -324,8 +362,7 @@ class _LessonTabStatus extends StatelessWidget {
                     message ?? '',
                     textAlign: TextAlign.center,
                     style: AppTextStyles.bodyMedium.copyWith(
-                      color:
-                          AppColors.textSecondaryOf(context),
+                      color: AppColors.textSecondaryOf(context),
                       fontWeight: FontWeight.w600,
                       height: 1.4,
                     ),

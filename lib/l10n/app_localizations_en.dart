@@ -236,7 +236,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'This plan limit has been reached , please upgrade the plan';
 
   @override
-  String get addSection => 'Add Department';
+  String get addDepartment => 'Add';
+
+  @override
+  String get noDepartmentFound => 'No department found';
 
   @override
   String get noSectionFound => 'No department found';
@@ -525,16 +528,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get byAhmadAhmad => 'By Ahmad Ahmad';
 
   @override
+  String get department => 'Department';
+
+  @override
   String get sections => 'Departments';
 
   @override
   String get groups => 'Groups';
 
   @override
+  String get yourDepartments => 'Your Departments';
+
+  @override
   String get yourSections => 'Your Departments';
 
   @override
-  String get restrictedSections => 'Restricted Sections';
+  String get restrictedDepartments => 'Restricted Departments';
+
+  @override
+  String get restrictedSections => 'Restricted Departments';
 
   @override
   String get myGroups => 'My Groups';
@@ -615,7 +627,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get manageFaq => 'Manage FAQ';
 
   @override
-  String get manageSections => 'Manage Departments';
+  String get manageSections => 'Manage Sections';
 
   @override
   String get saveChanges => 'Save Changes';
@@ -631,7 +643,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get coursesInProgress => 'Courses in Progress';
 
   @override
-  String get noSectionsYet => 'No departments yet';
+  String get addSection => 'Add Section';
+
+  @override
+  String get noSectionsYet => 'No sections yet';
 
   @override
   String get addLesson => 'Add Lesson';
@@ -646,13 +661,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get renameSection => 'Rename Section';
 
   @override
-  String get sectionName => 'Section name';
+  String get departmentName => 'Department name';
+
+  @override
+  String get sectionName => 'Department name';
 
   @override
   String get save => 'Save';
 
   @override
-  String get deleteSection => 'Delete Department';
+  String get deleteSection => 'Delete Section';
+
+  @override
+  String get deleteDepartmantConfirmation =>
+      'Are you sure you want to delete this department? This action cannot be undone.';
 
   @override
   String get deleteSectionConfirmation =>
@@ -953,7 +975,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterSectionName => 'Enter section name';
 
   @override
-  String get sectionDescription => 'Section Description';
+  String get departmentDescription => 'Department Description';
+
+  @override
+  String get sectionDescription => 'Department Description';
 
   @override
   String get enterSectionDescription => 'Enter section description';
@@ -1701,4 +1726,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get uploadFailed => 'Upload failed';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get deleteQuestionTitle => 'Delete Question';
+
+  @override
+  String get deleteQuestionConfirm =>
+      'Are you sure you want to delete this question? This action cannot be undone.';
+
+  @override
+  String get deleteAnswerTitle => 'Delete Answer';
+
+  @override
+  String get deleteAnswerConfirm =>
+      'Are you sure you want to delete this answer? This action cannot be undone.';
 }

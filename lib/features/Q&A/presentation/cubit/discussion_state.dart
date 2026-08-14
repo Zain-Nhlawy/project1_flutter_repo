@@ -30,3 +30,23 @@ class DiscussionAnswerPosted extends DiscussionState {
 
   const DiscussionAnswerPosted(this.answer);
 }
+
+class DiscussionQuestionUpdated extends DiscussionState {
+  final DiscussionQuestionModel question;
+
+  const DiscussionQuestionUpdated(this.question);
+}
+
+class DiscussionQuestionDeleted extends DiscussionState {
+  const DiscussionQuestionDeleted();
+}
+
+class DiscussionAnswerUpdated extends DiscussionState {
+  final DiscussionAnswerModel answer;
+
+  const DiscussionAnswerUpdated(this.answer);
+}
+
+class DiscussionAnswerDeleted extends DiscussionState {
+  const DiscussionAnswerDeleted();
+}

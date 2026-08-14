@@ -6,6 +6,7 @@ class GeneratedExamEntity {
   final String title;
   final int durationMinutes;
   final int numberOfQuestions;
+  final int passingScore;
   final List<ExamAttemptQuestionEntity> questions;
 
   const GeneratedExamEntity({
@@ -14,6 +15,7 @@ class GeneratedExamEntity {
     required this.title,
     required this.durationMinutes,
     required this.numberOfQuestions,
+    required this.passingScore,
     required this.questions,
   });
 }
