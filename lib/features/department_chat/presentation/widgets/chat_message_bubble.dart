@@ -11,6 +11,8 @@ class ChatMessageBubble extends StatelessWidget {
   final DepartmentMessageEntity message;
   final bool isMine;
   final bool isOnline;
+  final bool isFirstInGroup;
+  final bool isLastInGroup;
   final VoidCallback? onReply;
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
@@ -20,6 +22,8 @@ class ChatMessageBubble extends StatelessWidget {
     required this.message,
     required this.isMine,
     this.isOnline = false,
+    this.isFirstInGroup = true,
+    this.isLastInGroup = true,
     this.onReply,
     this.onEdit,
     this.onDelete,
@@ -39,141 +43,166 @@ class ChatMessageBubble extends StatelessWidget {
     final messageText = message.content ?? '';
     final contentTextDir = _getMessageTextDirection(messageText);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-      child: Directionality(
-        textDirection: TextDirection.ltr,
-        child: Row(
-          mainAxisAlignment: isMine
-              ? MainAxisAlignment.end
-              : MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            if (!isMine) ...[_buildAvatar(context), const SizedBox(width: 8)],
-            Flexible(
-              child: GestureDetector(
-                onLongPress: () => _showOptionsSheet(context),
-                child: Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    gradient: isMine
-                        ? AppColors.headerGradientOf(context)
-                        : null,
-                    color: isMine ? null : AppColors.surfaceOf(context),
-                    borderRadius: BorderRadius.only(
-                      topLeft: const Radius.circular(16),
-                      topRight: const Radius.circular(16),
-                      bottomLeft: Radius.circular(isMine ? 16 : 4),
-                      bottomRight: Radius.circular(isMine ? 4 : 16),
-                    ),
-                    border: isMine
-                        ? null
-                        : Border.all(color: AppColors.borderOf(context)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.04),
-                        blurRadius: 6,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: isMine
-                        ? CrossAxisAlignment.end
-                        : CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (!isMine) ...[
-                        Text(
-                          message.sender.fullName,
-                          style: theme.textTheme.labelMedium?.copyWith(
-                            color: AppColors.secondary,
-                            fontWeight: FontWeight.bold,
-                          ),
+    return Directionality(
+      // Reply is always a physical left swipe, including in RTL layouts.
+      textDirection: TextDirection.ltr,
+      child: _SwipeToReply(
+        onReply: message.isDeleted ? null : onReply,
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(
+            12,
+            isFirstInGroup ? 4 : 1,
+            12,
+            isLastInGroup ? 4 : 1,
+          ),
+          child: Row(
+            mainAxisAlignment: isMine
+                ? MainAxisAlignment.end
+                : MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              if (!isMine) ...[
+                if (isLastInGroup)
+                  _buildAvatar(context)
+                else
+                  const SizedBox(width: 32, height: 32),
+                const SizedBox(width: 8),
+              ],
+              Flexible(
+                child: GestureDetector(
+                  onLongPress: isMine && !message.isDeleted
+                      ? () => _showOptionsSheet(context)
+                      : null,
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      gradient: isMine
+                          ? AppColors.headerGradientOf(context)
+                          : null,
+                      color: isMine ? null : AppColors.surfaceOf(context),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(
+                          !isMine && !isFirstInGroup ? 6 : 16,
                         ),
-                        const SizedBox(height: 4),
+                        topRight: Radius.circular(
+                          isMine && !isFirstInGroup ? 6 : 16,
+                        ),
+                        bottomLeft: Radius.circular(
+                          !isMine ? (isLastInGroup ? 4 : 6) : 16,
+                        ),
+                        bottomRight: Radius.circular(
+                          isMine ? (isLastInGroup ? 4 : 6) : 16,
+                        ),
+                      ),
+                      border: isMine
+                          ? null
+                          : Border.all(color: AppColors.borderOf(context)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.04),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
+                        ),
                       ],
-                      if (message.replyTo != null) ...[
-                        _buildReplyPreview(context),
-                        const SizedBox(height: 6),
-                      ],
-                      if (message.isDeleted)
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.block_rounded,
-                              size: 16,
-                              color: isMine
-                                  ? Colors.white.withValues(alpha: 0.7)
-                                  : AppColors.textSecondaryOf(context),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: isMine
+                          ? CrossAxisAlignment.end
+                          : CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (!isMine && isFirstInGroup) ...[
+                          Text(
+                            message.sender.fullName,
+                            style: theme.textTheme.labelMedium?.copyWith(
+                              color: AppColors.secondary,
+                              fontWeight: FontWeight.bold,
                             ),
-                            const SizedBox(width: 6),
-                            Text(
-                              localizations?.chatMessageDeleted ??
-                                  'This message was deleted',
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                fontStyle: FontStyle.italic,
+                          ),
+                          const SizedBox(height: 4),
+                        ],
+                        if (message.replyTo != null) ...[
+                          _buildReplyPreview(context),
+                          const SizedBox(height: 6),
+                        ],
+                        if (message.isDeleted)
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.block_rounded,
+                                size: 16,
                                 color: isMine
                                     ? Colors.white.withValues(alpha: 0.7)
                                     : AppColors.textSecondaryOf(context),
                               ),
-                            ),
-                          ],
-                        )
-                      else ...[
-                        if (message.attachment != null)
-                          _buildAttachment(context, message.attachment!),
-                        if (message.attachment != null &&
-                            messageText.isNotEmpty)
-                          const SizedBox(height: 8),
-                        if (messageText.isNotEmpty)
-                          Directionality(
-                            textDirection: contentTextDir,
-                            child: Text(
-                              messageText,
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: isMine
-                                    ? Colors.white
-                                    : AppColors.textPrimaryOf(context),
+                              const SizedBox(width: 6),
+                              Text(
+                                localizations?.chatMessageDeleted ??
+                                    'This message was deleted',
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  fontStyle: FontStyle.italic,
+                                  color: isMine
+                                      ? Colors.white.withValues(alpha: 0.7)
+                                      : AppColors.textSecondaryOf(context),
+                                ),
+                              ),
+                            ],
+                          )
+                        else ...[
+                          if (message.attachment != null)
+                            _buildAttachment(context, message.attachment!),
+                          if (message.attachment != null &&
+                              messageText.isNotEmpty)
+                            const SizedBox(height: 8),
+                          if (messageText.isNotEmpty)
+                            Directionality(
+                              textDirection: contentTextDir,
+                              child: Text(
+                                messageText,
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  color: isMine
+                                      ? Colors.white
+                                      : AppColors.textPrimaryOf(context),
+                                ),
                               ),
                             ),
-                          ),
-                      ],
-                      const SizedBox(height: 4),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (message.isEdited && !message.isDeleted) ...[
+                        ],
+                        const SizedBox(height: 4),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (message.isEdited && !message.isDeleted) ...[
+                              Text(
+                                '${localizations?.chatEditedTag ?? 'edited'} ',
+                                style: theme.textTheme.labelSmall?.copyWith(
+                                  fontSize: 10,
+                                  fontStyle: FontStyle.italic,
+                                  color: isMine
+                                      ? Colors.white70
+                                      : AppColors.textSecondaryOf(context),
+                                ),
+                              ),
+                            ],
                             Text(
-                              '${localizations?.chatEditedTag ?? 'edited'} ',
+                              timeStr,
                               style: theme.textTheme.labelSmall?.copyWith(
                                 fontSize: 10,
-                                fontStyle: FontStyle.italic,
                                 color: isMine
                                     ? Colors.white70
                                     : AppColors.textSecondaryOf(context),
                               ),
                             ),
                           ],
-                          Text(
-                            timeStr,
-                            style: theme.textTheme.labelSmall?.copyWith(
-                              fontSize: 10,
-                              color: isMine
-                                  ? Colors.white70
-                                  : AppColors.textSecondaryOf(context),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            if (isMine) const SizedBox(width: 8),
-          ],
+              if (isMine) const SizedBox(width: 8),
+            ],
+          ),
         ),
       ),
     );
@@ -475,7 +504,7 @@ class ChatMessageBubble extends StatelessWidget {
   }
 
   void _showOptionsSheet(BuildContext context) {
-    if (message.isDeleted) return;
+    if (message.isDeleted || !isMine) return;
 
     final localizations = AppLocalizations.of(context);
 
@@ -490,43 +519,150 @@ class ChatMessageBubble extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ListTile(
-                leading: const Icon(Icons.reply_rounded),
-                title: Text(localizations?.chatReply ?? 'Reply'),
-                onTap: () {
-                  Navigator.pop(ctx);
-                  onReply?.call();
-                },
-              ),
-              if (isMine) ...[
-                if (message.content?.trim().isNotEmpty == true)
-                  ListTile(
-                    leading: const Icon(Icons.edit_outlined),
-                    title: Text(localizations?.chatEdit ?? 'Edit'),
-                    onTap: () {
-                      Navigator.pop(ctx);
-                      onEdit?.call();
-                    },
-                  ),
+              if (message.content?.trim().isNotEmpty == true)
                 ListTile(
-                  leading: const Icon(
-                    Icons.delete_outline,
-                    color: AppColors.error,
-                  ),
-                  title: Text(
-                    localizations?.chatDelete ?? 'Delete',
-                    style: const TextStyle(color: AppColors.error),
-                  ),
+                  leading: const Icon(Icons.edit_outlined),
+                  title: Text(localizations?.chatEdit ?? 'Edit'),
                   onTap: () {
                     Navigator.pop(ctx);
-                    onDelete?.call();
+                    onEdit?.call();
                   },
                 ),
-              ],
+              ListTile(
+                leading: const Icon(
+                  Icons.delete_outline,
+                  color: AppColors.error,
+                ),
+                title: Text(
+                  localizations?.chatDelete ?? 'Delete',
+                  style: const TextStyle(color: AppColors.error),
+                ),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  onDelete?.call();
+                },
+              ),
             ],
           ),
         );
       },
+    );
+  }
+}
+
+class _SwipeToReply extends StatefulWidget {
+  final VoidCallback? onReply;
+  final Widget child;
+
+  const _SwipeToReply({required this.onReply, required this.child});
+
+  @override
+  State<_SwipeToReply> createState() => _SwipeToReplyState();
+}
+
+class _SwipeToReplyState extends State<_SwipeToReply>
+    with SingleTickerProviderStateMixin {
+  static const double _maxDragDistance = 68;
+  static const double _replyThreshold = 0.55;
+  static const double _minimumFlingProgress = 0.2;
+  static const double _replyFlingVelocity = -700;
+
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 180),
+  );
+
+  @override
+  void didUpdateWidget(covariant _SwipeToReply oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.onReply == null && _controller.value != 0) {
+      _controller.reverse();
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _handleDragUpdate(DragUpdateDetails details) {
+    final delta = details.primaryDelta ?? 0;
+    _controller.value = (_controller.value - delta / _maxDragDistance).clamp(
+      0.0,
+      1.0,
+    );
+  }
+
+  void _handleDragEnd(DragEndDetails details) {
+    final velocity = details.primaryVelocity ?? 0;
+    final shouldReply =
+        _controller.value >= _replyThreshold ||
+        (velocity <= _replyFlingVelocity &&
+            _controller.value >= _minimumFlingProgress);
+
+    if (shouldReply) {
+      widget.onReply?.call();
+    }
+    _controller.reverse();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final enabled = widget.onReply != null;
+
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onHorizontalDragUpdate: enabled ? _handleDragUpdate : null,
+      onHorizontalDragEnd: enabled ? _handleDragEnd : null,
+      onHorizontalDragCancel: enabled ? _controller.reverse : null,
+      child: AnimatedBuilder(
+        animation: _controller,
+        child: widget.child,
+        builder: (context, child) {
+          final progress = _controller.value;
+
+          return Stack(
+            children: [
+              Transform.translate(
+                offset: Offset(-_maxDragDistance * progress, 0),
+                child: child,
+              ),
+              Positioned.fill(
+                child: IgnorePointer(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Transform.translate(
+                      offset: const Offset(-16, 0),
+                      child: Opacity(
+                        opacity: progress,
+                        child: Transform.scale(
+                          scale: 0.75 + (0.25 * progress),
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: AppColors.primaryOf(
+                                context,
+                              ).withValues(alpha: 0.12),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.reply_rounded,
+                              color: AppColors.primaryOf(context),
+                              size: 21,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import '../../domain/entities/department_attachment_file_entity.dart';
@@ -42,6 +43,7 @@ class ChatInputBar extends StatefulWidget {
 
 class _ChatInputBarState extends State<ChatInputBar> {
   final TextEditingController _controller = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
   Timer? _debounceTimer;
   bool _isTypingSent = false;
   bool _isSubmitting = false;
@@ -76,6 +78,9 @@ class _ChatInputBarState extends State<ChatInputBar> {
   @override
   void didUpdateWidget(covariant ChatInputBar oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (oldWidget.replyingToMessage?.id != widget.replyingToMessage?.id) {
+      _requestComposerFocus();
+    }
     if (widget.editingMessage != oldWidget.editingMessage) {
       if (widget.editingMessage != null) {
         _controller.text = widget.editingMessage!.content ?? '';
@@ -87,10 +92,19 @@ class _ChatInputBarState extends State<ChatInputBar> {
     }
   }
 
+  void _requestComposerFocus() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && _focusNode.canRequestFocus) {
+        _focusNode.requestFocus();
+      }
+    });
+  }
+
   @override
   void dispose() {
     _debounceTimer?.cancel();
     _controller.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -186,6 +200,8 @@ class _ChatInputBarState extends State<ChatInputBar> {
       return;
     }
 
+    final shouldRetainFocus = _focusNode.hasFocus;
+
     _debounceTimer?.cancel();
     if (_isTypingSent) {
       _isTypingSent = false;
@@ -201,6 +217,9 @@ class _ChatInputBarState extends State<ChatInputBar> {
       _currentTextDirection = null;
     }
     setState(() => _isSubmitting = false);
+    if (shouldRetainFocus) {
+      _requestComposerFocus();
+    }
   }
 
   @override
@@ -216,33 +235,44 @@ class _ChatInputBarState extends State<ChatInputBar> {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (isReplying)
-          _buildBanner(
-            context,
-            title:
-                localizations?.chatReplyingTo(
-                  widget.replyingToMessage!.sender.firstName,
-                ) ??
-                'Replying to ${widget.replyingToMessage!.sender.firstName}',
-            content: widget.replyingToMessage!.content ?? '',
-            icon: Icons.reply_rounded,
-            onClose: widget.onCancelReply,
+          KeyedSubtree(
+            key: const ValueKey('reply-banner'),
+            child: _buildBanner(
+              context,
+              title:
+                  localizations?.chatReplyingTo(
+                    widget.replyingToMessage!.sender.firstName,
+                  ) ??
+                  'Replying to ${widget.replyingToMessage!.sender.firstName}',
+              content: widget.replyingToMessage!.content ?? '',
+              icon: Icons.reply_rounded,
+              onClose: widget.onCancelReply,
+            ),
           ),
         if (isEditing)
-          _buildBanner(
-            context,
-            title: localizations?.chatEditingMessageTitle ?? 'Editing Message',
-            content: widget.editingMessage!.content ?? '',
-            icon: Icons.edit_outlined,
-            onClose: widget.onCancelEdit,
+          KeyedSubtree(
+            key: const ValueKey('edit-banner'),
+            child: _buildBanner(
+              context,
+              title:
+                  localizations?.chatEditingMessageTitle ?? 'Editing Message',
+              content: widget.editingMessage!.content ?? '',
+              icon: Icons.edit_outlined,
+              onClose: widget.onCancelEdit,
+            ),
           ),
         if (widget.pendingAttachment != null)
-          _buildAttachmentPreview(
-            context,
-            attachment: widget.pendingAttachment!,
-            isUploading: widget.isUploadingAttachment,
-            progress: widget.attachmentUploadProgress,
+          KeyedSubtree(
+            key: const ValueKey('attachment-preview'),
+            child: _buildAttachmentPreview(
+              context,
+              attachment: widget.pendingAttachment!,
+              isUploading: widget.isUploadingAttachment,
+              progress: widget.attachmentUploadProgress,
+            ),
           ),
         Container(
+          key: const ValueKey('chat-composer-row'),
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
             color: AppColors.surfaceOf(context),
@@ -270,8 +300,16 @@ class _ChatInputBarState extends State<ChatInputBar> {
                   ),
                   child: TextField(
                     controller: _controller,
-                    enabled: !isBusy,
+                    focusNode: _focusNode,
+                    inputFormatters: [
+                      TextInputFormatter.withFunction((oldValue, newValue) {
+                        return isBusy ? oldValue : newValue;
+                      }),
+                    ],
                     onChanged: _onTextChanged,
+                    // Override Flutter's default completion behavior, which
+                    // unfocuses the field for the send action.
+                    onEditingComplete: () {},
                     onSubmitted: (_) {
                       _handleSend();
                     },
