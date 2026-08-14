@@ -234,7 +234,10 @@ class AppLocalizationsAr extends AppLocalizations {
       'تم تجاوز حد الخطة , يرجى الترقية للحصول على المزيد ';
 
   @override
-  String get addSection => 'إضافة قسم';
+  String get addDepartment => 'اضافة';
+
+  @override
+  String get noDepartmentFound => 'لا يوجد اقسام متاحة';
 
   @override
   String get noSectionFound => 'لا يوجد اقسام متاحة';
@@ -546,13 +549,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String get byAhmadAhmad => 'بواسطة أحمد أحمد';
 
   @override
+  String get department => 'الأقسام';
+
+  @override
   String get sections => 'الأقسام';
 
   @override
   String get groups => 'المجموعات';
 
   @override
+  String get yourDepartments => 'أقسامك';
+
+  @override
   String get yourSections => 'أقسامك';
+
+  @override
+  String get restrictedDepartments => 'الأقسام المقيدة';
 
   @override
   String get restrictedSections => 'الأقسام المقيدة';
@@ -652,6 +664,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get coursesInProgress => 'دورات قيد الإنشاء';
 
   @override
+  String get addSection => 'إضافة قسم';
+
+  @override
   String get noSectionsYet => 'لا يوجد أقسام بعد';
 
   @override
@@ -667,6 +682,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get renameSection => 'إعادة تسمية القسم';
 
   @override
+  String get departmentName => 'اسم القسم';
+
+  @override
   String get sectionName => 'اسم القسم';
 
   @override
@@ -674,6 +692,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get deleteSection => 'حذف القسم';
+
+  @override
+  String get deleteDepartmantConfirmation =>
+      'هل أنت متأكد من حذف هذا القسم؟ لا يمكن التراجع عن هذا الإجراء.';
 
   @override
   String get deleteSectionConfirmation =>
@@ -970,6 +992,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get enterSectionName => 'أدخل اسم القسم';
+
+  @override
+  String get departmentDescription => 'وصف القسم';
 
   @override
   String get sectionDescription => 'وصف القسم';

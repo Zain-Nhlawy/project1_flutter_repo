@@ -236,7 +236,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'This plan limit has been reached , please upgrade the plan';
 
   @override
-  String get addSection => 'Add Section';
+  String get addDepartment => 'Add';
+
+  @override
+  String get noDepartmentFound => 'No department found';
 
   @override
   String get noSectionFound => 'No department found';
@@ -548,16 +551,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get byAhmadAhmad => 'By Ahmad Ahmad';
 
   @override
-  String get sections => 'Sections';
+  String get department => 'Department';
+
+  @override
+  String get sections => 'Departments';
 
   @override
   String get groups => 'Groups';
 
   @override
+  String get yourDepartments => 'Your Departments';
+
+  @override
   String get yourSections => 'Your Departments';
 
   @override
-  String get restrictedSections => 'Restricted Sections';
+  String get restrictedDepartments => 'Restricted Departments';
+
+  @override
+  String get restrictedSections => 'Restricted Departments';
 
   @override
   String get myGroups => 'My Groups';
@@ -654,6 +666,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get coursesInProgress => 'Courses in Progress';
 
   @override
+  String get addSection => 'Add Section';
+
+  @override
   String get noSectionsYet => 'No sections yet';
 
   @override
@@ -669,13 +684,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get renameSection => 'Rename Section';
 
   @override
-  String get sectionName => 'Section name';
+  String get departmentName => 'Department name';
+
+  @override
+  String get sectionName => 'Department name';
 
   @override
   String get save => 'Save';
 
   @override
   String get deleteSection => 'Delete Section';
+
+  @override
+  String get deleteDepartmantConfirmation =>
+      'Are you sure you want to delete this department? This action cannot be undone.';
 
   @override
   String get deleteSectionConfirmation =>
@@ -976,7 +998,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterSectionName => 'Enter section name';
 
   @override
-  String get sectionDescription => 'Section Description';
+  String get departmentDescription => 'Department Description';
+
+  @override
+  String get sectionDescription => 'Department Description';
 
   @override
   String get enterSectionDescription => 'Enter section description';
