@@ -9,6 +9,7 @@ import 'package:project1/l10n/app_localizations.dart';
 import '../cubit/department_chat_cubit.dart';
 import '../cubit/department_chat_state.dart';
 import '../../domain/entities/department_member_presence.dart';
+import '../../domain/entities/department_message_entity.dart';
 import '../widgets/chat_input_bar.dart';
 import '../widgets/chat_message_bubble.dart';
 import '../widgets/connection_status_banner.dart';
@@ -128,6 +129,21 @@ class _DepartmentChatViewState extends State<_DepartmentChatView> {
     return false;
   }
 
+  bool _isSameSender(
+    DepartmentMessageEntity first,
+    DepartmentMessageEntity second,
+  ) {
+    final firstId = first.sender.id.trim();
+    final secondId = second.sender.id.trim();
+    if (firstId.isNotEmpty && secondId.isNotEmpty) {
+      return firstId == secondId;
+    }
+
+    final firstName = first.sender.fullName.trim().toLowerCase();
+    final secondName = second.sender.fullName.trim().toLowerCase();
+    return firstName.isNotEmpty && firstName == secondName;
+  }
+
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context);
@@ -235,10 +251,22 @@ class _DepartmentChatViewState extends State<_DepartmentChatView> {
                           );
                         }
 
-                        final msg =
-                            state.messages[state.messages.length - 1 - index];
+                        final messageIndex = state.messages.length - 1 - index;
+                        final msg = state.messages[messageIndex];
                         final senderId = msg.sender.id;
                         final senderName = msg.sender.fullName.trim();
+                        final hasPreviousMessageFromSameSender =
+                            messageIndex > 0 &&
+                            _isSameSender(
+                              state.messages[messageIndex - 1],
+                              msg,
+                            );
+                        final hasNextMessageFromSameSender =
+                            messageIndex < state.messages.length - 1 &&
+                            _isSameSender(
+                              msg,
+                              state.messages[messageIndex + 1],
+                            );
 
                         final isMine =
                             (myMemberId != null &&
@@ -262,6 +290,8 @@ class _DepartmentChatViewState extends State<_DepartmentChatView> {
                           message: msg,
                           isMine: isMine,
                           isOnline: isOnline,
+                          isFirstInGroup: !hasPreviousMessageFromSameSender,
+                          isLastInGroup: !hasNextMessageFromSameSender,
                           onReply: () => context
                               .read<DepartmentChatCubit>()
                               .startReply(msg),
