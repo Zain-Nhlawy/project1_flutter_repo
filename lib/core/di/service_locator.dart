@@ -4,6 +4,12 @@ import 'package:dio/dio.dart';
 import 'package:project1/core/network/dio_client.dart';
 import 'package:project1/core/storage/secure_storage.dart';
 import 'package:project1/core/storage/storage_keys.dart';
+import 'package:project1/features/certification/data/data_sources/certification_remote_data_source.dart';
+import 'package:project1/features/certification/data/repositories/certification_repository_impl.dart';
+import 'package:project1/features/certification/domain/repositories/certification_repository.dart';
+import 'package:project1/features/certification/domain/use_case/get_certification_by_id_usecase.dart';
+import 'package:project1/features/certification/domain/use_case/get_my_certifications_usecase.dart';
+import 'package:project1/features/certification/presentation/cubit/certification_cubit.dart';
 import 'package:project1/features/notifications/data/data_sources/device_info_data_source.dart';
 import 'package:project1/features/notifications/data/data_sources/notification_remote_data_source.dart';
 import 'package:project1/features/notifications/domain/repository/notification_repository.dart';
@@ -1180,4 +1186,31 @@ getIt.registerFactory<DiscussionCubit>(
 //////////////////////// Q&A ////////////////////////
 
 
+
+//////////////////////// Certification ////////////////////////
+
+getIt.registerLazySingleton<CertificationRemoteDataSource>(
+  () => CertificationRemoteDataSource(getIt()),
+);
+
+getIt.registerLazySingleton<CertificationRepository>(
+  () => CertificationRepositoryImpl(getIt()),
+);
+
+getIt.registerLazySingleton<GetMyCertificationsUseCase>(
+  () => GetMyCertificationsUseCase(getIt()),
+);
+
+getIt.registerLazySingleton<GetCertificationByIdUseCase>(
+  () => GetCertificationByIdUseCase(getIt()),
+);
+
+getIt.registerFactory<CertificationCubit>(
+  () => CertificationCubit(
+    getMyCertificationsUseCase: getIt(),
+    getCertificationByIdUseCase: getIt(),
+  ),
+);
+
+//////////////////////// Certification ////////////////////////
 }

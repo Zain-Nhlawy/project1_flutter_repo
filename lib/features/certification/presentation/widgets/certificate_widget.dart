@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:project1/features/certification/data/models/certification_model.dart';
 import 'package:project1/features/certification/domain/entities/certificate_template_entity.dart';
 
 class CertificateWidget extends StatelessWidget {
+  final CertificationModel certification;
+
   const CertificateWidget({
     super.key,
+    required this.certification,
   });
 
   static const String _backgroundPath =
       'assets/images/certificate_background.png';
-
-  static const String _logoPath = 'assets/images/main.png';
-
-  static const String _signaturePath = 'assets/images/main.png';
 
   @override
   Widget build(BuildContext context) {
@@ -26,17 +26,11 @@ class CertificateWidget extends StatelessWidget {
           return Stack(
             children: [
               _buildBackground(),
-
               _buildStudentName(scale),
-
               _buildCourseName(scale),
-
               _buildProviderName(scale),
-
               _buildDate(scale),
-
               _buildLogo(scale),
-
               _buildSignature(scale),
             ],
           );
@@ -57,7 +51,7 @@ class CertificateWidget extends StatelessWidget {
   Widget _buildStudentName(double scale) {
     return _buildPositionedText(
       position: CertificateTemplateEntity.studentName,
-      text: 'Ahmad Ali',
+      text: certification.userName,
       scale: scale,
       fontFamily: 'CormorantGaramond',
       fontSize: 40,
@@ -68,7 +62,7 @@ class CertificateWidget extends StatelessWidget {
   Widget _buildCourseName(double scale) {
     return _buildPositionedText(
       position: CertificateTemplateEntity.courseName,
-      text: 'Flutter Advanced Course',
+      text: certification.courseName,
       scale: scale,
       fontFamily: 'CormorantGaramond',
       fontSize: 26,
@@ -79,7 +73,7 @@ class CertificateWidget extends StatelessWidget {
   Widget _buildProviderName(double scale) {
     return _buildPositionedText(
       position: CertificateTemplateEntity.providerName,
-      text: 'ABC Academy',
+      text: certification.demoName,
       scale: scale,
       fontFamily: 'CormorantGaramond',
       fontSize: 26,
@@ -90,12 +84,31 @@ class CertificateWidget extends StatelessWidget {
   Widget _buildDate(double scale) {
     return _buildPositionedText(
       position: CertificateTemplateEntity.issueDate,
-      text: '10 August 2026',
+      text: _formatDate(certification.issuedAt),
       scale: scale,
       fontFamily: 'CormorantGaramond',
       fontSize: 18,
       fontWeight: FontWeight.w400,
     );
+  }
+
+  String _formatDate(DateTime date) {
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+
+    return '${date.day} ${months[date.month - 1]} ${date.year}';
   }
 
   Widget _buildPositionedText({
@@ -131,36 +144,46 @@ class CertificateWidget extends StatelessWidget {
   }
 
   Widget _buildLogo(double scale) {
-    return _buildPositionedImage(
-      position: CertificateTemplateEntity.logo,
-      imagePath: _logoPath,
-      scale: scale,
-    );
-  }
+    final position = CertificateTemplateEntity.logo;
 
-  Widget _buildSignature(double scale) {
-    return _buildPositionedImage(
-      position: CertificateTemplateEntity.signature,
-      imagePath: _signaturePath,
-      scale: scale,
-    );
-  }
+    if (certification.logoImagePath.isEmpty) {
+      return const SizedBox.shrink();
+    }
 
-  Widget _buildPositionedImage({
-    required CertificateElementPosition position,
-    required String imagePath,
-    required double scale,
-  }) {
     return Positioned(
       left: position.left * scale,
       top: position.top * scale,
       width: position.width * scale,
       height: position.height * scale,
-      child: Image.asset(
-        imagePath,
+      child: Image.network(
+        certification.logoImagePath,
         fit: BoxFit.contain,
+        errorBuilder: (context, error, stackTrace) {
+          return const SizedBox.shrink();
+        },
+      ),
+    );
+  }
+
+  Widget _buildSignature(double scale) {
+    final position = CertificateTemplateEntity.signature;
+
+    if (certification.signature.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Positioned(
+      left: position.left * scale,
+      top: position.top * scale,
+      width: position.width * scale,
+      height: position.height * scale,
+      child: Image.network(
+        certification.signature,
+        fit: BoxFit.contain,
+        errorBuilder: (context, error, stackTrace) {
+          return const SizedBox.shrink();
+        },
       ),
     );
   }
 }
-

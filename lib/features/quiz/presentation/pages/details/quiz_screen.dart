@@ -6,12 +6,12 @@ import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/quiz/presentation/cubit/exam_taking_cubit.dart';
 import 'package:project1/features/quiz/presentation/cubit/exam_taking_state.dart';
 import 'package:project1/features/quiz/presentation/pages/details/quiz_result_screen.dart';
+import 'package:project1/features/quiz/presentation/widgets/details/answer_section_title.dart';
 import 'package:project1/features/quiz/presentation/widgets/details/quiz_app_bar.dart';
 import 'package:project1/features/quiz/presentation/widgets/details/quiz_bottom_button.dart';
 import 'package:project1/features/quiz/presentation/widgets/details/quiz_choice_tile.dart';
-import 'package:project1/features/quiz/presentation/widgets/details/quiz_progress_header.dart';
+import 'package:project1/features/quiz/presentation/widgets/details/quiz_overview_card%20.dart';
 import 'package:project1/features/quiz/presentation/widgets/details/quiz_question_card.dart';
-import 'package:project1/features/quiz/presentation/widgets/details/quiz_timer.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class QuizScreen extends StatefulWidget {
@@ -196,7 +196,7 @@ class _QuizContent extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _QuizOverviewCard(
+                    QuizOverviewCard(
                       currentQuestion: currentIndex + 1,
                       totalQuestions: totalQuestions,
                       progress: progress,
@@ -208,7 +208,7 @@ class _QuizContent extends StatelessWidget {
                       question: question.question,
                     ),
                     const SizedBox(height: 24),
-                    _AnswerSectionTitle(title: localizations.selectAnswer),
+                    AnswerSectionTitle(title: localizations.selectAnswer),
                     const SizedBox(height: 12),
                     ...question.choices.map((choice) {
                       final isSelected = selectedChoices.contains(choice.id);
@@ -253,97 +253,6 @@ class _QuizContent extends StatelessWidget {
     );
   }
 }
-
-class _QuizOverviewCard extends StatelessWidget {
-  final int currentQuestion;
-  final int totalQuestions;
-  final double progress;
-  final int remainingSeconds;
-
-  const _QuizOverviewCard({
-    required this.currentQuestion,
-    required this.totalQuestions,
-    required this.progress,
-    required this.remainingSeconds,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.surfaceOf(context),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: AppColors.borderOf(context).withValues(alpha: 0.78),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(
-              alpha: Theme.of(context).brightness == Brightness.dark
-                  ? 0.16
-                  : 0.045,
-            ),
-            blurRadius: 14,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: QuizProgressHeader(
-              currentQuestion: currentQuestion,
-              totalQuestions: totalQuestions,
-              progress: progress,
-            ),
-          ),
-          const SizedBox(width: 14),
-          QuizTimer(remainingSeconds: remainingSeconds),
-        ],
-      ),
-    );
-  }
-}
-
-class _AnswerSectionTitle extends StatelessWidget {
-  final String title;
-
-  const _AnswerSectionTitle({required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          width: 38,
-          height: 38,
-          decoration: BoxDecoration(
-            color: AppColors.primaryOf(context).withValues(alpha: 0.09),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Icon(
-            Icons.touch_app_rounded,
-            color: AppColors.primaryOf(context),
-            size: 19,
-          ),
-        ),
-        const SizedBox(width: 11),
-        Expanded(
-          child: Text(
-            title,
-            style: AppTextStyles.titleMedium.copyWith(
-              color: AppColors.textPrimaryOf(context),
-              fontSize: 16,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
 class _LoadingView extends StatelessWidget {
   const _LoadingView();
 
