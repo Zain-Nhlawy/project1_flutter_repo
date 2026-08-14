@@ -1,16 +1,19 @@
 import 'dart:async';
+import 'dart:typed_data';
 import 'package:dartz/dartz.dart';
 import 'package:project1/core/errors/error_mapper.dart';
 import 'package:project1/core/errors/failures.dart';
 import 'package:project1/core/storage/secure_storage.dart';
 import 'package:project1/core/storage/storage_keys.dart';
 import '../../domain/entities/department_message_entity.dart';
+import '../../domain/entities/department_attachment_upload_entity.dart';
 import '../../domain/entities/department_message_page_entity.dart';
 import '../../domain/entities/message_type.dart';
 import '../../domain/entities/socket_connection_status.dart';
 import '../../domain/repository/department_chat_repository.dart';
 import '../data_sources/department_chat_remote_datasource.dart';
 import '../data_sources/department_chat_socket_datasource.dart';
+import '../models/department_attachment_upload_model.dart';
 
 class DepartmentChatRepositoryImpl implements DepartmentChatRepository {
   final DepartmentChatRemoteDataSource remoteDataSource;
@@ -22,6 +25,57 @@ class DepartmentChatRepositoryImpl implements DepartmentChatRepository {
     required this.socketDataSource,
     required this.storage,
   });
+
+  @override
+  Future<Either<Failure, DepartmentAttachmentUploadEntity>>
+  requestAttachmentUpload({
+    required String departmentId,
+    required String demoId,
+    required String fileName,
+  }) async {
+    try {
+      final data = await remoteDataSource.requestAttachmentUpload(
+        departmentId: departmentId,
+        demoId: demoId,
+        fileName: fileName,
+      );
+      final upload = DepartmentAttachmentUploadModel.fromJson(data);
+
+      if (upload.uploadUrl.isEmpty || upload.cdnUrl.isEmpty) {
+        return const Left(
+          ServerFailure('The attachment upload response is incomplete.'),
+        );
+      }
+
+      return Right(upload);
+    } on Exception catch (e) {
+      return Left(mapExceptionToFailure(e));
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> uploadAttachmentFile({
+    required String uploadUrl,
+    required Uint8List bytes,
+    required String mimeType,
+    required void Function(double progress) onProgress,
+  }) async {
+    try {
+      await remoteDataSource.uploadAttachmentFile(
+        uploadUrl: uploadUrl,
+        bytes: bytes,
+        mimeType: mimeType,
+        onProgress: onProgress,
+      );
+      return const Right(null);
+    } on Exception catch (e) {
+      return Left(mapExceptionToFailure(e));
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
 
   @override
   Future<Either<Failure, DepartmentMessagePageEntity>> getMessageHistory({
@@ -125,9 +179,7 @@ class DepartmentChatRepositoryImpl implements DepartmentChatRepository {
     required String messageId,
   }) async {
     try {
-      final res = await socketDataSource.deleteMessage(
-        messageId: messageId,
-      );
+      final res = await socketDataSource.deleteMessage(messageId: messageId);
       return Right(res);
     } on Exception catch (e) {
       return Left(mapExceptionToFailure(e));
@@ -158,10 +210,11 @@ class DepartmentChatRepositoryImpl implements DepartmentChatRepository {
       socketDataSource.typingStatusStream;
 
   @override
-  Stream<String> get userOnlineStream => socketDataSource.userOnlineStream;
+  Stream<Set<String>> get userOnlineStream => socketDataSource.userOnlineStream;
 
   @override
-  Stream<String> get userOfflineStream => socketDataSource.userOfflineStream;
+  Stream<Set<String>> get userOfflineStream =>
+      socketDataSource.userOfflineStream;
 
   @override
   Stream<SocketConnectionStatus> get connectionStatusStream =>

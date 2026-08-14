@@ -16,35 +16,49 @@ class QuizProgressHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final primary = AppColors.primaryOf(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
-            Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: LinearProgressIndicator(
-                  value: progress,
-                  minHeight: 8,
-                  backgroundColor:
-                      AppColors.primary.withOpacity(.12),
-                  valueColor:
-                      const AlwaysStoppedAnimation<Color>(
-                    AppColors.primary,
-                  ),
-                ),
+            Container(
+              width: 36,
+              height: 36,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: primary.withValues(alpha: 0.09),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(Icons.quiz_outlined, color: primary, size: 18),
+            ),
+            const SizedBox(width: 10),
+            Text(
+              '$currentQuestion',
+              style: AppTextStyles.titleMedium.copyWith(
+                color: primary,
+                fontWeight: FontWeight.w800,
               ),
             ),
-            const SizedBox(width: 12),
             Text(
-              '$currentQuestion/$totalQuestions',
+              ' / $totalQuestions',
               style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.primary,
-                fontWeight: FontWeight.bold,
+                color: AppColors.textSecondaryOf(context),
+                fontWeight: FontWeight.w600,
               ),
             ),
           ],
+        ),
+        const SizedBox(height: 12),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: LinearProgressIndicator(
+            value: progress.clamp(0, 1),
+            minHeight: 7,
+            backgroundColor: primary.withValues(alpha: 0.12),
+            valueColor: AlwaysStoppedAnimation<Color>(primary),
+          ),
         ),
       ],
     );

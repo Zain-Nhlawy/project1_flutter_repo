@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:socket_io_client/socket_io_client.dart' as socket_io;
 import '../../domain/entities/socket_connection_status.dart';
 import '../models/department_message_model.dart';
+import '../models/department_presence_model.dart';
 
 abstract class DepartmentChatSocketDataSource {
   Future<void> connect({
@@ -28,9 +29,7 @@ abstract class DepartmentChatSocketDataSource {
     required String content,
   });
 
-  Future<String> deleteMessage({
-    required String messageId,
-  });
+  Future<String> deleteMessage({required String messageId});
 
   void sendTyping(bool isTyping);
 
@@ -39,8 +38,8 @@ abstract class DepartmentChatSocketDataSource {
   Stream<DepartmentMessageModel> get messageEditedStream;
   Stream<DepartmentMessageModel> get messageDeletedStream;
   Stream<Map<String, dynamic>> get typingStatusStream;
-  Stream<String> get userOnlineStream;
-  Stream<String> get userOfflineStream;
+  Stream<Set<String>> get userOnlineStream;
+  Stream<Set<String>> get userOfflineStream;
   Stream<SocketConnectionStatus> get connectionStatusStream;
   Stream<String> get exceptionStream;
   Stream<String> get joinedDepartmentMemberIdStream;
@@ -60,8 +59,8 @@ class DepartmentChatSocketDataSourceImpl
       StreamController<DepartmentMessageModel>.broadcast();
   final _typingStatusController =
       StreamController<Map<String, dynamic>>.broadcast();
-  final _userOnlineController = StreamController<String>.broadcast();
-  final _userOfflineController = StreamController<String>.broadcast();
+  final _userOnlineController = StreamController<Set<String>>.broadcast();
+  final _userOfflineController = StreamController<Set<String>>.broadcast();
   final _connectionStatusController =
       StreamController<SocketConnectionStatus>.broadcast();
   final _exceptionController = StreamController<String>.broadcast();
@@ -90,10 +89,10 @@ class DepartmentChatSocketDataSourceImpl
       _typingStatusController.stream;
 
   @override
-  Stream<String> get userOnlineStream => _userOnlineController.stream;
+  Stream<Set<String>> get userOnlineStream => _userOnlineController.stream;
 
   @override
-  Stream<String> get userOfflineStream => _userOfflineController.stream;
+  Stream<Set<String>> get userOfflineStream => _userOfflineController.stream;
 
   @override
   Stream<SocketConnectionStatus> get connectionStatusStream =>
@@ -197,18 +196,32 @@ class DepartmentChatSocketDataSourceImpl
     });
 
     _socket?.on('userOnline', (data) {
-      if (data is Map<String, dynamic>) {
-        final memberId = data['departmentMemberId']?.toString();
-        if (memberId != null) _userOnlineController.add(memberId);
-      }
+      _emitPresence(data, _userOnlineController);
     });
 
     _socket?.on('userOffline', (data) {
-      if (data is Map<String, dynamic>) {
-        final memberId = data['departmentMemberId']?.toString();
-        if (memberId != null) _userOfflineController.add(memberId);
-      }
+      _emitPresence(data, _userOfflineController);
     });
+
+    for (final eventName in const [
+      'onlineUsers',
+      'onlineMembers',
+      'usersOnline',
+      'membersOnline',
+      'presenceSnapshot',
+    ]) {
+      _socket?.on(eventName, (data) {
+        final eventPresence = DepartmentPresenceModel.fromEvent(data);
+        final snapshotPresence = DepartmentPresenceModel.fromSnapshot(data);
+        final identifiers = {
+          ...eventPresence.identifiers,
+          ...snapshotPresence.identifiers,
+        };
+        if (identifiers.isNotEmpty) {
+          _userOnlineController.add(identifiers);
+        }
+      });
+    }
 
     _socket?.on('exception', (data) {
       if (data is Map<String, dynamic>) {
@@ -221,22 +234,37 @@ class DepartmentChatSocketDataSourceImpl
   }
 
   void _joinRoom() {
-    if (_socket != null &&
-        _socket!.connected &&
-        _currentDepartmentId != null) {
+    if (_socket != null && _socket!.connected && _currentDepartmentId != null) {
       _socket?.emitWithAck(
         'joinChat',
         {'departmentId': _currentDepartmentId},
         ack: (response) {
           debugPrint('🟢 Joined department chat room response: $response');
-          if (response is Map<String, dynamic>) {
-            final memberId = response['departmentMemberId']?.toString();
+          if (response is Map) {
+            final responseData = response['data'];
+            final memberId =
+                response['departmentMemberId']?.toString() ??
+                (responseData is Map
+                    ? responseData['departmentMemberId']?.toString()
+                    : null);
             if (memberId != null && memberId.isNotEmpty) {
               _joinedDepartmentMemberIdController.add(memberId);
+            }
+
+            final snapshot = DepartmentPresenceModel.fromSnapshot(response);
+            if (snapshot.identifiers.isNotEmpty) {
+              _userOnlineController.add(snapshot.identifiers);
             }
           }
         },
       );
+    }
+  }
+
+  void _emitPresence(dynamic data, StreamController<Set<String>> controller) {
+    final presence = DepartmentPresenceModel.fromEvent(data);
+    if (presence.identifiers.isNotEmpty) {
+      controller.add(presence.identifiers);
     }
   }
 
@@ -276,16 +304,21 @@ class DepartmentChatSocketDataSourceImpl
       throw Exception('Socket is not connected');
     }
 
-    _socket!.emitWithAck('sendMessage', payload, ack: (response) {
-      if (response is Map<String, dynamic> &&
-          response['status'] == 'success') {
-        completer.complete(response['messageId']?.toString() ?? '');
-      } else if (response is Map<String, dynamic> && response['error'] != null) {
-        completer.completeError(response['error'].toString());
-      } else {
-        completer.complete('sent');
-      }
-    });
+    _socket!.emitWithAck(
+      'sendMessage',
+      payload,
+      ack: (response) {
+        if (response is Map<String, dynamic> &&
+            response['status'] == 'success') {
+          completer.complete(response['messageId']?.toString() ?? '');
+        } else if (response is Map<String, dynamic> &&
+            response['error'] != null) {
+          completer.completeError(response['error'].toString());
+        } else {
+          completer.complete('sent');
+        }
+      },
+    );
 
     return completer.future.timeout(
       const Duration(seconds: 5),
@@ -324,9 +357,7 @@ class DepartmentChatSocketDataSourceImpl
   }
 
   @override
-  Future<String> deleteMessage({
-    required String messageId,
-  }) async {
+  Future<String> deleteMessage({required String messageId}) async {
     final completer = Completer<String>();
 
     if (_socket == null || !_socket!.connected) {

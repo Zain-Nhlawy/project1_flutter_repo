@@ -350,6 +350,28 @@ class AppLocalizationsAr extends AppLocalizations {
   String get pleaseEnterNewPassword => 'يرجى إدخال كلمة المرور الجديدة';
 
   @override
+  String get passwordRequirementsError =>
+      'يجب أن تتكون كلمة المرور من 8 أحرف على الأقل، وأن تتضمن حرفاً كبيراً وحرفاً صغيراً ورقماً ورمزاً خاصاً (@\$!%*?&)';
+
+  @override
+  String get passwordMissingRequirements => 'المتطلبات الناقصة';
+
+  @override
+  String get passwordRequirementMinLength => '8 أحرف على الأقل';
+
+  @override
+  String get passwordRequirementLowercase => 'حرف صغير';
+
+  @override
+  String get passwordRequirementUppercase => 'حرف كبير';
+
+  @override
+  String get passwordRequirementNumber => 'رقم';
+
+  @override
+  String get passwordRequirementSpecialCharacter => 'رمز خاص (@\$!%*?&)';
+
+  @override
   String get passwordsDoNotMatch => 'كلمتا المرور غير متطابقتين';
 
   @override
@@ -1367,6 +1389,32 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get chatEditMessageHint => 'تعديل الرسالة...';
+
+  @override
+  String get chatAddAttachment => 'إضافة صورة أو ملف PDF';
+
+  @override
+  String get chatAttachmentReadFailed => 'تعذر قراءة الملف المحدد.';
+
+  @override
+  String get chatUploadingAttachment => 'جارٍ رفع المرفق...';
+
+  @override
+  String get chatPhoto => 'صورة';
+
+  @override
+  String get chatFile => 'ملف';
+
+  @override
+  String get chatOpenAttachmentFailed => 'تعذر فتح المرفق.';
+
+  @override
+  String chatOnlineCount(int count) {
+    return '$count متصل';
+  }
+
+  @override
+  String get chatOnlineMembersTitle => 'الأعضاء المتصلون';
 
   @override
   String chatReplyingTo(String name) {

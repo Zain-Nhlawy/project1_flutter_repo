@@ -18,11 +18,7 @@ class QuizScreen extends StatefulWidget {
   final String examId;
   final String demoId;
 
-  const QuizScreen({
-    super.key,
-    required this.examId,
-    required this.demoId,
-  });
+  const QuizScreen({super.key, required this.examId, required this.demoId});
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
@@ -35,10 +31,7 @@ class _QuizScreenState extends State<QuizScreen> {
   void initState() {
     super.initState();
     _cubit = getIt<ExamTakingCubit>();
-    _cubit.startExam(
-      examId: widget.examId,
-      demoId: widget.demoId,
-    );
+    _cubit.startExam(examId: widget.examId, demoId: widget.demoId);
   }
 
   @override
@@ -66,7 +59,8 @@ class _QuizScreenState extends State<QuizScreen> {
           content: Text(
             localizations.leaveQuizMessage,
             style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.textSecondary,
+              color: AppColors.textSecondaryOf(context),
+              height: 1.45,
             ),
           ),
           actions: [
@@ -121,12 +115,12 @@ class _QuizScreenState extends State<QuizScreen> {
 
           final shouldExit = await _confirmExit(context);
 
-          if (shouldExit && mounted) {
+          if (shouldExit && context.mounted) {
             Navigator.pop(context);
           }
         },
         child: Scaffold(
-          backgroundColor: AppColors.background,
+          backgroundColor: AppColors.backgroundOf(context),
           appBar: const QuizAppBar(),
           body: SafeArea(
             child: BlocConsumer<ExamTakingCubit, ExamTakingState>(
@@ -137,7 +131,7 @@ class _QuizScreenState extends State<QuizScreen> {
               },
               builder: (context, state) {
                 if (state is ExamTakingLoading || state is ExamTakingInitial) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const _LoadingView();
                 }
 
                 if (state is ExamTakingError) {
@@ -176,18 +170,10 @@ class _QuizContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
-
     final questions = state.exam.questions;
 
     if (questions.isEmpty) {
-      return Center(
-        child: Text(
-          localizations.noQuestionsAvailable,
-          style: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.textSecondary,
-          ),
-        ),
-      );
+      return _EmptyView(message: localizations.noQuestionsAvailable);
     }
 
     final currentIndex = state.currentQuestionIndex;
@@ -197,82 +183,209 @@ class _QuizContent extends StatelessWidget {
     final progress = (currentIndex + 1) / totalQuestions;
     final isLastQuestion = currentIndex == totalQuestions - 1;
 
-    return Column(
-      children: [
-        Expanded(
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+    return Align(
+      alignment: Alignment.topCenter,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 760),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.fromLTRB(18, 22, 18, 28),
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: QuizProgressHeader(
-                        currentQuestion: currentIndex + 1,
-                        totalQuestions: totalQuestions,
-                        progress: progress,
-                      ),
+                    _QuizOverviewCard(
+                      currentQuestion: currentIndex + 1,
+                      totalQuestions: totalQuestions,
+                      progress: progress,
+                      remainingSeconds: state.remainingSeconds,
                     ),
-                    const SizedBox(width: 12),
-                    QuizTimer(remainingSeconds: state.remainingSeconds),
+                    const SizedBox(height: 20),
+                    QuizQuestionCard(
+                      questionNumber: currentIndex + 1,
+                      question: question.question,
+                    ),
+                    const SizedBox(height: 24),
+                    _AnswerSectionTitle(title: localizations.selectAnswer),
+                    const SizedBox(height: 12),
+                    ...question.choices.map((choice) {
+                      final isSelected = selectedChoices.contains(choice.id);
+
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 11),
+                        child: QuizChoiceTile(
+                          choice: choice.choice,
+                          isSelected: isSelected,
+                          onTap: () {
+                            context.read<ExamTakingCubit>().toggleAnswer(
+                              questionId: question.id,
+                              choiceId: choice.id,
+                            );
+                          },
+                        ),
+                      );
+                    }),
                   ],
                 ),
-                const SizedBox(height: 24),
-                QuizQuestionCard(
-                  questionNumber: currentIndex + 1,
-                  question: question.question,
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  localizations.selectAnswer,
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                ...question.choices.map((choice) {
-                  final isSelected = selectedChoices.contains(choice.id);
+              ),
+            ),
+            QuizBottomButton(
+              text: isLastQuestion
+                  ? localizations.submitQuiz
+                  : localizations.confirmAnswer,
+              isLoading: state.isSubmitting,
+              enabled: selectedChoices.isNotEmpty,
+              onPressed: () {
+                final cubit = context.read<ExamTakingCubit>();
 
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: QuizChoiceTile(
-                      choice: choice.choice,
-                      isSelected: isSelected,
-                      onTap: () {
-                        final cubit = context.read<ExamTakingCubit>();
-                        cubit.toggleAnswer(
-                          questionId: question.id,
-                          choiceId: choice.id,
-                        );
-                      },
-                    ),
-                  );
-                }),
-              ],
+                if (isLastQuestion) {
+                  cubit.submitExam(examId: examId, demoId: demoId);
+                } else {
+                  cubit.nextQuestion();
+                }
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _QuizOverviewCard extends StatelessWidget {
+  final int currentQuestion;
+  final int totalQuestions;
+  final double progress;
+  final int remainingSeconds;
+
+  const _QuizOverviewCard({
+    required this.currentQuestion,
+    required this.totalQuestions,
+    required this.progress,
+    required this.remainingSeconds,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceOf(context),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: AppColors.borderOf(context).withValues(alpha: 0.78),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(
+              alpha: Theme.of(context).brightness == Brightness.dark
+                  ? 0.16
+                  : 0.045,
+            ),
+            blurRadius: 14,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: QuizProgressHeader(
+              currentQuestion: currentQuestion,
+              totalQuestions: totalQuestions,
+              progress: progress,
+            ),
+          ),
+          const SizedBox(width: 14),
+          QuizTimer(remainingSeconds: remainingSeconds),
+        ],
+      ),
+    );
+  }
+}
+
+class _AnswerSectionTitle extends StatelessWidget {
+  final String title;
+
+  const _AnswerSectionTitle({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          width: 38,
+          height: 38,
+          decoration: BoxDecoration(
+            color: AppColors.primaryOf(context).withValues(alpha: 0.09),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(
+            Icons.touch_app_rounded,
+            color: AppColors.primaryOf(context),
+            size: 19,
+          ),
+        ),
+        const SizedBox(width: 11),
+        Expanded(
+          child: Text(
+            title,
+            style: AppTextStyles.titleMedium.copyWith(
+              color: AppColors.textPrimaryOf(context),
+              fontSize: 16,
+              fontWeight: FontWeight.w800,
             ),
           ),
         ),
-        QuizBottomButton(
-          text: isLastQuestion
-              ? localizations.submitQuiz
-              : localizations.confirmAnswer,
-          isLoading: state.isSubmitting,
-          enabled: selectedChoices.isNotEmpty,
-          onPressed: () {
-            final cubit = context.read<ExamTakingCubit>();
-
-            if (isLastQuestion) {
-              cubit.submitExam(examId: examId, demoId: demoId);
-            } else {
-              cubit.nextQuestion();
-            }
-          },
-        ),
       ],
+    );
+  }
+}
+
+class _LoadingView extends StatelessWidget {
+  const _LoadingView();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        width: 76,
+        height: 76,
+        padding: const EdgeInsets.all(22),
+        decoration: BoxDecoration(
+          color: AppColors.surfaceOf(context),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: AppColors.borderOf(context)),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.primaryOf(context).withValues(alpha: 0.1),
+              blurRadius: 18,
+              offset: const Offset(0, 7),
+            ),
+          ],
+        ),
+        child: CircularProgressIndicator(
+          color: AppColors.primaryOf(context),
+          strokeWidth: 2.6,
+        ),
+      ),
+    );
+  }
+}
+
+class _EmptyView extends StatelessWidget {
+  final String message;
+
+  const _EmptyView({required this.message});
+
+  @override
+  Widget build(BuildContext context) {
+    return _StatusCard(
+      icon: Icons.quiz_outlined,
+      iconColor: AppColors.primaryOf(context),
+      message: message,
     );
   }
 }
@@ -284,15 +397,59 @@ class _ErrorView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return _StatusCard(
+      icon: Icons.error_outline_rounded,
+      iconColor: AppColors.error,
+      message: message,
+    );
+  }
+}
+
+class _StatusCard extends StatelessWidget {
+  final IconData icon;
+  final Color iconColor;
+  final String message;
+
+  const _StatusCard({
+    required this.icon,
+    required this.iconColor,
+    required this.message,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Text(
-          message,
-          textAlign: TextAlign.center,
-          style: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.error,
-          ),
+      child: Container(
+        margin: const EdgeInsets.all(28),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 26),
+        decoration: BoxDecoration(
+          color: AppColors.surfaceOf(context),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: AppColors.borderOf(context)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                color: iconColor.withValues(alpha: 0.09),
+                borderRadius: BorderRadius.circular(19),
+              ),
+              child: Icon(icon, color: iconColor, size: 29),
+            ),
+            const SizedBox(height: 15),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.textSecondaryOf(context),
+                fontWeight: FontWeight.w600,
+                height: 1.45,
+              ),
+            ),
+          ],
         ),
       ),
     );

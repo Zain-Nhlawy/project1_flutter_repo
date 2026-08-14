@@ -5,7 +5,6 @@ import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_state.dart';
-import 'package:project1/features/auth/presentation/pages/login_screen.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class VerifyEmailScreen extends StatelessWidget {
@@ -127,13 +126,9 @@ class VerifyEmailScreen extends StatelessWidget {
                           ),
                           child: ElevatedButton(
                             onPressed: () {
-                              Navigator.pushAndRemoveUntil(
+                              Navigator.of(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (_) => const LoginScreen(),
-                                ),
-                                (route) => false,
-                              );
+                              ).popUntil((route) => route.isFirst);
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.transparent,

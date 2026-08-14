@@ -10,14 +10,14 @@ import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/auth/domain/use_case/verify_email_usecase.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:project1/features/auth/presentation/cubit/session_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
-import 'package:project1/features/auth/presentation/pages/login_screen.dart';
 import 'package:project1/features/auth/presentation/pages/reset_password_screen.dart';
+import 'package:project1/features/auth/presentation/pages/session_gate.dart';
 import 'package:project1/features/profile/presentation/cubit/locale_cubit.dart';
 import 'package:project1/features/profile/presentation/cubit/theme_cubit.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:project1/l10n/l10n.dart';
-import 'package:project1/features/auth/presentation/cubit/auth_state.dart';
 import 'package:project1/features/auth/presentation/cubit/user_state.dart';
 import 'package:project1/features/notifications/presentation/services/notification_service.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -57,13 +57,15 @@ void main() async {
   runApp(
     MultiBlocProvider(
       providers: [
+        BlocProvider<UserCubit>(create: (_) => getIt<UserCubit>()),
+        BlocProvider<SessionCubit>(
+          create: (_) => getIt<SessionCubit>()..restoreSession(),
+        ),
         BlocProvider<AuthCubit>(
           create: (_) {
             return getIt<AuthCubit>();
           },
         ),
-
-        BlocProvider<UserCubit>(create: (_) => getIt<UserCubit>()..getMe()),
 
         BlocProvider<LocaleCubit>(create: (_) => LocaleCubit()),
         BlocProvider<ThemeCubit>(create: (_) => ThemeCubit()),
@@ -112,7 +114,7 @@ class _MyAppState extends State<MyApp> {
           } catch (_) {}
 
           navigatorKey.currentState?.pushAndRemoveUntil(
-            MaterialPageRoute(builder: (_) => const LoginScreen()),
+            MaterialPageRoute(builder: (_) => const SessionGate()),
             (route) => false,
           );
         }
@@ -144,13 +146,6 @@ class _MyAppState extends State<MyApp> {
                     }
                   },
                 ),
-                BlocListener<AuthCubit, AuthState>(
-                  listener: (context, state) {
-                    if (state is LoginSuccess) {
-                      getIt<NotificationService>().registerToken();
-                    }
-                  },
-                ),
               ],
               child: MaterialApp(
                 navigatorKey: navigatorKey,
@@ -171,7 +166,7 @@ class _MyAppState extends State<MyApp> {
                     widget.initialResetToken != null &&
                         widget.initialResetToken!.isNotEmpty
                     ? ResetPasswordScreen(token: widget.initialResetToken!)
-                    : const LoginScreen(),
+                    : const SessionGate(),
               ),
             );
           },

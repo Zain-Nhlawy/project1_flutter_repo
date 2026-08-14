@@ -8,6 +8,8 @@ class GradientPageAppBar extends StatelessWidget
   final String? subtitle;
   final int subtitleMaxLines;
   final VoidCallback? onBackPressed;
+  final List<Widget>? actions;
+  final double bottomRadius;
 
   const GradientPageAppBar({
     super.key,
@@ -15,6 +17,8 @@ class GradientPageAppBar extends StatelessWidget
     this.subtitle,
     this.subtitleMaxLines = 1,
     this.onBackPressed,
+    this.actions,
+    this.bottomRadius = 30,
   });
 
   @override
@@ -29,15 +33,17 @@ class GradientPageAppBar extends StatelessWidget
       shadowColor: AppColors.primaryOf(context).withValues(alpha: 0.22),
       elevation: 8,
       scrolledUnderElevation: 8,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(bottomRadius),
+        ),
       ),
       flexibleSpace: Container(
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           gradient: AppColors.headerGradientOf(context),
-          borderRadius: const BorderRadius.vertical(
-            bottom: Radius.circular(30),
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(bottomRadius),
           ),
         ),
         child: Stack(
@@ -129,6 +135,7 @@ class GradientPageAppBar extends StatelessWidget
           ],
         ),
       ),
+      actions: actions,
     );
   }
 

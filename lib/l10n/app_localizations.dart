@@ -752,6 +752,48 @@ abstract class AppLocalizations {
   /// **'Please enter new password'**
   String get pleaseEnterNewPassword;
 
+  /// No description provided for @passwordRequirementsError.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 8 characters and include uppercase, lowercase, a number, and a special character (@\$!%*?&)'**
+  String get passwordRequirementsError;
+
+  /// No description provided for @passwordMissingRequirements.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing'**
+  String get passwordMissingRequirements;
+
+  /// No description provided for @passwordRequirementMinLength.
+  ///
+  /// In en, this message translates to:
+  /// **'at least 8 characters'**
+  String get passwordRequirementMinLength;
+
+  /// No description provided for @passwordRequirementLowercase.
+  ///
+  /// In en, this message translates to:
+  /// **'a lowercase letter'**
+  String get passwordRequirementLowercase;
+
+  /// No description provided for @passwordRequirementUppercase.
+  ///
+  /// In en, this message translates to:
+  /// **'an uppercase letter'**
+  String get passwordRequirementUppercase;
+
+  /// No description provided for @passwordRequirementNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'a number'**
+  String get passwordRequirementNumber;
+
+  /// No description provided for @passwordRequirementSpecialCharacter.
+  ///
+  /// In en, this message translates to:
+  /// **'a special character (@\$!%*?&)'**
+  String get passwordRequirementSpecialCharacter;
+
   /// No description provided for @passwordsDoNotMatch.
   ///
   /// In en, this message translates to:
@@ -2713,6 +2755,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Edit message...'**
   String get chatEditMessageHint;
+
+  /// No description provided for @chatAddAttachment.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photo or PDF'**
+  String get chatAddAttachment;
+
+  /// No description provided for @chatAttachmentReadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not read the selected file.'**
+  String get chatAttachmentReadFailed;
+
+  /// No description provided for @chatUploadingAttachment.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploading attachment...'**
+  String get chatUploadingAttachment;
+
+  /// No description provided for @chatPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo'**
+  String get chatPhoto;
+
+  /// No description provided for @chatFile.
+  ///
+  /// In en, this message translates to:
+  /// **'File'**
+  String get chatFile;
+
+  /// No description provided for @chatOpenAttachmentFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open attachment.'**
+  String get chatOpenAttachmentFailed;
+
+  /// No description provided for @chatOnlineCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} online'**
+  String chatOnlineCount(int count);
+
+  /// No description provided for @chatOnlineMembersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Online members'**
+  String get chatOnlineMembersTitle;
 
   /// No description provided for @chatReplyingTo.
   ///

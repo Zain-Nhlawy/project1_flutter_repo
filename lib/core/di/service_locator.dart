@@ -46,6 +46,7 @@ import 'package:project1/features/auth/domain/use_case/turnOn2FA_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/verify2FA_usecase.dart';
 import 'package:project1/features/auth/domain/use_case/verify_email_usecase.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:project1/features/auth/presentation/cubit/session_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:project1/features/auth/upload_photo/data/data_sources/upload_photo_remote_datasource.dart';
 import 'package:project1/features/auth/upload_photo/data/repository/upload_photo_repository_impl.dart';
@@ -213,8 +214,10 @@ import 'package:project1/features/department_chat/domain/use_case/delete_departm
 import 'package:project1/features/department_chat/domain/use_case/disconnect_department_chat_usecase.dart';
 import 'package:project1/features/department_chat/domain/use_case/edit_department_message_usecase.dart';
 import 'package:project1/features/department_chat/domain/use_case/get_message_history_usecase.dart';
+import 'package:project1/features/department_chat/domain/use_case/request_department_attachment_upload_usecase.dart';
 import 'package:project1/features/department_chat/domain/use_case/send_department_message_usecase.dart';
 import 'package:project1/features/department_chat/domain/use_case/set_typing_status_usecase.dart';
+import 'package:project1/features/department_chat/domain/use_case/upload_department_attachment_file_usecase.dart';
 import 'package:project1/features/department_chat/presentation/cubit/department_chat_cubit.dart';
 
 final getIt = GetIt.instance;
@@ -246,6 +249,11 @@ void setupDI() {
           data: {"refreshToken": refresh},
         );
         return res.data['data'];
+      },
+      onSessionExpired: () async {
+        if (getIt.isRegistered<SessionCubit>()) {
+          getIt<SessionCubit>().markSessionExpired();
+        }
       },
     ),
   );
@@ -322,6 +330,13 @@ void setupDI() {
       updateProfileImageUseCase: getIt<UpdateProfileImageUseCase>(),
     ),
   );
+  getIt.registerLazySingleton(
+    () => SessionCubit(
+      storage: getIt<AppSecureStorage>(),
+      getMeUseCase: getIt<GetMeUseCase>(),
+      userCubit: getIt<UserCubit>(),
+    ),
+  );
   getIt.registerFactory(
     () => AuthCubit(
       registerUseCase: getIt<RegisterUseCase>(),
@@ -333,7 +348,7 @@ void setupDI() {
       changePasswordUseCase: getIt<ChangePasswordUseCase>(),
       googleLoginUseCase: getIt<GoogleLoginUseCase>(),
       resendVerificationEmailUseCase: getIt<ResendVerificationEmailUseCase>(),
-      userCubit: getIt<UserCubit>(),
+      sessionCubit: getIt<SessionCubit>(),
       uploadPhotoUseCase: getIt<UploadPhotoUseCase>(),
       verify2FAUseCase: getIt<Verify2FAUseCase>(),
       generate2FAUseCase: getIt<Generate2FAUseCase>(),
@@ -880,7 +895,6 @@ getIt.registerFactory<RagCubit>(
   //////////////////////// Department Chat ////////////////////////
   getIt.registerLazySingleton<DepartmentChatRemoteDataSource>(
     () => DepartmentChatRemoteDataSourceImpl(
-      getIt<DioClient>(),
       dio: getIt<DioClient>().dio,
     ),
   );
@@ -917,6 +931,16 @@ getIt.registerFactory<RagCubit>(
   getIt.registerLazySingleton<SetTypingStatusUseCase>(
     () => SetTypingStatusUseCase(getIt<DepartmentChatRepository>()),
   );
+  getIt.registerLazySingleton<RequestDepartmentAttachmentUploadUseCase>(
+    () => RequestDepartmentAttachmentUploadUseCase(
+      getIt<DepartmentChatRepository>(),
+    ),
+  );
+  getIt.registerLazySingleton<UploadDepartmentAttachmentFileUseCase>(
+    () => UploadDepartmentAttachmentFileUseCase(
+      getIt<DepartmentChatRepository>(),
+    ),
+  );
 
   getIt.registerFactory<DepartmentChatCubit>(
     () => DepartmentChatCubit(
@@ -927,6 +951,10 @@ getIt.registerFactory<RagCubit>(
       editDepartmentMessageUseCase: getIt<EditDepartmentMessageUseCase>(),
       deleteDepartmentMessageUseCase: getIt<DeleteDepartmentMessageUseCase>(),
       setTypingStatusUseCase: getIt<SetTypingStatusUseCase>(),
+      requestDepartmentAttachmentUploadUseCase:
+          getIt<RequestDepartmentAttachmentUploadUseCase>(),
+      uploadDepartmentAttachmentFileUseCase:
+          getIt<UploadDepartmentAttachmentFileUseCase>(),
       repository: getIt<DepartmentChatRepository>(),
       getMeUseCase: getIt<GetMeUseCase>(),
       departmentMemberRepository: getIt<DepartmentMemberRepository>(),

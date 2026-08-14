@@ -9,6 +9,7 @@ class DiscussionComposer extends StatefulWidget {
   final ValueChanged<String> onSubmit;
 
   final TextEditingController? controller;
+  final FocusNode? focusNode;
 
   const DiscussionComposer({
     super.key,
@@ -16,6 +17,7 @@ class DiscussionComposer extends StatefulWidget {
     required this.isPosting,
     required this.onSubmit,
     this.controller,
+    this.focusNode,
   });
 
   @override
@@ -48,12 +50,15 @@ class _DiscussionComposerState extends State<DiscussionComposer> {
 
   @override
   Widget build(BuildContext context) {
+    final primary = AppColors.primaryOf(context);
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Expanded(
           child: TextField(
             controller: _controller,
+            focusNode: widget.focusNode,
             minLines: 1,
             maxLines: 4,
             textInputAction: TextInputAction.send,
@@ -75,8 +80,16 @@ class _DiscussionComposerState extends State<DiscussionComposer> {
                 vertical: 12,
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(24),
-                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide(color: AppColors.borderOf(context)),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide(color: AppColors.borderOf(context)),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide(color: primary, width: 1.5),
               ),
             ),
           ),
@@ -84,14 +97,25 @@ class _DiscussionComposerState extends State<DiscussionComposer> {
 
         const SizedBox(width: 8),
 
-        SizedBox(
+        Container(
           width: 46,
           height: 46,
+          decoration: BoxDecoration(
+            gradient: AppColors.buttonGradientOf(context),
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                color: primary.withValues(alpha: 0.2),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
           child: Material(
-            color: AppColors.primaryOf(context),
-            shape: const CircleBorder(),
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(15),
             child: InkWell(
-              customBorder: const CircleBorder(),
+              borderRadius: BorderRadius.circular(15),
               onTap: widget.isPosting ? null : _submit,
               child: Center(
                 child: widget.isPosting

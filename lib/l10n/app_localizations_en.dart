@@ -351,6 +351,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseEnterNewPassword => 'Please enter new password';
 
   @override
+  String get passwordRequirementsError =>
+      'Password must be at least 8 characters and include uppercase, lowercase, a number, and a special character (@\$!%*?&)';
+
+  @override
+  String get passwordMissingRequirements => 'Missing';
+
+  @override
+  String get passwordRequirementMinLength => 'at least 8 characters';
+
+  @override
+  String get passwordRequirementLowercase => 'a lowercase letter';
+
+  @override
+  String get passwordRequirementUppercase => 'an uppercase letter';
+
+  @override
+  String get passwordRequirementNumber => 'a number';
+
+  @override
+  String get passwordRequirementSpecialCharacter =>
+      'a special character (@\$!%*?&)';
+
+  @override
   String get passwordsDoNotMatch => 'Passwords do not match';
 
   @override
@@ -1375,6 +1398,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chatEditMessageHint => 'Edit message...';
+
+  @override
+  String get chatAddAttachment => 'Add photo or PDF';
+
+  @override
+  String get chatAttachmentReadFailed => 'Could not read the selected file.';
+
+  @override
+  String get chatUploadingAttachment => 'Uploading attachment...';
+
+  @override
+  String get chatPhoto => 'Photo';
+
+  @override
+  String get chatFile => 'File';
+
+  @override
+  String get chatOpenAttachmentFailed => 'Could not open attachment.';
+
+  @override
+  String chatOnlineCount(int count) {
+    return '$count online';
+  }
+
+  @override
+  String get chatOnlineMembersTitle => 'Online members';
 
   @override
   String chatReplyingTo(String name) {

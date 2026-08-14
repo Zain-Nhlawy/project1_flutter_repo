@@ -6,7 +6,6 @@ import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_state.dart';
-import 'package:project1/features/home/presentation/pages/navigations_tabs.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class Verify2FAScreen extends StatefulWidget {
@@ -42,14 +41,6 @@ class _Verify2FAScreenState extends State<Verify2FAScreen> {
 
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is LoginSuccess) {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (_) => const NavigationsTabs()),
-            (route) => false,
-          );
-        }
-
         if (state is AuthError && state.errors.isNotEmpty) {
           SnackbarTheme().newSnackBarError(
             context,

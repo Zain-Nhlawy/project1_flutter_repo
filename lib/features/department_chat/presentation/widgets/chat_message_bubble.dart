@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' hide TextDirection;
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/core/services/remote_file_opener.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import '../../domain/entities/department_message_entity.dart';
+import '../../domain/entities/message_attachment_entity.dart';
+import '../../domain/entities/message_type.dart';
 
 class ChatMessageBubble extends StatelessWidget {
   final DepartmentMessageEntity message;
@@ -118,18 +121,25 @@ class ChatMessageBubble extends StatelessWidget {
                             ),
                           ],
                         )
-                      else
-                        Directionality(
-                          textDirection: contentTextDir,
-                          child: Text(
-                            messageText,
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: isMine
-                                  ? Colors.white
-                                  : AppColors.textPrimaryOf(context),
+                      else ...[
+                        if (message.attachment != null)
+                          _buildAttachment(context, message.attachment!),
+                        if (message.attachment != null &&
+                            messageText.isNotEmpty)
+                          const SizedBox(height: 8),
+                        if (messageText.isNotEmpty)
+                          Directionality(
+                            textDirection: contentTextDir,
+                            child: Text(
+                              messageText,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: isMine
+                                    ? Colors.white
+                                    : AppColors.textPrimaryOf(context),
+                              ),
                             ),
                           ),
-                        ),
+                      ],
                       const SizedBox(height: 4),
                       Row(
                         mainAxisSize: MainAxisSize.min,
@@ -216,7 +226,13 @@ class ChatMessageBubble extends StatelessWidget {
   }
 
   Widget _buildReplyPreview(BuildContext context) {
-    final replyContent = message.replyTo!.content;
+    final localizations = AppLocalizations.of(context);
+    final replyContent = message.replyTo!.content.isNotEmpty
+        ? message.replyTo!.content
+        : switch (message.replyTo!.type) {
+            MessageType.image => localizations?.chatPhoto ?? 'Photo',
+            _ => localizations?.chatFile ?? 'File',
+          };
     final replyDir = _getMessageTextDirection(replyContent);
 
     return Container(
@@ -255,6 +271,209 @@ class ChatMessageBubble extends StatelessWidget {
     );
   }
 
+  Widget _buildAttachment(
+    BuildContext context,
+    MessageAttachmentEntity attachment,
+  ) {
+    final fileUrl = attachment.fileUrl;
+    final isImage =
+        message.type == MessageType.image ||
+        (attachment.mimeType?.startsWith('image/') ?? false);
+
+    if (isImage && fileUrl != null && fileUrl.isNotEmpty) {
+      return GestureDetector(
+        onTap: () => _openAttachment(context, attachment),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Image.network(
+            fileUrl,
+            width: 240,
+            height: 180,
+            fit: BoxFit.cover,
+            loadingBuilder: (context, child, progress) {
+              if (progress == null) return child;
+              final total = progress.expectedTotalBytes;
+              return SizedBox(
+                width: 240,
+                height: 180,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    value: total == null
+                        ? null
+                        : progress.cumulativeBytesLoaded / total,
+                    color: isMine ? Colors.white : AppColors.primary,
+                  ),
+                ),
+              );
+            },
+            errorBuilder: (context, error, stackTrace) {
+              return _buildUnavailableAttachment(context);
+            },
+          ),
+        ),
+      );
+    }
+
+    return _buildFileAttachment(context, attachment);
+  }
+
+  Widget _buildFileAttachment(
+    BuildContext context,
+    MessageAttachmentEntity attachment,
+  ) {
+    final fileUrl = attachment.fileUrl;
+    final fileName = attachment.fileName?.trim();
+    final isPdf =
+        attachment.mimeType == 'application/pdf' ||
+        (fileName?.toLowerCase().endsWith('.pdf') ?? false);
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(10),
+        onTap: fileUrl == null || fileUrl.isEmpty
+            ? null
+            : () => _openAttachment(context, attachment),
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 260),
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: isMine
+                ? Colors.white.withValues(alpha: 0.14)
+                : AppColors.backgroundOf(context),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                isPdf
+                    ? Icons.picture_as_pdf_rounded
+                    : Icons.insert_drive_file_rounded,
+                color: isMine ? Colors.white : AppColors.error,
+                size: 30,
+              ),
+              const SizedBox(width: 9),
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      fileName?.isNotEmpty == true
+                          ? fileName!
+                          : (AppLocalizations.of(context)?.chatFile ?? 'File'),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: isMine
+                            ? Colors.white
+                            : AppColors.textPrimaryOf(context),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    if (attachment.fileSize != null) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        _formatFileSize(attachment.fileSize!),
+                        style: TextStyle(
+                          color: isMine
+                              ? Colors.white70
+                              : AppColors.textSecondaryOf(context),
+                          fontSize: 10,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              const SizedBox(width: 6),
+              Icon(
+                Icons.open_in_new_rounded,
+                size: 16,
+                color: isMine
+                    ? Colors.white70
+                    : AppColors.textSecondaryOf(context),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildUnavailableAttachment(BuildContext context) {
+    return Container(
+      width: 240,
+      height: 120,
+      alignment: Alignment.center,
+      color: isMine
+          ? Colors.white.withValues(alpha: 0.14)
+          : AppColors.backgroundOf(context),
+      child: Icon(
+        Icons.broken_image_outlined,
+        color: isMine ? Colors.white70 : AppColors.textSecondaryOf(context),
+        size: 36,
+      ),
+    );
+  }
+
+  Future<void> _openAttachment(
+    BuildContext context,
+    MessageAttachmentEntity attachment,
+  ) async {
+    final fileUrl = attachment.fileUrl;
+    if (fileUrl == null || fileUrl.isEmpty) return;
+
+    final navigator = Navigator.of(context, rootNavigator: true);
+    final loadingDialog = showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) {
+        return const PopScope(
+          canPop: false,
+          child: Center(child: CircularProgressIndicator()),
+        );
+      },
+    );
+
+    var wasOpened = false;
+    try {
+      wasOpened = await RemoteFileOpener().open(
+        url: fileUrl,
+        fileName: attachment.fileName ?? '',
+      );
+    } catch (_) {
+      wasOpened = false;
+    } finally {
+      if (navigator.mounted && navigator.canPop()) {
+        navigator.pop();
+      }
+      await loadingDialog;
+    }
+
+    if (!wasOpened && context.mounted) {
+      final localizations = AppLocalizations.of(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            localizations?.chatOpenAttachmentFailed ??
+                'Could not open attachment.',
+          ),
+          backgroundColor: AppColors.error,
+        ),
+      );
+    }
+  }
+
+  String _formatFileSize(int bytes) {
+    if (bytes < 1024) return '$bytes B';
+    final kilobytes = bytes / 1024;
+    if (kilobytes < 1024) return '${kilobytes.toStringAsFixed(1)} KB';
+    return '${(kilobytes / 1024).toStringAsFixed(1)} MB';
+  }
+
   void _showOptionsSheet(BuildContext context) {
     if (message.isDeleted) return;
 
@@ -280,14 +499,15 @@ class ChatMessageBubble extends StatelessWidget {
                 },
               ),
               if (isMine) ...[
-                ListTile(
-                  leading: const Icon(Icons.edit_outlined),
-                  title: Text(localizations?.chatEdit ?? 'Edit'),
-                  onTap: () {
-                    Navigator.pop(ctx);
-                    onEdit?.call();
-                  },
-                ),
+                if (message.content?.trim().isNotEmpty == true)
+                  ListTile(
+                    leading: const Icon(Icons.edit_outlined),
+                    title: Text(localizations?.chatEdit ?? 'Edit'),
+                    onTap: () {
+                      Navigator.pop(ctx);
+                      onEdit?.call();
+                    },
+                  ),
                 ListTile(
                   leading: const Icon(
                     Icons.delete_outline,

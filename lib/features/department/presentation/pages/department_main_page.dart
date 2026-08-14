@@ -3,12 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/features/course/presentation/pages/department_courses_screen.dart';
 import 'package:project1/features/department/domain/entities/department_entity.dart';
+import 'package:project1/features/department/domain/entities/department_member_entity.dart';
 import 'package:project1/features/department/presentation/cubit/department_navigation_cubit.dart';
 import 'package:project1/features/department/presentation/pages/sidebar%20screens/department_members_screen.dart';
 import 'package:project1/features/department/presentation/pages/sidebar%20screens/roadmap_screen.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:animations/animations.dart';
 import 'package:project1/features/department_chat/presentation/pages/department_chat_screen.dart';
+import 'package:project1/features/department_chat/presentation/widgets/online_members_header.dart';
 import 'package:project1/features/live_stream/presentation/pages/live_streams_page.dart';
 import '../widgets/department_main_page/department_nav_item.dart';
 import '../widgets/department_main_page/department_sidebar.dart';
@@ -57,11 +59,24 @@ class _DepartmentMainPageView extends StatefulWidget {
 
 class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
   bool _isSidebarVisible = true;
+  List<DepartmentMemberEntity> _onlineChatMembers = const [];
 
   void _toggleSidebar() {
     setState(() {
       _isSidebarVisible = !_isSidebarVisible;
     });
+  }
+
+  void _updateOnlineChatMembers(List<DepartmentMemberEntity> members) {
+    if (!mounted) return;
+    final hasSameMembers =
+        _onlineChatMembers.length == members.length &&
+        List.generate(
+          members.length,
+          (index) => _onlineChatMembers[index].id == members[index].id,
+        ).every((isSame) => isSame);
+    if (hasSameMembers) return;
+    setState(() => _onlineChatMembers = List.unmodifiable(members));
   }
 
   @override
@@ -70,6 +85,7 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
     final viewportWidth = MediaQuery.sizeOf(context).width;
     final sidebarWidth = (viewportWidth * 0.72).clamp(0.0, 236.0).toDouble();
     final isRtl = Directionality.of(context) == TextDirection.rtl;
+    final currentIndex = context.watch<DepartmentNavigationCubit>().state;
 
     final navItems = [
       DepartmentNavItem(
@@ -96,10 +112,7 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
         Icons.chat_bubble_outline_rounded,
         localizations.departmentChat,
       ),
-      DepartmentNavItem(
-        Icons.sensors_rounded,
-        localizations.departmentLives,
-      ),
+      DepartmentNavItem(Icons.sensors_rounded, localizations.departmentLives),
     ];
 
     return Scaffold(
@@ -171,6 +184,11 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
                           ),
                         ),
                       ),
+                      if (currentIndex == 5 &&
+                          _onlineChatMembers.isNotEmpty) ...[
+                        const Spacer(),
+                        OnlineMembersHeader(members: _onlineChatMembers),
+                      ],
                     ],
                   ),
                 ),
@@ -222,7 +240,7 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
             child: DepartmentSidebar(
               width: sidebarWidth,
               isVisible: _isSidebarVisible,
-              currentIndex: context.watch<DepartmentNavigationCubit>().state,
+              currentIndex: currentIndex,
               navItems: navItems,
               departmentName:
                   widget.department?.name ?? localizations.departmentMainPage,
@@ -277,6 +295,7 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
           key: const ValueKey(5),
           departmentId: widget.department?.id ?? '',
           demoId: widget.demoId ?? '',
+          onOnlineMembersChanged: _updateOnlineChatMembers,
         );
       case 6:
         return LiveStreamsPage(

@@ -2,6 +2,9 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../auth/domain/use_case/get_me_usecase.dart';
 import '../../../department/domain/repository/department_member_repository.dart';
+import '../../domain/entities/department_attachment_file_entity.dart';
+import '../../domain/entities/department_attachment_upload_entity.dart';
+import '../../domain/entities/department_member_presence.dart';
 import '../../domain/entities/department_message_entity.dart';
 import '../../domain/entities/message_type.dart';
 import '../../domain/entities/socket_connection_status.dart';
@@ -11,8 +14,10 @@ import '../../domain/use_case/delete_department_message_usecase.dart';
 import '../../domain/use_case/disconnect_department_chat_usecase.dart';
 import '../../domain/use_case/edit_department_message_usecase.dart';
 import '../../domain/use_case/get_message_history_usecase.dart';
+import '../../domain/use_case/request_department_attachment_upload_usecase.dart';
 import '../../domain/use_case/send_department_message_usecase.dart';
 import '../../domain/use_case/set_typing_status_usecase.dart';
+import '../../domain/use_case/upload_department_attachment_file_usecase.dart';
 import 'department_chat_state.dart';
 
 class DepartmentChatCubit extends Cubit<DepartmentChatState> {
@@ -23,6 +28,10 @@ class DepartmentChatCubit extends Cubit<DepartmentChatState> {
   final EditDepartmentMessageUseCase editDepartmentMessageUseCase;
   final DeleteDepartmentMessageUseCase deleteDepartmentMessageUseCase;
   final SetTypingStatusUseCase setTypingStatusUseCase;
+  final RequestDepartmentAttachmentUploadUseCase
+  requestDepartmentAttachmentUploadUseCase;
+  final UploadDepartmentAttachmentFileUseCase
+  uploadDepartmentAttachmentFileUseCase;
   final DepartmentChatRepository repository;
   final GetMeUseCase? getMeUseCase;
   final DepartmentMemberRepository? departmentMemberRepository;
@@ -49,6 +58,8 @@ class DepartmentChatCubit extends Cubit<DepartmentChatState> {
     required this.editDepartmentMessageUseCase,
     required this.deleteDepartmentMessageUseCase,
     required this.setTypingStatusUseCase,
+    required this.requestDepartmentAttachmentUploadUseCase,
+    required this.uploadDepartmentAttachmentFileUseCase,
     required this.repository,
     this.getMeUseCase,
     this.departmentMemberRepository,
@@ -89,52 +100,58 @@ class DepartmentChatCubit extends Cubit<DepartmentChatState> {
 
       if (getMeUseCase != null) {
         final userRes = await getMeUseCase!();
-        userRes.fold(
-          (_) {},
-          (user) {
-            resolvedUserId = user.id;
-            fullName = '${user.firstName} ${user.lastName}'.trim();
-            emit(state.copyWith(
-              currentUserId: user.id,
-              currentUserName: fullName,
-            ));
-          },
-        );
+        userRes.fold((_) {}, (user) {
+          resolvedUserId = user.id;
+          fullName = '${user.firstName} ${user.lastName}'.trim();
+          emit(
+            state.copyWith(currentUserId: user.id, currentUserName: fullName),
+          );
+        });
       }
 
-      if (resolvedUserId != null &&
-          resolvedUserId!.isNotEmpty &&
-          departmentMemberRepository != null) {
-        final result =
-            await departmentMemberRepository!.getDepartmentMembers(departmentId, demoId);
-        result.fold(
-          (_) {},
-          (members) {
-            try {
-              final myMember = members.firstWhere(
-                (m) =>
-                    m.userId == resolvedUserId ||
-                    (fullName != null &&
-                        '${m.firstName} ${m.lastName}'.trim().toLowerCase() ==
-                            fullName!.toLowerCase()),
-              );
-              emit(state.copyWith(
+      if (departmentMemberRepository != null) {
+        final result = await departmentMemberRepository!.getDepartmentMembers(
+          departmentId,
+          demoId,
+        );
+        result.fold((_) {}, (members) {
+          if (resolvedUserId == null || resolvedUserId!.isEmpty) {
+            emit(state.copyWith(departmentMembers: members));
+            return;
+          }
+
+          try {
+            final myMember = members.firstWhere(
+              (m) =>
+                  m.userId == resolvedUserId ||
+                  (fullName != null &&
+                      '${m.firstName} ${m.lastName}'.trim().toLowerCase() ==
+                          fullName!.toLowerCase()),
+            );
+            emit(
+              state.copyWith(
+                departmentMembers: members,
                 currentDepartmentMemberId: myMember.id,
                 currentDemoMemberId: myMember.demoMemberId,
-              ));
-            } catch (_) {}
-          },
-        );
+                onlineMembers: Set<String>.from(state.onlineMembers)
+                  ..addAll(DepartmentMemberPresence.identifiersOf(myMember)),
+              ),
+            );
+          } catch (_) {
+            emit(state.copyWith(departmentMembers: members));
+          }
+        });
       }
     } finally {
       emit(state.copyWith(isUserResolved: true));
     }
   }
 
-
   void _subscribeToSocketStreams() {
     _msgReceivedSub?.cancel();
-    _msgReceivedSub = repository.messageReceivedStream.listen(_onMessageReceived);
+    _msgReceivedSub = repository.messageReceivedStream.listen(
+      _onMessageReceived,
+    );
 
     _msgEditedSub?.cancel();
     _msgEditedSub = repository.messageEditedStream.listen(_onMessageEdited);
@@ -152,14 +169,25 @@ class DepartmentChatCubit extends Cubit<DepartmentChatState> {
     _userOfflineSub = repository.userOfflineStream.listen(_onUserOffline);
 
     _connStatusSub?.cancel();
-    _connStatusSub = repository.connectionStatusStream.listen(_onConnectionStatusChanged);
+    _connStatusSub = repository.connectionStatusStream.listen(
+      _onConnectionStatusChanged,
+    );
 
     _exceptionSub?.cancel();
     _exceptionSub = repository.exceptionStream.listen(_onExceptionReceived);
 
     _joinedMemberSub?.cancel();
-    _joinedMemberSub = repository.joinedDepartmentMemberIdStream.listen((memberId) {
-      emit(state.copyWith(currentDepartmentMemberId: memberId));
+    _joinedMemberSub = repository.joinedDepartmentMemberIdStream.listen((
+      memberId,
+    ) {
+      final updatedOnlineMembers = Set<String>.from(state.onlineMembers)
+        ..add(memberId);
+      emit(
+        state.copyWith(
+          currentDepartmentMemberId: memberId,
+          onlineMembers: updatedOnlineMembers,
+        ),
+      );
     });
   }
 
@@ -223,7 +251,9 @@ class DepartmentChatCubit extends Cubit<DepartmentChatState> {
         olderList.sort((a, b) => a.createdAt.compareTo(b.createdAt));
 
         final existingIds = state.messages.map((m) => m.id).toSet();
-        final filteredOlder = olderList.where((m) => !existingIds.contains(m.id)).toList();
+        final filteredOlder = olderList
+            .where((m) => !existingIds.contains(m.id))
+            .toList();
 
         final merged = [...filteredOlder, ...state.messages];
 
@@ -246,7 +276,8 @@ class DepartmentChatCubit extends Cubit<DepartmentChatState> {
       updatedList[existingIndex] = message;
       emit(state.copyWith(messages: updatedList));
     } else {
-      final updatedList = List<DepartmentMessageEntity>.from(state.messages)..add(message);
+      final updatedList = List<DepartmentMessageEntity>.from(state.messages)
+        ..add(message);
       emit(state.copyWith(messages: updatedList));
     }
   }
@@ -304,18 +335,40 @@ class DepartmentChatCubit extends Cubit<DepartmentChatState> {
     emit(state.copyWith(typingMembers: updatedMap));
   }
 
-  void _onUserOnline(String memberId) {
-    final updatedSet = Set<String>.from(state.onlineMembers)..add(memberId);
+  void _onUserOnline(Set<String> memberIdentifiers) {
+    final updatedSet = Set<String>.from(state.onlineMembers)
+      ..addAll(memberIdentifiers);
+    for (final member in state.departmentMembers) {
+      final aliases = DepartmentMemberPresence.identifiersOf(member);
+      if (aliases.any(memberIdentifiers.contains)) {
+        updatedSet.addAll(aliases);
+      }
+    }
     emit(state.copyWith(onlineMembers: updatedSet));
   }
 
-  void _onUserOffline(String memberId) {
-    final updatedSet = Set<String>.from(state.onlineMembers)..remove(memberId);
+  void _onUserOffline(Set<String> memberIdentifiers) {
+    final updatedSet = Set<String>.from(state.onlineMembers)
+      ..removeAll(memberIdentifiers);
+    for (final member in state.departmentMembers) {
+      final aliases = DepartmentMemberPresence.identifiersOf(member);
+      if (aliases.any(memberIdentifiers.contains)) {
+        updatedSet.removeAll(aliases);
+      }
+    }
     emit(state.copyWith(onlineMembers: updatedSet));
   }
 
   void _onConnectionStatusChanged(SocketConnectionStatus status) {
-    emit(state.copyWith(connectionStatus: status));
+    final shouldClearPresence =
+        status == SocketConnectionStatus.reconnecting ||
+        status == SocketConnectionStatus.error;
+    emit(
+      state.copyWith(
+        connectionStatus: status,
+        onlineMembers: shouldClearPresence ? <String>{} : null,
+      ),
+    );
   }
 
   void _onExceptionReceived(String exceptionMessage) {
@@ -327,7 +380,12 @@ class DepartmentChatCubit extends Cubit<DepartmentChatState> {
   }
 
   void startReply(DepartmentMessageEntity message) {
-    emit(state.copyWith(replyingToMessage: () => message, editingMessage: () => null));
+    emit(
+      state.copyWith(
+        replyingToMessage: () => message,
+        editingMessage: () => null,
+      ),
+    );
   }
 
   void cancelReply() {
@@ -335,53 +393,193 @@ class DepartmentChatCubit extends Cubit<DepartmentChatState> {
   }
 
   void startEdit(DepartmentMessageEntity message) {
-    if (message.isDeleted) return;
-    emit(state.copyWith(editingMessage: () => message, replyingToMessage: () => null));
+    if (message.isDeleted || (message.content?.trim().isEmpty ?? true)) return;
+    emit(
+      state.copyWith(
+        editingMessage: () => message,
+        replyingToMessage: () => null,
+        pendingAttachment: () => null,
+      ),
+    );
   }
 
   void cancelEdit() {
     emit(state.copyWith(editingMessage: () => null));
   }
 
-  Future<void> submitMessage(String content) async {
+  void selectAttachment(DepartmentAttachmentFileEntity attachment) {
+    if (state.isUploadingAttachment || state.editingMessage != null) return;
+    emit(state.copyWith(pendingAttachment: () => attachment));
+  }
+
+  void removeAttachment() {
+    if (state.isUploadingAttachment) return;
+    emit(
+      state.copyWith(
+        pendingAttachment: () => null,
+        attachmentUploadProgress: 0,
+      ),
+    );
+  }
+
+  Future<bool> submitMessage(String content) async {
     final trimmed = content.trim();
-    if (trimmed.isEmpty && state.editingMessage == null) return;
-    if (_departmentId == null) return;
+    if (state.isUploadingAttachment) return false;
+    if (trimmed.isEmpty &&
+        state.editingMessage == null &&
+        state.pendingAttachment == null) {
+      return false;
+    }
+    if (_departmentId == null) return false;
 
     if (state.editingMessage != null) {
       final msgToEdit = state.editingMessage!;
-      cancelEdit();
-
-      _onMessageEdited(msgToEdit.copyWith(content: trimmed, isEdited: true));
 
       final res = await editDepartmentMessageUseCase(
         messageId: msgToEdit.id,
         content: trimmed,
       );
-      res.fold(
+      return res.fold(
         (failure) {
           emit(state.copyWith(errorMessage: () => failure.message));
+          return false;
         },
-        (_) {},
-      );
-    } else {
-      final replyId = state.replyingToMessage?.id;
-      cancelReply();
-
-      final res = await sendDepartmentMessageUseCase(
-        departmentId: _departmentId!,
-        type: MessageType.text,
-        content: trimmed,
-        replyToId: replyId,
-      );
-
-      res.fold(
-        (failure) {
-          emit(state.copyWith(errorMessage: () => failure.message));
+        (_) {
+          _onMessageEdited(
+            msgToEdit.copyWith(content: trimmed, isEdited: true),
+          );
+          cancelEdit();
+          return true;
         },
-        (_) {},
       );
     }
+
+    final attachment = state.pendingAttachment;
+    if (attachment != null) {
+      return _submitAttachmentMessage(
+        attachment: attachment,
+        content: trimmed,
+        replyToId: state.replyingToMessage?.id,
+      );
+    }
+
+    final res = await sendDepartmentMessageUseCase(
+      departmentId: _departmentId!,
+      type: MessageType.text,
+      content: trimmed,
+      replyToId: state.replyingToMessage?.id,
+    );
+
+    return res.fold(
+      (failure) {
+        emit(state.copyWith(errorMessage: () => failure.message));
+        return false;
+      },
+      (_) {
+        cancelReply();
+        return true;
+      },
+    );
+  }
+
+  Future<bool> _submitAttachmentMessage({
+    required DepartmentAttachmentFileEntity attachment,
+    required String content,
+    required String? replyToId,
+  }) async {
+    if (_departmentId == null || _demoId == null) return false;
+
+    emit(
+      state.copyWith(
+        isUploadingAttachment: true,
+        attachmentUploadProgress: 0,
+        errorMessage: () => null,
+      ),
+    );
+
+    final requestResult = await requestDepartmentAttachmentUploadUseCase(
+      departmentId: _departmentId!,
+      demoId: _demoId!,
+      fileName: attachment.fileName,
+    );
+    if (isClosed) return false;
+
+    DepartmentAttachmentUploadEntity? uploadData;
+    String? failureMessage;
+    requestResult.fold(
+      (failure) => failureMessage = failure.message,
+      (data) => uploadData = data,
+    );
+
+    if (uploadData == null) {
+      _emitAttachmentFailure(failureMessage ?? 'Unable to upload attachment.');
+      return false;
+    }
+
+    final uploadResult = await uploadDepartmentAttachmentFileUseCase(
+      uploadUrl: uploadData!.uploadUrl,
+      bytes: attachment.bytes,
+      mimeType: attachment.mimeType,
+      onProgress: (progress) {
+        if (!isClosed) {
+          emit(state.copyWith(attachmentUploadProgress: progress));
+        }
+      },
+    );
+    if (isClosed) return false;
+
+    failureMessage = null;
+    uploadResult.fold((failure) => failureMessage = failure.message, (_) {});
+    if (failureMessage != null) {
+      _emitAttachmentFailure(failureMessage!);
+      return false;
+    }
+
+    final sendResult = await sendDepartmentMessageUseCase(
+      departmentId: _departmentId!,
+      type: attachment.messageType,
+      content: content.isEmpty ? null : content,
+      fileUrl: uploadData!.cdnUrl,
+      fileName: uploadData!.fileName.isNotEmpty
+          ? uploadData!.fileName
+          : attachment.fileName,
+      mimeType: attachment.mimeType,
+      fileSize: attachment.fileSize,
+      replyToId: replyToId,
+    );
+    if (isClosed) return false;
+
+    var wasSent = false;
+    sendResult.fold(
+      (failure) => failureMessage = failure.message,
+      (_) => wasSent = true,
+    );
+
+    if (!wasSent) {
+      _emitAttachmentFailure(failureMessage ?? 'Unable to send attachment.');
+      return false;
+    }
+
+    emit(
+      state.copyWith(
+        pendingAttachment: () => null,
+        isUploadingAttachment: false,
+        attachmentUploadProgress: 0,
+        replyingToMessage: () => null,
+      ),
+    );
+    return true;
+  }
+
+  void _emitAttachmentFailure(String message) {
+    if (isClosed) return;
+    emit(
+      state.copyWith(
+        isUploadingAttachment: false,
+        attachmentUploadProgress: 0,
+        errorMessage: () => message,
+      ),
+    );
   }
 
   Future<void> deleteMessage(String messageId) async {
@@ -391,12 +589,9 @@ class DepartmentChatCubit extends Cubit<DepartmentChatState> {
     }
 
     final res = await deleteDepartmentMessageUseCase(messageId: messageId);
-    res.fold(
-      (failure) {
-        emit(state.copyWith(errorMessage: () => failure.message));
-      },
-      (_) {},
-    );
+    res.fold((failure) {
+      emit(state.copyWith(errorMessage: () => failure.message));
+    }, (_) {});
   }
 
   void sendTyping(bool isTyping) {

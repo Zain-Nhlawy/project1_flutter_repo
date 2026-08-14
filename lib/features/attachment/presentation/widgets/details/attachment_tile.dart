@@ -1,12 +1,10 @@
-import 'dart:io';
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:open_filex/open_filex.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:public_file_saver/public_file_saver.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
+import 'package:project1/core/services/remote_file_opener.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class AttachmentTile extends StatefulWidget {
@@ -29,6 +27,7 @@ class AttachmentTile extends StatefulWidget {
 
 class _AttachmentTileState extends State<AttachmentTile> {
   final Dio _dio = Dio();
+  final RemoteFileOpener _fileOpener = RemoteFileOpener();
 
   bool _isOpening = false;
   bool _isDownloading = false;
@@ -94,12 +93,6 @@ class _AttachmentTileState extends State<AttachmentTile> {
     }
   }
 
-  Future<String> _downloadTo(Directory dir) async {
-    final savePath = '${dir.path}/$_fileName';
-    await _dio.download(widget.url, savePath);
-    return savePath;
-  }
-
   Future<void> _openAttachment() async {
     if (_isOpening) return;
 
@@ -108,12 +101,12 @@ class _AttachmentTileState extends State<AttachmentTile> {
     setState(() => _isOpening = true);
 
     try {
-      final cacheDir = await getTemporaryDirectory();
-      final path = await _downloadTo(cacheDir);
+      final wasOpened = await _fileOpener.open(
+        url: widget.url,
+        fileName: _fileName,
+      );
 
-      final result = await OpenFilex.open(path);
-
-      if (result.type != ResultType.done && mounted) {
+      if (!wasOpened && mounted) {
         SnackbarTheme().newSnackBarError(
           context,
           localizations.failedToOpenAttachment,
@@ -203,7 +196,7 @@ class _AttachmentTileState extends State<AttachmentTile> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14),
         side: BorderSide(
-          color: Colors.grey.withOpacity(.2),
+          color: Colors.grey.withValues(alpha: .2),
         ),
       ),
       child: ListTile(

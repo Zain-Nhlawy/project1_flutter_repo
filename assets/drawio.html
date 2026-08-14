@@ -2,6 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; overflow: hidden; background: #F4F7FB; }
@@ -14,16 +15,30 @@
   </style>
 </head>
 <body>
-  <iframe id="editorFrame"></iframe>
+  <iframe id="editorFrame" title="Draw.io diagram editor"></iframe>
 
   <script>
-    const EDITOR_URL = "https://embed.diagrams.net/?embed=1&proto=json&spin=1&libraries=1";
+    const EDITOR_ORIGIN = "https://embed.diagrams.net";
+    const editorParams = new URLSearchParams({
+      embed: "1",
+      proto: "json",
+      spin: "1",
+      libraries: "1",
+      ui: "simple",
+      touch: "1",
+      dark: "auto",
+      gh: "0",
+      suppressNewWindows: "1",
+    });
+    const EDITOR_URL = `${EDITOR_ORIGIN}/?${editorParams.toString()}`;
     const frame = document.getElementById("editorFrame");
 
     let ready = false;
     let pendingXml = null;
 
     window.addEventListener("message", function (e) {
+      if (e.source !== frame.contentWindow || e.origin !== EDITOR_ORIGIN) return;
+
       let msg;
       try {
         msg = JSON.parse(e.data);
@@ -62,7 +77,7 @@
 
     function send(msg) {
       if (frame.contentWindow) {
-        frame.contentWindow.postMessage(JSON.stringify(msg), "*");
+        frame.contentWindow.postMessage(JSON.stringify(msg), EDITOR_ORIGIN);
       }
     }
 

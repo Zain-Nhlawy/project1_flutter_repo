@@ -1,11 +1,28 @@
+import 'dart:typed_data';
+
 import 'package:dartz/dartz.dart';
 import 'package:project1/core/errors/failures.dart';
+import '../entities/department_attachment_upload_entity.dart';
 import '../entities/department_message_entity.dart';
 import '../entities/department_message_page_entity.dart';
 import '../entities/message_type.dart';
 import '../entities/socket_connection_status.dart';
 
 abstract class DepartmentChatRepository {
+  Future<Either<Failure, DepartmentAttachmentUploadEntity>>
+  requestAttachmentUpload({
+    required String departmentId,
+    required String demoId,
+    required String fileName,
+  });
+
+  Future<Either<Failure, void>> uploadAttachmentFile({
+    required String uploadUrl,
+    required Uint8List bytes,
+    required String mimeType,
+    required void Function(double progress) onProgress,
+  });
+
   Future<Either<Failure, DepartmentMessagePageEntity>> getMessageHistory({
     required String departmentId,
     required String demoId,
@@ -32,9 +49,7 @@ abstract class DepartmentChatRepository {
     required String content,
   });
 
-  Future<Either<Failure, String>> deleteMessage({
-    required String messageId,
-  });
+  Future<Either<Failure, String>> deleteMessage({required String messageId});
 
   void sendTypingStatus({required bool isTyping});
 
@@ -42,8 +57,8 @@ abstract class DepartmentChatRepository {
   Stream<DepartmentMessageEntity> get messageEditedStream;
   Stream<DepartmentMessageEntity> get messageDeletedStream;
   Stream<Map<String, dynamic>> get typingStatusStream;
-  Stream<String> get userOnlineStream;
-  Stream<String> get userOfflineStream;
+  Stream<Set<String>> get userOnlineStream;
+  Stream<Set<String>> get userOfflineStream;
   Stream<SocketConnectionStatus> get connectionStatusStream;
   Stream<String> get exceptionStream;
   Stream<String> get joinedDepartmentMemberIdStream;
