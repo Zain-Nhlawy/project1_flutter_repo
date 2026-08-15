@@ -18,6 +18,7 @@ import 'package:project1/features/auth/domain/use_case/google_login_usecase.dart
 import 'package:project1/features/auth/presentation/cubit/session_cubit.dart';
 import 'package:project1/features/auth/upload_photo/domain/use_case/upload_photo_usecase.dart';
 import 'auth_state.dart';
+import 'package:flutter/foundation.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final RegisterUseCase registerUseCase;
@@ -108,37 +109,68 @@ class AuthCubit extends Cubit<AuthState> {
       emit(LoginSuccess(user));
     });
   }
+Future<void> loginWithGoogle() async {
+  emit(AuthLoading());
+  try {
+    await GoogleSignIn.instance.initialize(
+      serverClientId:
+          "813919457973-59rpuvstsvj6d9el5nlu06q1kr5dps7i.apps.googleusercontent.com",
+    );
 
-  Future<void> loginWithGoogle() async {
-    emit(AuthLoading());
-    try {
-      await GoogleSignIn.instance.initialize(
-        serverClientId:
-            "813919457973-59rpuvstsvj6d9el5nlu06q1kr5dps7i.apps.googleusercontent.com",
-      );
-      final GoogleSignInAccount googleUser = await GoogleSignIn.instance
-          .authenticate();
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-      final idToken = googleAuth.idToken;
-      if (idToken == null) {
-        emit(const AuthError(["Google id token not found"]));
-        return;
-      }
-      final result = await googleLoginUseCase(idToken);
-      result.fold((failure) => _emitFailure(failure), (res) async {
+    final GoogleSignInAccount googleUser =
+        await GoogleSignIn.instance.authenticate();
+
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+
+    final idToken = googleAuth.idToken;
+
+    if (idToken == null) {
+      emit(const AuthError(["Google ID token not found"]));
+      return;
+    }
+
+    final result = await googleLoginUseCase(idToken);
+
+    result.fold(
+      (failure) => _emitFailure(failure),
+      (res) async {
         final user = res.user;
+
         if (user == null) {
-          emit(const AuthError(['Unable to load the signed-in user.']));
+          emit(const AuthError([
+            'Unable to load the signed-in user.',
+          ]));
           return;
         }
+
         sessionCubit.startSession(user);
         emit(LoginSuccess(user));
-      });
-    } catch (e) {
-      emit(AuthError([e.toString()]));
-    }
+      },
+    );
+  } on GoogleSignInException catch (e) {
+    debugPrint(
+      'GoogleSignIn error -> code: ${e.code}, message: ${e.description}',
+    );
+
+    final message = switch (e.code) {
+      GoogleSignInExceptionCode.canceled =>
+        'Google sign-in was canceled. If you did not cancel it yourself, make sure your account is added as a Test User or that the app is published in Google Cloud Console.',
+      GoogleSignInExceptionCode.interrupted =>
+        'Google sign-in was interrupted. Please try again.',
+      GoogleSignInExceptionCode.clientConfigurationError =>
+        'There is an issue with the app configuration (serverClientId or SHA-1).',
+      GoogleSignInExceptionCode.providerConfigurationError =>
+        'There is an issue with the Google provider configuration in Google Cloud Console.',
+      _ =>
+        'Unexpected Google sign-in error: ${e.code} - ${e.description}',
+    };
+
+    emit(AuthError([message]));
+  } catch (e) {
+    emit(AuthError([e.toString()]));
   }
+}
 
   Future<void> logout() async {
     emit(AuthLoading());
