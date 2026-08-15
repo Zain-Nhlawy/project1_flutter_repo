@@ -186,19 +186,19 @@ class PlanAndImageSlide extends StatelessWidget {
                     padding: EdgeInsets.all(size.width * 0.04),
                     decoration: BoxDecoration(
                       color: isSelected
-                          ? AppColors.primary.withOpacity(0.1)
-                          : AppColors.surface,
+                          ? primary.withValues(alpha: 0.1)
+                          : surface,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
                         color: isSelected
-                            ? AppColors.primary
-                            : AppColors.textSecondary.withOpacity(0.2),
+                            ? primary
+                            : textSecondary.withValues(alpha: 0.2),
                         width: isSelected ? 2 : 1,
                       ),
                       boxShadow: isSelected
                           ? [
                               BoxShadow(
-                                color: AppColors.primary.withOpacity(0.1),
+                                color: primary.withValues(alpha: 0.1),
                                 blurRadius: 10,
                                 offset: const Offset(0, 4),
                               ),
@@ -211,15 +211,15 @@ class PlanAndImageSlide extends StatelessWidget {
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? AppColors.primary
-                                : AppColors.textSecondary.withOpacity(0.1),
+                                ? primary
+                                : textSecondary.withValues(alpha: 0.1),
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
                             plan["icon"] as IconData,
                             color: isSelected
-                                ? AppColors.surface
-                                : AppColors.textSecondary,
+                                ? Colors.white
+                                : textSecondary,
                             size: 24 * textScale,
                           ),
                         ),
@@ -231,15 +231,15 @@ class PlanAndImageSlide extends StatelessWidget {
                               Text(
                                 plan["title"] as String,
                                 style: AppTextStyles.titleMedium.copyWith(
-                                  color: AppColors.textPrimary,
+                                  color: textPrimary,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              SizedBox(height: 4),
+                              const SizedBox(height: 4),
                               Text(
                                 '${plan["members"]} • ${plan["sections"]}',
                                 style: AppTextStyles.bodyMedium.copyWith(
-                                  color: AppColors.textSecondary,
+                                  color: textSecondary,
                                   fontSize: 12 * textScale,
                                 ),
                               ),
@@ -250,8 +250,8 @@ class PlanAndImageSlide extends StatelessWidget {
                           plan["price"] as String,
                           style: AppTextStyles.titleMedium.copyWith(
                             color: isSelected
-                                ? AppColors.primary
-                                : AppColors.textPrimary,
+                                ? primary
+                                : textPrimary,
                             fontWeight: FontWeight.bold,
                             fontSize: 16 * textScale,
                           ),

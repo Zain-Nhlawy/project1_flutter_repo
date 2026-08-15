@@ -554,7 +554,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get department => 'Department';
 
   @override
-  String get sections => 'Departments';
+  String get sections => 'Sections';
 
   @override
   String get groups => 'Groups';
@@ -687,7 +687,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get departmentName => 'Department name';
 
   @override
-  String get sectionName => 'Department name';
+  String get sectionName => 'Section name';
 
   @override
   String get save => 'Save';
@@ -1801,4 +1801,101 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get deleteAnswerConfirm =>
       'Are you sure you want to delete this answer? This action cannot be undone.';
+
+  @override
+  String get myCertificates => 'My Certificates';
+
+  @override
+  String get certificatePreview => 'Certificate Preview';
+
+  @override
+  String get couldNotGenerateCertificateImage =>
+      'Could not generate the certificate image.';
+
+  @override
+  String get certificateImageSavedSuccessfully =>
+      'Certificate image saved successfully.';
+
+  @override
+  String get couldNotSaveCertificateImage =>
+      'Could not save the certificate image.';
+
+  @override
+  String get somethingWentWrongSavingImage =>
+      'Something went wrong while saving the image.';
+
+  @override
+  String get couldNotGenerateCertificate =>
+      'Could not generate the certificate.';
+
+  @override
+  String get certificatePdfSavedSuccessfully =>
+      'Certificate PDF saved successfully.';
+
+  @override
+  String get couldNotSaveCertificatePdf =>
+      'Could not save the certificate PDF.';
+
+  @override
+  String get somethingWentWrongCreatingPdf =>
+      'Something went wrong while creating the PDF.';
+
+  @override
+  String get downloadImage => 'Download Image';
+
+  @override
+  String get downloadPdf => 'Download PDF';
+
+  @override
+  String get noCertificatesYet => 'You don\'t have any certificates yet.';
+
+  @override
+  String get january => 'January';
+
+  @override
+  String get february => 'February';
+
+  @override
+  String get march => 'March';
+
+  @override
+  String get april => 'April';
+
+  @override
+  String get may => 'May';
+
+  @override
+  String get june => 'June';
+
+  @override
+  String get july => 'July';
+
+  @override
+  String get august => 'August';
+
+  @override
+  String get september => 'September';
+
+  @override
+  String get october => 'October';
+
+  @override
+  String get november => 'November';
+
+  @override
+  String get december => 'December';
+
+  @override
+  String get noCertificatesAvailable => 'No certificates available';
+
+  @override
+  String get reviewCertificateBeforeDownloading =>
+      'Review your certificate before downloading';
+
+  @override
+  String get certificateDownloadHint =>
+      'You can download your certificate as an image or PDF';
+
+  @override
+  String get certificateNotFound => 'Certificate not found';
 }

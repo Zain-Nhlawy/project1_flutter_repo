@@ -74,7 +74,7 @@ class DepartmentDescriptionField extends StatelessWidget {
                         ),
                         child: Icon(
                           Icons.description_outlined,
-                          color: AppColors.primary,
+                          color: AppColors.primaryOf(context),
                           size: 20 * textScale,
                         ),
                       ),

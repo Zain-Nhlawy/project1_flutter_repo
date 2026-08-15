@@ -1209,7 +1209,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get failedToLoadRoadmap => 'فشل في تحميل خارطة الطريق';
 
   @override
-  String get tryAgain => 'حاول مرة أخرى';
+  String get tryAgain => 'حاول مجددا';
 
   @override
   String get stepsLabel => 'الخطوات';
@@ -1738,7 +1738,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get loading => 'جارٍ التحميل...';
 
   @override
-  String get saving => 'جارٍ الحفظ...';
+  String get saving => 'جاري الحفظ...';
 
   @override
   String get error => 'خطأ';
@@ -1790,4 +1790,91 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get deleteAnswerConfirm =>
       'هل أنت متأكد إنك بدك تحذف هالرد؟ ما رح تقدر ترجعه بعدين.';
+
+  @override
+  String get myCertificates => 'شهاداتي';
+
+  @override
+  String get certificatePreview => 'معاينة الشهادة';
+
+  @override
+  String get couldNotGenerateCertificateImage => 'تعذر إنشاء صورة الشهادة.';
+
+  @override
+  String get certificateImageSavedSuccessfully => 'تم حفظ صورة الشهادة بنجاح.';
+
+  @override
+  String get couldNotSaveCertificateImage => 'تعذر حفظ صورة الشهادة.';
+
+  @override
+  String get somethingWentWrongSavingImage => 'حدث خطأ ما أثناء حفظ الصورة.';
+
+  @override
+  String get couldNotGenerateCertificate => 'تعذر إنشاء الشهادة.';
+
+  @override
+  String get certificatePdfSavedSuccessfully => 'تم حفظ ملف PDF للشهادة بنجاح.';
+
+  @override
+  String get couldNotSaveCertificatePdf => 'تعذر حفظ ملف PDF للشهادة.';
+
+  @override
+  String get somethingWentWrongCreatingPdf => 'حدث خطأ ما أثناء إنشاء ملف PDF.';
+
+  @override
+  String get downloadImage => 'تحميل الصورة';
+
+  @override
+  String get downloadPdf => 'تحميل PDF';
+
+  @override
+  String get noCertificatesYet => 'ليس لديك أي شهادات حتى الآن.';
+
+  @override
+  String get january => 'يناير';
+
+  @override
+  String get february => 'فبراير';
+
+  @override
+  String get march => 'مارس';
+
+  @override
+  String get april => 'إبريل';
+
+  @override
+  String get may => 'مايو';
+
+  @override
+  String get june => 'يونيو';
+
+  @override
+  String get july => 'يوليو';
+
+  @override
+  String get august => 'أغسطس';
+
+  @override
+  String get september => 'سبتمبر';
+
+  @override
+  String get october => 'أكتوبر';
+
+  @override
+  String get november => 'نوفمبر';
+
+  @override
+  String get december => 'ديسمبر';
+
+  @override
+  String get noCertificatesAvailable => 'لا توجد شهادات متاحة';
+
+  @override
+  String get reviewCertificateBeforeDownloading => 'راجع شهادتك';
+
+  @override
+  String get certificateDownloadHint => 'تستطيع تحميل شهادتك كصورة أو ملف PDF';
+
+  @override
+  String get certificateNotFound => 'لم يتم العثور على الشهادة';
 }

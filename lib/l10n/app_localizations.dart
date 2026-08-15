@@ -1145,7 +1145,7 @@ abstract class AppLocalizations {
   /// No description provided for @sections.
   ///
   /// In en, this message translates to:
-  /// **'Departments'**
+  /// **'Sections'**
   String get sections;
 
   /// No description provided for @groups.
@@ -1403,7 +1403,7 @@ abstract class AppLocalizations {
   /// No description provided for @sectionName.
   ///
   /// In en, this message translates to:
-  /// **'Department name'**
+  /// **'Section name'**
   String get sectionName;
 
   /// No description provided for @save.
@@ -3523,6 +3523,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Are you sure you want to delete this answer? This action cannot be undone.'**
   String get deleteAnswerConfirm;
+
+  /// No description provided for @myCertificates.
+  ///
+  /// In en, this message translates to:
+  /// **'My Certificates'**
+  String get myCertificates;
+
+  /// No description provided for @certificatePreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Certificate Preview'**
+  String get certificatePreview;
+
+  /// No description provided for @couldNotGenerateCertificateImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not generate the certificate image.'**
+  String get couldNotGenerateCertificateImage;
+
+  /// No description provided for @certificateImageSavedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Certificate image saved successfully.'**
+  String get certificateImageSavedSuccessfully;
+
+  /// No description provided for @couldNotSaveCertificateImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save the certificate image.'**
+  String get couldNotSaveCertificateImage;
+
+  /// No description provided for @somethingWentWrongSavingImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong while saving the image.'**
+  String get somethingWentWrongSavingImage;
+
+  /// No description provided for @couldNotGenerateCertificate.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not generate the certificate.'**
+  String get couldNotGenerateCertificate;
+
+  /// No description provided for @certificatePdfSavedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Certificate PDF saved successfully.'**
+  String get certificatePdfSavedSuccessfully;
+
+  /// No description provided for @couldNotSaveCertificatePdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save the certificate PDF.'**
+  String get couldNotSaveCertificatePdf;
+
+  /// No description provided for @somethingWentWrongCreatingPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong while creating the PDF.'**
+  String get somethingWentWrongCreatingPdf;
+
+  /// No description provided for @downloadImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Download Image'**
+  String get downloadImage;
+
+  /// No description provided for @downloadPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Download PDF'**
+  String get downloadPdf;
+
+  /// No description provided for @noCertificatesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have any certificates yet.'**
+  String get noCertificatesYet;
+
+  /// No description provided for @january.
+  ///
+  /// In en, this message translates to:
+  /// **'January'**
+  String get january;
+
+  /// No description provided for @february.
+  ///
+  /// In en, this message translates to:
+  /// **'February'**
+  String get february;
+
+  /// No description provided for @march.
+  ///
+  /// In en, this message translates to:
+  /// **'March'**
+  String get march;
+
+  /// No description provided for @april.
+  ///
+  /// In en, this message translates to:
+  /// **'April'**
+  String get april;
+
+  /// No description provided for @may.
+  ///
+  /// In en, this message translates to:
+  /// **'May'**
+  String get may;
+
+  /// No description provided for @june.
+  ///
+  /// In en, this message translates to:
+  /// **'June'**
+  String get june;
+
+  /// No description provided for @july.
+  ///
+  /// In en, this message translates to:
+  /// **'July'**
+  String get july;
+
+  /// No description provided for @august.
+  ///
+  /// In en, this message translates to:
+  /// **'August'**
+  String get august;
+
+  /// No description provided for @september.
+  ///
+  /// In en, this message translates to:
+  /// **'September'**
+  String get september;
+
+  /// No description provided for @october.
+  ///
+  /// In en, this message translates to:
+  /// **'October'**
+  String get october;
+
+  /// No description provided for @november.
+  ///
+  /// In en, this message translates to:
+  /// **'November'**
+  String get november;
+
+  /// No description provided for @december.
+  ///
+  /// In en, this message translates to:
+  /// **'December'**
+  String get december;
+
+  /// No description provided for @noCertificatesAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No certificates available'**
+  String get noCertificatesAvailable;
+
+  /// No description provided for @reviewCertificateBeforeDownloading.
+  ///
+  /// In en, this message translates to:
+  /// **'Review your certificate before downloading'**
+  String get reviewCertificateBeforeDownloading;
+
+  /// No description provided for @certificateDownloadHint.
+  ///
+  /// In en, this message translates to:
+  /// **'You can download your certificate as an image or PDF'**
+  String get certificateDownloadHint;
+
+  /// No description provided for @certificateNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Certificate not found'**
+  String get certificateNotFound;
 }
 
 class _AppLocalizationsDelegate

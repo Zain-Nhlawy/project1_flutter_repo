@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:project1/features/certification/presentation/pages/my_certifications_screen.dart';
 import 'package:project1/features/profile/presentation/cubit/locale_cubit.dart';
 import 'package:project1/features/profile/presentation/cubit/theme_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
@@ -170,6 +171,15 @@ class ProfileScreen extends StatelessWidget {
                               iconColor: Colors.amber,
                               title: localizations.tileMyCertificates,
                               showDivider: false,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        const MyCertificationsPage(),
+                                  ),
+                                );
+                              },
                               trailing: const Icon(Icons.chevron_right),
                             ),
                           ],

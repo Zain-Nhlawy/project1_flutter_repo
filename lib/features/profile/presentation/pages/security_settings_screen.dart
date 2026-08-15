@@ -8,7 +8,6 @@ import 'package:project1/features/auth/presentation/cubit/auth_state.dart';
 import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/user_state.dart';
 import 'package:project1/features/auth/presentation/pages/change_password_screen.dart';
-import 'package:project1/features/profile/presentation/pages/enable2fa_password_dialog.dart';
 import 'package:project1/features/profile/presentation/pages/enable2fa_screen.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
@@ -146,22 +145,10 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
                                   return;
                                 }
 
-                                final password = await showDialog<String>(
-                                  context: context,
-                                  builder: (_) =>
-                                      const Enable2FAPasswordDialog(),
-                                );
-
-                                if (password == null || password.isEmpty) {
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-                                  return;
-                                }
 
                                 await authCubit.generate2FA(
                                   email: user.email,
-                                  password: password,
+                                  password: "..",
                                 );
                               },
                       ),

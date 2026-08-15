@@ -112,8 +112,10 @@ class _PaymentWebViewContentState extends State<_PaymentWebViewContent> {
           BlocBuilder<PaymentWebViewCubit, PaymentWebViewState>(
             builder: (context, state) {
               if (state.isLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(color: AppColors.primary),
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: AppColors.primaryOf(context),
+                  ),
                 );
               }
               return const SizedBox.shrink();

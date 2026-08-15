@@ -66,7 +66,7 @@ class DepartmentNameField extends StatelessWidget {
                       ),
                       prefixIcon: Icon(
                         Icons.title_rounded,
-                        color: AppColors.primary,
+                        color: AppColors.primaryOf(context),
                         size: 20 * textScale,
                       ),
                       border: OutlineInputBorder(

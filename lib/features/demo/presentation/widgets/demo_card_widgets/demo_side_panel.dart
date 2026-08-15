@@ -23,20 +23,20 @@ class DemoSidePanel extends StatelessWidget {
     required this.daysLeft,
   });
 
-  Widget _buildImage(String? imagePath, double avatarSize) {
+  Widget _buildImage(BuildContext context, String? imagePath, double avatarSize) {
     if (imagePath != null && imagePath.trim().isNotEmpty) {
       final path = imagePath.trim();
       if (path.startsWith('http://') || path.startsWith('https://')) {
         return Image.network(
           path,
           fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) => _fallbackImage(avatarSize),
+          errorBuilder: (context, error, stackTrace) => _fallbackImage(context, avatarSize),
         );
       } else if (path.startsWith('assets/')) {
         return Image.asset(
           path,
           fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) => _fallbackImage(avatarSize),
+          errorBuilder: (context, error, stackTrace) => _fallbackImage(context, avatarSize),
         );
       } else {
         final file = File(path);
@@ -44,23 +44,23 @@ class DemoSidePanel extends StatelessWidget {
           return Image.file(
             file,
             fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) => _fallbackImage(avatarSize),
+            errorBuilder: (context, error, stackTrace) => _fallbackImage(context, avatarSize),
           );
         }
       }
     }
-    return _fallbackImage(avatarSize);
+    return _fallbackImage(context, avatarSize);
   }
 
-  Widget _fallbackImage(double avatarSize) {
+  Widget _fallbackImage(BuildContext context, double avatarSize) {
     return Image.asset(
       'assets/images/logo1.png',
       fit: BoxFit.cover,
       errorBuilder: (context, error, stackTrace) => Container(
-        color: AppColors.textSecondary.withOpacity(0.08),
+        color: AppColors.textSecondaryOf(context).withValues(alpha: 0.08),
         child: Icon(
           Icons.business_rounded,
-          color: AppColors.textSecondary.withOpacity(0.4),
+          color: AppColors.textSecondaryOf(context).withValues(alpha: 0.4),
           size: avatarSize * 0.4,
         ),
       ),
@@ -100,7 +100,7 @@ class DemoSidePanel extends StatelessWidget {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(16.5),
-            child: _buildImage(demo.imagePath, avatarSize),
+            child: _buildImage(context, demo.imagePath, avatarSize),
           ),
         ),
         if (demo.isOwner) ...[

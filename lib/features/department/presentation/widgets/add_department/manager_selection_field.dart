@@ -101,7 +101,7 @@ class ManagerSelectionField extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.person_outline_rounded,
-                            color: AppColors.primary,
+                            color: AppColors.primaryOf(context),
                             size: 20 * textScale,
                           ),
                           const SizedBox(width: 12),

@@ -216,7 +216,9 @@ class _AssistantWorkspace extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
-            height: 82,
+            constraints: const BoxConstraints(
+              minHeight: 96,
+            ),
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
               color: AppColors.backgroundOf(context),
@@ -425,8 +427,13 @@ class _WorkspaceModeButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(13),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 190),
-            constraints: const BoxConstraints(minHeight: 70),
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+            constraints: const BoxConstraints(
+              minHeight: 88,
+            ),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 4,
+              vertical: 8,
+            ),
             decoration: BoxDecoration(
               gradient: selected ? AppColors.buttonGradientOf(context) : null,
               borderRadius: BorderRadius.circular(13),

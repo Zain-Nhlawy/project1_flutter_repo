@@ -371,13 +371,13 @@ class UpgradePlanScreenState extends State<UpgradePlanScreen> {
                                 vertical: size.height * 0.02,
                               ),
                               decoration: BoxDecoration(
-                                gradient: AppColors.buttonGradient,
+                                gradient: AppColors.buttonGradientOf(context),
                                 borderRadius: BorderRadius.circular(16),
                                 boxShadow: state.isLoading
                                     ? []
                                     : [
                                         BoxShadow(
-                                          color: AppColors.primary.withValues(
+                                          color: primary.withValues(
                                             alpha: 0.3,
                                           ),
                                           blurRadius: 12,
@@ -389,7 +389,7 @@ class UpgradePlanScreenState extends State<UpgradePlanScreen> {
                                 child: Text(
                                   localizations.continueToPayment,
                                   style: AppTextStyles.titleMedium.copyWith(
-                                    color: AppColors.surface,
+                                    color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16 * textScale,
                                   ),

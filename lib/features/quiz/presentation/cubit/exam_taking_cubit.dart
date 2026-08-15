@@ -216,16 +216,15 @@ class ExamTakingCubit extends Cubit<ExamTakingState> {
       ),
     );
 
-    final answers =
-        currentState.selectedAnswers.entries
-            .map(
-              (entry) => AnswerSubmissionModel(
-                questionId: entry.key,
-                selectedChoiceIds:
-                    entry.value.toList(),
-              ),
-            )
-            .toList();
+    final answers = currentState.exam.questions.map((question) {
+  final selectedChoices =
+      currentState.selectedAnswers[question.id] ?? <String>{};
+
+  return AnswerSubmissionModel(
+    questionId: question.id,
+    selectedChoiceIds: selectedChoices.toList(),
+  );
+}).toList();
 
     final result = await submitExamAttemptUseCase(
       examId: examId,

@@ -39,7 +39,7 @@ class DemoCard extends StatelessWidget {
           BoxShadow(
             color: isDark
                 ? Colors.black.withValues(alpha: 0.3)
-                : AppColors.textSecondary.withValues(alpha: 0.12),
+                : AppColors.textSecondaryOf(context).withValues(alpha: 0.12),
             blurRadius: 14,
             offset: const Offset(0, 6),
           ),
@@ -51,7 +51,7 @@ class DemoCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             if (isRestricted)
-              Container(width: 4, color: Colors.red.withOpacity(0.6)),
+              Container(width: 4, color: Colors.red.withValues(alpha: 0.6)),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(16),

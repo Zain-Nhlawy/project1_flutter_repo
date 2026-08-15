@@ -13,7 +13,7 @@ class DepartmentEmptyPage extends StatelessWidget {
         title,
         style: TextStyle(
           fontSize: 24,
-          color: AppColors.textSecondaryOf(context).withOpacity(0.3),
+          color: AppColors.textSecondaryOf(context).withValues(alpha: 0.3),
           fontWeight: FontWeight.bold,
         ),
       ),

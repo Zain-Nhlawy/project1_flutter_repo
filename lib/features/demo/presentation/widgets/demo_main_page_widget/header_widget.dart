@@ -52,10 +52,10 @@ class HeaderWidget extends StatelessWidget {
       'assets/images/logo1.png',
       fit: BoxFit.cover,
       errorBuilder: (context, error, stackTrace) => Container(
-        color: AppColors.surface.withValues(alpha: 0.2),
+        color: Colors.white.withValues(alpha: 0.2),
         child: Icon(
           Icons.business_rounded,
-          color: AppColors.surface.withValues(alpha: 0.9),
+          color: Colors.white.withValues(alpha: 0.9),
           size: 30,
         ),
       ),
@@ -65,7 +65,6 @@ class HeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
-    final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
     final textScale = MediaQuery.textScalerOf(context).scale(1);
     final double topPadding = MediaQuery.paddingOf(context).top;
@@ -123,7 +122,7 @@ class HeaderWidget extends StatelessWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: AppColors.surface.withValues(alpha: 0.2),
+                          color: Colors.white.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: [
                             BoxShadow(
@@ -145,7 +144,7 @@ class HeaderWidget extends StatelessWidget {
                             Text(
                               'Owner',
                               style: AppTextStyles.caption.copyWith(
-                                color: AppColors.surface,
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -215,7 +214,7 @@ class HeaderWidget extends StatelessWidget {
                       Text(
                         demo.name,
                         style: AppTextStyles.h3.copyWith(
-                          color: AppColors.surface,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                           letterSpacing: -0.3,
                         ),
@@ -228,14 +227,14 @@ class HeaderWidget extends StatelessWidget {
                           Icon(
                             Icons.person_outline_rounded,
                             size: 14 * textScale,
-                            color: AppColors.surface.withValues(alpha: 0.8),
+                            color: Colors.white.withValues(alpha: 0.8),
                           ),
                           const SizedBox(width: 4),
                           Flexible(
                             child: Text(
                               l10n.byAuthor(demo.ownerName),
                               style: AppTextStyles.bodyMedium.copyWith(
-                                color: AppColors.surface.withValues(
+                                color: Colors.white.withValues(
                                   alpha: 0.85,
                                 ),
                                 fontSize: 13,
@@ -256,7 +255,7 @@ class HeaderWidget extends StatelessWidget {
                     vertical: 8,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.surface.withValues(alpha: 0.2),
+                    color: Colors.white.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
@@ -271,14 +270,14 @@ class HeaderWidget extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.people_alt_rounded,
-                        color: AppColors.surface,
+                        color: Colors.white,
                         size: 15 * textScale,
                       ),
                       const SizedBox(width: 6),
                       Text(
                         demo.membersCount.toString(),
                         style: AppTextStyles.label.copyWith(
-                          color: AppColors.surface,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 13,
                         ),
@@ -303,7 +302,7 @@ class HeaderWidget extends StatelessWidget {
                       vertical: 10,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.surface.withValues(alpha: 0.15),
+                      color: Colors.white.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(18),
                       boxShadow: [
                         BoxShadow(
@@ -334,7 +333,7 @@ class HeaderWidget extends StatelessWidget {
                                 ? l10n.daysLeftText(daysLeft)
                                 : l10n.levelUpYourPlan,
                             style: AppTextStyles.label.copyWith(
-                              color: AppColors.surface,
+                              color: Colors.white,
                               fontWeight: FontWeight.w600,
                               fontSize: 12 * textScale,
                             ),
@@ -384,11 +383,19 @@ class HeaderWidget extends StatelessWidget {
                               vertical: 7,
                             ),
                             decoration: BoxDecoration(
-                              color: AppColors.surface,
+                              color: AppColors.surfaceOf(context),
                               borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: AppColors.primaryOf(context).withValues(alpha: 0.25),
+                                width: 1,
+                              ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.1),
+                                  color: Colors.black.withValues(
+                                    alpha: Theme.of(context).brightness == Brightness.dark
+                                        ? 0.3
+                                        : 0.1,
+                                  ),
                                   blurRadius: 6,
                                   offset: const Offset(0, 2),
                                 ),
@@ -397,7 +404,7 @@ class HeaderWidget extends StatelessWidget {
                             child: Text(
                               l10n.upgradePlan,
                               style: AppTextStyles.label.copyWith(
-                                color: theme.colorScheme.primary,
+                                color: AppColors.primaryOf(context),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 12 * textScale,
                               ),
@@ -440,7 +447,7 @@ class _GhostIconButton extends StatelessWidget {
       width: buttonSize,
       height: buttonSize,
       decoration: BoxDecoration(
-        color: AppColors.surface.withValues(alpha: 0.3),
+        color: Colors.white.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(12),
       ),
       child: IconButton(
@@ -451,7 +458,7 @@ class _GhostIconButton extends StatelessWidget {
           width: buttonSize,
           height: buttonSize,
         ),
-        icon: Icon(icon, color: AppColors.surface, size: iconSize * textScale),
+        icon: Icon(icon, color: Colors.white, size: iconSize * textScale),
       ),
     );
   }

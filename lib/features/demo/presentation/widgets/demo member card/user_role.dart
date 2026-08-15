@@ -14,8 +14,8 @@ class UserRoleBadge extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
         color: isAdmin
-            ? colors.primary.withOpacity(0.1)
-            : colors.secondary.withOpacity(0.1),
+            ? colors.primary.withValues(alpha: 0.1)
+            : colors.secondary.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
         // border: Border.all(
         //   color: isAdmin
