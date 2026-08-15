@@ -85,42 +85,74 @@ class DemoUsersScreen extends StatelessWidget {
             subtitle: l10n.usersTabOptionDesc,
           ),
           Expanded(
-            child: BlocBuilder<DemoUserCubit, DemoUsersState>(
-              builder: (context, state) {
-                if (state is DemoUserInitial || state is GetDemoUsersLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                if (state is GetDemoUsersError) {
-                  return _ErrorState(message: state.message, l10n: l10n);
-                }
-
-                if (state is GetDemoUsersLoaded) {
-                  if (state.users.isEmpty) {
-                    return _EmptyState(l10n: l10n);
-                  }
-                  return ListView.separated(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
-                    ),
-                    itemCount: state.users.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 10),
-                    itemBuilder: (context, index) {
-                      final user = state.users[index];
-                      return UserCard(
-                        user: user,
-                        isOwner: isOwner,
-                        onTap: onUserTap != null
-                            ? () => onUserTap!(user)
-                            : null,
-                      );
-                    },
-                  );
-                }
-
-                return const SizedBox.shrink();
+            child: RefreshIndicator(
+              color: AppColors.primaryOf(context),
+              backgroundColor: AppColors.surfaceOf(context),
+              onRefresh: () async {
+                await context.read<DemoUserCubit>().fetchUsers(demoId);
               },
+              child: BlocBuilder<DemoUserCubit, DemoUsersState>(
+                builder: (context, state) {
+                  if (state is DemoUserInitial ||
+                      state is GetDemoUsersLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (state is GetDemoUsersError) {
+                    return LayoutBuilder(
+                      builder: (context, constraints) => SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minHeight: constraints.maxHeight,
+                          ),
+                          child: _ErrorState(
+                            message: state.message,
+                            l10n: l10n,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+
+                  if (state is GetDemoUsersLoaded) {
+                    if (state.users.isEmpty) {
+                      return LayoutBuilder(
+                        builder: (context, constraints) => SingleChildScrollView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minHeight: constraints.maxHeight,
+                            ),
+                            child: _EmptyState(l10n: l10n),
+                          ),
+                        ),
+                      );
+                    }
+                    return ListView.separated(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                      itemCount: state.users.length,
+                      separatorBuilder: (_, __) => const SizedBox(height: 10),
+                      itemBuilder: (context, index) {
+                        final user = state.users[index];
+                        return UserCard(
+                          user: user,
+                          isOwner: isOwner,
+                          onTap: onUserTap != null
+                              ? () => onUserTap!(user)
+                              : null,
+                        );
+                      },
+                    );
+                  }
+
+                  return const SizedBox.shrink();
+                },
+              ),
             ),
           ),
         ],
@@ -205,7 +237,7 @@ class _DemoUsersHeader extends StatelessWidget {
             Text(
               subtitle,
               style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.surface.withValues(alpha: 0.85),
+                color: Colors.white.withValues(alpha: 0.85),
                 fontSize: 13,
               ),
             ),

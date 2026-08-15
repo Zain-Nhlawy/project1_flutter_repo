@@ -105,44 +105,73 @@ class _DepartmentMembersView extends StatelessWidget {
               ),
             )
           : null,
-      body: BlocBuilder<DepartmentMemberCubit, DepartmentMemberState>(
-        builder: (context, state) {
-          if (state is DepartmentMemberInitial ||
-              state is DepartmentMemberLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (state is DepartmentMemberError) {
-            return _ErrorState(
-              message: state.error,
-              l10n: l10n,
-              onRetry: () => _refresh(context),
-            );
-          }
-
-          if (state is DepartmentMemberLoaded) {
-            if (state.departmentMembers.isEmpty) {
-              return _EmptyState(l10n: l10n);
+      body: RefreshIndicator(
+        color: AppColors.primaryOf(context),
+        backgroundColor: AppColors.surfaceOf(context),
+        onRefresh: () async => _refresh(context),
+        child: BlocBuilder<DepartmentMemberCubit, DepartmentMemberState>(
+          builder: (context, state) {
+            if (state is DepartmentMemberInitial ||
+                state is DepartmentMemberLoading) {
+              return const Center(child: CircularProgressIndicator());
             }
 
-            return ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              itemCount: state.departmentMembers.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 10),
-              itemBuilder: (context, index) {
-                final member = state.departmentMembers[index];
-                return DepartmentMemberCard(
-                  member: member,
-                  departmentId: departmentId,
-                  demoId: demoId,
-                  canManage: canManage,
-                );
-              },
-            );
-          }
+            if (state is DepartmentMemberError) {
+              return LayoutBuilder(
+                builder: (context, constraints) => SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight,
+                    ),
+                    child: _ErrorState(
+                      message: state.error,
+                      l10n: l10n,
+                      onRetry: () => _refresh(context),
+                    ),
+                  ),
+                ),
+              );
+            }
 
-          return const SizedBox.shrink();
-        },
+            if (state is DepartmentMemberLoaded) {
+              if (state.departmentMembers.isEmpty) {
+                return LayoutBuilder(
+                  builder: (context, constraints) => SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight,
+                      ),
+                      child: _EmptyState(l10n: l10n),
+                    ),
+                  ),
+                );
+              }
+
+              return ListView.separated(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+                itemCount: state.departmentMembers.length,
+                separatorBuilder: (_, __) => const SizedBox(height: 10),
+                itemBuilder: (context, index) {
+                  final member = state.departmentMembers[index];
+                  return DepartmentMemberCard(
+                    member: member,
+                    departmentId: departmentId,
+                    demoId: demoId,
+                    canManage: canManage,
+                  );
+                },
+              );
+            }
+
+            return const SizedBox.shrink();
+          },
+        ),
       ),
     );
   }

@@ -40,32 +40,72 @@ class _InvitationsPageState extends State<InvitationsPage> {
                 if (state is InvitationLoading) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is InvitationError) {
-                  return Center(
-                    child: Text(
-                      state.message,
-                      style: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.textSecondaryOf(context),
+                  return RefreshIndicator(
+                    color: AppColors.primaryOf(context),
+                    backgroundColor: AppColors.surfaceOf(context),
+                    onRefresh: () async =>
+                        await context.read<InvitationCubit>().getInvitations(),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) => SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minHeight: constraints.maxHeight,
+                          ),
+                          child: Center(
+                            child: Text(
+                              state.message,
+                              style: AppTextStyles.bodyMedium.copyWith(
+                                color: AppColors.textSecondaryOf(context),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   );
                 } else if (state is InvitationLoaded) {
                   final invitations = state.invitations;
                   if (invitations.isEmpty) {
-                    return Center(
-                      child: Text(
-                        l10n.noNewInvitations,
-                        style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.textSecondaryOf(context),
-                        ),
+                    return RefreshIndicator(
+                      color: AppColors.primaryOf(context),
+                      backgroundColor: AppColors.surfaceOf(context),
+                      onRefresh: () async => await context
+                          .read<InvitationCubit>()
+                          .getInvitations(),
+                      child: LayoutBuilder(
+                        builder: (context, constraints) =>
+                            SingleChildScrollView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  minHeight: constraints.maxHeight,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    l10n.noNewInvitations,
+                                    style: AppTextStyles.bodyMedium.copyWith(
+                                      color: AppColors.textSecondaryOf(context),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                       ),
                     );
                   }
-                  return ListView.separated(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: invitations.length,
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(height: 12),
-                    itemBuilder: (context, index) {
+                  return RefreshIndicator(
+                    color: AppColors.primaryOf(context),
+                    backgroundColor: AppColors.surfaceOf(context),
+                    onRefresh: () async =>
+                        await context.read<InvitationCubit>().getInvitations(),
+                    child: ListView.separated(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: const EdgeInsets.all(16),
+                      itemCount: invitations.length,
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 12),
+                      itemBuilder: (context, index) {
                       final inv = invitations[index];
                       return Container(
                         padding: const EdgeInsets.all(16),
@@ -199,12 +239,13 @@ class _InvitationsPageState extends State<InvitationsPage> {
                         ),
                       );
                     },
-                  );
-                }
-                return const SizedBox.shrink();
-              },
-            ),
+                  ),
+                );
+              }
+              return const SizedBox.shrink();
+            },
           ),
+        ),
         ],
       ),
     );

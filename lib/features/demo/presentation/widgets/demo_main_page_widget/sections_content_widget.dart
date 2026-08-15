@@ -86,6 +86,7 @@ class SectionsContentWidget extends StatelessWidget {
           final isLimitReached = isFreePlan && departments.length >= 5;
 
           return ListView(
+            physics: const AlwaysScrollableScrollPhysics(),
             padding: EdgeInsets.symmetric(
               horizontal: size.width * 0.05,
               vertical: 8,

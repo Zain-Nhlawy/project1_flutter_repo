@@ -54,31 +54,41 @@ class DemoMainPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Expanded(
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    switchInCurve: Curves.easeIn,
-                    switchOutCurve: Curves.easeOut,
-                    transitionBuilder:
-                        (Widget child, Animation<double> animation) {
-                          return FadeTransition(
-                            opacity: animation,
-                            child: SlideTransition(
-                              position: Tween<Offset>(
-                                begin: const Offset(0.0, 0.04),
-                                end: Offset.zero,
-                              ).animate(animation),
-                              child: child,
+                  child: RefreshIndicator(
+                    color: AppColors.primaryOf(context),
+                    backgroundColor: AppColors.surfaceOf(context),
+                    onRefresh: () async {
+                      await Future.wait([
+                        context.read<DepartmentCubit>().fetchDepartments(demo.id!),
+                        context.read<DemoUserCubit>().fetchUsers(demo.id!),
+                      ]);
+                    },
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      switchInCurve: Curves.easeIn,
+                      switchOutCurve: Curves.easeOut,
+                      transitionBuilder:
+                          (Widget child, Animation<double> animation) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: SlideTransition(
+                                position: Tween<Offset>(
+                                  begin: const Offset(0.0, 0.04),
+                                  end: Offset.zero,
+                                ).animate(animation),
+                                child: child,
+                              ),
+                            );
+                          },
+                      child: isSectionsActive
+                          ? SectionsContentWidget(
+                              key: const ValueKey('sections_tab'),
+                              demo: demo,
+                            )
+                          : const GroupsContentWidget(
+                              key: ValueKey('groups_tab'),
                             ),
-                          );
-                        },
-                    child: isSectionsActive
-                        ? SectionsContentWidget(
-                            key: const ValueKey('sections_tab'),
-                            demo: demo,
-                          )
-                        : const GroupsContentWidget(
-                            key: ValueKey('groups_tab'),
-                          ),
+                    ),
                   ),
                 ),
               ],

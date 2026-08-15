@@ -103,122 +103,157 @@ class _DepartmentCoursesView extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.backgroundOf(context),
-      body: BlocConsumer<DepartmentCourseCubit, DepartmentCourseState>(
-        listener: (context, state) {
-          if (state is DepartmentCourseActionSuccess) {
-            SnackbarTheme().newSnackBarSuccess(context, state.message);
-            _refresh(context);
-          } else if (state is DepartmentCourseError) {
-            SnackbarTheme().newSnackBarError(context, state.message);
-          }
-        },
-        builder: (context, state) {
-          if (state is DepartmentCourseLoading || state is DepartmentCourseInitial) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      body: RefreshIndicator(
+        color: AppColors.primaryOf(context),
+        backgroundColor: AppColors.surfaceOf(context),
+        onRefresh: () async => _refresh(context),
+        child: BlocConsumer<DepartmentCourseCubit, DepartmentCourseState>(
+          listener: (context, state) {
+            if (state is DepartmentCourseActionSuccess) {
+              SnackbarTheme().newSnackBarSuccess(context, state.message);
+              _refresh(context);
+            } else if (state is DepartmentCourseError) {
+              SnackbarTheme().newSnackBarError(context, state.message);
+            }
+          },
+          builder: (context, state) {
+            if (state is DepartmentCourseLoading ||
+                state is DepartmentCourseInitial) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-          if (state is DepartmentCourseError) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.error_outline_rounded, size: 40, color: Colors.red),
-                    const SizedBox(height: 12),
-                    Text(state.message, textAlign: TextAlign.center),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () => _refresh(context),
-                      child: Text(localizations.retry),
+            if (state is DepartmentCourseError) {
+              return LayoutBuilder(
+                builder: (context, constraints) => SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight,
                     ),
-                  ],
-                ),
-              ),
-            );
-          }
-
-          List<DepartmentCourseEntity> courses = [];
-          if (state is DepartmentCourseLoaded) {
-            courses = state.courses;
-          }
-
-          return Stack(
-            children: [
-              if (courses.isEmpty)
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.menu_book_outlined,
-                          size: 48,
-                          color: AppColors.textSecondaryOf(context).withValues(alpha: 0.4),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(24),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(
+                              Icons.error_outline_rounded,
+                              size: 40,
+                              color: Colors.red,
+                            ),
+                            const SizedBox(height: 12),
+                            Text(state.message, textAlign: TextAlign.center),
+                            const SizedBox(height: 16),
+                            ElevatedButton(
+                              onPressed: () => _refresh(context),
+                              child: Text(localizations.retry),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 12),
-                        Text(
-                          localizations.noCoursesInDepartment,
-                          style: const TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
-                )
-              else
-                ListView(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
-                  children: courses.map((dc) {
-                    final course = dc.asset.course;
-                    return Stack(
-                      children: [
-                        CourseCard(
-                          id: course.id,
-                          title: course.title,
-                          companyName: '',
-                          imageUrl: course.imagePath ?? '',
-                          price: course.price,
-                          description: course.description,
-                          visibility: course.visibility,
-                          isPublished: course.isPublished,
-                          mode: CourseCardMode.demoView,
-                          onSeeMore: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => BlocProvider(
-                                  create: (_) => getIt<CourseCubit>(),
-                                  child: CourseDetailsScreen.fromDemo(
-                                    demoId: demoId,
-                                    assetId: dc.asset.id,
+                ),
+              );
+            }
+
+            List<DepartmentCourseEntity> courses = [];
+            if (state is DepartmentCourseLoaded) {
+              courses = state.courses;
+            }
+
+            return Stack(
+              children: [
+                if (courses.isEmpty)
+                  LayoutBuilder(
+                    builder: (context, constraints) => SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: constraints.maxHeight,
+                        ),
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(24),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.menu_book_outlined,
+                                  size: 48,
+                                  color: AppColors.textSecondaryOf(
+                                    context,
+                                  ).withValues(alpha: 0.4),
+                                ),
+                                const SizedBox(height: 12),
+                                Text(
+                                  localizations.noCoursesInDepartment,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                              ),
-                            );
-                          },
+                              ],
+                            ),
+                          ),
                         ),
-                      ],
-                    );
-                  }).toList(),
-                ),
-              if (canManage)
-                Positioned(
-                  right: 20,
-                  bottom: 30,
-                  child: FloatingActionButton(
-                    heroTag: 'edit_courses',
-                    backgroundColor: AppColors.primaryOf(context),
-                    onPressed: () => _openManageScreen(context, courses),
-                    child: const Icon(
-                      Icons.edit_rounded,
-                      color: Colors.white,
+                      ),
+                    ),
+                  )
+                else
+                  ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+                    children: courses.map((dc) {
+                      final course = dc.asset.course;
+                      return Stack(
+                        children: [
+                          CourseCard(
+                            id: course.id,
+                            title: course.title,
+                            companyName: '',
+                            imageUrl: course.imagePath ?? '',
+                            price: course.price,
+                            description: course.description,
+                            visibility: course.visibility,
+                            isPublished: course.isPublished,
+                            mode: CourseCardMode.demoView,
+                            onSeeMore: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => BlocProvider(
+                                    create: (_) => getIt<CourseCubit>(),
+                                    child: CourseDetailsScreen.fromDemo(
+                                      demoId: demoId,
+                                      assetId: dc.asset.id,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    }).toList(),
+                  ),
+                if (canManage)
+                  Positioned(
+                    right: 20,
+                    bottom: 30,
+                    child: FloatingActionButton(
+                      heroTag: 'edit_courses',
+                      backgroundColor: AppColors.primaryOf(context),
+                      onPressed: () => _openManageScreen(context, courses),
+                      child: const Icon(
+                        Icons.edit_rounded,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                ),
-            ],
-          );
-        },
+              ],
+            );
+          },
+        ),
       ),
     );
   }

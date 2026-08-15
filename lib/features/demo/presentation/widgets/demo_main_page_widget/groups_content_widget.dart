@@ -12,6 +12,7 @@ class GroupsContentWidget extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return ListView(
+      physics: const AlwaysScrollableScrollPhysics(),
       padding: EdgeInsets.symmetric(
         horizontal: size.width * 0.05,
         vertical: 8,
