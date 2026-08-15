@@ -27,7 +27,7 @@ class _Enable2FAPasswordDialogState extends State<Enable2FAPasswordDialog> {
     final local = AppLocalizations.of(context)!;
 
     return AlertDialog(
-      backgroundColor: AppColors.surface,
+      backgroundColor: AppColors.surfaceOf(context),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       title: Text(local.enableTwoFactorAuth, style: AppTextStyles.titleMedium),
       content: Column(
@@ -67,7 +67,7 @@ class _Enable2FAPasswordDialogState extends State<Enable2FAPasswordDialog> {
           },
           child: Text(
             local.confirm,
-            style: const TextStyle(color: AppColors.surface),
+            style: const TextStyle(color: Colors.white),
           ),
         ),
       ],

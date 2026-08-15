@@ -52,9 +52,9 @@ class _SessionLoadingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: AppColors.background,
-      body: SafeArea(
+    return Scaffold(
+      backgroundColor: AppColors.backgroundOf(context),
+      body: const SafeArea(
         child: Center(
           child: CircularProgressIndicator(key: Key('session-loading')),
         ),
@@ -73,7 +73,7 @@ class _SessionFailureView extends StatelessWidget {
     final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.backgroundOf(context),
       body: SafeArea(
         child: Center(
           child: Padding(

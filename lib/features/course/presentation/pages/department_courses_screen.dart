@@ -102,7 +102,7 @@ class _DepartmentCoursesView extends StatelessWidget {
     final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.backgroundOf(context),
       body: BlocConsumer<DepartmentCourseCubit, DepartmentCourseState>(
         listener: (context, state) {
           if (state is DepartmentCourseActionSuccess) {
@@ -155,7 +155,7 @@ class _DepartmentCoursesView extends StatelessWidget {
                         Icon(
                           Icons.menu_book_outlined,
                           size: 48,
-                          color: AppColors.textSecondaryOf(context).withOpacity(0.4),
+                          color: AppColors.textSecondaryOf(context).withValues(alpha: 0.4),
                         ),
                         const SizedBox(height: 12),
                         Text(
@@ -208,7 +208,7 @@ class _DepartmentCoursesView extends StatelessWidget {
                   bottom: 30,
                   child: FloatingActionButton(
                     heroTag: 'edit_courses',
-                    backgroundColor: AppColors.primary,
+                    backgroundColor: AppColors.primaryOf(context),
                     onPressed: () => _openManageScreen(context, courses),
                     child: const Icon(
                       Icons.edit_rounded,

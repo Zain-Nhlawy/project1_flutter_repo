@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/features/demo/presentation/cubit/demo%20cubit/demo_cubit.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:project1/features/demo/presentation/cubit/payment%20for%20demo/demo_payment_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/payment%20for%20demo/demo_payment_state.dart';
@@ -20,6 +22,17 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
   void initState() {
     super.initState();
     context.read<PaymentWebViewCubit>().handlePaymentSuccess(widget.sessionId);
+    // Trigger demo cards refresh
+    if (getIt.isRegistered<DemoCubit>()) {
+      getIt<DemoCubit>().fetchDemos();
+    }
+  }
+
+  void _onBackToHome() {
+    if (getIt.isRegistered<DemoCubit>()) {
+      getIt<DemoCubit>().fetchDemos();
+    }
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   @override
@@ -28,22 +41,33 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
     final textScale = MediaQuery.textScalerOf(context).scale(1);
     final localizations = AppLocalizations.of(context)!;
 
+    final primary = AppColors.primaryOf(context);
+    final textPrimary = AppColors.textPrimaryOf(context);
+    final textSecondary = AppColors.textSecondaryOf(context);
+
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.backgroundOf(context),
       body: SafeArea(
-        child: BlocBuilder<PaymentWebViewCubit, PaymentWebViewState>(
+        child: BlocConsumer<PaymentWebViewCubit, PaymentWebViewState>(
+          listener: (context, state) {
+            if (state.status?.toLowerCase() == 'complete') {
+              if (getIt.isRegistered<DemoCubit>()) {
+                getIt<DemoCubit>().fetchDemos();
+              }
+            }
+          },
           builder: (context, state) {
             if (state.isLoading) {
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const CircularProgressIndicator(color: AppColors.primary),
+                    CircularProgressIndicator(color: primary),
                     SizedBox(height: size.height * 0.02),
                     Text(
                       localizations.processingPayment,
                       style: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.textSecondary,
+                        color: textSecondary,
                       ),
                     ),
                   ],
@@ -73,12 +97,44 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                       ),
                       SizedBox(height: size.height * 0.04),
                       ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(
-                            context,
-                          ).popUntil((route) => route.isFirst);
-                        },
-                        child: Text(localizations.backToHome),
+                        onPressed: _onBackToHome,
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          elevation: 0,
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                        ),
+                        child: Ink(
+                          decoration: BoxDecoration(
+                            gradient: AppColors.buttonGradientOf(context),
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: primary.withValues(alpha: 0.3),
+                                blurRadius: 12,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.symmetric(
+                              vertical: size.height * 0.02,
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              localizations.backToHome,
+                              style: AppTextStyles.titleMedium.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16 * textScale,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -94,26 +150,26 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                   Container(
                     padding: EdgeInsets.all(size.width * 0.06),
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.1),
+                      color: primary.withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                     ),
                     child: Container(
                       padding: EdgeInsets.all(size.width * 0.04),
-                      decoration: const BoxDecoration(
-                        gradient: AppColors.buttonGradient,
+                      decoration: BoxDecoration(
+                        gradient: AppColors.buttonGradientOf(context),
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.primary,
+                            color: primary.withValues(alpha: 0.4),
                             blurRadius: 20,
                             spreadRadius: -5,
-                            offset: Offset(0, 5),
+                            offset: const Offset(0, 5),
                           ),
                         ],
                       ),
                       child: Icon(
                         Icons.check_rounded,
-                        color: AppColors.surface,
+                        color: Colors.white,
                         size: 60 * textScale,
                       ),
                     ),
@@ -122,7 +178,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                   Text(
                     localizations.paymentSuccessful,
                     style: AppTextStyles.h2.copyWith(
-                      color: AppColors.textPrimary,
+                      color: textPrimary,
                       fontWeight: FontWeight.bold,
                       fontSize: 24 * textScale,
                     ),
@@ -132,7 +188,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                   Text(
                     localizations.paymentSuccessMessage,
                     style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.textSecondary,
+                      color: textSecondary,
                       fontSize: 14 * textScale,
                       height: 1.5,
                     ),
@@ -140,23 +196,42 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                   ),
                   SizedBox(height: size.height * 0.06),
                   ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).popUntil((route) => route.isFirst);
-                    },
+                    onPressed: _onBackToHome,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      minimumSize: Size(double.infinity, size.height * 0.065),
+                      padding: EdgeInsets.zero,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
                       elevation: 0,
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
                     ),
-                    child: Text(
-                      localizations.backToHome,
-                      style: AppTextStyles.titleMedium.copyWith(
-                        color: AppColors.surface,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16 * textScale,
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        gradient: AppColors.buttonGradientOf(context),
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: primary.withValues(alpha: 0.3),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(
+                          vertical: size.height * 0.02,
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          localizations.backToHome,
+                          style: AppTextStyles.titleMedium.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16 * textScale,
+                          ),
+                        ),
                       ),
                     ),
                   ),

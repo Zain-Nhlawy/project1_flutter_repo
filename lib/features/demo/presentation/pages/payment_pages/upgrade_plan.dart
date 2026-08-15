@@ -4,6 +4,7 @@ import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/demo/domain/use%20case/demo_payment_usecase.dart';
+import 'package:project1/features/demo/presentation/cubit/demo%20cubit/demo_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/payment%20for%20demo/demo_payment_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/payment%20for%20demo/demo_payment_state.dart';
 import 'package:project1/features/demo/presentation/pages/payment_pages/payment_webview.dart';
@@ -94,22 +95,30 @@ class UpgradePlanScreenState extends State<UpgradePlanScreen> {
             },
           ];
 
+          final isDark = Theme.of(context).brightness == Brightness.dark;
+          final primary = AppColors.primaryOf(context);
+          final textPrimary = AppColors.textPrimaryOf(context);
+          final textSecondary = AppColors.textSecondaryOf(context);
+          final surface = AppColors.surfaceOf(context);
+          final background = AppColors.backgroundOf(context);
+          final border = AppColors.borderOf(context);
+
           return Scaffold(
-            backgroundColor: AppColors.background,
+            backgroundColor: background,
             appBar: AppBar(
-              backgroundColor: AppColors.background,
+              backgroundColor: background,
               elevation: 0,
               leading: IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.arrow_back_rounded,
-                  color: AppColors.textPrimary,
+                  color: textPrimary,
                 ),
                 onPressed: () => Navigator.pop(context),
               ),
               title: Text(
                 localizations.upgradePlan,
                 style: AppTextStyles.titleLarge.copyWith(
-                  color: AppColors.textPrimary,
+                  color: textPrimary,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -143,25 +152,25 @@ class UpgradePlanScreenState extends State<UpgradePlanScreen> {
                           padding: EdgeInsets.all(size.width * 0.04),
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? AppColors.primary.withValues(alpha: 0.1)
+                                ? primary.withValues(alpha: 0.12)
                                 : isCurrentPlan
-                                    ? AppColors.primary.withValues(alpha: 0.06)
+                                    ? primary.withValues(alpha: 0.08)
                                     : isRestricted
-                                        ? AppColors.surface.withValues(alpha: 0.5)
-                                        : AppColors.surface,
+                                        ? surface.withValues(alpha: 0.5)
+                                        : surface,
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
                               color: isSelected
-                                  ? AppColors.primary
+                                  ? primary
                                   : isCurrentPlan
-                                      ? AppColors.primary.withValues(alpha: 0.4)
-                                      : AppColors.textSecondary.withValues(alpha: 0.2),
+                                      ? primary.withValues(alpha: 0.4)
+                                      : border,
                               width: isSelected ? 2 : 1,
                             ),
                             boxShadow: isSelected
                                 ? [
                                     BoxShadow(
-                                      color: AppColors.primary.withValues(alpha: 0.1),
+                                      color: primary.withValues(alpha: 0.15),
                                       blurRadius: 10,
                                       offset: const Offset(0, 4),
                                     ),
@@ -174,21 +183,21 @@ class UpgradePlanScreenState extends State<UpgradePlanScreen> {
                                 padding: const EdgeInsets.all(12),
                                 decoration: BoxDecoration(
                                   color: isSelected
-                                      ? AppColors.primary
+                                      ? primary
                                       : isCurrentPlan
-                                          ? AppColors.primary.withValues(alpha: 0.15)
-                                          : AppColors.textSecondary.withValues(alpha: 0.1),
+                                          ? primary.withValues(alpha: 0.15)
+                                          : textSecondary.withValues(alpha: 0.1),
                                   shape: BoxShape.circle,
                                 ),
                                 child: Icon(
                                   plan["icon"] as IconData,
                                   color: isSelected
-                                      ? AppColors.surface
+                                      ? Colors.white
                                       : isCurrentPlan
-                                          ? AppColors.primary
+                                          ? primary
                                           : isRestricted
                                               ? Colors.grey
-                                              : AppColors.textSecondary,
+                                              : textSecondary,
                                   size: 24 * textScale,
                                 ),
                               ),
@@ -201,8 +210,8 @@ class UpgradePlanScreenState extends State<UpgradePlanScreen> {
                                       plan["title"] as String,
                                       style: AppTextStyles.titleMedium.copyWith(
                                         color: isRestricted && !isCurrentPlan
-                                            ? AppColors.textSecondary
-                                            : AppColors.textPrimary,
+                                            ? textSecondary
+                                            : textPrimary,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -210,7 +219,7 @@ class UpgradePlanScreenState extends State<UpgradePlanScreen> {
                                     Text(
                                       '${plan["members"]} • ${plan["sections"]}',
                                       style: AppTextStyles.bodyMedium.copyWith(
-                                        color: AppColors.textSecondary,
+                                        color: textSecondary,
                                         fontSize: 12 * textScale,
                                       ),
                                     ),
@@ -224,13 +233,13 @@ class UpgradePlanScreenState extends State<UpgradePlanScreen> {
                                     vertical: 4,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: AppColors.primary.withValues(alpha: 0.12),
+                                    color: primary.withValues(alpha: 0.12),
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   child: Text(
                                     localizations.currentPlan,
                                     style: AppTextStyles.label.copyWith(
-                                      color: AppColors.primary,
+                                      color: primary,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12 * textScale,
                                     ),
@@ -271,8 +280,8 @@ class UpgradePlanScreenState extends State<UpgradePlanScreen> {
                                   plan["price"] as String,
                                   style: AppTextStyles.titleMedium.copyWith(
                                     color: isSelected
-                                        ? AppColors.primary
-                                        : AppColors.textPrimary,
+                                        ? primary
+                                        : textPrimary,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16 * textScale,
                                   ),
@@ -289,10 +298,12 @@ class UpgradePlanScreenState extends State<UpgradePlanScreen> {
                     child: Container(
                       padding: EdgeInsets.all(size.width * 0.06),
                       decoration: BoxDecoration(
-                        color: AppColors.surface,
+                        color: surface,
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.textSecondary.withValues(alpha: 0.05),
+                            color: isDark
+                                ? Colors.black.withValues(alpha: 0.25)
+                                : textSecondary.withValues(alpha: 0.05),
                             blurRadius: 20,
                             offset: const Offset(0, -5),
                           ),
@@ -313,7 +324,7 @@ class UpgradePlanScreenState extends State<UpgradePlanScreen> {
                                           );
 
                                       if (context.mounted) {
-                                        Navigator.push(
+                                        await Navigator.push(
                                           context,
                                           PageRouteBuilder(
                                             transitionDuration:
@@ -340,6 +351,9 @@ class UpgradePlanScreenState extends State<UpgradePlanScreen> {
                                             },
                                           ),
                                         );
+                                        if (context.mounted && getIt.isRegistered<DemoCubit>()) {
+                                          getIt<DemoCubit>().fetchDemos();
+                                        }
                                       }
                                     } catch (e) {
                                       if (context.mounted) {

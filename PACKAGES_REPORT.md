@@ -27,10 +27,10 @@
    - **`url_launcher`**: Declared but not invoked in any code file.
 2. **Move Dev Tools to `dev_dependencies`:**
    - **`flutter_launcher_icons`**: CLI code generator placed under runtime `dependencies:`. Move it to `dev_dependencies:`.
-3. **Resolve Duplicate WebView Engines:**
-   - The project imports **both** `webview_flutter` and `flutter_inappwebview`. Having two distinct native WebView bridge libraries bloats the final APK/AAB and iOS bundle. Standardize on one.
-4. **Offline Font Strategy:**
-   - `google_fonts` is loaded at runtime in `main.dart` for the `Cairo` font fallback, despite having local offline fonts (`PlusJakartaSans`, `CormorantGaramond`) in `assets/fonts/`. Download `Cairo` to `assets/fonts/` and drop `google_fonts` to guarantee instant offline rendering and remove runtime HTTP font fetching.
+3. **Resolve Duplicate WebView Engines:**  *(✅ RESOLVED)*
+   - Migrated `checkout_webview_screen.dart`, `payment_webview.dart`, and `diagram_page.dart` to `flutter_inappwebview` and completely eliminated `webview_flutter`.
+4. **Offline Font Strategy:**  *(✅ RESOLVED)*
+   - Downloaded Cairo font weights (400, 500, 600, 700, 800) into `assets/fonts/`, configured them in `pubspec.yaml`, updated `main.dart`, and removed `google_fonts`.
 
 ---
 

@@ -28,7 +28,7 @@ class ProfileInfoCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: AppColors.textSecondary.withOpacity(0.08),
+            color: AppColors.textSecondaryOf(context).withValues(alpha: 0.08),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -64,11 +64,11 @@ class ProfileInfoCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: AppColors.primary,
                     shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.surface, width: 3),
+                    border: Border.all(color: AppColors.surfaceOf(context), width: 3),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.camera_alt_outlined,
-                    color: AppColors.surface,
+                    color: AppColors.surfaceOf(context),
                     size: 14,
                   ),
                 ),

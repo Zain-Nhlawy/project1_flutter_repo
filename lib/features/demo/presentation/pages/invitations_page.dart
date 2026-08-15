@@ -29,10 +29,10 @@ class _InvitationsPageState extends State<InvitationsPage> {
       backgroundColor: AppColors.backgroundOf(context),
       body: Column(
         children: [
-          _NotificationsHeader(
+          _InvitationsHeader(
             topPadding: topPadding,
-            title: l10n.notificationsTitle,
-            subtitle: l10n.notificationPermissionBody,
+            title: l10n.invitationsTitle,
+            subtitle: l10n.invitationsSubtitle,
           ),
           Expanded(
             child: BlocBuilder<InvitationCubit, InvitationState>(
@@ -44,7 +44,7 @@ class _InvitationsPageState extends State<InvitationsPage> {
                 } else if (state is InvitationLoaded) {
                   final invitations = state.invitations;
                   if (invitations.isEmpty) {
-                    return Center(child: Text(l10n.noNewNotifications));
+                    return Center(child: Text(l10n.noNewInvitations));
                   }
                   return ListView.separated(
                     padding: const EdgeInsets.all(16),
@@ -191,12 +191,12 @@ class _InvitationsPageState extends State<InvitationsPage> {
   }
 }
 
-class _NotificationsHeader extends StatelessWidget {
+class _InvitationsHeader extends StatelessWidget {
   final double topPadding;
   final String title;
   final String subtitle;
 
-  const _NotificationsHeader({
+  const _InvitationsHeader({
     required this.topPadding,
     required this.title,
     required this.subtitle,

@@ -69,6 +69,9 @@ class DemoSidePanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final primary = AppColors.primaryOf(context);
+    final textSecondary = AppColors.textSecondaryOf(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final currentPlan = demo.plan?.toLowerCase() ?? 'starter';
     final isFreePlan = currentPlan == 'free';
     final avatarSize = 72.0;
@@ -82,12 +85,14 @@ class DemoSidePanel extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18),
             border: Border.all(
-              color: AppColors.primary.withOpacity(0.12),
+              color: primary.withValues(alpha: 0.18),
               width: 1.5,
             ),
             boxShadow: [
               BoxShadow(
-                color: AppColors.textSecondary.withOpacity(0.08),
+                color: isDark
+                    ? Colors.black.withValues(alpha: 0.25)
+                    : textSecondary.withValues(alpha: 0.08),
                 blurRadius: 8,
                 offset: const Offset(0, 3),
               ),
@@ -106,7 +111,7 @@ class DemoSidePanel extends StatelessWidget {
               vertical: 4,
             ),
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
+              color: primary.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Row(
@@ -114,14 +119,14 @@ class DemoSidePanel extends StatelessWidget {
               children: [
                 Icon(
                   Icons.workspace_premium_rounded,
-                  color: AppColors.primary,
+                  color: primary,
                   size: 11 * textScale,
                 ),
                 const SizedBox(width: 4),
                 Text(
                   demo.plan ?? 'Starter',
                   style: AppTextStyles.label.copyWith(
-                    color: AppColors.primary,
+                    color: primary,
                     fontWeight: FontWeight.bold,
                     fontSize: 10 * textScale,
                   ),
@@ -137,7 +142,7 @@ class DemoSidePanel extends StatelessWidget {
                 vertical: 3,
               ),
               decoration: BoxDecoration(
-                color: Colors.orange.withOpacity(0.1),
+                color: Colors.orange.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Row(
@@ -145,14 +150,14 @@ class DemoSidePanel extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.access_time_rounded,
-                    color: Colors.orange.shade700,
+                    color: Colors.orangeAccent,
                     size: 10 * textScale,
                   ),
                   const SizedBox(width: 4),
                   Text(
                     localizations.daysLeftText(daysLeft),
                     style: AppTextStyles.label.copyWith(
-                      color: Colors.orange.shade700,
+                      color: Colors.orangeAccent,
                       fontWeight: FontWeight.w600,
                       fontSize: 9 * textScale,
                     ),

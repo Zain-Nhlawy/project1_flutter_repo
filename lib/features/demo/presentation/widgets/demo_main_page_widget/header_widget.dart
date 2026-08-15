@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/features/demo/domain/entities/demo_entity.dart';
@@ -8,8 +9,8 @@ import 'package:project1/features/demo/presentation/pages/payment_pages/upgrade_
 import 'package:project1/features/demo/presentation/pages/invitations_page.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:animations/animations.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/features/demo/presentation/cubit/demo%20cubit/demo_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/invitations_cubit/invitation_cubit.dart';
 
 class HeaderWidget extends StatelessWidget {
@@ -37,7 +38,8 @@ class HeaderWidget extends StatelessWidget {
           return Image.file(
             file,
             fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) => _fallbackHeaderImage(),
+            errorBuilder: (context, error, stackTrace) =>
+                _fallbackHeaderImage(),
           );
         }
       }
@@ -73,7 +75,8 @@ class HeaderWidget extends StatelessWidget {
     final int daysLeft = (14 - daysPassed) > 0 ? (14 - daysPassed) : 0;
 
     final currentPlan = demo.plan?.trim().toLowerCase() ?? 'free';
-    final isFree = currentPlan == 'free' || currentPlan == 'trial' || currentPlan.isEmpty;
+    final isFree =
+        currentPlan == 'free' || currentPlan == 'trial' || currentPlan.isEmpty;
     final isEnterprise = currentPlan == 'enterprise';
 
     return Container(
@@ -152,7 +155,7 @@ class HeaderWidget extends StatelessWidget {
                       const SizedBox(width: 8),
                     ],
                     _GhostIconButton(
-                      icon: Icons.notifications_none_rounded,
+                      icon: Icons.mail_outline_rounded,
                       textScale: textScale,
                       iconSize: 17,
                       buttonSize: 38,
@@ -167,6 +170,16 @@ class HeaderWidget extends StatelessWidget {
                             ),
                           ),
                         );
+                      },
+                    ),
+                    const SizedBox(width: 8),
+                    _GhostIconButton(
+                      icon: Icons.notifications_none_rounded,
+                      textScale: textScale,
+                      iconSize: 17,
+                      buttonSize: 38,
+                      onTap: () {
+                        // Notifications action
                       },
                     ),
                   ],
@@ -192,9 +205,7 @@ class HeaderWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: ClipOval(
-                    child: _buildHeaderImage(demo.imagePath),
-                  ),
+                  child: ClipOval(child: _buildHeaderImage(demo.imagePath)),
                 ),
                 const SizedBox(width: 14),
                 Expanded(
@@ -333,8 +344,8 @@ class HeaderWidget extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         InkWell(
-                          onTap: () {
-                            Navigator.push(
+                          onTap: () async {
+                            await Navigator.push(
                               context,
                               PageRouteBuilder(
                                 transitionDuration: const Duration(
@@ -361,6 +372,10 @@ class HeaderWidget extends StatelessWidget {
                                     },
                               ),
                             );
+                            if (context.mounted &&
+                                getIt.isRegistered<DemoCubit>()) {
+                              getIt<DemoCubit>().fetchDemos();
+                            }
                           },
                           borderRadius: BorderRadius.circular(12),
                           child: Container(

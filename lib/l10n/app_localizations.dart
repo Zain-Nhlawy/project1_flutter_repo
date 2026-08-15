@@ -1754,6 +1754,24 @@ abstract class AppLocalizations {
   /// **'Invitation sent successfully'**
   String get invitationSentSuccessfully;
 
+  /// No description provided for @invitationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitations'**
+  String get invitationsTitle;
+
+  /// No description provided for @invitationsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your received demo invitations'**
+  String get invitationsSubtitle;
+
+  /// No description provided for @noNewInvitations.
+  ///
+  /// In en, this message translates to:
+  /// **'No invitations available'**
+  String get noNewInvitations;
+
   /// No description provided for @notificationsTitle.
   ///
   /// In en, this message translates to:

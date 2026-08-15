@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/demo/domain/use%20case/demo_payment_usecase.dart';
+import 'package:project1/features/demo/presentation/cubit/demo%20cubit/demo_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/payment%20for%20demo/demo_payment_state.dart';
 
 class PaymentWebViewCubit extends Cubit<PaymentWebViewState> {
@@ -65,6 +67,9 @@ class PaymentWebViewCubit extends Cubit<PaymentWebViewState> {
           if (status.toLowerCase() == 'complete') {
             if (!isClosed) {
               emit(PaymentWebViewState(isLoading: false, status: status));
+            }
+            if (getIt.isRegistered<DemoCubit>()) {
+              getIt<DemoCubit>().fetchDemos();
             }
             isConfirmed = true;
           } else {

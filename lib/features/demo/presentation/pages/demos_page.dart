@@ -23,7 +23,7 @@ class DemosPage extends StatelessWidget {
         title: Text(
           title,
           style: AppTextStyles.h3.copyWith(
-            color: AppColors.textPrimary,
+            color: AppColors.textPrimaryOf(context),
             fontWeight: FontWeight.bold,
             fontSize: 20 * textScale,
           ),
@@ -35,7 +35,7 @@ class DemosPage extends StatelessWidget {
               child: Text(
                 localizations.noDemosAvailable,
                 style: AppTextStyles.h3.copyWith(
-                  color: AppColors.textPrimary,
+                  color: AppColors.textPrimaryOf(context),
                   fontWeight: FontWeight.bold,
                   fontSize: 20 * textScale,
                 ),

@@ -24,7 +24,7 @@ class DemoNameSlide extends StatelessWidget {
             Text(
               localizations.startWithName,
               style: AppTextStyles.h2.copyWith(
-                color: AppColors.textPrimary,
+                color: AppColors.textPrimaryOf(context),
                 fontWeight: FontWeight.bold,
                 fontSize: 24 * textScale,
               ),
@@ -33,7 +33,7 @@ class DemoNameSlide extends StatelessWidget {
             Text(
               localizations.giveCatchyTitle,
               style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.textSecondary,
+                color: AppColors.textSecondaryOf(context),
                 fontSize: 14 * textScale,
               ),
             ),
@@ -74,6 +74,10 @@ class DemoNameSlide extends StatelessWidget {
   }) {
     final size = MediaQuery.sizeOf(context);
     final textScale = MediaQuery.textScalerOf(context).scale(1);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final primary = AppColors.primaryOf(context);
+    final textSecondary = AppColors.textSecondaryOf(context);
+    final textPrimary = AppColors.textPrimaryOf(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,7 +85,7 @@ class DemoNameSlide extends StatelessWidget {
         Text(
           label,
           style: AppTextStyles.titleMedium.copyWith(
-            color: AppColors.textPrimary,
+            color: textPrimary,
             fontWeight: FontWeight.w600,
             fontSize: 14 * textScale,
           ),
@@ -89,11 +93,13 @@ class DemoNameSlide extends StatelessWidget {
         SizedBox(height: size.height * 0.01),
         Container(
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: AppColors.surfaceOf(context),
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: AppColors.textSecondary.withOpacity(0.05),
+                color: isDark
+                    ? Colors.black.withValues(alpha: 0.25)
+                    : textSecondary.withValues(alpha: 0.05),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -102,14 +108,15 @@ class DemoNameSlide extends StatelessWidget {
           child: TextField(
             onChanged: onChanged,
             maxLines: maxLines,
+            style: TextStyle(color: textPrimary),
             decoration: InputDecoration(
               hintText: hint,
               hintStyle: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.textSecondary.withOpacity(0.6),
+                color: textSecondary.withValues(alpha: 0.6),
                 fontSize: 14 * textScale,
               ),
               prefixIcon: maxLines == 1
-                  ? Icon(icon, color: AppColors.primary, size: 20 * textScale)
+                  ? Icon(icon, color: primary, size: 20 * textScale)
                   : Padding(
                       padding: EdgeInsets.only(
                         bottom: size.height * 0.06,
@@ -117,7 +124,7 @@ class DemoNameSlide extends StatelessWidget {
                       ),
                       child: Icon(
                         icon,
-                        color: AppColors.primary,
+                        color: primary,
                         size: 20 * textScale,
                       ),
                     ),

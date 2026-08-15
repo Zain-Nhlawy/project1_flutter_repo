@@ -56,7 +56,7 @@ class ManagerSelectionField extends StatelessWidget {
         Text(
           l10n.manager,
           style: AppTextStyles.titleMedium.copyWith(
-            color: AppColors.textPrimary,
+            color: AppColors.textPrimaryOf(context),
             fontWeight: FontWeight.w600,
             fontSize: 14 * textScale,
           ),
@@ -74,7 +74,7 @@ class ManagerSelectionField extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Material(
-                  color: AppColors.surface,
+                  color: AppColors.surfaceOf(context),
                   borderRadius: BorderRadius.circular(16),
                   child: InkWell(
                     onTap: () => _selectManager(context),
@@ -89,7 +89,7 @@ class ManagerSelectionField extends StatelessWidget {
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.textSecondary.withValues(
+                            color: AppColors.textSecondaryOf(context).withValues(
                               alpha: 0.05,
                             ),
                             blurRadius: 10,
@@ -112,17 +112,17 @@ class ManagerSelectionField extends StatelessWidget {
                                   : '${state.selectedManager!.firstName} ${state.selectedManager!.lastName}',
                               style: AppTextStyles.bodyMedium.copyWith(
                                 color: state.selectedManager == null
-                                    ? AppColors.textSecondary.withValues(
+                                    ? AppColors.textSecondaryOf(context).withValues(
                                         alpha: 0.6,
                                       )
-                                    : AppColors.textPrimary,
+                                    : AppColors.textPrimaryOf(context),
                                 fontSize: 14 * textScale,
                               ),
                             ),
                           ),
                           Icon(
                             Icons.chevron_right_rounded,
-                            color: AppColors.textSecondary.withValues(
+                            color: AppColors.textSecondaryOf(context).withValues(
                               alpha: 0.6,
                             ),
                             size: 22 * textScale,

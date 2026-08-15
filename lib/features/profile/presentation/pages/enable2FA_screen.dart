@@ -56,7 +56,7 @@ class _Enable2FAScreenState extends State<Enable2FAScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.backgroundOf(context),
         appBar: AppBar(
           backgroundColor: AppColors.primary,
           foregroundColor: Colors.white,

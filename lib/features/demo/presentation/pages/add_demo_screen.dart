@@ -26,7 +26,7 @@ class AddDemoScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => AddDemoCubit(),
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.backgroundOf(context),
         body: BlocListener<DemoCubit, DemoState>(
           listener: (context, demoState) {
             if (demoState is AddDemoLoading) {
@@ -67,7 +67,7 @@ class AddDemoScreen extends StatelessWidget {
                               onPressed: cubit.previousPage,
                               icon: Icon(
                                 Icons.arrow_back_rounded,
-                                color: AppColors.textPrimary,
+                                color: AppColors.textPrimaryOf(context),
                                 size: 24 * textScale,
                               ),
                             )
@@ -76,7 +76,7 @@ class AddDemoScreen extends StatelessWidget {
                               onPressed: () => Navigator.pop(context),
                               icon: Icon(
                                 Icons.close_rounded,
-                                color: AppColors.textPrimary,
+                                color: AppColors.textPrimaryOf(context),
                                 size: 24 * textScale,
                               ),
                             ),
@@ -105,10 +105,14 @@ class AddDemoScreen extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.all(size.width * 0.06),
                       decoration: BoxDecoration(
-                        color: AppColors.surface,
+                        color: AppColors.surfaceOf(context),
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.textSecondary.withOpacity(0.05),
+                            color: Colors.black.withValues(
+                              alpha: Theme.of(context).brightness == Brightness.dark
+                                  ? 0.25
+                                  : 0.05,
+                            ),
                             blurRadius: 20,
                             offset: const Offset(0, -5),
                           ),
@@ -159,11 +163,13 @@ class AddDemoScreen extends StatelessWidget {
                             vertical: size.height * 0.02,
                           ),
                           decoration: BoxDecoration(
-                            gradient: AppColors.buttonGradient,
+                            gradient: AppColors.buttonGradientOf(context),
                             borderRadius: BorderRadius.circular(16),
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.primary.withOpacity(0.3),
+                                color: AppColors.primaryOf(context).withValues(
+                                  alpha: 0.3,
+                                ),
                                 blurRadius: 12,
                                 offset: const Offset(0, 4),
                               ),
@@ -175,7 +181,7 @@ class AddDemoScreen extends StatelessWidget {
                                   ? localizations.createDemo
                                   : localizations.continueBtn,
                               style: AppTextStyles.titleMedium.copyWith(
-                                color: AppColors.surface,
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16 * textScale,
                               ),

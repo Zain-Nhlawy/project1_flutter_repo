@@ -871,6 +871,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get invitationSentSuccessfully => 'Invitation sent successfully';
 
   @override
+  String get invitationsTitle => 'Invitations';
+
+  @override
+  String get invitationsSubtitle => 'Manage your received demo invitations';
+
+  @override
+  String get noNewInvitations => 'No invitations available';
+
+  @override
   String get notificationsTitle => 'Notifications';
 
   @override

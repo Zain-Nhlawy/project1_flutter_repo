@@ -51,7 +51,7 @@ class _ExamAttemptReviewScreenState
     final questions = widget.exam.questions;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.backgroundOf(context),
       appBar: QuizAppBar(
         title: localizations.reviewAnswers,
       ),
@@ -61,7 +61,7 @@ class _ExamAttemptReviewScreenState
                 child: Text(
                   localizations.noQuestionsAvailable,
                   style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textSecondary,
+                    color: AppColors.textSecondaryOf(context),
                   ),
                 ),
               )
@@ -137,7 +137,7 @@ class _ReviewContent extends StatelessWidget {
                 Text(
                   localizations.selectAnswer,
                   style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textPrimary,
+                    color: AppColors.textPrimaryOf(context),
                     fontWeight: FontWeight.bold,
                   ),
                 ),

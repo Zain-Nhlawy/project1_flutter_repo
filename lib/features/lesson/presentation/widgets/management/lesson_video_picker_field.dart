@@ -36,9 +36,9 @@ class LessonVideoPickerField extends StatelessWidget {
             height: 180,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: AppColors.background,
+              color: AppColors.backgroundOf(context),
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: AppColors.border, width: 1),
+              border: Border.all(color: AppColors.borderOf(context), width: 1),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(14),
@@ -62,27 +62,27 @@ class LessonVideoPickerField extends StatelessWidget {
                         );
                       },
                       errorBuilder: (context, error, stackTrace) {
-                        return const Center(
+                        return Center(
                           child: Icon(
                             Icons.video_library_outlined,
                             size: 40,
-                            color: AppColors.textSecondary,
+                            color: AppColors.textSecondaryOf(context),
                           ),
                         );
                       },
                     )
                   else
-                    const Center(
+                    Center(
                       child: Icon(
                         Icons.video_library_outlined,
                         size: 40,
-                        color: AppColors.textSecondary,
+                        color: AppColors.textSecondaryOf(context),
                       ),
                     ),
                   if (!loadingThumbnail &&
                       (thumbnail != null || thumbnailUrl != null))
                     Container(
-                      color: Colors.black.withOpacity(0.25),
+                      color: Colors.black.withValues(alpha: 0.25),
                       child: const Center(
                         child: Icon(
                           Icons.play_circle_fill_rounded,
@@ -93,7 +93,7 @@ class LessonVideoPickerField extends StatelessWidget {
                     ),
                   if (isUploading)
                     Container(
-                      color: Colors.black.withOpacity(0.4),
+                      color: Colors.black.withValues(alpha: 0.4),
                       child: const Center(
                         child: CircularProgressIndicator(color: Colors.white),
                       ),

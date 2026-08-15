@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart' show AppTextStyles;
+import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/demo/domain/entities/demo_entity.dart';
+import 'package:project1/features/demo/presentation/cubit/demo%20cubit/demo_cubit.dart';
 import 'package:project1/features/demo/presentation/pages/demo_main_page.dart';
 import 'package:project1/features/demo/presentation/pages/payment_pages/upgrade_plan.dart';
 import 'package:project1/l10n/app_localizations.dart';
@@ -37,7 +39,7 @@ class DemoMainContent extends StatelessWidget {
           Text(
             demo.name,
             style: AppTextStyles.titleMedium.copyWith(
-              color: AppColors.textPrimary,
+              color: AppColors.textPrimaryOf(context),
               fontWeight: FontWeight.w700,
               fontSize: 16 * textScale,
             ),
@@ -48,7 +50,7 @@ class DemoMainContent extends StatelessWidget {
           Text(
             demo.description,
             style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.textSecondary,
+              color: AppColors.textSecondaryOf(context),
               fontSize: 13 * textScale,
               height: 1.3,
             ),
@@ -59,7 +61,7 @@ class DemoMainContent extends StatelessWidget {
           Divider(
             height: 1,
             thickness: 1,
-            color: AppColors.textSecondary.withValues(alpha: 0.08),
+            color: AppColors.borderOf(context).withValues(alpha: 0.6),
           ),
           const SizedBox(height: 12),
           Row(
@@ -67,14 +69,14 @@ class DemoMainContent extends StatelessWidget {
               Icon(
                 Icons.person_outline_rounded,
                 size: 13 * textScale,
-                color: AppColors.textSecondary.withValues(alpha: 0.6),
+                color: AppColors.textSecondaryOf(context).withValues(alpha: 0.7),
               ),
               const SizedBox(width: 4),
               Expanded(
                 child: Text(
                   demo.ownerName,
                   style: AppTextStyles.label.copyWith(
-                    color: AppColors.textSecondary.withValues(alpha: 0.7),
+                    color: AppColors.textSecondaryOf(context).withValues(alpha: 0.85),
                     fontSize: 12 * textScale,
                     height: 1.25,
                   ),
@@ -120,8 +122,8 @@ class DemoMainContent extends StatelessWidget {
                         );
                       }
                     : canUpgrade
-                    ? () {
-                        Navigator.push(
+                    ? () async {
+                        await Navigator.push(
                           context,
                           PageRouteBuilder(
                             transitionDuration: const Duration(
@@ -148,6 +150,9 @@ class DemoMainContent extends StatelessWidget {
                                 },
                           ),
                         );
+                        if (context.mounted && getIt.isRegistered<DemoCubit>()) {
+                          getIt<DemoCubit>().fetchDemos();
+                        }
                       }
                     : null,
               ),
@@ -193,7 +198,7 @@ class _ActionButton extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: isDisabled ? null : AppColors.headerGradientOf(context),
           color: isDisabled
-              ? AppColors.textSecondary.withValues(alpha: 0.15)
+              ? AppColors.textSecondaryOf(context).withValues(alpha: 0.15)
               : null,
           borderRadius: BorderRadius.circular(20),
           boxShadow: isDisabled
@@ -217,8 +222,8 @@ class _ActionButton extends StatelessWidget {
               label,
               style: AppTextStyles.label.copyWith(
                 color: isDisabled
-                    ? AppColors.textSecondary.withValues(alpha: 0.6)
-                    : AppColors.surface,
+                    ? AppColors.textSecondaryOf(context).withValues(alpha: 0.6)
+                    : Colors.white,
                 fontWeight: FontWeight.w600,
                 fontSize: 12 * textScale,
               ),
@@ -227,8 +232,8 @@ class _ActionButton extends StatelessWidget {
             Icon(
               icon,
               color: isDisabled
-                  ? AppColors.textSecondary.withValues(alpha: 0.6)
-                  : AppColors.surface,
+                  ? AppColors.textSecondaryOf(context).withValues(alpha: 0.6)
+                  : Colors.white,
               size: 14 * textScale,
             ),
           ],

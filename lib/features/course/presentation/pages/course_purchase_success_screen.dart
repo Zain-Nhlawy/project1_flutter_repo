@@ -15,7 +15,7 @@ class CoursePurchaseSuccessScreen extends StatelessWidget {
     final localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.backgroundOf(context),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: size.width * 0.06),
