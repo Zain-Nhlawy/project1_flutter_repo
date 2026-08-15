@@ -55,15 +55,15 @@ class AddDepartmentScreen extends StatelessWidget {
           }
         },
         child: Scaffold(
-          backgroundColor: AppColors.background,
+          backgroundColor: AppColors.backgroundOf(context),
           appBar: AppBar(
-            backgroundColor: AppColors.background,
+            backgroundColor: AppColors.backgroundOf(context),
             elevation: 0,
             centerTitle: true,
             title: Text(
               isEdit ? l10n.editDepartment : l10n.addSection,
               style: AppTextStyles.h3.copyWith(
-                color: AppColors.textPrimary,
+                color: AppColors.textPrimaryOf(context),
                 fontWeight: FontWeight.bold,
                 fontSize: 20 * textScale,
               ),
@@ -72,7 +72,7 @@ class AddDepartmentScreen extends StatelessWidget {
               onPressed: () => Navigator.pop(context),
               icon: Icon(
                 Icons.arrow_back_rounded,
-                color: AppColors.textPrimary,
+                color: AppColors.textPrimaryOf(context),
                 size: 24 * textScale,
               ),
             ),

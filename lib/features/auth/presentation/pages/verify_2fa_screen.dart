@@ -49,7 +49,7 @@ class _Verify2FAScreenState extends State<Verify2FAScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.backgroundOf(context),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(24),

@@ -79,7 +79,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.backgroundOf(context),
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,

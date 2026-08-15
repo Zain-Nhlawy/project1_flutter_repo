@@ -24,14 +24,14 @@ class NavigationsTabs extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => NavigationTabsCubit()),
-        BlocProvider(create: (_) => getIt<DemoCubit>()..fetchDemos()),
+        BlocProvider.value(value: getIt<DemoCubit>()..fetchDemos()),
       ],
       child: BlocBuilder<NavigationTabsCubit, NavigationTabsState>(
         builder: (context, state) {
           final cubit = context.read<NavigationTabsCubit>();
 
           return Scaffold(
-            backgroundColor: AppColors.background,
+            backgroundColor: AppColors.backgroundOf(context),
             extendBody: true,
             body: PageTransitionSwitcher(
               duration: const Duration(milliseconds: 300),
@@ -50,6 +50,7 @@ class NavigationsTabs extends StatelessWidget {
               child: cubit.pages[state.currentIndex],
             ),
             bottomNavigationBar: _buildModernNavBar(
+              context,
               state,
               cubit,
               screenWidth,
@@ -64,6 +65,7 @@ class NavigationsTabs extends StatelessWidget {
   }
 
   Widget _buildModernNavBar(
+    BuildContext context,
     NavigationTabsState state,
     NavigationTabsCubit cubit,
     double screenWidth,
@@ -72,6 +74,7 @@ class NavigationsTabs extends StatelessWidget {
     AppLocalizations localizations,
   ) {
     final clampedTextScale = textScale.clamp(0.85, 1.25);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return SafeArea(
       child: Container(
@@ -81,11 +84,13 @@ class NavigationsTabs extends StatelessWidget {
         ),
         padding: const EdgeInsets.symmetric(vertical: 4),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: AppColors.surfaceOf(context),
           borderRadius: BorderRadius.circular(25),
           boxShadow: [
             BoxShadow(
-              color: AppColors.textSecondary.withValues(alpha: 0.25),
+              color: isDark
+                  ? Colors.black.withValues(alpha: 0.35)
+                  : AppColors.textSecondary.withValues(alpha: 0.2),
               blurRadius: 20,
               offset: const Offset(0, 8),
             ),
@@ -97,6 +102,7 @@ class NavigationsTabs extends StatelessWidget {
           children: [
             Expanded(
               child: _buildNavItem(
+                context: context,
                 icon: Icons.home_outlined,
                 index: 0,
                 state: state,
@@ -107,6 +113,7 @@ class NavigationsTabs extends StatelessWidget {
             ),
             Expanded(
               child: _buildNavItem(
+                context: context,
                 icon: Icons.history_outlined,
                 index: 1,
                 state: state,
@@ -117,6 +124,7 @@ class NavigationsTabs extends StatelessWidget {
             ),
             Expanded(
               child: _buildNavItem(
+                context: context,
                 icon: Icons.person_outline,
                 index: 2,
                 state: state,
@@ -132,6 +140,7 @@ class NavigationsTabs extends StatelessWidget {
   }
 
   Widget _buildNavItem({
+    required BuildContext context,
     required IconData icon,
     required int index,
     required NavigationTabsState state,
@@ -140,11 +149,13 @@ class NavigationsTabs extends StatelessWidget {
     required double textScale,
   }) {
     final isActive = state.currentIndex == index;
+    final primary = AppColors.primaryOf(context);
+    final textSecondary = AppColors.textSecondaryOf(context);
 
     return InkWell(
       onTap: () => cubit.changePage(index),
       borderRadius: BorderRadius.circular(24),
-      splashColor: AppColors.primary.withValues(alpha: 0.1),
+      splashColor: primary.withValues(alpha: 0.1),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 4),
         child: Column(
@@ -157,14 +168,14 @@ class NavigationsTabs extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               decoration: BoxDecoration(
                 color: isActive
-                    ? AppColors.primary.withValues(alpha: 0.1)
+                    ? primary.withValues(alpha: 0.15)
                     : Colors.transparent,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Icon(
                 icon,
                 size: 22 * textScale,
-                color: isActive ? AppColors.primary : AppColors.textSecondary,
+                color: isActive ? primary : textSecondary,
               ),
             ),
             const SizedBox(height: 2),
@@ -176,7 +187,7 @@ class NavigationsTabs extends StatelessWidget {
                 style: AppTextStyles.label.copyWith(
                   fontSize: 11 * textScale,
                   fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
-                  color: isActive ? AppColors.primary : AppColors.textSecondary,
+                  color: isActive ? primary : textSecondary,
                 ),
               ),
             ),

@@ -37,10 +37,10 @@ class LessonUploadProgress extends StatelessWidget {
         children: [
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
-              color: AppColors.textSecondary,
+              color: AppColors.textSecondaryOf(context),
             ),
           ),
           const SizedBox(height: 6),
@@ -49,7 +49,7 @@ class LessonUploadProgress extends StatelessWidget {
             child: LinearProgressIndicator(
               value: progressValue,
               minHeight: 6,
-              backgroundColor: AppColors.border,
+              backgroundColor: AppColors.borderOf(context),
               valueColor: const AlwaysStoppedAnimation<Color>(
                 AppColors.primary,
               ),

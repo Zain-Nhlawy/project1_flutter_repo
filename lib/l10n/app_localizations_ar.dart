@@ -867,6 +867,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get invitationSentSuccessfully => 'تم إرسال الدعوة بنجاح';
 
   @override
+  String get invitationsTitle => 'الدعوات';
+
+  @override
+  String get invitationsSubtitle => 'إدارة دعوات الديمو المستلمة';
+
+  @override
+  String get noNewInvitations => 'لا توجد دعوات متاحة';
+
+  @override
   String get notificationsTitle => 'الإشعارات';
 
   @override

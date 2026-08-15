@@ -61,6 +61,7 @@ class DemoUserRepositoryImpl implements DemoUsersRepository {
     }
   }
 
+  @override
   Future<Either<String, List<InvitationEntity>>>
   getReceivedInvitations() async {
     try {

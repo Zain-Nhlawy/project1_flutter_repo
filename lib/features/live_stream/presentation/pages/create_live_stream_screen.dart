@@ -126,7 +126,7 @@ class _CreateLiveStreamScreenState extends State<CreateLiveStreamScreen> {
                   localizations.liveStreamTitle,
                   style: AppTextStyles.titleMedium.copyWith(
                     color: AppColors.textPrimaryOf(context),
-                    fontWeight: FontWeight.bold,
+                  //  fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -146,7 +146,7 @@ class _CreateLiveStreamScreenState extends State<CreateLiveStreamScreen> {
                     style: TextStyle(color: AppColors.textPrimaryOf(context)),
                     decoration: InputDecoration(
                       hintText: localizations.liveStreamTitle,
-                      hintStyle: TextStyle(color: AppColors.textSecondaryOf(context)),
+                      hintStyle: TextStyle(color: AppColors.textSecondaryOf(context).withOpacity(0.7)),
                       prefixIcon: Icon(Icons.title_rounded, color: AppColors.primaryOf(context)),
                       filled: true,
                       fillColor: AppColors.surfaceOf(context),

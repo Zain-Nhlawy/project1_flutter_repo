@@ -29,10 +29,10 @@ class _InvitationsPageState extends State<InvitationsPage> {
       backgroundColor: AppColors.backgroundOf(context),
       body: Column(
         children: [
-          _NotificationsHeader(
+          _InvitationsHeader(
             topPadding: topPadding,
-            title: l10n.notificationsTitle,
-            subtitle: l10n.notificationPermissionBody,
+            title: l10n.invitationsTitle,
+            subtitle: l10n.invitationsSubtitle,
           ),
           Expanded(
             child: BlocBuilder<InvitationCubit, InvitationState>(
@@ -40,33 +40,92 @@ class _InvitationsPageState extends State<InvitationsPage> {
                 if (state is InvitationLoading) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is InvitationError) {
-                  return Center(child: Text(state.message));
+                  return RefreshIndicator(
+                    color: AppColors.primaryOf(context),
+                    backgroundColor: AppColors.surfaceOf(context),
+                    onRefresh: () async =>
+                        await context.read<InvitationCubit>().getInvitations(),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) => SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minHeight: constraints.maxHeight,
+                          ),
+                          child: Center(
+                            child: Text(
+                              state.message,
+                              style: AppTextStyles.bodyMedium.copyWith(
+                                color: AppColors.textSecondaryOf(context),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
                 } else if (state is InvitationLoaded) {
                   final invitations = state.invitations;
                   if (invitations.isEmpty) {
-                    return Center(child: Text(l10n.noNewNotifications));
+                    return RefreshIndicator(
+                      color: AppColors.primaryOf(context),
+                      backgroundColor: AppColors.surfaceOf(context),
+                      onRefresh: () async => await context
+                          .read<InvitationCubit>()
+                          .getInvitations(),
+                      child: LayoutBuilder(
+                        builder: (context, constraints) =>
+                            SingleChildScrollView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  minHeight: constraints.maxHeight,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    l10n.noNewInvitations,
+                                    style: AppTextStyles.bodyMedium.copyWith(
+                                      color: AppColors.textSecondaryOf(context),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                      ),
+                    );
                   }
-                  return ListView.separated(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: invitations.length,
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(height: 12),
-                    itemBuilder: (context, index) {
+                  return RefreshIndicator(
+                    color: AppColors.primaryOf(context),
+                    backgroundColor: AppColors.surfaceOf(context),
+                    onRefresh: () async =>
+                        await context.read<InvitationCubit>().getInvitations(),
+                    child: ListView.separated(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: const EdgeInsets.all(16),
+                      itemCount: invitations.length,
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 12),
+                      itemBuilder: (context, index) {
                       final inv = invitations[index];
                       return Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: Theme.of(context).cardColor,
+                          color: AppColors.surfaceOf(context),
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.04),
+                              color: Colors.black.withValues(
+                                alpha: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? 0.25
+                                    : 0.04,
+                              ),
                               blurRadius: 10,
                               offset: const Offset(0, 4),
                             ),
                           ],
                           border: Border.all(
-                            color: Colors.grey.withValues(alpha: 0.1),
+                            color: AppColors.borderOf(context),
                             width: 1,
                           ),
                         ),
@@ -77,9 +136,9 @@ class _InvitationsPageState extends State<InvitationsPage> {
                               height: 54,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Colors.grey.shade100,
+                                color: AppColors.backgroundOf(context),
                                 border: Border.all(
-                                  color: Colors.grey.withValues(alpha: 0.2),
+                                  color: AppColors.borderOf(context),
                                   width: 1,
                                 ),
                                 image: inv.demoImagePath.isNotEmpty
@@ -92,7 +151,7 @@ class _InvitationsPageState extends State<InvitationsPage> {
                               child: inv.demoImagePath.isEmpty
                                   ? Icon(
                                       Icons.domain_rounded,
-                                      color: Colors.grey.shade400,
+                                      color: AppColors.textSecondaryOf(context),
                                       size: 28,
                                     )
                                   : null,
@@ -104,7 +163,8 @@ class _InvitationsPageState extends State<InvitationsPage> {
                                 children: [
                                   Text(
                                     inv.demoName,
-                                    style: const TextStyle(
+                                    style: AppTextStyles.titleMedium.copyWith(
+                                      color: AppColors.textPrimaryOf(context),
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16,
                                       letterSpacing: -0.3,
@@ -118,8 +178,8 @@ class _InvitationsPageState extends State<InvitationsPage> {
                                       inv.senderFirstName,
                                       inv.senderLastName,
                                     ),
-                                    style: TextStyle(
-                                      color: Colors.grey.shade600,
+                                    style: AppTextStyles.caption.copyWith(
+                                      color: AppColors.textSecondaryOf(context),
                                       fontSize: 13,
                                     ),
                                     maxLines: 1,
@@ -179,24 +239,25 @@ class _InvitationsPageState extends State<InvitationsPage> {
                         ),
                       );
                     },
-                  );
-                }
-                return const SizedBox.shrink();
-              },
-            ),
+                  ),
+                );
+              }
+              return const SizedBox.shrink();
+            },
           ),
+        ),
         ],
       ),
     );
   }
 }
 
-class _NotificationsHeader extends StatelessWidget {
+class _InvitationsHeader extends StatelessWidget {
   final double topPadding;
   final String title;
   final String subtitle;
 
-  const _NotificationsHeader({
+  const _InvitationsHeader({
     required this.topPadding,
     required this.title,
     required this.subtitle,

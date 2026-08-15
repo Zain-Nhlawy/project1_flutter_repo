@@ -37,7 +37,11 @@ class PlanAndImageSlide extends StatelessWidget {
     final textScale = MediaQuery.textScalerOf(context).scale(1);
     final localizations = AppLocalizations.of(context)!;
 
-    final plans = [];
+    final primary = AppColors.primaryOf(context);
+    final textPrimary = AppColors.textPrimaryOf(context);
+    final textSecondary = AppColors.textSecondaryOf(context);
+    final surface = AppColors.surfaceOf(context);
+    final plans = <Map<String, dynamic>>[];
 
     return BlocBuilder<AddDemoCubit, AddDemoState>(
       builder: (context, state) {
@@ -51,7 +55,7 @@ class PlanAndImageSlide extends StatelessWidget {
               Text(
                 localizations.uploadDemoImage,
                 style: AppTextStyles.titleLarge.copyWith(
-                  color: AppColors.textPrimary,
+                  color: textPrimary,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -62,10 +66,10 @@ class PlanAndImageSlide extends StatelessWidget {
                   width: double.infinity,
                   height: size.height * 0.2,
                   decoration: BoxDecoration(
-                    color: AppColors.surface,
+                    color: surface,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: AppColors.primary.withOpacity(0.5),
+                      color: primary.withValues(alpha: 0.5),
                       width: 1.5,
                       style: BorderStyle.solid,
                     ),
@@ -77,13 +81,13 @@ class PlanAndImageSlide extends StatelessWidget {
                             Icon(
                               Icons.add_photo_alternate_outlined,
                               size: 40 * textScale,
-                              color: AppColors.primary,
+                              color: primary,
                             ),
                             SizedBox(height: size.height * 0.01),
                             Text(
                               localizations.tapToUpload,
                               style: AppTextStyles.bodyMedium.copyWith(
-                                color: AppColors.textSecondary,
+                                color: textSecondary,
                               ),
                             ),
                           ],
@@ -109,7 +113,7 @@ class PlanAndImageSlide extends StatelessWidget {
               Text(
                 'Upload Owner Signature',
                 style: AppTextStyles.titleLarge.copyWith(
-                  color: AppColors.textPrimary,
+                  color: textPrimary,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -120,10 +124,10 @@ class PlanAndImageSlide extends StatelessWidget {
                   width: double.infinity,
                   height: size.height * 0.16,
                   decoration: BoxDecoration(
-                    color: AppColors.surface,
+                    color: surface,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: AppColors.primary.withOpacity(0.5),
+                      color: primary.withValues(alpha: 0.5),
                       width: 1.5,
                       style: BorderStyle.solid,
                     ),
@@ -135,13 +139,13 @@ class PlanAndImageSlide extends StatelessWidget {
                             Icon(
                               Icons.draw_outlined,
                               size: 36 * textScale,
-                              color: AppColors.primary,
+                              color: primary,
                             ),
                             SizedBox(height: size.height * 0.01),
                             Text(
                               localizations.tapToUpload,
                               style: AppTextStyles.bodyMedium.copyWith(
-                                color: AppColors.textSecondary,
+                                color: textSecondary,
                               ),
                             ),
                           ],
@@ -182,19 +186,19 @@ class PlanAndImageSlide extends StatelessWidget {
                     padding: EdgeInsets.all(size.width * 0.04),
                     decoration: BoxDecoration(
                       color: isSelected
-                          ? AppColors.primary.withOpacity(0.1)
-                          : AppColors.surface,
+                          ? primary.withValues(alpha: 0.1)
+                          : surface,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
                         color: isSelected
-                            ? AppColors.primary
-                            : AppColors.textSecondary.withOpacity(0.2),
+                            ? primary
+                            : textSecondary.withValues(alpha: 0.2),
                         width: isSelected ? 2 : 1,
                       ),
                       boxShadow: isSelected
                           ? [
                               BoxShadow(
-                                color: AppColors.primary.withOpacity(0.1),
+                                color: primary.withValues(alpha: 0.1),
                                 blurRadius: 10,
                                 offset: const Offset(0, 4),
                               ),
@@ -207,15 +211,15 @@ class PlanAndImageSlide extends StatelessWidget {
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? AppColors.primary
-                                : AppColors.textSecondary.withOpacity(0.1),
+                                ? primary
+                                : textSecondary.withValues(alpha: 0.1),
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
                             plan["icon"] as IconData,
                             color: isSelected
-                                ? AppColors.surface
-                                : AppColors.textSecondary,
+                                ? Colors.white
+                                : textSecondary,
                             size: 24 * textScale,
                           ),
                         ),
@@ -227,15 +231,15 @@ class PlanAndImageSlide extends StatelessWidget {
                               Text(
                                 plan["title"] as String,
                                 style: AppTextStyles.titleMedium.copyWith(
-                                  color: AppColors.textPrimary,
+                                  color: textPrimary,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              SizedBox(height: 4),
+                              const SizedBox(height: 4),
                               Text(
                                 '${plan["members"]} • ${plan["sections"]}',
                                 style: AppTextStyles.bodyMedium.copyWith(
-                                  color: AppColors.textSecondary,
+                                  color: textSecondary,
                                   fontSize: 12 * textScale,
                                 ),
                               ),
@@ -246,8 +250,8 @@ class PlanAndImageSlide extends StatelessWidget {
                           plan["price"] as String,
                           style: AppTextStyles.titleMedium.copyWith(
                             color: isSelected
-                                ? AppColors.primary
-                                : AppColors.textPrimary,
+                                ? primary
+                                : textPrimary,
                             fontWeight: FontWeight.bold,
                             fontSize: 16 * textScale,
                           ),

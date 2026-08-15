@@ -41,7 +41,7 @@ class ProfileTile extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(size.width * 0.025),
                   decoration: BoxDecoration(
-                    color: iconBackgroundColor.withOpacity(0.15),
+                    color: iconBackgroundColor.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(icon, color: iconColor, size: 20 * textScale),

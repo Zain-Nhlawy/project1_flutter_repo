@@ -82,8 +82,11 @@
     }
 
     function notify(type, data) {
-      if (window.FlutterBridge) {
-        FlutterBridge.postMessage(JSON.stringify({ type: type, data: data }));
+      const payload = JSON.stringify({ type: type, data: data });
+      if (window.flutter_inappwebview) {
+        window.flutter_inappwebview.callHandler('FlutterBridge', payload);
+      } else if (window.FlutterBridge) {
+        FlutterBridge.postMessage(payload);
       }
     }
 

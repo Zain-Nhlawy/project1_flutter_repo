@@ -12,17 +12,24 @@ class ItemCardMemberBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final primary = AppColors.primaryOf(context);
+
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 10,
         vertical: 5,
       ),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surfaceOf(context),
         borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: primary.withValues(alpha: isDark ? 0.25 : 0.15),
+          width: 1,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
+            color: Colors.black.withValues(alpha: isDark ? 0.25 : 0.08),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -34,7 +41,7 @@ class ItemCardMemberBadge extends StatelessWidget {
           Icon(
             Icons.groups_rounded,
             size: 14,
-            color: AppColors.primaryOf(context),
+            color: primary,
           ),
           const SizedBox(width: 4),
           Flexible(
@@ -42,7 +49,7 @@ class ItemCardMemberBadge extends StatelessWidget {
               '$memberCount Members',
               overflow: TextOverflow.ellipsis,
               style: AppTextStyles.caption.copyWith(
-                color: AppColors.primaryOf(context),
+                color: primary,
                 fontWeight: FontWeight.w800,
                 fontSize: 11,
                 letterSpacing: 0.2,

@@ -33,7 +33,7 @@ class SubmitDepartmentButton extends StatelessWidget {
               vertical: size.height * 0.02,
             ),
             decoration: BoxDecoration(
-              gradient: AppColors.buttonGradient,
+              gradient: AppColors.buttonGradientOf(context),
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
@@ -56,7 +56,7 @@ class SubmitDepartmentButton extends StatelessWidget {
                   : Text(
                       state.isEditMode ? l10n.editDepartment : l10n.addSection,
                       style: AppTextStyles.titleMedium.copyWith(
-                        color: AppColors.surface,
+                        color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 16 * textScale,
                       ),

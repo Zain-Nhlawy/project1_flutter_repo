@@ -28,7 +28,7 @@ class FeaturesSlide extends StatelessWidget {
               Text(
                 localizations.superchargeDemo,
                 style: AppTextStyles.h2.copyWith(
-                  color: AppColors.textPrimary,
+                  color: AppColors.textPrimaryOf(context),
                   fontWeight: FontWeight.bold,
                   fontSize: 24 * textScale,
                 ),
@@ -37,7 +37,7 @@ class FeaturesSlide extends StatelessWidget {
               Text(
                 localizations.selectAddons,
                 style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.textSecondary,
+                  color: AppColors.textSecondaryOf(context),
                   fontSize: 14 * textScale,
                 ),
               ),
@@ -53,6 +53,12 @@ class FeaturesSlide extends StatelessWidget {
                     final isSelected = state.selectedFeatureIndices.contains(
                       index,
                     );
+                    final primary = AppColors.primaryOf(context);
+                    final surface = AppColors.surfaceOf(context);
+                    final textPrimary = AppColors.textPrimaryOf(context);
+                    final textSecondary = AppColors.textSecondaryOf(context);
+                    final border = AppColors.borderOf(context);
+                    final isDark = Theme.of(context).brightness == Brightness.dark;
 
                     return InkWell(
                       onTap: () => cubit.toggleFeature(index),
@@ -61,21 +67,21 @@ class FeaturesSlide extends StatelessWidget {
                         padding: EdgeInsets.all(size.width * 0.04),
                         decoration: BoxDecoration(
                           color: isSelected
-                              ? AppColors.primary.withOpacity(0.05)
-                              : AppColors.surface,
+                              ? primary.withValues(alpha: 0.08)
+                              : surface,
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
                             color: isSelected
-                                ? AppColors.primary
-                                : AppColors.border.withOpacity(0.5),
+                                ? primary
+                                : border.withValues(alpha: 0.5),
                             width: isSelected ? 2 : 1,
                           ),
                           boxShadow: [
                             if (!isSelected)
                               BoxShadow(
-                                color: AppColors.textSecondary.withOpacity(
-                                  0.05,
-                                ),
+                                color: isDark
+                                    ? Colors.black.withValues(alpha: 0.25)
+                                    : textSecondary.withValues(alpha: 0.05),
                                 blurRadius: 10,
                                 offset: const Offset(0, 4),
                               ),
@@ -87,7 +93,7 @@ class FeaturesSlide extends StatelessWidget {
                             Container(
                               padding: EdgeInsets.all(size.width * 0.025),
                               decoration: BoxDecoration(
-                                color: feature["color"].withOpacity(0.15),
+                                color: (feature["color"] as Color).withValues(alpha: 0.15),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Icon(
@@ -109,7 +115,7 @@ class FeaturesSlide extends StatelessWidget {
                                         feature["title"],
                                         style: AppTextStyles.titleMedium
                                             .copyWith(
-                                              color: AppColors.textPrimary,
+                                              color: textPrimary,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 16 * textScale,
                                             ),
@@ -118,7 +124,7 @@ class FeaturesSlide extends StatelessWidget {
                                         "\$${feature["price"].toStringAsFixed(2)}",
                                         style: AppTextStyles.titleMedium
                                             .copyWith(
-                                              color: AppColors.primary,
+                                              color: primary,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 16 * textScale,
                                             ),
@@ -129,7 +135,7 @@ class FeaturesSlide extends StatelessWidget {
                                   Text(
                                     feature["description"],
                                     style: AppTextStyles.label.copyWith(
-                                      color: AppColors.textSecondary,
+                                      color: textSecondary,
                                       fontSize: 13 * textScale,
                                     ),
                                   ),

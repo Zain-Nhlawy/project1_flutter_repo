@@ -50,7 +50,7 @@ class SignupScreen extends StatelessWidget {
         final isLoading = state is AuthLoading;
 
         return Scaffold(
-          backgroundColor: AppColors.background,
+          backgroundColor: AppColors.backgroundOf(context),
           body: SafeArea(
             child: SingleChildScrollView(
               child: Center(

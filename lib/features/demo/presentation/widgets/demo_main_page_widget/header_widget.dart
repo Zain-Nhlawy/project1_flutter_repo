@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/features/demo/domain/entities/demo_entity.dart';
@@ -8,8 +9,8 @@ import 'package:project1/features/demo/presentation/pages/payment_pages/upgrade_
 import 'package:project1/features/demo/presentation/pages/invitations_page.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:animations/animations.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/features/demo/presentation/cubit/demo%20cubit/demo_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/invitations_cubit/invitation_cubit.dart';
 
 class HeaderWidget extends StatelessWidget {
@@ -37,7 +38,8 @@ class HeaderWidget extends StatelessWidget {
           return Image.file(
             file,
             fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) => _fallbackHeaderImage(),
+            errorBuilder: (context, error, stackTrace) =>
+                _fallbackHeaderImage(),
           );
         }
       }
@@ -50,10 +52,10 @@ class HeaderWidget extends StatelessWidget {
       'assets/images/logo1.png',
       fit: BoxFit.cover,
       errorBuilder: (context, error, stackTrace) => Container(
-        color: AppColors.surface.withValues(alpha: 0.2),
+        color: Colors.white.withValues(alpha: 0.2),
         child: Icon(
           Icons.business_rounded,
-          color: AppColors.surface.withValues(alpha: 0.9),
+          color: Colors.white.withValues(alpha: 0.9),
           size: 30,
         ),
       ),
@@ -63,7 +65,6 @@ class HeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
-    final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
     final textScale = MediaQuery.textScalerOf(context).scale(1);
     final double topPadding = MediaQuery.paddingOf(context).top;
@@ -73,7 +74,8 @@ class HeaderWidget extends StatelessWidget {
     final int daysLeft = (14 - daysPassed) > 0 ? (14 - daysPassed) : 0;
 
     final currentPlan = demo.plan?.trim().toLowerCase() ?? 'free';
-    final isFree = currentPlan == 'free' || currentPlan == 'trial' || currentPlan.isEmpty;
+    final isFree =
+        currentPlan == 'free' || currentPlan == 'trial' || currentPlan.isEmpty;
     final isEnterprise = currentPlan == 'enterprise';
 
     return Container(
@@ -120,7 +122,7 @@ class HeaderWidget extends StatelessWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: AppColors.surface.withValues(alpha: 0.2),
+                          color: Colors.white.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: [
                             BoxShadow(
@@ -142,7 +144,7 @@ class HeaderWidget extends StatelessWidget {
                             Text(
                               'Owner',
                               style: AppTextStyles.caption.copyWith(
-                                color: AppColors.surface,
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -152,7 +154,7 @@ class HeaderWidget extends StatelessWidget {
                       const SizedBox(width: 8),
                     ],
                     _GhostIconButton(
-                      icon: Icons.notifications_none_rounded,
+                      icon: Icons.mail_outline_rounded,
                       textScale: textScale,
                       iconSize: 17,
                       buttonSize: 38,
@@ -167,6 +169,16 @@ class HeaderWidget extends StatelessWidget {
                             ),
                           ),
                         );
+                      },
+                    ),
+                    const SizedBox(width: 8),
+                    _GhostIconButton(
+                      icon: Icons.notifications_none_rounded,
+                      textScale: textScale,
+                      iconSize: 17,
+                      buttonSize: 38,
+                      onTap: () {
+                        // Notifications action
                       },
                     ),
                   ],
@@ -192,9 +204,7 @@ class HeaderWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: ClipOval(
-                    child: _buildHeaderImage(demo.imagePath),
-                  ),
+                  child: ClipOval(child: _buildHeaderImage(demo.imagePath)),
                 ),
                 const SizedBox(width: 14),
                 Expanded(
@@ -204,7 +214,7 @@ class HeaderWidget extends StatelessWidget {
                       Text(
                         demo.name,
                         style: AppTextStyles.h3.copyWith(
-                          color: AppColors.surface,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                           letterSpacing: -0.3,
                         ),
@@ -217,14 +227,14 @@ class HeaderWidget extends StatelessWidget {
                           Icon(
                             Icons.person_outline_rounded,
                             size: 14 * textScale,
-                            color: AppColors.surface.withValues(alpha: 0.8),
+                            color: Colors.white.withValues(alpha: 0.8),
                           ),
                           const SizedBox(width: 4),
                           Flexible(
                             child: Text(
                               l10n.byAuthor(demo.ownerName),
                               style: AppTextStyles.bodyMedium.copyWith(
-                                color: AppColors.surface.withValues(
+                                color: Colors.white.withValues(
                                   alpha: 0.85,
                                 ),
                                 fontSize: 13,
@@ -245,7 +255,7 @@ class HeaderWidget extends StatelessWidget {
                     vertical: 8,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.surface.withValues(alpha: 0.2),
+                    color: Colors.white.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
@@ -260,14 +270,14 @@ class HeaderWidget extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.people_alt_rounded,
-                        color: AppColors.surface,
+                        color: Colors.white,
                         size: 15 * textScale,
                       ),
                       const SizedBox(width: 6),
                       Text(
                         demo.membersCount.toString(),
                         style: AppTextStyles.label.copyWith(
-                          color: AppColors.surface,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 13,
                         ),
@@ -292,7 +302,7 @@ class HeaderWidget extends StatelessWidget {
                       vertical: 10,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.surface.withValues(alpha: 0.15),
+                      color: Colors.white.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(18),
                       boxShadow: [
                         BoxShadow(
@@ -323,7 +333,7 @@ class HeaderWidget extends StatelessWidget {
                                 ? l10n.daysLeftText(daysLeft)
                                 : l10n.levelUpYourPlan,
                             style: AppTextStyles.label.copyWith(
-                              color: AppColors.surface,
+                              color: Colors.white,
                               fontWeight: FontWeight.w600,
                               fontSize: 12 * textScale,
                             ),
@@ -333,8 +343,8 @@ class HeaderWidget extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         InkWell(
-                          onTap: () {
-                            Navigator.push(
+                          onTap: () async {
+                            await Navigator.push(
                               context,
                               PageRouteBuilder(
                                 transitionDuration: const Duration(
@@ -361,6 +371,10 @@ class HeaderWidget extends StatelessWidget {
                                     },
                               ),
                             );
+                            if (context.mounted &&
+                                getIt.isRegistered<DemoCubit>()) {
+                              getIt<DemoCubit>().fetchDemos();
+                            }
                           },
                           borderRadius: BorderRadius.circular(12),
                           child: Container(
@@ -369,11 +383,19 @@ class HeaderWidget extends StatelessWidget {
                               vertical: 7,
                             ),
                             decoration: BoxDecoration(
-                              color: AppColors.surface,
+                              color: AppColors.surfaceOf(context),
                               borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: AppColors.primaryOf(context).withValues(alpha: 0.25),
+                                width: 1,
+                              ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.1),
+                                  color: Colors.black.withValues(
+                                    alpha: Theme.of(context).brightness == Brightness.dark
+                                        ? 0.3
+                                        : 0.1,
+                                  ),
                                   blurRadius: 6,
                                   offset: const Offset(0, 2),
                                 ),
@@ -382,7 +404,7 @@ class HeaderWidget extends StatelessWidget {
                             child: Text(
                               l10n.upgradePlan,
                               style: AppTextStyles.label.copyWith(
-                                color: theme.colorScheme.primary,
+                                color: AppColors.primaryOf(context),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 12 * textScale,
                               ),
@@ -425,7 +447,7 @@ class _GhostIconButton extends StatelessWidget {
       width: buttonSize,
       height: buttonSize,
       decoration: BoxDecoration(
-        color: AppColors.surface.withValues(alpha: 0.3),
+        color: Colors.white.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(12),
       ),
       child: IconButton(
@@ -436,7 +458,7 @@ class _GhostIconButton extends StatelessWidget {
           width: buttonSize,
           height: buttonSize,
         ),
-        icon: Icon(icon, color: AppColors.surface, size: iconSize * textScale),
+        icon: Icon(icon, color: Colors.white, size: iconSize * textScale),
       ),
     );
   }

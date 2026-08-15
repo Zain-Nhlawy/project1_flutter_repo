@@ -28,13 +28,13 @@ class QuizReviewChoiceTile extends StatelessWidget {
         ? _correctColor
         : isWrongSelected
             ? _wrongColor
-            : AppColors.border;
+            : AppColors.borderOf(context);
 
     final Color backgroundColor = isCorrect
         ? _correctColor.withOpacity(.08)
         : isWrongSelected
             ? _wrongColor.withOpacity(.08)
-            : AppColors.surface;
+            : AppColors.surfaceOf(context);
 
     return Container(
       width: double.infinity,
@@ -61,7 +61,7 @@ class QuizReviewChoiceTile extends StatelessWidget {
                   ? _correctColor
                   : isWrongSelected
                       ? _wrongColor
-                      : AppColors.background,
+                      : AppColors.backgroundOf(context),
               border: Border.all(
                 color: accentColor,
                 width: 1.5,
@@ -88,7 +88,7 @@ class QuizReviewChoiceTile extends StatelessWidget {
             child: Text(
               choice,
               style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.textPrimary,
+                color: AppColors.textPrimaryOf(context),
                 fontWeight: isCorrect || isWrongSelected
                     ? FontWeight.w600
                     : FontWeight.w400,

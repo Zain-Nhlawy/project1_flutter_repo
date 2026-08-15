@@ -16,7 +16,7 @@ Future<bool> showLeaveWhileBusyDialog(BuildContext context) async {
           onPressed: () => Navigator.pop(dialogContext, false),
           child: Text(
             l.stay,
-            style: const TextStyle(color: AppColors.textSecondary),
+            style: TextStyle(color: AppColors.textSecondaryOf(dialogContext)),
           ),
         ),
         TextButton(

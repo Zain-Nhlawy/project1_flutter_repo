@@ -21,18 +21,25 @@ class DemoCard extends StatelessWidget {
     final daysLeft = 14 - daysPassed;
     final isRestricted = daysLeft <= 0 && (demo.plan?.toLowerCase() == 'free');
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.surfaceOf(context),
         borderRadius: BorderRadius.circular(22),
         border: isRestricted
-            ? Border.all(color: Colors.red.withOpacity(0.25), width: 1)
-            : null,
+            ? Border.all(color: Colors.red.withValues(alpha: 0.35), width: 1)
+            : Border.all(
+                color: AppColors.borderOf(context).withValues(alpha: 0.6),
+                width: 1,
+              ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.textSecondary.withOpacity(0.3),
+            color: isDark
+                ? Colors.black.withValues(alpha: 0.3)
+                : AppColors.textSecondaryOf(context).withValues(alpha: 0.12),
             blurRadius: 14,
             offset: const Offset(0, 6),
           ),
@@ -44,7 +51,7 @@ class DemoCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             if (isRestricted)
-              Container(width: 4, color: Colors.red.withOpacity(0.6)),
+              Container(width: 4, color: Colors.red.withValues(alpha: 0.6)),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(16),

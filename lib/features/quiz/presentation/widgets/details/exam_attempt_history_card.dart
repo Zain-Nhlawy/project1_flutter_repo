@@ -18,9 +18,9 @@ class ExamAttemptHistoryCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 14),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.surfaceOf(context),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border, width: 1.2),
+        border: Border.all(color: AppColors.borderOf(context), width: 1.2),
       ),
       child: Row(
         children: [
@@ -46,7 +46,7 @@ class ExamAttemptHistoryCard extends StatelessWidget {
                 Text(
                   'Score: ${attempt.score}',
                   style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textPrimary,
+                    color: AppColors.textPrimaryOf(context),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -54,7 +54,7 @@ class ExamAttemptHistoryCard extends StatelessWidget {
                 Text(
                   '${attempt.createdAt.day}/${attempt.createdAt.month}/${attempt.createdAt.year}',
                   style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textSecondary,
+                    color: AppColors.textSecondaryOf(context),
                     fontSize: 12,
                   ),
                 ),

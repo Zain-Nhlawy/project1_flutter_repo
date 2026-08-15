@@ -4,8 +4,7 @@ class AppTextStyles {
   AppTextStyles._();
 
   static const String fontFamily = 'PlusJakartaSans';
-
-
+  static const String arabicFontFamily = 'Cairo';
   static const TextStyle h1 = TextStyle(
     fontSize: 32,
     fontWeight: FontWeight.w800,

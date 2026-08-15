@@ -36,7 +36,7 @@ class TagsSelector extends StatelessWidget {
         localizations.noTagsAvailable,
         style: TextStyle(
           fontSize: 12,
-          color: AppColors.textSecondary.withOpacity(0.6),
+          color: AppColors.textSecondaryOf(context).withValues(alpha: 0.6),
         ),
       );
     }

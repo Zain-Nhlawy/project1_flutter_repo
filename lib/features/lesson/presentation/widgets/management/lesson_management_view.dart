@@ -55,7 +55,7 @@ class LessonManagementView extends StatelessWidget {
             onBack(isBusy);
           },
           child: Scaffold(
-            backgroundColor: AppColors.background,
+            backgroundColor: AppColors.backgroundOf(context),
             appBar: LessonManagementAppBar(onBackPressed: () => onBack(isBusy)),
             body: SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 55),

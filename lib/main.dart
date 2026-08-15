@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:project1/config/theme/app_theme.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/core/di/service_locator.dart';
@@ -133,7 +132,7 @@ class _MyAppState extends State<MyApp> {
     return BlocBuilder<LocaleCubit, Locale>(
       builder: (context, locale) {
         final fontFamily = locale.languageCode == 'ar'
-            ? GoogleFonts.cairo().fontFamily
+            ? AppTextStyles.arabicFontFamily
             : AppTextStyles.fontFamily;
         return BlocBuilder<ThemeCubit, ThemeMode>(
           builder: (context, themeMode) {

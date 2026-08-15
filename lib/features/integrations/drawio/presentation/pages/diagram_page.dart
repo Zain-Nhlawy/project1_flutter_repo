@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/core/presentation/widgets/gradient_page_app_bar.dart';
 import 'package:project1/l10n/app_localizations.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:project1/features/integrations/drawio/data/diagram_storage.dart';
 import 'xml_preview_page.dart';
 
@@ -19,7 +19,7 @@ class DrawioPage extends StatefulWidget {
 }
 
 class _DrawioPageState extends State<DrawioPage> {
-  late final WebViewController _controller;
+  InAppWebViewController? _controller;
   final DiagramStorageService _storage = DiagramStorageService();
 
   bool _isPageLoading = true;
@@ -29,33 +29,6 @@ class _DrawioPageState extends State<DrawioPage> {
   String? _savedFilePath;
   String? _pendingXml;
   String? _pendingPng;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onPageFinished: (_) {
-            if (!mounted) return;
-
-            setState(() {
-              _isPageLoading = false;
-              _status = _EditorStatus.loading;
-            });
-
-            _openEditor();
-          },
-        ),
-      )
-      ..addJavaScriptChannel(
-        'FlutterBridge',
-        onMessageReceived: (message) => _handleDrawioMessage(message.message),
-      )
-      ..loadFlutterAsset('assets/drawio.html');
-  }
 
   Future<void> _handleDrawioMessage(String rawMessage) async {
     Map<String, dynamic> parsed;
@@ -119,7 +92,7 @@ class _DrawioPageState extends State<DrawioPage> {
   }
 
   void _openEditor() {
-    if (!mounted) return;
+    if (!mounted || _controller == null) return;
 
     setState(() {
       _status = _EditorStatus.loading;
@@ -127,7 +100,7 @@ class _DrawioPageState extends State<DrawioPage> {
 
     final xmlArg = _savedXml != null ? jsonEncode(_savedXml) : 'null';
 
-    _controller.runJavaScript('window.openEditor($xmlArg);');
+    _controller?.evaluateJavascript(source: 'window.openEditor($xmlArg);');
   }
 
   Future<void> _showSaveDialog(String xml, String png) async {
@@ -295,7 +268,42 @@ class _DrawioPageState extends State<DrawioPage> {
             child: Stack(
               fit: StackFit.expand,
               children: [
-                WebViewWidget(controller: _controller),
+                InAppWebView(
+                  initialUrlRequest: URLRequest(
+                    url: WebUri(
+                      'file:///android_asset/flutter_assets/assets/drawio.html',
+                    ),
+                  ),
+                  initialSettings: InAppWebViewSettings(
+                    javaScriptEnabled: true,
+                    useHybridComposition: true,
+                    allowFileAccessFromFileURLs: true,
+                    allowUniversalAccessFromFileURLs: true,
+                    transparentBackground: true,
+                  ),
+                  onWebViewCreated: (controller) {
+                    _controller = controller;
+                    controller.addJavaScriptHandler(
+                      handlerName: 'FlutterBridge',
+                      callback: (args) {
+                        if (args.isNotEmpty && args[0] is String) {
+                          _handleDrawioMessage(args[0] as String);
+                        }
+                        return null;
+                      },
+                    );
+                  },
+                  onLoadStop: (controller, url) {
+                    if (!mounted) return;
+
+                    setState(() {
+                      _isPageLoading = false;
+                      _status = _EditorStatus.loading;
+                    });
+
+                    _openEditor();
+                  },
+                ),
                 if (isBusy)
                   _EditorLoadingView(
                     label: isSaving

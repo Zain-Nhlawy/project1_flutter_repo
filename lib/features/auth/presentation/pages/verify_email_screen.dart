@@ -35,7 +35,7 @@ class VerifyEmailScreen extends StatelessWidget {
         }
       },
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.backgroundOf(context),
         body: SafeArea(
           child: SingleChildScrollView(
             child: ConstrainedBox(

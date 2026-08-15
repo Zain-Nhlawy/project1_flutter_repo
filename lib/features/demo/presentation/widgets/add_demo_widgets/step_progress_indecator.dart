@@ -25,7 +25,9 @@ class StepProgressIndicator extends StatelessWidget {
           height: size.height * 0.01,
           width: isActive ? size.width * 0.08 : size.width * 0.025,
           decoration: BoxDecoration(
-            color: isActive ? AppColors.primary : AppColors.border,
+            color: isActive
+                ? AppColors.primaryOf(context)
+                : AppColors.borderOf(context),
             borderRadius: BorderRadius.circular(10),
           ),
         );

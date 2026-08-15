@@ -407,7 +407,7 @@ void setupDI() {
   getIt.registerLazySingleton<GetDemosUseCase>(
     () => GetDemosUseCase(getIt<DemoRepository>()),
   );
-  getIt.registerFactory(
+  getIt.registerLazySingleton<DemoCubit>(
     () => DemoCubit(
       getDemosUseCase: getIt<GetDemosUseCase>(),
       uploadPhotoUseCase: getIt<UploadPhotoUseCase>(),

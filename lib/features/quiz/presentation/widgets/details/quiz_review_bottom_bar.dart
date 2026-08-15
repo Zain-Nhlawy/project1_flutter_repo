@@ -38,7 +38,7 @@ class QuizReviewBottomBar extends StatelessWidget {
                       AppColors.primary.withOpacity(.35),
                   side: BorderSide(
                     color: isFirst
-                        ? AppColors.border
+                        ? AppColors.borderOf(context)
                         : AppColors.primary,
                   ),
                   shape: RoundedRectangleBorder(

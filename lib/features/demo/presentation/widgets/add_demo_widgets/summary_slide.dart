@@ -15,6 +15,8 @@ class SummarySlide extends StatelessWidget {
     final textScale = MediaQuery.textScalerOf(context).scale(1);
     final localizations = AppLocalizations.of(context)!;
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return BlocBuilder<AddDemoCubit, AddDemoState>(
       builder: (context, state) {
         return SingleChildScrollView(
@@ -27,7 +29,7 @@ class SummarySlide extends StatelessWidget {
                 Text(
                   localizations.demoSummary,
                   style: AppTextStyles.h2.copyWith(
-                    color: AppColors.textPrimary,
+                    color: AppColors.textPrimaryOf(context),
                     fontWeight: FontWeight.bold,
                     fontSize: 24 * textScale,
                   ),
@@ -36,7 +38,7 @@ class SummarySlide extends StatelessWidget {
                 Text(
                   localizations.reviewDemoDetails,
                   style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textSecondary,
+                    color: AppColors.textSecondaryOf(context),
                     fontSize: 14 * textScale,
                   ),
                 ),
@@ -44,11 +46,13 @@ class SummarySlide extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(size.width * 0.05),
                   decoration: BoxDecoration(
-                    color: AppColors.surface,
+                    color: AppColors.surfaceOf(context),
                     borderRadius: BorderRadius.circular(24),
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.textSecondary.withOpacity(0.08),
+                        color: isDark
+                            ? Colors.black.withValues(alpha: 0.3)
+                            : AppColors.textSecondaryOf(context).withValues(alpha: 0.08),
                         blurRadius: 20,
                         offset: const Offset(0, 10),
                       ),
@@ -71,13 +75,13 @@ class SummarySlide extends StatelessWidget {
                             : '-',
                       ),
                       SizedBox(height: size.height * 0.02),
-                      const Divider(color: AppColors.border),
+                      Divider(color: AppColors.borderOf(context)),
                       SizedBox(height: size.height * 0.02),
                       _buildInfoRow(
                         context,
                         localizations.selectedPlanLabel,
                         state.selectedPlan,
-                        valueColor: AppColors.primary,
+                        valueColor: AppColors.primaryOf(context),
                         isBoldValue: true,
                       ),
                       SizedBox(height: size.height * 0.01),
@@ -90,52 +94,7 @@ class SummarySlide extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: size.height * 0.02),
-                      const Divider(color: AppColors.border),
-                      SizedBox(height: size.height * 0.02),
-                      // Text(
-                      //   localizations.selectedFeatures,
-                      //   style: AppTextStyles.label.copyWith(
-                      //     color: AppColors.textSecondary,
-                      //     fontWeight: FontWeight.bold,
-                      //     fontSize: 12 * textScale,
-                      //   ),
-                      // ),
-                      // SizedBox(height: size.height * 0.015),
-                      // if (state.selectedFeatureIndices.isEmpty)
-                      //   Text(
-                      //     localizations.noFeaturesSelected,
-                      //     style: AppTextStyles.label.copyWith(
-                      //       color: AppColors.textSecondary.withOpacity(0.7),
-                      //     ),
-                      //   )
-                      // else
-                      //   ...state.selectedFeatureIndices.map((index) {
-                      //     final feature = state.availableFeatures[index];
-                      //     return Padding(
-                      //       padding: EdgeInsets.only(
-                      //         bottom: size.height * 0.01,
-                      //       ),
-                      //       child: Row(
-                      //         children: [
-                      //           Icon(
-                      //             Icons.check_circle,
-                      //             color: AppColors.primary,
-                      //             size: 16 * textScale,
-                      //           ),
-                      //           SizedBox(width: size.width * 0.02),
-                      //           Expanded(
-                      //             child: Text(
-                      //               feature["title"],
-                      //               style: AppTextStyles.bodyMedium.copyWith(
-                      //                 color: AppColors.textPrimary,
-                      //                 fontSize: 14 * textScale,
-                      //               ),
-                      //             ),
-                      //           ),
-                      //         ],
-                      //       ),
-                      //   );
-                      //   }),
+                      Divider(color: AppColors.borderOf(context)),
                     ],
                   ),
                 ),
@@ -162,16 +121,16 @@ class SummarySlide extends StatelessWidget {
         Text(
           label,
           style: AppTextStyles.label.copyWith(
-            color: AppColors.textSecondary,
+            color: AppColors.textSecondaryOf(context),
             fontWeight: FontWeight.bold,
             fontSize: 12 * textScale,
           ),
         ),
-        SizedBox(height: 4),
+        const SizedBox(height: 4),
         Text(
           value,
           style: AppTextStyles.bodyMedium.copyWith(
-            color: valueColor ?? AppColors.textPrimary,
+            color: valueColor ?? AppColors.textPrimaryOf(context),
             fontWeight: isBoldValue ? FontWeight.bold : FontWeight.normal,
             fontSize: 15 * textScale,
           ),

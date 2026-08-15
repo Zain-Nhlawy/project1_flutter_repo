@@ -26,6 +26,7 @@ class MainHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
     final topPadding = MediaQuery.paddingOf(context).top;
+    final textScale = MediaQuery.textScalerOf(context).scale(1);
 
     return Container(
       width: double.infinity,
@@ -89,7 +90,10 @@ class MainHeader extends StatelessWidget {
                         children: [
                           Text(
                             localizations.goodMorning,
-                            style: AppTextStyles.bodyMedium.copyWith(
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: AppColors.surface.withValues(alpha: 0.76),
+                              fontWeight: FontWeight.w500,
+                            ) ?? AppTextStyles.bodyMedium.copyWith(
                               color: AppColors.surface.withValues(alpha: 0.76),
                               fontWeight: FontWeight.w500,
                             ),
@@ -106,7 +110,13 @@ class MainHeader extends StatelessWidget {
                                 name,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: AppTextStyles.h2.copyWith(
+                                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                  color: AppColors.surface,
+                                  fontSize: 25,
+                                  height: 1.15,
+                                  letterSpacing: -0.4,
+                                  fontWeight: FontWeight.w700,
+                                ) ?? AppTextStyles.h2.copyWith(
                                   color: AppColors.surface,
                                   fontSize: 25,
                                   height: 1.15,
@@ -118,22 +128,41 @@ class MainHeader extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(width: 16),
-                    _HeaderIconButton(
-                      icon: Icons.notifications_none_rounded,
-                      tooltip: localizations.notificationsTitle,
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => BlocProvider(
-                              create: (context) =>
-                                  InvitationCubit(usecase: getIt()),
-                              child: const InvitationsPage(),
-                            ),
-                          ),
-                        );
-                      },
+                    const SizedBox(width: 12),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Invitation button (left)
+                        _GhostIconButton(
+                          icon: Icons.mail_outline_rounded,
+                          textScale: textScale,
+                          iconSize: 17,
+                          buttonSize: 38,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BlocProvider(
+                                  create: (context) =>
+                                      InvitationCubit(usecase: getIt()),
+                                  child: const InvitationsPage(),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        const SizedBox(width: 8),
+                        // Notification button (right)
+                        _GhostIconButton(
+                          icon: Icons.notifications_none_rounded,
+                          textScale: textScale,
+                          iconSize: 17,
+                          buttonSize: 38,
+                          onTap: () {
+                            // Notifications action
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -215,13 +244,24 @@ class MainHeader extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
-                      textStyle: AppTextStyles.titleMedium.copyWith(
+                      textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
                     icon: const Icon(Icons.add_rounded, size: 21),
-                    label: Text(localizations.addDemo),
+                    label: Text(
+                      localizations.addDemo,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: AppColors.surface,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                      ) ?? AppTextStyles.titleMedium.copyWith(
+                        color: AppColors.surface,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -233,33 +273,39 @@ class MainHeader extends StatelessWidget {
   }
 }
 
-class _HeaderIconButton extends StatelessWidget {
+class _GhostIconButton extends StatelessWidget {
   final IconData icon;
-  final String tooltip;
-  final VoidCallback onPressed;
+  final double textScale;
+  final double iconSize;
+  final double buttonSize;
+  final VoidCallback onTap;
 
-  const _HeaderIconButton({
+  const _GhostIconButton({
     required this.icon,
-    required this.tooltip,
-    required this.onPressed,
+    required this.textScale,
+    this.iconSize = 17,
+    this.buttonSize = 38,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 46,
-      height: 46,
+      width: buttonSize,
+      height: buttonSize,
       decoration: BoxDecoration(
-        color: AppColors.surface.withValues(alpha: 0.14),
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: AppColors.surface.withValues(alpha: 0.18)),
+        color: AppColors.surface.withValues(alpha: 0.3),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: IconButton(
-        onPressed: onPressed,
-        tooltip: tooltip,
+        onPressed: onTap,
+        visualDensity: VisualDensity.compact,
         padding: EdgeInsets.zero,
-        constraints: const BoxConstraints.tightFor(width: 46, height: 46),
-        icon: Icon(icon, color: AppColors.surface, size: 23),
+        constraints: BoxConstraints.tightFor(
+          width: buttonSize,
+          height: buttonSize,
+        ),
+        icon: Icon(icon, color: AppColors.surface, size: iconSize * textScale),
       ),
     );
   }
