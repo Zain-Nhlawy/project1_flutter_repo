@@ -195,95 +195,73 @@ class _AssistantWorkspace extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final border = AppColors.borderOf(context);
 
-    return Container(
-      padding: const EdgeInsets.all(17),
-      decoration: BoxDecoration(
-        color: AppColors.surfaceOf(context),
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: border.withValues(alpha: 0.82)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.05),
-            blurRadius: 18,
-            offset: const Offset(0, 7),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          height: 96,
+          padding: const EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            color: AppColors.backgroundOf(context),
+            borderRadius: BorderRadius.circular(17),
+            border: Border.all(color: border.withValues(alpha: 0.72)),
           ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            constraints: const BoxConstraints(
-              minHeight: 96,
-            ),
-            padding: const EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              color: AppColors.backgroundOf(context),
-              borderRadius: BorderRadius.circular(17),
-              border: Border.all(color: border.withValues(alpha: 0.72)),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  child: _WorkspaceModeButton(
-                    icon: Icons.psychology_alt_outlined,
-                    label: localizations.askQuestionSection,
-                    selected: selectedAction == _RagAction.askQuestion,
-                    onTap: onActionChanged == null
-                        ? null
-                        : () => onActionChanged!(_RagAction.askQuestion),
-                  ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: _WorkspaceModeButton(
+                  icon: Icons.psychology_alt_outlined,
+                  label: localizations.askQuestionSection,
+                  selected: selectedAction == _RagAction.askQuestion,
+                  onTap: onActionChanged == null
+                      ? null
+                      : () => onActionChanged!(_RagAction.askQuestion),
                 ),
-                const SizedBox(width: 4),
-                Expanded(
-                  child: _WorkspaceModeButton(
-                    icon: Icons.quiz_outlined,
-                    label: localizations.topicQuizSection,
-                    selected: selectedAction == _RagAction.topicQuiz,
-                    onTap: onActionChanged == null
-                        ? null
-                        : () => onActionChanged!(_RagAction.topicQuiz),
-                  ),
+              ),
+              const SizedBox(width: 4),
+              Expanded(
+                child: _WorkspaceModeButton(
+                  icon: Icons.quiz_outlined,
+                  label: localizations.topicQuizSection,
+                  selected: selectedAction == _RagAction.topicQuiz,
+                  onTap: onActionChanged == null
+                      ? null
+                      : () => onActionChanged!(_RagAction.topicQuiz),
                 ),
-                const SizedBox(width: 4),
-                Expanded(
-                  child: _WorkspaceModeButton(
-                    icon: Icons.shuffle_rounded,
-                    label: localizations.randomQuizSection,
-                    selected: selectedAction == _RagAction.randomQuiz,
-                    onTap: onActionChanged == null
-                        ? null
-                        : () => onActionChanged!(_RagAction.randomQuiz),
-                  ),
+              ),
+              const SizedBox(width: 4),
+              Expanded(
+                child: _WorkspaceModeButton(
+                  icon: Icons.shuffle_rounded,
+                  label: localizations.randomQuizSection,
+                  selected: selectedAction == _RagAction.randomQuiz,
+                  onTap: onActionChanged == null
+                      ? null
+                      : () => onActionChanged!(_RagAction.randomQuiz),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          const SizedBox(height: 18),
-          Divider(height: 1, color: border.withValues(alpha: 0.72)),
-          const SizedBox(height: 18),
-          AnimatedSwitcher(
-            duration: const Duration(milliseconds: 240),
-            switchInCurve: Curves.easeOut,
-            switchOutCurve: Curves.easeIn,
-            transitionBuilder: (child, animation) {
-              return FadeTransition(
-                opacity: animation,
-                child: SizeTransition(
-                  sizeFactor: animation,
-                  axisAlignment: -1,
-                  child: child,
-                ),
-              );
-            },
-            child: _buildSelectedForm(context, localizations),
-          ),
-        ],
-      ),
+        ),
+        const SizedBox(height: 18),
+        Divider(height: 1, color: border.withValues(alpha: 0.72)),
+        const SizedBox(height: 18),
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 240),
+          switchInCurve: Curves.easeOut,
+          switchOutCurve: Curves.easeIn,
+          transitionBuilder: (child, animation) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+          child: _buildSelectedForm(context, localizations),
+        ),
+      ],
     );
   }
 
@@ -427,9 +405,6 @@ class _WorkspaceModeButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(13),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 190),
-            constraints: const BoxConstraints(
-              minHeight: 88,
-            ),
             padding: const EdgeInsets.symmetric(
               horizontal: 4,
               vertical: 8,
