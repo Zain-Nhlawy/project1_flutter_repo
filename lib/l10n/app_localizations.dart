@@ -2495,7 +2495,7 @@ abstract class AppLocalizations {
   /// No description provided for @departmentLearningPath.
   ///
   /// In en, this message translates to:
-  /// **'Learning Path'**
+  /// **'Road Map'**
   String get departmentLearningPath;
 
   /// No description provided for @departmentJourney.
@@ -2507,7 +2507,7 @@ abstract class AppLocalizations {
   /// No description provided for @learningPath.
   ///
   /// In en, this message translates to:
-  /// **'Learning Path'**
+  /// **'Road Map'**
   String get learningPath;
 
   /// No description provided for @addCourseToPath.
@@ -2567,7 +2567,7 @@ abstract class AppLocalizations {
   /// No description provided for @generateRoadmapDesc.
   ///
   /// In en, this message translates to:
-  /// **'Enter a title or career role (e.g. Flutter Engineer, Data Scientist) to generate a customized learning path:'**
+  /// **'Enter a title or career role (e.g. Flutter Engineer, Data Scientist) to generate a customized road map:'**
   String get generateRoadmapDesc;
 
   /// No description provided for @roadmapTitleOrRole.

@@ -1256,13 +1256,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get departmentDeletedSuccessfully => 'تم حذف القسم بنجاح';
 
   @override
-  String get departmentLearningPath => 'مسار التعلم';
+  String get departmentLearningPath => 'خارطة الطريق';
 
   @override
   String get departmentJourney => 'رحلة القسم';
 
   @override
-  String get learningPath => 'المسار التعليمي';
+  String get learningPath => 'خارطة الطريق';
 
   @override
   String get addCourseToPath => 'إضافة دورة للمسار';
@@ -1295,7 +1295,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get generateRoadmapDesc =>
-      'أدخل عنواناً أو مساراً مهنياً (مثل: مهندس Flutter، عالم بيانات) لإنشاء مسار تعليمي مخصص:';
+      'أدخل عنواناً أو مساراً مهنياً (مثل: مهندس Flutter، عالم بيانات) لإنشاء خارطة طريق مخصصة:';
 
   @override
   String get roadmapTitleOrRole => 'عنوان خارطة الطريق / المسمى الوظيفي';

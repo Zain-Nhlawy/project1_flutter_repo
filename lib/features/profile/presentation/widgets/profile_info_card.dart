@@ -42,9 +42,9 @@ class ProfileInfoCard extends StatelessWidget {
               Container(
                 width: size.width * 0.22,
                 height: size.width * 0.22,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: AppColors.headerGradient,
+                  gradient: AppColors.headerGradientOf(context),
                 ),
                 child: ClipOval(
                   child: imagePath.isNotEmpty
@@ -62,13 +62,13 @@ class ProfileInfoCard extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.all(size.width * 0.015),
                   decoration: BoxDecoration(
-                    color: AppColors.primary,
+                    color: AppColors.primaryOf(context),
                     shape: BoxShape.circle,
                     border: Border.all(color: AppColors.surfaceOf(context), width: 3),
                   ),
-                  child: Icon(
+                  child: const Icon(
                     Icons.camera_alt_outlined,
-                    color: AppColors.surfaceOf(context),
+                    color: Colors.white,
                     size: 14,
                   ),
                 ),

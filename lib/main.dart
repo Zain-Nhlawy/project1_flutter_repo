@@ -22,6 +22,7 @@ import 'package:project1/l10n/l10n.dart';
 import 'package:project1/features/auth/presentation/cubit/user_state.dart';
 import 'package:project1/features/notifications/presentation/services/notification_service.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:project1/core/storage/storage_keys.dart';
 import 'package:project1/firebase_options.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -35,6 +36,20 @@ void main() async {
   print("DI DONE");
 
   await getIt<NotificationService>().initialize();
+
+  final storage = getIt<AppSecureStorage>();
+
+  String? savedLanguage;
+  String? savedTheme;
+  try {
+    savedLanguage = await storage.read(StorageKeys.language);
+    savedTheme = await storage.read(StorageKeys.theme);
+  } catch (_) {}
+
+  final initialLocale = (savedLanguage != null && savedLanguage.isNotEmpty)
+      ? Locale(savedLanguage)
+      : const Locale('en');
+  final initialTheme = savedTheme == 'dark' ? ThemeMode.dark : ThemeMode.light;
 
   String? initialResetToken;
 
@@ -68,11 +83,21 @@ void main() async {
           },
         ),
 
-        BlocProvider<LocaleCubit>(create: (_) => LocaleCubit()),
-        BlocProvider<ThemeCubit>(create: (_) => ThemeCubit()),
+        BlocProvider<LocaleCubit>(
+          create: (_) => LocaleCubit(
+            storage: storage,
+            initialLocale: initialLocale,
+          ),
+        ),
+        BlocProvider<ThemeCubit>(
+          create: (_) => ThemeCubit(
+            storage: storage,
+            initialTheme: initialTheme,
+          ),
+        ),
         BlocProvider<NotificationCubit>(
           create: (_) =>
-              NotificationCubit(storage: getIt<AppSecureStorage>())
+              NotificationCubit(storage: storage)
                 ..loadPreference(),
         ),
       ],

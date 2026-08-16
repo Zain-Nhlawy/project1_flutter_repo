@@ -52,9 +52,9 @@ class ProfileScreen extends StatelessWidget {
                 Container(
                   height: size.height * 0.32,
                   width: double.infinity,
-                  decoration: const BoxDecoration(
-                    gradient: AppColors.headerGradient,
-                    borderRadius: BorderRadius.vertical(
+                  decoration: BoxDecoration(
+                    gradient: AppColors.headerGradientOf(context),
+                    borderRadius: const BorderRadius.vertical(
                       bottom: Radius.circular(35),
                     ),
                   ),
@@ -68,7 +68,7 @@ class ProfileScreen extends StatelessWidget {
                       Text(
                         localizations.profileTitle,
                         style: AppTextStyles.h2.copyWith(
-                          color: AppColors.surface,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 24 * textScale,
                         ),
@@ -77,7 +77,7 @@ class ProfileScreen extends StatelessWidget {
                       Text(
                         localizations.manageAccount,
                         style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.surface.withValues(alpha: 0.8),
+                          color: Colors.white.withValues(alpha: 0.8),
                           fontSize: 14 * textScale,
                         ),
                       ),
@@ -152,7 +152,7 @@ class ProfileScreen extends StatelessWidget {
                               trailing: Text(
                                 currentLocale == 'ar' ? 'العربية' : 'English',
                                 style: AppTextStyles.bodyMedium.copyWith(
-                                  color: AppColors.primary,
+                                  color: AppColors.primaryOf(context),
                                   fontWeight: FontWeight.w600,
                                   fontSize: 14 * textScale,
                                 ),
@@ -339,25 +339,73 @@ class ProfileScreen extends StatelessWidget {
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (sheetContext) {
+        final isAr = currentLocale == 'ar';
+        final isEn = currentLocale == 'en';
+
         return SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                title: const Text("العربية"),
-                onTap: () {
-                  Navigator.pop(context);
-                  context.read<LocaleCubit>().changeLanguage('ar');
-                },
-              ),
-              ListTile(
-                title: Text(AppLocalizations.of(context)!.englishLanguage),
-                onTap: () {
-                  Navigator.pop(context);
-                  context.read<LocaleCubit>().changeLanguage('en');
-                },
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  leading: Icon(
+                    Icons.language_rounded,
+                    color: isAr
+                        ? AppColors.primaryOf(context)
+                        : AppColors.textSecondaryOf(context),
+                  ),
+                  title: Text(
+                    "العربية",
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: isAr
+                          ? AppColors.primaryOf(context)
+                          : AppColors.textPrimaryOf(context),
+                      fontWeight: isAr ? FontWeight.bold : FontWeight.normal,
+                      fontSize: 15 * textScale,
+                    ),
+                  ),
+                  trailing: isAr
+                      ? Icon(
+                          Icons.check_rounded,
+                          color: AppColors.primaryOf(context),
+                        )
+                      : null,
+                  onTap: () {
+                    Navigator.pop(context);
+                    context.read<LocaleCubit>().changeLanguage('ar');
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.language_rounded,
+                    color: isEn
+                        ? AppColors.primaryOf(context)
+                        : AppColors.textSecondaryOf(context),
+                  ),
+                  title: Text(
+                    AppLocalizations.of(context)!.englishLanguage,
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: isEn
+                          ? AppColors.primaryOf(context)
+                          : AppColors.textPrimaryOf(context),
+                      fontWeight: isEn ? FontWeight.bold : FontWeight.normal,
+                      fontSize: 15 * textScale,
+                    ),
+                  ),
+                  trailing: isEn
+                      ? Icon(
+                          Icons.check_rounded,
+                          color: AppColors.primaryOf(context),
+                        )
+                      : null,
+                  onTap: () {
+                    Navigator.pop(context);
+                    context.read<LocaleCubit>().changeLanguage('en');
+                  },
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -373,6 +421,7 @@ class ProfileScreen extends StatelessWidget {
     );
 
     if (file == null) return;
+    if (!context.mounted) return;
 
     final userState = context.read<UserCubit>().state;
 

@@ -1261,13 +1261,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get departmentDeletedSuccessfully => 'Department deleted successfully';
 
   @override
-  String get departmentLearningPath => 'Learning Path';
+  String get departmentLearningPath => 'Road Map';
 
   @override
   String get departmentJourney => 'DEPARTMENT JOURNEY';
 
   @override
-  String get learningPath => 'Learning Path';
+  String get learningPath => 'Road Map';
 
   @override
   String get addCourseToPath => 'Add Course to Path';
@@ -1301,7 +1301,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get generateRoadmapDesc =>
-      'Enter a title or career role (e.g. Flutter Engineer, Data Scientist) to generate a customized learning path:';
+      'Enter a title or career role (e.g. Flutter Engineer, Data Scientist) to generate a customized road map:';
 
   @override
   String get roadmapTitleOrRole => 'Roadmap Title / Role';
