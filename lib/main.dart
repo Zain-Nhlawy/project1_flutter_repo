@@ -13,6 +13,8 @@ import 'package:project1/features/auth/presentation/cubit/session_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:project1/features/auth/presentation/pages/reset_password_screen.dart';
 import 'package:project1/features/auth/presentation/pages/session_gate.dart';
+import 'package:project1/core/storage/secure_storage.dart';
+import 'package:project1/features/profile/presentation/cubit/notification_cubit.dart';
 import 'package:project1/features/profile/presentation/cubit/locale_cubit.dart';
 import 'package:project1/features/profile/presentation/cubit/theme_cubit.dart';
 import 'package:project1/l10n/app_localizations.dart';
@@ -68,6 +70,11 @@ void main() async {
 
         BlocProvider<LocaleCubit>(create: (_) => LocaleCubit()),
         BlocProvider<ThemeCubit>(create: (_) => ThemeCubit()),
+        BlocProvider<NotificationCubit>(
+          create: (_) =>
+              NotificationCubit(storage: getIt<AppSecureStorage>())
+                ..loadPreference(),
+        ),
       ],
       child: MyApp(initialResetToken: initialResetToken),
     ),

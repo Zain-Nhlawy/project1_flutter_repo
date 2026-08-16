@@ -91,7 +91,121 @@ class AppLocalizationsAr extends AppLocalizations {
   String get notifOn => 'مفعلة';
 
   @override
+  String get notifOff => 'معطلة';
+
+  @override
+  String get notificationsEnabledMsg => 'تم تفعيل الإشعارات';
+
+  @override
+  String get notificationsDisabledMsg => 'تم تعطيل الإشعارات';
+
+  @override
+  String get notificationPermissionDenied =>
+      'إذن الإشعارات مطلوب. يرجى تفعيله من إعدادات الجهاز.';
+
+  @override
+  String get openSettings => 'الإعدادات';
+
+  @override
   String get secSupport => 'الدعم الفني';
+
+  @override
+  String get tileAboutUs => 'من نحن';
+
+  @override
+  String get aboutUsTitle => 'من نحن';
+
+  @override
+  String get aboutUsSubtitle =>
+      'تعرّف على رؤيتنا، مميزات المنصة، وأهدافنا التعليمية';
+
+  @override
+  String get aboutUsTagline => 'منصة تعليمية ذكية وتفاعلية متكاملة';
+
+  @override
+  String get aboutUsDescription =>
+      'منصتنا هي بيئة تعليمية شاملة صُممت لتمكين الطلاب، المدرسين، والمحترفين. استمتع بدورات تفاعلية، جلسات حية، دعم بالذكاء الاصطناعي، وشهادات معتمدة — كل ذلك في مكان واحد.';
+
+  @override
+  String get aboutUsMissionTitle => 'رسالتنا ورؤيتنا';
+
+  @override
+  String get aboutUsMissionDesc =>
+      'توفير تجربة تعليمية حديثة، تفاعلية وسهلة الوصول للجميع لتمكينهم من اكتساب المهارات وبناء مستقبلهم.';
+
+  @override
+  String get aboutUsFeaturesTitle => 'أبرز مميزات المنصة';
+
+  @override
+  String get aboutUsFeature1Title => 'دورات ودروس تفاعلية';
+
+  @override
+  String get aboutUsFeature1Desc =>
+      'محاضرات فيديو متقدمة ومرفقات دراسية منظمة خطوة بخطوة.';
+
+  @override
+  String get aboutUsFeature2Title => 'مساعد الذكاء الاصطناعي';
+
+  @override
+  String get aboutUsFeature2Desc =>
+      'إجابات فورية وذكية لتبسيط وشرح المفاهيم المعقدة.';
+
+  @override
+  String get aboutUsFeature3Title => 'شهادات معتمدة وموثقة';
+
+  @override
+  String get aboutUsFeature3Desc =>
+      'احصل على شهادات إتمام موثقة وشارك إنجازاتك بكل فخر.';
+
+  @override
+  String get aboutUsFeature4Title => 'غرف تفاعلية وتواصل مباشر';
+
+  @override
+  String get aboutUsFeature4Desc =>
+      'تواصل فوري عبر الغرف التفاعلية والدردشة الجماعية وقسم الأسئلة والأجوبة.';
+
+  @override
+  String get aboutUsFeature5Title => 'بنك الأسئلة والاختبارات';
+
+  @override
+  String get aboutUsFeature5Desc =>
+      'عزز معرفتك واختبر مستواك عبر بنوك أسئلة شاملة واختبارات دورية.';
+
+  @override
+  String get aboutUsVersion => 'الإصدار 1.0.0';
+
+  @override
+  String get aboutUsRights => 'جميع الحقوق محفوظة.';
+
+  @override
+  String get onboardingSkip => 'تخطي';
+
+  @override
+  String get onboardingNext => 'التالي';
+
+  @override
+  String get onboardingGetStarted => 'ابدأ الآن';
+
+  @override
+  String get onboardingSlide1Title => 'اكتشف تجربة تعليمية تفاعلية';
+
+  @override
+  String get onboardingSlide1Subtitle =>
+      'استكشف دورات فيديو منظمة، غرفاً تفاعلية، ومواد دراسية شاملة صُممت لتسريع تطورك واكتساب المهارات.';
+
+  @override
+  String get onboardingSlide2Title => 'مساعد ذكي للتعلم الفوري';
+
+  @override
+  String get onboardingSlide2Subtitle =>
+      'تغلب على المفاهيم الصعبة مع إجابات فورية مدعومة بالذكاء الاصطناعي وتواصل مع زملائك ومدربيك في بيئة حية.';
+
+  @override
+  String get onboardingSlide3Title => 'اختبر مهاراتك وانل شهادتك';
+
+  @override
+  String get onboardingSlide3Subtitle =>
+      'قيّم مستواك من خلال بنوك الأسئلة والاختبارات التفاعلية واحصل على شهادات معتمدة توثق إنجازاتك.';
 
   @override
   String get tileMessageAdmins => 'مراسلة المسؤولين';

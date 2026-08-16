@@ -4,4 +4,6 @@ class StorageKeys {
   static const username = "USERNAME";
   static const language = "APP_LANGUAGE";
   static const theme = "APP_THEME";
+  static const hasSeenOnboarding = "HAS_SEEN_ONBOARDING";
+  static const notificationsEnabled = "NOTIFICATIONS_ENABLED";
 }

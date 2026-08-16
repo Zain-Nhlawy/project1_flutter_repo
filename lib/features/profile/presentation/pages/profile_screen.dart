@@ -6,9 +6,11 @@ import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/certification/presentation/pages/my_certifications_screen.dart';
 import 'package:project1/features/profile/presentation/cubit/locale_cubit.dart';
 import 'package:project1/features/profile/presentation/cubit/theme_cubit.dart';
+import 'package:project1/features/profile/presentation/cubit/notification_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/user_state.dart';
 import 'package:project1/features/profile/presentation/pages/security_settings_screen.dart';
+import 'package:project1/features/profile/presentation/pages/about_us_screen.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import '../widgets/profile_info_card.dart';
 import '../widgets/profile_section_title.dart';
@@ -27,6 +29,8 @@ class ProfileScreen extends StatelessWidget {
     final currentLocale = context.watch<LocaleCubit>().state.languageCode;
     final themeCubit = context.watch<ThemeCubit>();
     final isDark = themeCubit.isDark;
+    final notifCubit = context.watch<NotificationCubit>();
+    final isNotifEnabled = notifCubit.isEnabled;
 
     return Scaffold(
       backgroundColor: AppColors.backgroundOf(context),
@@ -73,7 +77,7 @@ class ProfileScreen extends StatelessWidget {
                       Text(
                         localizations.manageAccount,
                         style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.surface.withOpacity(0.8),
+                          color: AppColors.surface.withValues(alpha: 0.8),
                           fontSize: 14 * textScale,
                         ),
                       ),
@@ -155,14 +159,45 @@ class ProfileScreen extends StatelessWidget {
                               ),
                             ),
                             ProfileTile(
-                              icon: Icons.notifications_none_rounded,
-                              iconBackgroundColor: Colors.purple,
-                              iconColor: Colors.purple,
+                              icon: isNotifEnabled
+                                  ? Icons.notifications_active_outlined
+                                  : Icons.notifications_off_outlined,
+                              iconBackgroundColor: isNotifEnabled
+                                  ? Colors.purple
+                                  : Colors.blueGrey,
+                              iconColor: isNotifEnabled
+                                  ? Colors.purple
+                                  : Colors.blueGrey,
                               title: localizations.tileNotifications,
                               showDivider: true,
-                              trailing: Switch(
-                                value: true,
-                                onChanged: (val) {},
+                              onTap: () {
+                                context
+                                    .read<NotificationCubit>()
+                                    .toggleNotifications(
+                                      context,
+                                      !isNotifEnabled,
+                                    );
+                              },
+                              trailing: Row(
+                                children: [
+                                  Text(
+                                    isNotifEnabled
+                                        ? localizations.notifOn
+                                        : localizations.notifOff,
+                                    style: AppTextStyles.bodyMedium.copyWith(
+                                      color: AppColors.textSecondaryOf(context),
+                                      fontSize: 14 * textScale,
+                                    ),
+                                  ),
+                                  Switch(
+                                    value: isNotifEnabled,
+                                    onChanged: (val) {
+                                      context
+                                          .read<NotificationCubit>()
+                                          .toggleNotifications(context, val);
+                                    },
+                                  ),
+                                ],
                               ),
                             ),
                             ProfileTile(
@@ -201,18 +236,19 @@ class ProfileScreen extends StatelessWidget {
                         child: Column(
                           children: [
                             ProfileTile(
-                              icon: Icons.chat_bubble_outline_rounded,
-                              iconBackgroundColor: Colors.orange,
-                              iconColor: Colors.orange,
-                              title: localizations.tileMessageAdmins,
+                              icon: Icons.info_outline_rounded,
+                              iconBackgroundColor: Colors.teal,
+                              iconColor: Colors.teal,
+                              title: localizations.tileAboutUs,
                               trailing: const Icon(Icons.chevron_right),
-                            ),
-                            ProfileTile(
-                              icon: Icons.help_outline_rounded,
-                              iconBackgroundColor: Colors.green,
-                              iconColor: Colors.green,
-                              title: localizations.tileHelpFAQ,
-                              trailing: const Icon(Icons.chevron_right),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const AboutUsScreen(),
+                                  ),
+                                );
+                              },
                             ),
                             ProfileTile(
                               icon: Icons.shield_outlined,

@@ -254,11 +254,215 @@ abstract class AppLocalizations {
   /// **'On'**
   String get notifOn;
 
+  /// No description provided for @notifOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get notifOff;
+
+  /// No description provided for @notificationsEnabledMsg.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications enabled'**
+  String get notificationsEnabledMsg;
+
+  /// No description provided for @notificationsDisabledMsg.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications disabled'**
+  String get notificationsDisabledMsg;
+
+  /// No description provided for @notificationPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification permission is required. Please enable it in settings.'**
+  String get notificationPermissionDenied;
+
+  /// No description provided for @openSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get openSettings;
+
   /// No description provided for @secSupport.
   ///
   /// In en, this message translates to:
   /// **'Support'**
   String get secSupport;
+
+  /// No description provided for @tileAboutUs.
+  ///
+  /// In en, this message translates to:
+  /// **'About Us'**
+  String get tileAboutUs;
+
+  /// No description provided for @aboutUsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'About Us'**
+  String get aboutUsTitle;
+
+  /// No description provided for @aboutUsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn more about our vision, platform, and features'**
+  String get aboutUsSubtitle;
+
+  /// No description provided for @aboutUsTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart & Interactive Learning Platform'**
+  String get aboutUsTagline;
+
+  /// No description provided for @aboutUsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Our platform is a comprehensive educational ecosystem built to empower students, educators, and professionals. Experience interactive courses, live sessions, AI-powered assistance, and recognized certifications — all in one place.'**
+  String get aboutUsDescription;
+
+  /// No description provided for @aboutUsMissionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Our Mission'**
+  String get aboutUsMissionTitle;
+
+  /// No description provided for @aboutUsMissionDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'To make high-quality, interactive education accessible, flexible, and engaging for everyone, anywhere.'**
+  String get aboutUsMissionDesc;
+
+  /// No description provided for @aboutUsFeaturesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform Highlights'**
+  String get aboutUsFeaturesTitle;
+
+  /// No description provided for @aboutUsFeature1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Interactive Courses & Lessons'**
+  String get aboutUsFeature1Title;
+
+  /// No description provided for @aboutUsFeature1Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Comprehensive video lectures, attachments, and structured learning tracks.'**
+  String get aboutUsFeature1Desc;
+
+  /// No description provided for @aboutUsFeature2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Learning Assistant'**
+  String get aboutUsFeature2Title;
+
+  /// No description provided for @aboutUsFeature2Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart, instant answers and contextual learning support powered by AI.'**
+  String get aboutUsFeature2Desc;
+
+  /// No description provided for @aboutUsFeature3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified Certifications'**
+  String get aboutUsFeature3Title;
+
+  /// No description provided for @aboutUsFeature3Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Earn verified credentials and share your achievements with confidence.'**
+  String get aboutUsFeature3Desc;
+
+  /// No description provided for @aboutUsFeature4Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Live Rooms & Collaboration'**
+  String get aboutUsFeature4Title;
+
+  /// No description provided for @aboutUsFeature4Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Engage in live demos, department discussions, and active Q&A forums.'**
+  String get aboutUsFeature4Desc;
+
+  /// No description provided for @aboutUsFeature5Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Questions Bank & Quizzes'**
+  String get aboutUsFeature5Title;
+
+  /// No description provided for @aboutUsFeature5Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Sharpen your knowledge with comprehensive practice quizzes and real-time feedback.'**
+  String get aboutUsFeature5Desc;
+
+  /// No description provided for @aboutUsVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Version 1.0.0'**
+  String get aboutUsVersion;
+
+  /// No description provided for @aboutUsRights.
+  ///
+  /// In en, this message translates to:
+  /// **'All Rights Reserved.'**
+  String get aboutUsRights;
+
+  /// No description provided for @onboardingSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get onboardingSkip;
+
+  /// No description provided for @onboardingNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get onboardingNext;
+
+  /// No description provided for @onboardingGetStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get onboardingGetStarted;
+
+  /// No description provided for @onboardingSlide1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover Interactive Learning'**
+  String get onboardingSlide1Title;
+
+  /// No description provided for @onboardingSlide1Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore structured video courses, interactive rooms, and comprehensive study materials designed to accelerate your growth.'**
+  String get onboardingSlide1Subtitle;
+
+  /// No description provided for @onboardingSlide2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart AI Study Companion'**
+  String get onboardingSlide2Title;
+
+  /// No description provided for @onboardingSlide2Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Master difficult topics with instant, contextual AI guidance and connect with peers and mentors in real-time.'**
+  String get onboardingSlide2Subtitle;
+
+  /// No description provided for @onboardingSlide3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Assess & Earn Certifications'**
+  String get onboardingSlide3Title;
+
+  /// No description provided for @onboardingSlide3Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Evaluate your skills with custom quizzes, questions banks, and receive verified certificates to showcase your achievements.'**
+  String get onboardingSlide3Subtitle;
 
   /// No description provided for @tileMessageAdmins.
   ///

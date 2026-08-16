@@ -91,7 +91,121 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notifOn => 'On';
 
   @override
+  String get notifOff => 'Off';
+
+  @override
+  String get notificationsEnabledMsg => 'Notifications enabled';
+
+  @override
+  String get notificationsDisabledMsg => 'Notifications disabled';
+
+  @override
+  String get notificationPermissionDenied =>
+      'Notification permission is required. Please enable it in settings.';
+
+  @override
+  String get openSettings => 'Settings';
+
+  @override
   String get secSupport => 'Support';
+
+  @override
+  String get tileAboutUs => 'About Us';
+
+  @override
+  String get aboutUsTitle => 'About Us';
+
+  @override
+  String get aboutUsSubtitle =>
+      'Learn more about our vision, platform, and features';
+
+  @override
+  String get aboutUsTagline => 'Smart & Interactive Learning Platform';
+
+  @override
+  String get aboutUsDescription =>
+      'Our platform is a comprehensive educational ecosystem built to empower students, educators, and professionals. Experience interactive courses, live sessions, AI-powered assistance, and recognized certifications — all in one place.';
+
+  @override
+  String get aboutUsMissionTitle => 'Our Mission';
+
+  @override
+  String get aboutUsMissionDesc =>
+      'To make high-quality, interactive education accessible, flexible, and engaging for everyone, anywhere.';
+
+  @override
+  String get aboutUsFeaturesTitle => 'Platform Highlights';
+
+  @override
+  String get aboutUsFeature1Title => 'Interactive Courses & Lessons';
+
+  @override
+  String get aboutUsFeature1Desc =>
+      'Comprehensive video lectures, attachments, and structured learning tracks.';
+
+  @override
+  String get aboutUsFeature2Title => 'AI Learning Assistant';
+
+  @override
+  String get aboutUsFeature2Desc =>
+      'Smart, instant answers and contextual learning support powered by AI.';
+
+  @override
+  String get aboutUsFeature3Title => 'Verified Certifications';
+
+  @override
+  String get aboutUsFeature3Desc =>
+      'Earn verified credentials and share your achievements with confidence.';
+
+  @override
+  String get aboutUsFeature4Title => 'Live Rooms & Collaboration';
+
+  @override
+  String get aboutUsFeature4Desc =>
+      'Engage in live demos, department discussions, and active Q&A forums.';
+
+  @override
+  String get aboutUsFeature5Title => 'Questions Bank & Quizzes';
+
+  @override
+  String get aboutUsFeature5Desc =>
+      'Sharpen your knowledge with comprehensive practice quizzes and real-time feedback.';
+
+  @override
+  String get aboutUsVersion => 'Version 1.0.0';
+
+  @override
+  String get aboutUsRights => 'All Rights Reserved.';
+
+  @override
+  String get onboardingSkip => 'Skip';
+
+  @override
+  String get onboardingNext => 'Next';
+
+  @override
+  String get onboardingGetStarted => 'Get Started';
+
+  @override
+  String get onboardingSlide1Title => 'Discover Interactive Learning';
+
+  @override
+  String get onboardingSlide1Subtitle =>
+      'Explore structured video courses, interactive rooms, and comprehensive study materials designed to accelerate your growth.';
+
+  @override
+  String get onboardingSlide2Title => 'Smart AI Study Companion';
+
+  @override
+  String get onboardingSlide2Subtitle =>
+      'Master difficult topics with instant, contextual AI guidance and connect with peers and mentors in real-time.';
+
+  @override
+  String get onboardingSlide3Title => 'Assess & Earn Certifications';
+
+  @override
+  String get onboardingSlide3Subtitle =>
+      'Evaluate your skills with custom quizzes, questions banks, and receive verified certificates to showcase your achievements.';
 
   @override
   String get tileMessageAdmins => 'Message Admins';

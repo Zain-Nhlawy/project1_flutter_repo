@@ -153,8 +153,21 @@ class NotificationService {
     });
   }
 
+  Future<bool> areNotificationsEnabled() async {
+    try {
+      final val = await storage.read(StorageKeys.notificationsEnabled);
+      return val != 'false';
+    } catch (_) {
+      return true;
+    }
+  }
+
   void _setupForegroundHandler() {
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      if (!await areNotificationsEnabled()) {
+        debugPrint('Foreground notification silenced: User notifications disabled.');
+        return;
+      }
       final payload = NotificationPayloadModel.fromRemoteMessage(message);
       _showLocalNotification(payload);
       _showInAppBanner(payload);
