@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:better_player_plus/better_player_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
@@ -40,6 +41,9 @@ class _VideoControlsState extends State<VideoControls> {
   double _rate = 1.0;
   double _volume = 1.0;
   bool _visible = true;
+
+  bool _isDragging = false;
+  Duration _dragPosition = Duration.zero;
 
   Timer? _hideTimer;
   Timer? _progressTimer;
@@ -99,7 +103,10 @@ class _VideoControlsState extends State<VideoControls> {
         if (value == null || !mounted) return;
 
         setState(() {
-          _position = value.position;
+          if (!_isDragging) {
+            _position = value.position;
+          }
+
           _duration = value.duration ?? Duration.zero;
           _playing = value.isPlaying;
           _volume = value.volume;
@@ -186,11 +193,12 @@ class _VideoControlsState extends State<VideoControls> {
   }
 
   void _enablePictureInPicture() {
-  _controller.enablePictureInPicture(
-    widget.betterPlayerGlobalKey,
-  );
-  _scheduleAutoHide();
-}
+    _controller.enablePictureInPicture(
+      widget.betterPlayerGlobalKey,
+    );
+
+    _scheduleAutoHide();
+  }
 
   String _formatDuration(Duration duration) {
     String twoDigits(int number) {
@@ -228,12 +236,55 @@ class _VideoControlsState extends State<VideoControls> {
     _controller.seekTo(clamped);
   }
 
+  void _startDragging(double value) {
+    setState(() {
+      _isDragging = true;
+      _dragPosition = Duration(
+        milliseconds: value.toInt(),
+      );
+    });
+
+    _hideTimer?.cancel();
+  }
+
+  void _updateDragPosition(double value) {
+    setState(() {
+      _dragPosition = Duration(
+        milliseconds: value.toInt(),
+      );
+    });
+  }
+
+  Future<void> _endDragging(double value) async {
+    final target = Duration(
+      milliseconds: value.toInt(),
+    );
+
+    setState(() {
+      _dragPosition = target;
+    });
+
+    await _controller.seekTo(target);
+
+    if (!mounted) return;
+
+    setState(() {
+      _position = target;
+      _isDragging = false;
+    });
+
+    _scheduleAutoHide();
+  }
+
   String _qualityLabel(String key) {
     return key == 'auto' ? 'Auto' : '${key}p';
   }
 
   @override
   Widget build(BuildContext context) {
+    final displayedPosition =
+        _isDragging ? _dragPosition : _position;
+
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: _toggleVisibility,
@@ -259,7 +310,6 @@ class _VideoControlsState extends State<VideoControls> {
                 ),
               ),
             ),
-
           if (_visible)
             PositionedDirectional(
               top: 10,
@@ -280,7 +330,6 @@ class _VideoControlsState extends State<VideoControls> {
                 ],
               ),
             ),
-
           if (_visible)
             Center(
               child: Row(
@@ -325,7 +374,6 @@ class _VideoControlsState extends State<VideoControls> {
                 ],
               ),
             ),
-
           if (_visible)
             PositionedDirectional(
               start: 0,
@@ -341,7 +389,7 @@ class _VideoControlsState extends State<VideoControls> {
                 child: Row(
                   children: [
                     Text(
-                      _formatDuration(_position),
+                      _formatDuration(displayedPosition),
                       style: AppTextStyles.caption.copyWith(
                         color: Colors.white,
                         fontSize: 10,
@@ -373,21 +421,15 @@ class _VideoControlsState extends State<VideoControls> {
                           max: _duration.inMilliseconds > 0
                               ? _duration.inMilliseconds.toDouble()
                               : 1,
-                          value: _position.inMilliseconds
+                          value: displayedPosition.inMilliseconds
                               .clamp(
                                 0,
                                 _duration.inMilliseconds,
                               )
                               .toDouble(),
-                          onChanged: (value) {
-                            _controller.seekTo(
-                              Duration(
-                                milliseconds: value.toInt(),
-                              ),
-                            );
-
-                            _scheduleAutoHide();
-                          },
+                          onChangeStart: _startDragging,
+                          onChanged: _updateDragPosition,
+                          onChangeEnd: _endDragging,
                         ),
                       ),
                     ),
