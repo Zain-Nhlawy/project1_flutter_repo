@@ -62,7 +62,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
         receiveTimeout: const Duration(seconds: 5),
       ),
     );
-  _betterPlayerGlobalKey = GlobalKey();
+    _betterPlayerGlobalKey = GlobalKey();
     _betterPlayerController = BetterPlayerController(
       const BetterPlayerConfiguration(
         autoPlay: false,
@@ -99,13 +99,11 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
         });
         break;
       case BetterPlayerEventType.initialized:
-
         if (!_isChangingQuality) {
           setState(() => _isDownloadingVideo = false);
         }
         break;
       case BetterPlayerEventType.bufferingStart:
-
         setState(() => _isDownloadingVideo = true);
         break;
       case BetterPlayerEventType.bufferingEnd:
@@ -137,10 +135,14 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
       final dataSource = BetterPlayerDataSource(
         BetterPlayerDataSourceType.network,
         masterUrl,
+        videoFormat: BetterPlayerVideoFormat.hls,
       );
+      
       await _betterPlayerController.setupDataSource(dataSource);
+      
       if (!mounted || token != _loadToken) return;
       _betterPlayerController.play();
+      
     } catch (_) {
       try {
         final fallbackSource = BetterPlayerDataSource(
@@ -180,62 +182,45 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
       _qualities = fetchedQualities;
       _currentQuality = 'auto';
     });
-
   }
 
-  Future<void> _changeQuality(String qualityKey) async {
-    final url = _qualities[qualityKey];
-    if (url == null || qualityKey == _currentQuality) return;
+ Future<void> _changeQuality(String qualityKey) async {
+    if (qualityKey == _currentQuality) return;
 
-    final currentSource = _betterPlayerController.betterPlayerDataSource;
-    if (currentSource == null) return;
-
-
-    final position =
-        _betterPlayerController.videoPlayerController?.value.position ??
-        Duration.zero;
-    final wasPlaying = _betterPlayerController.isPlaying() ?? false;
+    final List<BetterPlayerAsmsTrack>? tracks = _betterPlayerController.betterPlayerAsmsTracks;
 
     setState(() {
-      _currentQuality = qualityKey;
-      _isDownloadingVideo = true;
       _isChangingQuality = true;
     });
 
-    final completer = Completer<void>();
-    void initListener(BetterPlayerEvent event) {
-      if (event.betterPlayerEventType == BetterPlayerEventType.initialized &&
-          !completer.isCompleted) {
-        completer.complete();
-      }
-    }
-
-    _betterPlayerController.addEventsListener(initListener);
-
     try {
-      await _betterPlayerController.setupDataSource(
-        currentSource.copyWith(url: url),
-      );
+      if (qualityKey == 'auto') {
+        if (tracks != null && tracks.isNotEmpty) {
+          _betterPlayerController.setTrack(tracks.first);
+        }
+        setState(() {
+          _currentQuality = 'auto';
+        });
+      } else {
+        if (tracks == null || tracks.isEmpty) {
+          return;
+        }
 
-      await completer.future.timeout(
-        const Duration(seconds: 15),
-        onTimeout: () {},
-      );
+        final targetHeight = int.tryParse(qualityKey);
+        final index = tracks.indexWhere((t) => t.height == targetHeight);
 
-      await _betterPlayerController.seekTo(position);
-
-      if (wasPlaying) {
-        _betterPlayerController.play();
+        if (index != -1) {
+          _betterPlayerController.setTrack(tracks[index]);
+          setState(() {
+            _currentQuality = qualityKey;
+          });
+        } 
       }
     } catch (e) {
       debugPrint('Quality change error: $e');
     } finally {
-      _betterPlayerController.removeEventsListener(initListener);
       if (mounted) {
-        setState(() {
-          _isDownloadingVideo = false;
-          _isChangingQuality = false;
-        });
+        setState(() => _isChangingQuality = false);
       }
     }
   }
@@ -538,9 +523,9 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
       fit: StackFit.expand,
       children: [
         BetterPlayer(
-  key: _betterPlayerGlobalKey,
-  controller: _betterPlayerController,
-),
+          key: _betterPlayerGlobalKey,
+          controller: _betterPlayerController,
+        ),
         if (_isDownloadingVideo)
           const ColoredBox(
             color: Colors.black45,
