@@ -672,10 +672,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get groups => 'المجموعات';
 
   @override
+  String get group => 'المجموعة';
+
+  @override
   String get yourDepartments => 'أقسامك';
 
   @override
   String get yourSections => 'أقسامك';
+
+  @override
+  String get yourGroups => 'مجموعاتك';
 
   @override
   String get restrictedDepartments => 'الأقسام المقيدة';
@@ -684,7 +690,59 @@ class AppLocalizationsAr extends AppLocalizations {
   String get restrictedSections => 'الأقسام المقيدة';
 
   @override
+  String get restrictedGroups => 'المجموعات المقيدة';
+
+  @override
   String get myGroups => 'مجموعاتي';
+
+  @override
+  String get addGroup => 'إضافة مجموعة';
+
+  @override
+  String get editGroup => 'تعديل المجموعة';
+
+  @override
+  String get removeGroup => 'حذف المجموعة';
+
+  @override
+  String get groupAddedSuccessfully => 'تم إضافة المجموعة بنجاح';
+
+  @override
+  String get groupUpdatedSuccessfully => 'تم تحديث المجموعة بنجاح';
+
+  @override
+  String get groupDeletedSuccessfully => 'تم حذف المجموعة بنجاح';
+
+  @override
+  String get deleteGroupConfirmation =>
+      'هل أنت متأكد من حذف هذه المجموعة؟ لا يمكن التراجع عن هذا الإجراء.';
+
+  @override
+  String get noGroupFound => 'لا توجد مجموعات متاحة';
+
+  @override
+  String get groupName => 'اسم المجموعة';
+
+  @override
+  String get enterGroupName => 'أدخل اسم المجموعة';
+
+  @override
+  String get groupDescription => 'وصف المجموعة';
+
+  @override
+  String get enterGroupDescription => 'أدخل وصف المجموعة';
+
+  @override
+  String get groupJourney => 'رحلة المجموعة';
+
+  @override
+  String get chat => 'المحادثة';
+
+  @override
+  String get features => 'الميزات';
+
+  @override
+  String get members => 'الأعضاء';
 
   @override
   String get frontendSection => 'قسم الواجهات الأمامية';

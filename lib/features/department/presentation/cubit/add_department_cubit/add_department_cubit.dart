@@ -12,12 +12,14 @@ class AddDepartmentCubit extends Cubit<AddDepartmentState> {
   AddDepartmentCubit(
     this.getDepartmentUseCase, {
     DepartmentEntity? departmentToEdit,
+    bool isGroup = false,
   }) : super(
           AddDepartmentState(
             name: departmentToEdit?.name ?? '',
             description: departmentToEdit?.description ?? '',
             isEditMode: departmentToEdit != null,
             departmentId: departmentToEdit?.id,
+            isGroup: departmentToEdit?.isGroup ?? isGroup,
           ),
         );
 
@@ -51,6 +53,7 @@ class AddDepartmentCubit extends Cubit<AddDepartmentState> {
       name: state.name.trim(),
       description: state.description.trim(),
       managerId: managerId,
+      isGroup: state.isGroup,
     );
 
     final Either<String, dynamic> result;

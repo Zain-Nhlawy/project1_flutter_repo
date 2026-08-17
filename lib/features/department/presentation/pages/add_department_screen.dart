@@ -19,11 +19,13 @@ import '../widgets/add_department/submit_department_button.dart';
 class AddDepartmentScreen extends StatelessWidget {
   final String demoId;
   final DepartmentEntity? departmentToEdit;
+  final bool isGroup;
 
   const AddDepartmentScreen({
     super.key,
     required this.demoId,
     this.departmentToEdit,
+    this.isGroup = false,
   });
 
   @override
@@ -32,11 +34,13 @@ class AddDepartmentScreen extends StatelessWidget {
     final textScale = MediaQuery.textScalerOf(context).scale(1);
     final l10n = AppLocalizations.of(context)!;
     final isEdit = departmentToEdit != null;
+    final effectiveIsGroup = departmentToEdit?.isGroup ?? isGroup;
 
     return BlocProvider(
       create: (context) => AddDepartmentCubit(
         getIt<GetDepartmentUseCase>(),
         departmentToEdit: departmentToEdit,
+        isGroup: effectiveIsGroup,
       ),
       child: BlocListener<AddDepartmentCubit, AddDepartmentState>(
         listenWhen: (previous, current) => previous.status != current.status,
@@ -45,8 +49,12 @@ class AddDepartmentScreen extends StatelessWidget {
             SnackbarTheme().newSnackBarSuccess(
               context,
               isEdit
-                  ? l10n.departmentUpdatedSuccessfully
-                  : l10n.departmentAddedSuccessfully,
+                  ? (effectiveIsGroup
+                      ? l10n.groupUpdatedSuccessfully
+                      : l10n.departmentUpdatedSuccessfully)
+                  : (effectiveIsGroup
+                      ? l10n.groupAddedSuccessfully
+                      : l10n.departmentAddedSuccessfully),
             );
             context.read<DepartmentCubit>().fetchDepartments(demoId);
             Navigator.pop(context);
@@ -61,7 +69,9 @@ class AddDepartmentScreen extends StatelessWidget {
             elevation: 0,
             centerTitle: true,
             title: Text(
-              isEdit ? l10n.editDepartment : l10n.addSection,
+              isEdit
+                  ? (effectiveIsGroup ? l10n.editGroup : l10n.editDepartment)
+                  : (effectiveIsGroup ? l10n.addGroup : l10n.addSection),
               style: AppTextStyles.h3.copyWith(
                 color: AppColors.textPrimaryOf(context),
                 fontWeight: FontWeight.bold,

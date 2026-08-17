@@ -86,34 +86,55 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
     final sidebarWidth = (viewportWidth * 0.72).clamp(0.0, 236.0).toDouble();
     final isRtl = Directionality.of(context) == TextDirection.rtl;
     final currentIndex = context.watch<DepartmentNavigationCubit>().state;
+    final isGroup = widget.department?.isGroup == true;
 
-    final navItems = [
-      DepartmentNavItem(
-        Icons.dashboard_rounded,
-        localizations.departmentMainPage,
-      ),
-      DepartmentNavItem(
-        Icons.menu_book_rounded,
-        localizations.departmentCourses,
-      ),
-      DepartmentNavItem(
-        Icons.alt_route_rounded,
-        localizations.departmentLearningPath,
-      ),
-      DepartmentNavItem(
-        Icons.people_alt_rounded,
-        localizations.departmentMembers,
-      ),
-      DepartmentNavItem(
-        Icons.leaderboard_rounded,
-        localizations.departmentLeaderboard,
-      ),
-      DepartmentNavItem(
-        Icons.chat_bubble_outline_rounded,
-        localizations.departmentChat,
-      ),
-      DepartmentNavItem(Icons.sensors_rounded, localizations.departmentLives),
-    ];
+    final navItems = isGroup
+        ? [
+            DepartmentNavItem(
+              Icons.chat_bubble_outline_rounded,
+              localizations.chat,
+            ),
+            DepartmentNavItem(
+              Icons.widgets_outlined,
+              localizations.features,
+            ),
+            DepartmentNavItem(
+              Icons.people_alt_rounded,
+              localizations.members,
+            ),
+          ]
+        : [
+            DepartmentNavItem(
+              Icons.dashboard_rounded,
+              localizations.departmentMainPage,
+            ),
+            DepartmentNavItem(
+              Icons.menu_book_rounded,
+              localizations.departmentCourses,
+            ),
+            DepartmentNavItem(
+              Icons.alt_route_rounded,
+              localizations.departmentLearningPath,
+            ),
+            DepartmentNavItem(
+              Icons.people_alt_rounded,
+              localizations.departmentMembers,
+            ),
+            DepartmentNavItem(
+              Icons.leaderboard_rounded,
+              localizations.departmentLeaderboard,
+            ),
+            DepartmentNavItem(
+              Icons.chat_bubble_outline_rounded,
+              localizations.departmentChat,
+            ),
+            DepartmentNavItem(
+              Icons.sensors_rounded,
+              localizations.departmentLives,
+            ),
+          ];
+
+    final isChatActive = isGroup ? currentIndex == 0 : currentIndex == 5;
 
     return Scaffold(
       backgroundColor: AppColors.backgroundOf(context),
@@ -184,7 +205,7 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
                           ),
                         ),
                       ),
-                      if (currentIndex == 5 &&
+                      if (isChatActive &&
                           _onlineChatMembers.isNotEmpty) ...[
                         const Spacer(),
                         OnlineMembersHeader(members: _onlineChatMembers),
@@ -206,7 +227,7 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
                                 child: child,
                               );
                             },
-                        child: _getPage(currentIndex, localizations),
+                        child: _getPage(currentIndex, localizations, isGroup),
                       );
                     },
                   ),
@@ -242,10 +263,15 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
               isVisible: _isSidebarVisible,
               currentIndex: currentIndex,
               navItems: navItems,
-              departmentName:
-                  widget.department?.name ?? localizations.departmentMainPage,
+              isGroup: isGroup,
+              departmentName: widget.department?.name ??
+                  (isGroup
+                      ? localizations.group
+                      : localizations.departmentMainPage),
               departmentDescription: widget.department?.description ?? '',
-              navigationLabel: localizations.departmentJourney,
+              navigationLabel: isGroup
+                  ? localizations.groupJourney
+                  : localizations.departmentJourney,
               onPageChanged: (index) {
                 context.read<DepartmentNavigationCubit>().changePage(index);
                 _toggleSidebar();
@@ -258,7 +284,37 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
     );
   }
 
-  Widget _getPage(int index, AppLocalizations localizations) {
+  Widget _getPage(
+    int index,
+    AppLocalizations localizations,
+    bool isGroup,
+  ) {
+    if (isGroup) {
+      switch (index) {
+        case 0:
+          return DepartmentChatScreen(
+            key: const ValueKey('group_chat'),
+            departmentId: widget.department?.id ?? '',
+            demoId: widget.demoId ?? '',
+            onOnlineMembersChanged: _updateOnlineChatMembers,
+          );
+        case 1:
+          return DepartmentEmptyPage(
+            key: const ValueKey('group_features'),
+            title: localizations.features,
+          );
+        case 2:
+          return DepartmentMembersPage(
+            key: const ValueKey('group_members'),
+            demoId: widget.demoId ?? '',
+            departmentId: widget.department?.id ?? '',
+            canManage: widget.canManage,
+          );
+        default:
+          return const SizedBox.shrink();
+      }
+    }
+
     switch (index) {
       case 0:
         return DepartmentEmptyPage(

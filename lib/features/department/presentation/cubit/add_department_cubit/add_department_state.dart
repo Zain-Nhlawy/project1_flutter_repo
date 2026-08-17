@@ -11,6 +11,7 @@ class AddDepartmentState {
   final bool showValidationErrors;
   final bool isEditMode;
   final String? departmentId;
+  final bool isGroup;
 
   const AddDepartmentState({
     this.name = '',
@@ -21,6 +22,7 @@ class AddDepartmentState {
     this.showValidationErrors = false,
     this.isEditMode = false,
     this.departmentId,
+    this.isGroup = false,
   });
 
   AddDepartmentState copyWith({
@@ -32,6 +34,7 @@ class AddDepartmentState {
     bool? showValidationErrors,
     bool? isEditMode,
     String? departmentId,
+    bool? isGroup,
   }) {
     return AddDepartmentState(
       name: name ?? this.name,
@@ -42,6 +45,7 @@ class AddDepartmentState {
       showValidationErrors: showValidationErrors ?? this.showValidationErrors,
       isEditMode: isEditMode ?? this.isEditMode,
       departmentId: departmentId ?? this.departmentId,
+      isGroup: isGroup ?? this.isGroup,
     );
   }
 }

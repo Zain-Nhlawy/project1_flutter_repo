@@ -674,10 +674,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get groups => 'Groups';
 
   @override
+  String get group => 'Group';
+
+  @override
   String get yourDepartments => 'Your Departments';
 
   @override
   String get yourSections => 'Your Departments';
+
+  @override
+  String get yourGroups => 'Your Groups';
 
   @override
   String get restrictedDepartments => 'Restricted Departments';
@@ -686,7 +692,59 @@ class AppLocalizationsEn extends AppLocalizations {
   String get restrictedSections => 'Restricted Departments';
 
   @override
+  String get restrictedGroups => 'Restricted Groups';
+
+  @override
   String get myGroups => 'My Groups';
+
+  @override
+  String get addGroup => 'Add Group';
+
+  @override
+  String get editGroup => 'Edit Group';
+
+  @override
+  String get removeGroup => 'Remove Group';
+
+  @override
+  String get groupAddedSuccessfully => 'Group added successfully';
+
+  @override
+  String get groupUpdatedSuccessfully => 'Group updated successfully';
+
+  @override
+  String get groupDeletedSuccessfully => 'Group deleted successfully';
+
+  @override
+  String get deleteGroupConfirmation =>
+      'Are you sure you want to delete this group? This action cannot be undone.';
+
+  @override
+  String get noGroupFound => 'No groups found';
+
+  @override
+  String get groupName => 'Group Name';
+
+  @override
+  String get enterGroupName => 'Enter group name';
+
+  @override
+  String get groupDescription => 'Group Description';
+
+  @override
+  String get enterGroupDescription => 'Enter group description';
+
+  @override
+  String get groupJourney => 'GROUP JOURNEY';
+
+  @override
+  String get chat => 'Chat';
+
+  @override
+  String get features => 'Features';
+
+  @override
+  String get members => 'Members';
 
   @override
   String get frontendSection => 'Frontend Section';

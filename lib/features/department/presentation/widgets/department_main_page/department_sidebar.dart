@@ -12,6 +12,7 @@ class DepartmentSidebar extends StatelessWidget {
   final String navigationLabel;
   final ValueChanged<int> onPageChanged;
   final VoidCallback onToggle;
+  final bool isGroup;
 
   const DepartmentSidebar({
     super.key,
@@ -24,6 +25,7 @@ class DepartmentSidebar extends StatelessWidget {
     required this.navigationLabel,
     required this.onPageChanged,
     required this.onToggle,
+    this.isGroup = false,
   });
 
   @override
@@ -87,8 +89,10 @@ class DepartmentSidebar extends StatelessWidget {
                                 color: Colors.white.withValues(alpha: 0.16),
                               ),
                             ),
-                            child: const Icon(
-                              Icons.account_tree_outlined,
+                            child: Icon(
+                              isGroup
+                                  ? Icons.groups_rounded
+                                  : Icons.account_tree_outlined,
                               color: Colors.white,
                               size: 21,
                             ),
