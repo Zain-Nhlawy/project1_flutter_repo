@@ -25,15 +25,19 @@ class CourseStatsCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.surfaceOf(context),
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: AppColors.border, width: 1.2),
+        border: Border.all(color: AppColors.borderOf(context), width: 1.2),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _StatTile(icon: firstIcon, label: firstLabel, value: firstValue),
-          Container(width: 1, height: 34, color: AppColors.border),
+          Container(
+            width: 1,
+            height: 34,
+            color: AppColors.borderOf(context),
+          ),
           _StatTile(icon: secondIcon, label: secondLabel, value: secondValue),
         ],
       ),
@@ -54,18 +58,24 @@ class _StatTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final primary = AppColors.primaryOf(context);
+
     return Column(
       children: [
-        Icon(icon, color: AppColors.primary, size: 22),
+        Icon(icon, color: primary, size: 22),
         const SizedBox(height: 6),
         Text(
           value,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 15,
+            color: AppColors.textPrimaryOf(context),
+          ),
         ),
         Text(
           label,
           style: TextStyle(
-            color: AppColors.textSecondary.withOpacity(0.7),
+            color: AppColors.textSecondaryOf(context).withValues(alpha: 0.7),
             fontSize: 12,
           ),
         ),

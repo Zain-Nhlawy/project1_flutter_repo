@@ -15,6 +15,9 @@ class ManagementActionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final primary = AppColors.primaryOf(context);
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -23,12 +26,15 @@ class ManagementActionTile extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: AppColors.surfaceOf(context),
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: AppColors.border, width: 1.2),
+            border: Border.all(
+              color: AppColors.borderOf(context),
+              width: 1.2,
+            ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.03),
+                color: Colors.black.withValues(alpha: isDark ? 0.12 : 0.03),
                 blurRadius: 6,
                 offset: const Offset(0, 2),
               ),
@@ -43,15 +49,17 @@ class ManagementActionTile extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.1),
+                      color: primary.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Icon(icon, color: AppColors.primary, size: 20),
+                    child: Icon(icon, color: primary, size: 20),
                   ),
                   Icon(
                     Icons.arrow_forward_ios_rounded,
                     size: 14,
-                    color: AppColors.textSecondary.withOpacity(0.5),
+                    color: AppColors.textSecondaryOf(
+                      context,
+                    ).withValues(alpha: 0.5),
                   ),
                 ],
               ),
@@ -60,10 +68,10 @@ class ManagementActionTile extends StatelessWidget {
                 label,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 13,
-                  color: AppColors.textPrimary,
+                  color: AppColors.textPrimaryOf(context),
                 ),
               ),
             ],
