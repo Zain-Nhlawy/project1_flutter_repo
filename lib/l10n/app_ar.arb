@@ -736,5 +736,8 @@
 "noCertificatesAvailable": "لا توجد شهادات متاحة",
 "reviewCertificateBeforeDownloading": "راجع شهادتك",
 "certificateDownloadHint": "تستطيع تحميل شهادتك كصورة أو ملف PDF",
-"certificateNotFound": "لم يتم العثور على الشهادة"
+"certificateNotFound": "لم يتم العثور على الشهادة",
+"deleteQuizConfirmation": "هل أنت متأكد من حذف الاختبار؟",
+"deleteQuiz": "حذف الاختبار",
+"failedToDeleteExam": "فشل حذف الاختبار"
 }

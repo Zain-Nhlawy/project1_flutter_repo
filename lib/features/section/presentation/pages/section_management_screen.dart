@@ -15,6 +15,7 @@ import 'package:project1/features/section/presentation/cubit/section_cubit.dart'
 import 'package:project1/features/section/presentation/cubit/section_state.dart';
 import 'package:project1/features/section/presentation/widgets/section_card.dart';
 import 'package:project1/l10n/app_localizations.dart';
+import 'package:project1/features/quiz/presentation/cubit/exam_cubit.dart';
 
 class SectionManagementScreen extends StatefulWidget {
   final String courseId;
@@ -91,6 +92,36 @@ class _SectionManagementScreenState extends State<SectionManagementScreen> {
         builder: (_) => ExamManagementScreen(sectionId: section.id),
       ),
     );
+  }
+
+  Future<void> deleteQuiz(SectionEntity section) async {
+    final examCubit = getIt<ExamCubit>();
+    final result = await examCubit.fetchExams(sectionId: section.id);
+
+    if (result == null || result.data.isEmpty) {
+      await examCubit.close();
+      return;
+    }
+
+    final examId = result.data.first.id;
+    final success = await examCubit.deleteExam(
+      sectionId: section.id,
+      examId: examId,
+    );
+
+    await examCubit.close();
+
+    if (!success && mounted) {
+      SnackbarTheme().newSnackBarError(
+        context,
+        AppLocalizations.of(context)!.failedToDeleteExam,
+      );
+      return;
+    }
+
+    if (mounted) {
+      setState(() => _hasChanges = true);
+    }
   }
 
   Future<void> renameSection(SectionEntity section) async {
@@ -234,6 +265,7 @@ class _SectionManagementScreenState extends State<SectionManagementScreen> {
                           onManageQuestionsBank: () =>
                               manageQuestionsBank(section),
                           onManageQuiz: () => manageQuiz(section),
+                          onDeleteQuiz: () => deleteQuiz(section),
                           onRename: () => renameSection(section),
                           onDelete: () => deleteSection(section),
                           onLessonsChanged: () {

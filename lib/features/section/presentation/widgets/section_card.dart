@@ -10,6 +10,7 @@ import 'package:project1/features/section/presentation/widgets/lesson_tile.dart'
 import 'package:project1/features/section/presentation/widgets/section_sub_row.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
+
 class SectionCard extends StatefulWidget {
   final SectionEntity section;
 
@@ -20,6 +21,7 @@ class SectionCard extends StatefulWidget {
   final VoidCallback onRename;
   final VoidCallback onDelete;
   final VoidCallback? onLessonsChanged;
+  final VoidCallback? onDeleteQuiz;
 
   const SectionCard({
     super.key,
@@ -31,6 +33,7 @@ class SectionCard extends StatefulWidget {
     required this.onRename,
     required this.onDelete,
     this.onLessonsChanged,
+    this.onDeleteQuiz,
   });
 
   @override
@@ -154,6 +157,42 @@ class _SectionCardState extends State<SectionCard> {
         localizations.deleteLessonFailed,
       );
     }
+  }
+
+  Future<void> _confirmDeleteQuiz() async {
+    final localizations = AppLocalizations.of(context)!;
+
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Text(localizations.deleteQuiz),
+          content: Text(localizations.deleteQuizConfirmation),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, false),
+              child: Text(localizations.cancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, true),
+              child: Text(
+                localizations.delete,
+                style: TextStyle(
+                  color: Colors.red.shade400,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirm != true || !mounted) return;
+    widget.onDeleteQuiz?.call();
   }
 
   @override
@@ -374,6 +413,9 @@ class _SectionCardState extends State<SectionCard> {
                     icon: Icons.fact_check_outlined,
                     label: localizations.quiz,
                     onEdit: widget.onManageQuiz,
+                    onDelete: widget.onDeleteQuiz != null
+                        ? _confirmDeleteQuiz
+                        : null,
                   ),
                 ],
               ),

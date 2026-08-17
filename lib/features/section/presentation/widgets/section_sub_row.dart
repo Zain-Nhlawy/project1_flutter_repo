@@ -5,12 +5,14 @@ class SectionSubRow extends StatelessWidget {
   final IconData icon;
   final String label;
   final VoidCallback onEdit;
+  final VoidCallback? onDelete;
 
   const SectionSubRow({
     super.key,
     required this.icon,
     required this.label,
     required this.onEdit,
+    this.onDelete,
   });
 
   @override
@@ -49,6 +51,19 @@ class SectionSubRow extends StatelessWidget {
             constraints: const BoxConstraints(),
             splashRadius: 18,
           ),
+          if (onDelete != null) ...[
+            IconButton(
+              onPressed: onDelete,
+              icon: Icon(
+                Icons.delete_outline_rounded,
+                size: 18,
+                color: Colors.red.shade400,
+              ),
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              splashRadius: 18,
+            ),
+          ],
         ],
       ),
     );

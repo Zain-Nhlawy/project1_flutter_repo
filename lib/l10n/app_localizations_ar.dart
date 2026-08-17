@@ -1991,4 +1991,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get certificateNotFound => 'لم يتم العثور على الشهادة';
+
+  @override
+  String get deleteQuizConfirmation => 'هل أنت متأكد من حذف الاختبار؟';
+
+  @override
+  String get deleteQuiz => 'حذف الاختبار';
+
+  @override
+  String get failedToDeleteExam => 'فشل حذف الاختبار';
 }

@@ -2012,4 +2012,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get certificateNotFound => 'Certificate not found';
+
+  @override
+  String get deleteQuizConfirmation =>
+      'Are you sure you want to delete this quiz?';
+
+  @override
+  String get deleteQuiz => 'Delete Quiz';
+
+  @override
+  String get failedToDeleteExam => 'Failed to delete the exam';
 }

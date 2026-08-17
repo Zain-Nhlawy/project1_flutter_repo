@@ -3901,6 +3901,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Certificate not found'**
   String get certificateNotFound;
+
+  /// No description provided for @deleteQuizConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this quiz?'**
+  String get deleteQuizConfirmation;
+
+  /// No description provided for @deleteQuiz.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Quiz'**
+  String get deleteQuiz;
+
+  /// No description provided for @failedToDeleteExam.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete the exam'**
+  String get failedToDeleteExam;
 }
 
 class _AppLocalizationsDelegate

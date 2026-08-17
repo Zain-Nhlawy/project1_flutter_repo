@@ -768,6 +768,9 @@
 "noCertificatesAvailable": "No certificates available",
 "reviewCertificateBeforeDownloading": "Review your certificate before downloading",
 "certificateDownloadHint": "You can download your certificate as an image or PDF",
-"certificateNotFound": "Certificate not found"
+"certificateNotFound": "Certificate not found",
+"deleteQuizConfirmation": "Are you sure you want to delete this quiz?",
+"deleteQuiz": "Delete Quiz",
+"failedToDeleteExam": "Failed to delete the exam"
 
 }
