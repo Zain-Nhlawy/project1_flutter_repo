@@ -1358,6 +1358,12 @@ abstract class AppLocalizations {
   /// **'Groups'**
   String get groups;
 
+  /// No description provided for @group.
+  ///
+  /// In en, this message translates to:
+  /// **'Group'**
+  String get group;
+
   /// No description provided for @yourDepartments.
   ///
   /// In en, this message translates to:
@@ -1369,6 +1375,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your Departments'**
   String get yourSections;
+
+  /// No description provided for @yourGroups.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Groups'**
+  String get yourGroups;
 
   /// No description provided for @restrictedDepartments.
   ///
@@ -1382,11 +1394,113 @@ abstract class AppLocalizations {
   /// **'Restricted Departments'**
   String get restrictedSections;
 
+  /// No description provided for @restrictedGroups.
+  ///
+  /// In en, this message translates to:
+  /// **'Restricted Groups'**
+  String get restrictedGroups;
+
   /// No description provided for @myGroups.
   ///
   /// In en, this message translates to:
   /// **'My Groups'**
   String get myGroups;
+
+  /// No description provided for @addGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Group'**
+  String get addGroup;
+
+  /// No description provided for @editGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Group'**
+  String get editGroup;
+
+  /// No description provided for @removeGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove Group'**
+  String get removeGroup;
+
+  /// No description provided for @groupAddedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Group added successfully'**
+  String get groupAddedSuccessfully;
+
+  /// No description provided for @groupUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Group updated successfully'**
+  String get groupUpdatedSuccessfully;
+
+  /// No description provided for @groupDeletedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Group deleted successfully'**
+  String get groupDeletedSuccessfully;
+
+  /// No description provided for @deleteGroupConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this group? This action cannot be undone.'**
+  String get deleteGroupConfirmation;
+
+  /// No description provided for @noGroupFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No groups found'**
+  String get noGroupFound;
+
+  /// No description provided for @groupName.
+  ///
+  /// In en, this message translates to:
+  /// **'Group Name'**
+  String get groupName;
+
+  /// No description provided for @enterGroupName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter group name'**
+  String get enterGroupName;
+
+  /// No description provided for @groupDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Group Description'**
+  String get groupDescription;
+
+  /// No description provided for @enterGroupDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter group description'**
+  String get enterGroupDescription;
+
+  /// No description provided for @groupJourney.
+  ///
+  /// In en, this message translates to:
+  /// **'GROUP JOURNEY'**
+  String get groupJourney;
+
+  /// No description provided for @chat.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat'**
+  String get chat;
+
+  /// No description provided for @features.
+  ///
+  /// In en, this message translates to:
+  /// **'Features'**
+  String get features;
+
+  /// No description provided for @members.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get members;
 
   /// No description provided for @frontendSection.
   ///

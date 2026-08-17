@@ -8,16 +8,18 @@ class DepartmentModel extends DepartmentEntity {
     required super.description,
     super.memberCount,
     super.isJoined,
+    super.isGroup,
   });
 
   factory DepartmentModel.fromJson(Map<String, dynamic> json) {
     return DepartmentModel(
       id: json['id'] as String?,
-      name: json['name'] as String,
-      managerId: json['managerId'] as String,
-      description: json['description'] as String,
-      memberCount: json['membersCount'] as int,
-      isJoined: json['isJoind'] as bool?,
+      name: json['name'] as String? ?? '',
+      managerId: json['managerId'] as String? ?? '',
+      description: json['description'] as String? ?? '',
+      memberCount: (json['membersCount'] ?? json['memberCount']) as int?,
+      isJoined: (json['isJoind'] ?? json['isJoined']) as bool?,
+      isGroup: json['isGroup'] as bool? ?? false,
     );
   }
 
@@ -26,6 +28,7 @@ class DepartmentModel extends DepartmentEntity {
       'name': name,
       'managerId': managerId,
       'description': description,
+      'isGroup': isGroup ?? false,
     };
   }
 }

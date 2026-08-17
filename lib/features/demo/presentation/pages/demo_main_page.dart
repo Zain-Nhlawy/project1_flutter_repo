@@ -85,8 +85,9 @@ class DemoMainPage extends StatelessWidget {
                               key: const ValueKey('sections_tab'),
                               demo: demo,
                             )
-                          : const GroupsContentWidget(
-                              key: ValueKey('groups_tab'),
+                          : GroupsContentWidget(
+                              key: const ValueKey('groups_tab'),
+                              demo: demo,
                             ),
                     ),
                   ),

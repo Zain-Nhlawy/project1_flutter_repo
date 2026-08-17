@@ -54,7 +54,9 @@ class SubmitDepartmentButton extends StatelessWidget {
                       ),
                     )
                   : Text(
-                      state.isEditMode ? l10n.editDepartment : l10n.addSection,
+                      state.isEditMode
+                          ? (state.isGroup ? l10n.editGroup : l10n.editDepartment)
+                          : (state.isGroup ? l10n.addGroup : l10n.addSection),
                       style: AppTextStyles.titleMedium.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

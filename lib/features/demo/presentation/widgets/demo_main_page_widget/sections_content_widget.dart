@@ -80,10 +80,12 @@ class SectionsContentWidget extends StatelessWidget {
         }
 
         if (state is DepartmentLoaded) {
-          final departments = state.departments;
+          final sections = state.departments
+              .where((d) => d.isGroup != true)
+              .toList();
           final currentPlan = demo.plan?.toLowerCase() ?? 'starter';
           final isFreePlan = currentPlan == 'starter' || currentPlan == 'free';
-          final isLimitReached = isFreePlan && departments.length >= 5;
+          final isLimitReached = isFreePlan && sections.length >= 5;
 
           return ListView(
             physics: const AlwaysScrollableScrollPhysics(),
@@ -126,7 +128,7 @@ class SectionsContentWidget extends StatelessWidget {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
-                            departments.length.toString(),
+                            sections.length.toString(),
                             style: AppTextStyles.label.copyWith(
                               color: AppColors.primaryOf(context),
                               fontWeight: FontWeight.bold,
@@ -163,6 +165,7 @@ class SectionsContentWidget extends StatelessWidget {
                                     ],
                                     child: AddDepartmentScreen(
                                       demoId: demo.id!,
+                                      isGroup: false,
                                     ),
                                   ),
                                 ),
@@ -225,7 +228,7 @@ class SectionsContentWidget extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              if (departments.isEmpty)
+              if (sections.isEmpty)
                 _SectionsEmptyState(demo: demo)
               else
                 GridView.builder(
@@ -237,9 +240,9 @@ class SectionsContentWidget extends StatelessWidget {
                     mainAxisSpacing: 16,
                     childAspectRatio: 0.95,
                   ),
-                  itemCount: departments.length,
+                  itemCount: sections.length,
                   itemBuilder: (context, index) {
-                    final department = departments[index];
+                    final department = sections[index];
                     final userState = context.watch<UserCubit>().state;
                     final demoUsersState = context.watch<DemoUserCubit>().state;
                     String? myMemberId;

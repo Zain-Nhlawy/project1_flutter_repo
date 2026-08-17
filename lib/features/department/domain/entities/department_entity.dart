@@ -5,6 +5,7 @@ class DepartmentEntity {
   final String description;
   final int? memberCount;
   final bool? isJoined;
+  final bool? isGroup;
 
   DepartmentEntity({
     this.id,
@@ -13,5 +14,6 @@ class DepartmentEntity {
     required this.description,
     this.memberCount,
     this.isJoined,
+    this.isGroup,
   });
 }
