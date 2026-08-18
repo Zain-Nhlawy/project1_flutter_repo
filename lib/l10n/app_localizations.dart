@@ -4033,6 +4033,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to delete the exam'**
   String get failedToDeleteExam;
+
+  /// No description provided for @subscribeToUnlockLessons.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe to unlock lessons'**
+  String get subscribeToUnlockLessons;
 }
 
 class _AppLocalizationsDelegate

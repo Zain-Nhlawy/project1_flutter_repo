@@ -48,6 +48,7 @@ class SignupScreen extends StatelessWidget {
       },
       builder: (context, state) {
         final isLoading = state is AuthLoading;
+        final primary = AppColors.primaryOf(context);
 
         return Scaffold(
           backgroundColor: AppColors.backgroundOf(context),
@@ -63,9 +64,9 @@ class SignupScreen extends StatelessWidget {
                       Container(
                         height: isTablet ? 180 : 150,
                         width: double.infinity,
-                        decoration: const BoxDecoration(
-                          gradient: AppColors.headerGradient,
-                          borderRadius: BorderRadius.vertical(
+                        decoration: BoxDecoration(
+                          gradient: AppColors.headerGradientOf(context),
+                          borderRadius: const BorderRadius.vertical(
                             bottom: Radius.circular(40),
                           ),
                         ),
@@ -75,7 +76,7 @@ class SignupScreen extends StatelessWidget {
                             Text(
                               localizations.createAccountTitle,
                               style: AppTextStyles.h2.copyWith(
-                                color: AppColors.surface,
+                                color: Colors.white,
                               ),
                             ),
                             const SizedBox(height: 8),
@@ -162,20 +163,25 @@ class SignupScreen extends StatelessWidget {
                             SizedBox(height: isTablet ? 30 : 25),
 
                             isLoading
-                                ? const Center(
-                                    child: CircularProgressIndicator(),
+                                ? Center(
+                                    child: CircularProgressIndicator(
+                                      color: primary,
+                                    ),
                                   )
                                 : SizedBox(
                                     width: double.infinity,
                                     height: 56,
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        gradient: AppColors.buttonGradient,
+                                        gradient: AppColors.buttonGradientOf(
+                                          context,
+                                        ),
                                         borderRadius: BorderRadius.circular(16),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: AppColors.primary
-                                                .withOpacity(0.25),
+                                            color: primary.withValues(
+                                              alpha: 0.25,
+                                            ),
                                             blurRadius: 12,
                                             offset: const Offset(0, 4),
                                           ),
@@ -226,7 +232,7 @@ class SignupScreen extends StatelessWidget {
                                             localizations.createAccountBtn,
                                             style: AppTextStyles.titleMedium
                                                 .copyWith(
-                                                  color: AppColors.surface,
+                                                  color: Colors.white,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                           ),
@@ -248,14 +254,16 @@ class SignupScreen extends StatelessWidget {
                               label: Text(
                                 localizations.continueWithGoogle,
                                 style: AppTextStyles.bodyMedium.copyWith(
-                                  color: AppColors.textPrimary,
+                                  color: AppColors.textPrimaryOf(context),
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
                               style: OutlinedButton.styleFrom(
                                 minimumSize: const Size(double.infinity, 56),
-                                backgroundColor: AppColors.surface,
-                                side: const BorderSide(color: AppColors.border),
+                                backgroundColor: AppColors.surfaceOf(context),
+                                side: BorderSide(
+                                  color: AppColors.borderOf(context),
+                                ),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(16),
                                 ),
@@ -270,7 +278,7 @@ class SignupScreen extends StatelessWidget {
                                 Text(
                                   localizations.alreadyHaveAccount,
                                   style: AppTextStyles.bodyMedium.copyWith(
-                                    color: AppColors.textSecondary,
+                                    color: AppColors.textSecondaryOf(context),
                                   ),
                                 ),
                                 TextButton(
@@ -282,7 +290,7 @@ class SignupScreen extends StatelessWidget {
                                   child: Text(
                                     localizations.logInLink,
                                     style: AppTextStyles.bodyMedium.copyWith(
-                                      color: AppColors.primary,
+                                      color: primary,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),

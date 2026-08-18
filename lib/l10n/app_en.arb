@@ -790,6 +790,6 @@
 "certificateNotFound": "Certificate not found",
 "deleteQuizConfirmation": "Are you sure you want to delete this quiz?",
 "deleteQuiz": "Delete Quiz",
-"failedToDeleteExam": "Failed to delete the exam"
-
+"failedToDeleteExam": "Failed to delete the exam",
+"subscribeToUnlockLessons": "Subscribe to unlock lessons"
 }

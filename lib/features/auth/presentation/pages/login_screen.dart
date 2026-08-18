@@ -51,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final size = MediaQuery.of(context).size;
     final isTablet = size.width >= 600;
     final localizations = AppLocalizations.of(context)!;
+    final primary = AppColors.primaryOf(context);
 
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
@@ -90,9 +91,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     Container(
                       height: size.height * 0.35,
                       width: double.infinity,
-                      decoration: const BoxDecoration(
-                        gradient: AppColors.headerGradient,
-                        borderRadius: BorderRadius.vertical(
+                      decoration: BoxDecoration(
+                        gradient: AppColors.headerGradientOf(context),
+                        borderRadius: const BorderRadius.vertical(
                           bottom: Radius.circular(50),
                         ),
                       ),
@@ -108,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Text(
                             localizations.welcomeBack,
                             style: AppTextStyles.h2.copyWith(
-                              color: AppColors.surface,
+                              color: Colors.white,
                             ),
                           ),
                           const SizedBox(height: 4),
@@ -132,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Text(
                             localizations.signIn,
                             style: AppTextStyles.h3.copyWith(
-                              color: AppColors.textPrimary,
+                              color: AppColors.textPrimaryOf(context),
                             ),
                           ),
                           const SizedBox(height: 25),
@@ -166,7 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 localizations.forgotPasswordLink,
                                 style: AppTextStyles.bodyMedium.copyWith(
                                   fontWeight: FontWeight.w600,
-                                  color: AppColors.primary,
+                                  color: primary,
                                 ),
                               ),
                             ),
@@ -180,12 +181,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                 height: 58,
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    gradient: AppColors.buttonGradient,
+                                    gradient: AppColors.buttonGradientOf(
+                                      context,
+                                    ),
                                     borderRadius: BorderRadius.circular(16),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: AppColors.primary.withOpacity(
-                                          0.25,
+                                        color: primary.withValues(
+                                          alpha: 0.25,
                                         ),
                                         blurRadius: 12,
                                         offset: const Offset(0, 4),
@@ -218,7 +221,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                               localizations.logInBtn,
                                               style: AppTextStyles.titleMedium
                                                   .copyWith(
-                                                    color: AppColors.surface,
+                                                    color: Colors.white,
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                             ),
@@ -231,8 +234,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(height: 25),
                           Row(
                             children: [
-                              const Expanded(
-                                child: Divider(color: AppColors.border),
+                              Expanded(
+                                child: Divider(
+                                  color: AppColors.borderOf(context),
+                                ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
@@ -241,12 +246,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: Text(
                                   localizations.orDivider,
                                   style: AppTextStyles.label.copyWith(
-                                    color: AppColors.textSecondary,
+                                    color: AppColors.textSecondaryOf(context),
                                   ),
                                 ),
                               ),
-                              const Expanded(
-                                child: Divider(color: AppColors.border),
+                              Expanded(
+                                child: Divider(
+                                  color: AppColors.borderOf(context),
+                                ),
                               ),
                             ],
                           ),
@@ -262,14 +269,16 @@ class _LoginScreenState extends State<LoginScreen> {
                             label: Text(
                               localizations.continueWithGoogle,
                               style: AppTextStyles.bodyMedium.copyWith(
-                                color: AppColors.textPrimary,
+                                color: AppColors.textPrimaryOf(context),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
                             style: OutlinedButton.styleFrom(
                               minimumSize: const Size(double.infinity, 56),
-                              backgroundColor: AppColors.surface,
-                              side: const BorderSide(color: AppColors.border),
+                              backgroundColor: AppColors.surfaceOf(context),
+                              side: BorderSide(
+                                color: AppColors.borderOf(context),
+                              ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(16),
                               ),
@@ -282,7 +291,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               Text(
                                 localizations.dontHaveAccount,
                                 style: AppTextStyles.bodyMedium.copyWith(
-                                  color: AppColors.textSecondary,
+                                  color: AppColors.textSecondaryOf(context),
                                 ),
                               ),
                               TextButton(
@@ -297,7 +306,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: Text(
                                   localizations.signUpLink,
                                   style: AppTextStyles.bodyMedium.copyWith(
-                                    color: AppColors.primary,
+                                    color: primary,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),

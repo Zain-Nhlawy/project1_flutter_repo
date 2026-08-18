@@ -34,12 +34,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final primary = AppColors.primaryOf(context);
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: isDark ? 0.16 : 0.04),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -50,15 +53,16 @@ class _CustomTextFieldState extends State<CustomTextField> {
         obscureText: obscureText,
         keyboardType: widget.keyboardType,
         onSubmitted: widget.onSubmitted,
+        style: TextStyle(color: AppColors.textPrimaryOf(context)),
         decoration: InputDecoration(
-          prefixIcon: Icon(widget.icon, color: AppColors.primary),
+          prefixIcon: Icon(widget.icon, color: primary),
           suffixIcon: widget.isPassword
               ? IconButton(
                   icon: Icon(
                     obscureText
                         ? Icons.visibility_off_outlined
                         : Icons.visibility_outlined,
-                    color: AppColors.textSecondary,
+                    color: AppColors.textSecondaryOf(context),
                   ),
                   onPressed: () {
                     setState(() {
@@ -68,20 +72,26 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 )
               : null,
           hintText: widget.hintText,
-          hintStyle: const TextStyle(color: AppColors.textSecondary),
+          hintStyle: TextStyle(color: AppColors.textSecondaryOf(context)),
           filled: true,
-          fillColor: AppColors.surface,
+          fillColor: AppColors.surfaceOf(context),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(color: AppColors.border, width: 1.2),
+            borderSide: BorderSide(
+              color: AppColors.borderOf(context),
+              width: 1.2,
+            ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(color: AppColors.border, width: 1.2),
+            borderSide: BorderSide(
+              color: AppColors.borderOf(context),
+              width: 1.2,
+            ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(color: AppColors.primary, width: 2),
+            borderSide: BorderSide(color: primary, width: 2),
           ),
         ),
       ),

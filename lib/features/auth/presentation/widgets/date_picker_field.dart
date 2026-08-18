@@ -10,13 +10,15 @@ class DatePickerField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final primary = AppColors.primaryOf(context);
 
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: isDark ? 0.16 : 0.04),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -25,26 +27,30 @@ class DatePickerField extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         readOnly: true,
+        style: TextStyle(color: AppColors.textPrimaryOf(context)),
         decoration: InputDecoration(
           hintText: localizations.dateOfBirthHint,
-          hintStyle: const TextStyle(color: AppColors.textSecondary),
-          prefixIcon: const Icon(
-            Icons.calendar_today,
-            color: AppColors.primary,
-          ),
+          hintStyle: TextStyle(color: AppColors.textSecondaryOf(context)),
+          prefixIcon: Icon(Icons.calendar_today, color: primary),
           filled: true,
-          fillColor: AppColors.surface,
+          fillColor: AppColors.surfaceOf(context),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(color: AppColors.border, width: 1.2),
+            borderSide: BorderSide(
+              color: AppColors.borderOf(context),
+              width: 1.2,
+            ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(color: AppColors.border, width: 1.2),
+            borderSide: BorderSide(
+              color: AppColors.borderOf(context),
+              width: 1.2,
+            ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(color: AppColors.primary, width: 2),
+            borderSide: BorderSide(color: primary, width: 2),
           ),
         ),
         onTap: () async {
@@ -56,11 +62,19 @@ class DatePickerField extends StatelessWidget {
             builder: (context, child) {
               return Theme(
                 data: Theme.of(context).copyWith(
-                  colorScheme: const ColorScheme.light(
-                    primary: AppColors.primary,
-                    onPrimary: Colors.white,
-                    onSurface: AppColors.textPrimary,
-                  ),
+                  colorScheme: isDark
+                      ? ColorScheme.dark(
+                          primary: primary,
+                          onPrimary: Colors.white,
+                          surface: AppColors.surfaceOf(context),
+                          onSurface: AppColors.textPrimaryOf(context),
+                        )
+                      : ColorScheme.light(
+                          primary: primary,
+                          onPrimary: Colors.white,
+                          surface: AppColors.surfaceOf(context),
+                          onSurface: AppColors.textPrimaryOf(context),
+                        ),
                 ),
                 child: child!,
               );

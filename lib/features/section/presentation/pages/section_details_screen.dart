@@ -80,7 +80,6 @@ class _SectionLessonsExpansionTileState
   }
 
   void _openLesson(LessonEntity lesson) {
-    // Allow first 2 lessons of first section as free trial even if course is locked
     final isFirstSection = widget.section.order == 1;
     final isFreeTrialLesson =
         widget.lessonsLocked && isFirstSection && lesson.order <= 2;
@@ -102,6 +101,8 @@ class _SectionLessonsExpansionTileState
           lessons: _lessons,
           initialIndex: index,
           demoId: widget.demoId,
+          isEnrolled: !widget.lessonsLocked,
+          isFirstSection: isFirstSection,
         ),
       ),
     );

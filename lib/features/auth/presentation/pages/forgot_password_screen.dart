@@ -43,6 +43,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     final size = MediaQuery.of(context).size;
     final isTablet = size.width >= 600;
     final localizations = AppLocalizations.of(context)!;
+    final primary = AppColors.primaryOf(context);
 
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
@@ -50,8 +51,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              title: Text(localizations.emailSent),
-              content: Text(state.message),
+              backgroundColor: AppColors.surfaceOf(context),
+              surfaceTintColor: Colors.transparent,
+              title: Text(
+                localizations.emailSent,
+                style: TextStyle(color: AppColors.textPrimaryOf(context)),
+              ),
+              content: Text(
+                state.message,
+                style: TextStyle(color: AppColors.textSecondaryOf(context)),
+              ),
               actions: [
                 TextButton(
                   onPressed: () {
@@ -76,12 +85,17 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+            icon: Icon(
+              Icons.arrow_back,
+              color: AppColors.textPrimaryOf(context),
+            ),
             onPressed: () => Navigator.pop(context),
           ),
           title: Text(
             localizations.forgotPasswordTitle,
-            style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
+            style: AppTextStyles.h3.copyWith(
+              color: AppColors.textPrimaryOf(context),
+            ),
           ),
         ),
         body: SafeArea(
@@ -100,21 +114,23 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.lock_reset_outlined,
                         size: 80,
-                        color: AppColors.primary,
+                        color: primary,
                       ),
                       const SizedBox(height: 20),
                       Text(
                         localizations.resetPassword,
-                        style: AppTextStyles.h2,
+                        style: AppTextStyles.h2.copyWith(
+                          color: AppColors.textPrimaryOf(context),
+                        ),
                       ),
                       const SizedBox(height: 10),
                       Text(
                         localizations.forgotPasswordInstruction,
                         style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.textSecondary,
+                          color: AppColors.textSecondaryOf(context),
                         ),
                       ),
                       const SizedBox(height: 30),
@@ -133,11 +149,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             height: 56,
                             child: Container(
                               decoration: BoxDecoration(
-                                gradient: AppColors.buttonGradient,
+                                gradient: AppColors.buttonGradientOf(context),
                                 borderRadius: BorderRadius.circular(16),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: AppColors.primary.withOpacity(0.25),
+                                    color: primary.withValues(alpha: 0.25),
                                     blurRadius: 12,
                                     offset: const Offset(0, 4),
                                   ),
@@ -170,7 +186,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                           localizations.sendResetLink,
                                           style: AppTextStyles.titleMedium
                                               .copyWith(
-                                                color: AppColors.surface,
+                                                color: Colors.white,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                         ),

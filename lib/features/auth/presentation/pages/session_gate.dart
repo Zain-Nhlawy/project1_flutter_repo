@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/features/auth/presentation/cubit/session_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/session_state.dart';
-import 'package:project1/features/auth/presentation/pages/login_screen.dart';
 import 'package:project1/features/auth/presentation/pages/unauthenticated_gate.dart';
 import 'package:project1/features/home/presentation/pages/navigations_tabs.dart';
 import 'package:project1/l10n/app_localizations.dart';

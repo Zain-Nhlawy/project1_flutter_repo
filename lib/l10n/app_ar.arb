@@ -758,5 +758,6 @@
 "certificateNotFound": "لم يتم العثور على الشهادة",
 "deleteQuizConfirmation": "هل أنت متأكد من حذف الاختبار؟",
 "deleteQuiz": "حذف الاختبار",
-"failedToDeleteExam": "فشل حذف الاختبار"
+"failedToDeleteExam": "فشل حذف الاختبار",
+"subscribeToUnlockLessons": "اشترك لفتح الدروس"
 }

@@ -2058,4 +2058,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get failedToDeleteExam => 'فشل حذف الاختبار';
+
+  @override
+  String get subscribeToUnlockLessons => 'اشترك لفتح الدروس';
 }

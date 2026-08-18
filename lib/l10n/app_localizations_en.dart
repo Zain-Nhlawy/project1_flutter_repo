@@ -2080,4 +2080,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get failedToDeleteExam => 'Failed to delete the exam';
+
+  @override
+  String get subscribeToUnlockLessons => 'Subscribe to unlock lessons';
 }

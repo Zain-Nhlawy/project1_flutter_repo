@@ -35,6 +35,9 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final primary = AppColors.primaryOf(context);
+
     return Center(
       child: GestureDetector(
         onTap: _pickImage,
@@ -45,7 +48,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.08),
+                    color: Colors.black.withValues(alpha: isDark ? 0.22 : 0.08),
                     blurRadius: 12,
                     offset: const Offset(0, 4),
                   ),
@@ -53,14 +56,10 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
               ),
               child: CircleAvatar(
                 radius: 55,
-                backgroundColor: AppColors.surface,
+                backgroundColor: AppColors.surfaceOf(context),
                 backgroundImage: _image != null ? FileImage(_image!) : null,
                 child: _image == null
-                    ? const Icon(
-                        Icons.person,
-                        size: 55,
-                        color: AppColors.primary,
-                      )
+                    ? Icon(Icons.person, size: 55, color: primary)
                     : null,
               ),
             ),
@@ -69,8 +68,8 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
               right: 2,
               child: Container(
                 padding: const EdgeInsets.all(8),
-                decoration: const BoxDecoration(
-                  gradient: AppColors.buttonGradient,
+                decoration: BoxDecoration(
+                  gradient: AppColors.buttonGradientOf(context),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(

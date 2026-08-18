@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/attachment/presentation/cubit/lesson_attachment_cubit.dart';
 import 'package:project1/features/lesson/domain/entities/lesson_entity.dart';
@@ -22,12 +23,16 @@ class LessonDetailsScreen extends StatefulWidget {
   final List<LessonEntity> lessons;
   final int initialIndex;
   final String demoId;
+  final bool isEnrolled;
+  final bool isFirstSection;
 
   const LessonDetailsScreen({
     super.key,
     required this.lessons,
     required this.initialIndex,
     required this.demoId,
+    this.isEnrolled = true,
+    this.isFirstSection = true,
   });
 
   @override
@@ -35,6 +40,8 @@ class LessonDetailsScreen extends StatefulWidget {
 }
 
 class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
+  static const int _freeLessonsCount = 2;
+
   late final BetterPlayerController _betterPlayerController;
   late final GlobalKey _betterPlayerGlobalKey;
   late final Dio _dio;
@@ -49,8 +56,25 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
   bool _isChangingQuality = false;
 
   LessonEntity get _currentLesson => widget.lessons[_currentIndex];
-  bool get _hasNext => _currentIndex < widget.lessons.length - 1;
+
+  int get _effectiveFreeLimit =>
+      (!widget.isEnrolled && widget.isFirstSection) ? _freeLessonsCount : 0;
+
+  bool get _isLockedNavigation => !widget.isEnrolled;
+
+  bool get _hasNext {
+    if (_isLockedNavigation && (_currentIndex + 1) >= _effectiveFreeLimit) {
+      return false;
+    }
+    return _currentIndex < widget.lessons.length - 1;
+  }
+
   bool get _hasPrevious => _currentIndex > 0;
+
+  bool get _isAtLockedBoundary =>
+      _isLockedNavigation &&
+      (_currentIndex + 1) >= _effectiveFreeLimit &&
+      _currentIndex < widget.lessons.length - 1;
 
   @override
   void initState() {
@@ -137,12 +161,11 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
         masterUrl,
         videoFormat: BetterPlayerVideoFormat.hls,
       );
-      
+
       await _betterPlayerController.setupDataSource(dataSource);
-      
+
       if (!mounted || token != _loadToken) return;
       _betterPlayerController.play();
-      
     } catch (_) {
       try {
         final fallbackSource = BetterPlayerDataSource(
@@ -184,10 +207,11 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
     });
   }
 
- Future<void> _changeQuality(String qualityKey) async {
+  Future<void> _changeQuality(String qualityKey) async {
     if (qualityKey == _currentQuality) return;
 
-    final List<BetterPlayerAsmsTrack>? tracks = _betterPlayerController.betterPlayerAsmsTracks;
+    final List<BetterPlayerAsmsTrack>? tracks =
+        _betterPlayerController.betterPlayerAsmsTracks;
 
     setState(() {
       _isChangingQuality = true;
@@ -214,7 +238,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
           setState(() {
             _currentQuality = qualityKey;
           });
-        } 
+        }
       }
     } catch (e) {
       debugPrint('Quality change error: $e');
@@ -248,7 +272,12 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
   }
 
   void _goToNext() {
-    if (!_hasNext) return;
+    if (!_hasNext) {
+      if (_isAtLockedBoundary) {
+        _showSubscribePrompt();
+      }
+      return;
+    }
     setState(() => _currentIndex++);
     _loadCurrentVideo();
   }
@@ -257,6 +286,14 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
     if (!_hasPrevious) return;
     setState(() => _currentIndex--);
     _loadCurrentVideo();
+  }
+
+  void _showSubscribePrompt() {
+    final localizations = AppLocalizations.of(context)!;
+    SnackbarTheme().newSnackBarError(
+      context,
+      localizations.subscribeToUnlockLessons,
+    );
   }
 
   @override
@@ -351,7 +388,9 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
                             previousLabel: localizations.previous,
                             nextLabel: localizations.next,
                             onPrevious: _hasPrevious ? _goToPrevious : null,
-                            onNext: _hasNext ? _goToNext : null,
+                            onNext: _hasNext
+                                ? _goToNext
+                                : (_isAtLockedBoundary ? _goToNext : null),
                           ),
                           const SizedBox(height: 24),
                           Row(
@@ -542,7 +581,9 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
           ),
         VideoControls(
           controller: _betterPlayerController,
-          onNext: _hasNext ? _goToNext : null,
+          onNext: _hasNext
+              ? _goToNext
+              : (_isAtLockedBoundary ? _goToNext : null),
           onPrevious: _hasPrevious ? _goToPrevious : null,
           onFullscreen: _toggleFullscreen,
           isFullscreen: _isFullscreen,
