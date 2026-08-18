@@ -68,6 +68,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     final size = MediaQuery.of(context).size;
     final isTablet = size.width >= 600;
     final localizations = AppLocalizations.of(context)!;
+    final primary = AppColors.primaryOf(context);
 
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
@@ -81,15 +82,20 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       child: Scaffold(
         backgroundColor: AppColors.backgroundOf(context),
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: AppColors.backgroundOf(context),
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+            icon: Icon(
+              Icons.arrow_back,
+              color: AppColors.textPrimaryOf(context),
+            ),
             onPressed: () => Navigator.pop(context),
           ),
           title: Text(
             localizations.changePassword,
-            style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
+            style: AppTextStyles.h3.copyWith(
+              color: AppColors.textPrimaryOf(context),
+            ),
           ),
         ),
         body: SafeArea(
@@ -107,21 +113,23 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.lock_outline,
                         size: 80,
-                        color: AppColors.primary,
+                        color: primary,
                       ),
                       const SizedBox(height: 20),
                       Text(
                         localizations.changePassword,
-                        style: AppTextStyles.h2,
+                        style: AppTextStyles.h2.copyWith(
+                          color: AppColors.textPrimaryOf(context),
+                        ),
                       ),
                       const SizedBox(height: 10),
                       Text(
                         localizations.enterPasswordToContinue,
                         style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.textSecondary,
+                          color: AppColors.textSecondaryOf(context),
                         ),
                       ),
                       const SizedBox(height: 30),
@@ -160,11 +168,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                             height: 56,
                             child: Container(
                               decoration: BoxDecoration(
-                                gradient: AppColors.buttonGradient,
+                                gradient: AppColors.buttonGradientOf(context),
                                 borderRadius: BorderRadius.circular(16),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: AppColors.primary.withOpacity(0.25),
+                                    color: primary.withValues(alpha: 0.25),
                                     blurRadius: 12,
                                     offset: const Offset(0, 4),
                                   ),
@@ -197,7 +205,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                           localizations.changePassword,
                                           style: AppTextStyles.titleMedium
                                               .copyWith(
-                                                color: AppColors.surface,
+                                                color: Colors.white,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                         ),
