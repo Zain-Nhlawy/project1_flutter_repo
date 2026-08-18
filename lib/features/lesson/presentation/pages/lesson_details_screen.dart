@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
-import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/attachment/presentation/cubit/lesson_attachment_cubit.dart';
 import 'package:project1/features/lesson/domain/entities/lesson_entity.dart';
@@ -70,11 +69,6 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
   }
 
   bool get _hasPrevious => _currentIndex > 0;
-
-  bool get _isAtLockedBoundary =>
-      _isLockedNavigation &&
-      (_currentIndex + 1) >= _effectiveFreeLimit &&
-      _currentIndex < widget.lessons.length - 1;
 
   @override
   void initState() {
@@ -272,12 +266,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
   }
 
   void _goToNext() {
-    if (!_hasNext) {
-      if (_isAtLockedBoundary) {
-        _showSubscribePrompt();
-      }
-      return;
-    }
+    if (!_hasNext) return;
     setState(() => _currentIndex++);
     _loadCurrentVideo();
   }
@@ -286,14 +275,6 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
     if (!_hasPrevious) return;
     setState(() => _currentIndex--);
     _loadCurrentVideo();
-  }
-
-  void _showSubscribePrompt() {
-    final localizations = AppLocalizations.of(context)!;
-    SnackbarTheme().newSnackBarError(
-      context,
-      localizations.subscribeToUnlockLessons,
-    );
   }
 
   @override
@@ -388,9 +369,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
                             previousLabel: localizations.previous,
                             nextLabel: localizations.next,
                             onPrevious: _hasPrevious ? _goToPrevious : null,
-                            onNext: _hasNext
-                                ? _goToNext
-                                : (_isAtLockedBoundary ? _goToNext : null),
+                            onNext: _hasNext ? _goToNext : null,
                           ),
                           const SizedBox(height: 24),
                           Row(
@@ -581,9 +560,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
           ),
         VideoControls(
           controller: _betterPlayerController,
-          onNext: _hasNext
-              ? _goToNext
-              : (_isAtLockedBoundary ? _goToNext : null),
+          onNext: _hasNext ? _goToNext : null,
           onPrevious: _hasPrevious ? _goToPrevious : null,
           onFullscreen: _toggleFullscreen,
           isFullscreen: _isFullscreen,

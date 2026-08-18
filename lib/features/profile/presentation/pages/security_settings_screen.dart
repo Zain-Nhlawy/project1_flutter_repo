@@ -28,6 +28,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
     final state = context.watch<UserCubit>().state;
     final user = state is UserLoaded ? state.user : null;
     final topPadding = MediaQuery.paddingOf(context).top;
+    final primary = AppColors.primaryOf(context);
 
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) async {
@@ -81,20 +82,34 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                        color: AppColors.surface,
+                        color: AppColors.surfaceOf(context),
                         borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: AppColors.borderOf(context),
+                          width: 1,
+                        ),
                       ),
                       child: ListTile(
-                        leading: const CircleAvatar(
-                          backgroundColor: Color(0xFFE3F2FD),
-                          child: Icon(Icons.lock_outline, color: Colors.blue),
+                        leading: CircleAvatar(
+                          backgroundColor: primary.withValues(alpha: 0.12),
+                          child: Icon(Icons.lock_outline, color: primary),
                         ),
                         title: Text(
                           local.changePassword,
-                          style: AppTextStyles.titleMedium,
+                          style: AppTextStyles.titleMedium.copyWith(
+                            color: AppColors.textPrimaryOf(context),
+                          ),
                         ),
-                        subtitle: Text(local.enterPasswordToContinue),
-                        trailing: const Icon(Icons.chevron_right),
+                        subtitle: Text(
+                          local.enterPasswordToContinue,
+                          style: TextStyle(
+                            color: AppColors.textSecondaryOf(context),
+                          ),
+                        ),
+                        trailing: Icon(
+                          Icons.chevron_right,
+                          color: AppColors.textSecondaryOf(context),
+                        ),
                         onTap: () {
                           Navigator.push(
                             context,
@@ -110,22 +125,37 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
 
                     Container(
                       decoration: BoxDecoration(
-                        color: AppColors.surface,
+                        color: AppColors.surfaceOf(context),
                         borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: AppColors.borderOf(context),
+                          width: 1,
+                        ),
                       ),
                       child: SwitchListTile(
                         value: user?.isTwoFactorEnabled ?? false,
-                        activeThumbColor: AppColors.primary,
-                        secondary: const CircleAvatar(
-                          backgroundColor: Color(0xFFE8F5E9),
-                          child: Icon(Icons.security, color: Colors.green),
+                        activeThumbColor: primary,
+                        secondary: CircleAvatar(
+                          backgroundColor: AppColors.success.withValues(
+                            alpha: 0.14,
+                          ),
+                          child: Icon(
+                            Icons.security,
+                            color: AppColors.success,
+                          ),
                         ),
                         title: Text(
                           local.twoFactorAuth,
-                          style: AppTextStyles.titleMedium,
+                          style: AppTextStyles.titleMedium.copyWith(
+                            color: AppColors.textPrimaryOf(context),
+                          ),
                         ),
-                        subtitle: Text(local.extraSecurityLayer),
-
+                        subtitle: Text(
+                          local.extraSecurityLayer,
+                          style: TextStyle(
+                            color: AppColors.textSecondaryOf(context),
+                          ),
+                        ),
                         onChanged: isLoading
                             ? null
                             : (value) async {
@@ -144,7 +174,6 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
                                   });
                                   return;
                                 }
-
 
                                 await authCubit.generate2FA(
                                   email: user.email,
@@ -204,7 +233,7 @@ class _SecurityHeader extends StatelessWidget {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: AppColors.surface.withValues(alpha: 0.25),
+                    color: Colors.white.withValues(alpha: 0.25),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: IconButton(
@@ -217,7 +246,7 @@ class _SecurityHeader extends StatelessWidget {
                     ),
                     icon: const Icon(
                       Icons.arrow_back_rounded,
-                      color: AppColors.surface,
+                      color: Colors.white,
                       size: 17,
                     ),
                   ),
@@ -227,7 +256,7 @@ class _SecurityHeader extends StatelessWidget {
                   child: Text(
                     title,
                     style: AppTextStyles.h3.copyWith(
-                      color: AppColors.surface,
+                      color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 21,
                       letterSpacing: -0.3,
@@ -240,7 +269,7 @@ class _SecurityHeader extends StatelessWidget {
             Text(
               subtitle,
               style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.surface.withValues(alpha: 0.85),
+                color: Colors.white.withValues(alpha: 0.85),
                 fontSize: 13,
               ),
             ),
