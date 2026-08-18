@@ -83,7 +83,9 @@ class CoursesInProgressScreen extends StatelessWidget {
               const SizedBox(height: 6),
               Text(
                 localizations.manageCoursesDescription,
-                style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                style: TextStyle(fontSize: 14, color:AppColors.textSecondaryOf(
+                    context,
+                  ).withValues(alpha: 0.8),),
               ),
               const SizedBox(height: 18),
               Container(

@@ -130,6 +130,96 @@ class _DemoCoursesScreenState extends State<DemoCoursesScreen> {
     Navigator.pop(context, _hasSavedChanges);
   }
 
+  Widget _buildList(AppLocalizations localizations, List<dynamic> demoCourses) {
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 160),
+      children: [
+        if (widget.showAppBar) ...[
+          Text(
+            localizations.demoCourses,
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.w700,
+              color: AppColors.primary,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            localizations.demoCoursesDescription,
+            style: TextStyle(
+              fontSize: 14,
+              color: AppColors.textSecondaryOf(context).withValues(alpha: 0.8),
+            ),
+          ),
+          const SizedBox(height: 18),
+        ],
+        Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: AppColors.primary.withValues(alpha: 0.08),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.auto_stories_rounded,
+                color: AppColors.primary,
+              ),
+              const SizedBox(width: 10),
+              Text(
+                "${demoCourses.length} ${localizations.availableCourses}",
+                style: const TextStyle(fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 20),
+        ...demoCourses.map((course) {
+          final assetId = course.assetId;
+          final isSelected =
+              assetId != null && _selectedAssetIds.contains(assetId);
+
+          return CourseCard(
+            id: course.id,
+            title: course.title,
+            companyName: course.demo?.name ?? '',
+            imageUrl: course.imagePath,
+            price: course.price,
+            description: course.description,
+            tags: course.tags,
+            visibility: course.visibility,
+            isPublished: course.isPublished,
+            mode: widget.showAppBar
+                ? CourseCardMode.demoView
+                : CourseCardMode.demoSelection,
+            isSelected: isSelected,
+            onSelect:
+                (!widget.showAppBar &&
+                    _isSelectionMode &&
+                    assetId != null &&
+                    !_isSaving)
+                ? () => _toggleCourse(assetId)
+                : null,
+            onSeeMore: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => BlocProvider(
+                    create: (_) => getIt<CourseCubit>(),
+                    child: CourseDetailsScreen.fromDemo(
+                      demoId: course.demoId!,
+                      assetId: course.assetId!,
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        }),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
@@ -145,93 +235,7 @@ class _DemoCoursesScreenState extends State<DemoCoursesScreen> {
               .where((course) => course.isPublished)
               .toList();
 
-          return ListView(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 160),
-            children: [
-              Text(
-                localizations.demoCourses,
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.primary,
-                ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                localizations.demoCoursesDescription,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: AppColors.textSecondaryOf(
-                    context,
-                  ).withValues(alpha: 0.8),
-                ),
-              ),
-              const SizedBox(height: 18),
-              Container(
-                padding: const EdgeInsets.all(14),
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.08),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.auto_stories_rounded,
-                      color: AppColors.primary,
-                    ),
-                    const SizedBox(width: 10),
-                    Text(
-                      "${demoCourses.length} ${localizations.availableCourses}",
-                      style: const TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
-              ...demoCourses.map((course) {
-                final assetId = course.assetId;
-                final isSelected =
-                    assetId != null && _selectedAssetIds.contains(assetId);
-
-                return CourseCard(
-                  id: course.id,
-                  title: course.title,
-                  companyName: course.demo?.name ?? '',
-                  imageUrl: course.imagePath,
-                  price: course.price,
-                  description: course.description,
-                  tags: course.tags,
-                  visibility: course.visibility,
-                  isPublished: course.isPublished,
-                  mode: widget.showAppBar
-                      ? CourseCardMode.demoView
-                      : CourseCardMode.demoSelection,
-                  isSelected: isSelected,
-                  onSelect:
-                      (!widget.showAppBar &&
-                          _isSelectionMode &&
-                          assetId != null &&
-                          !_isSaving)
-                      ? () => _toggleCourse(assetId)
-                      : null,
-                  onSeeMore: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => BlocProvider(
-                          create: (_) => getIt<CourseCubit>(),
-                          child: CourseDetailsScreen.fromDemo(
-                            demoId: course.demoId!,
-                            assetId: course.assetId!,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                );
-              }),
-            ],
-          );
+          return _buildList(localizations, demoCourses);
         }
 
         if (state is CourseError) {

@@ -185,6 +185,7 @@ class _AttachmentTileState extends State<AttachmentTile> {
 
   @override
   Widget build(BuildContext context) {
+    final primary = AppColors.primaryOf(context);
     final subtitle =
         widget.size.isNotEmpty
             ? '${widget.type} • ${widget.size}'
@@ -193,61 +194,66 @@ class _AttachmentTileState extends State<AttachmentTile> {
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       elevation: 0,
+      color: AppColors.surfaceOf(context),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14),
-        side: BorderSide(
-          color: Colors.grey.withValues(alpha: .2),
-        ),
+        side: BorderSide(color: AppColors.borderOf(context)),
       ),
       child: ListTile(
         leading: Icon(
           _icon(),
           size: 30,
-          color: AppColors.primary,
+          color: primary,
         ),
         title: Text(
           widget.title,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
+          style: TextStyle(color: AppColors.textPrimaryOf(context)),
         ),
-        subtitle: Text(subtitle),
+        subtitle: Text(
+          subtitle,
+          style: TextStyle(color: AppColors.textSecondaryOf(context)),
+        ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             _isOpening
-                ? const Padding(
-                    padding: EdgeInsets.all(12),
+                ? Padding(
+                    padding: const EdgeInsets.all(12),
                     child: SizedBox(
                       width: 18,
                       height: 18,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
+                        color: primary,
                       ),
                     ),
                   )
                 : IconButton(
                     onPressed: _openAttachment,
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.open_in_new_rounded,
-                      color: AppColors.primary,
+                      color: primary,
                     ),
                   ),
             _isDownloading
-                ? const Padding(
-                    padding: EdgeInsets.all(12),
+                ? Padding(
+                    padding: const EdgeInsets.all(12),
                     child: SizedBox(
                       width: 18,
                       height: 18,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
+                        color: primary,
                       ),
                     ),
                   )
                 : IconButton(
                     onPressed: _downloadAttachment,
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.download_rounded,
-                      color: AppColors.primary,
+                      color: primary,
                     ),
                   ),
           ],
