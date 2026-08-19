@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project1/features/demo/domain/entities/user_entity.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_cubit.dart';
+import 'package:project1/features/demo/presentation/widgets/demo%20member%20card/user_info_dialog.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
 
 class UserOptionsMenu extends StatelessWidget {
+  final MembersEntity user;
   final String demoId;
   final String userIdInDemo;
   final String role;
   const UserOptionsMenu({
     super.key,
+    required this.user,
     required this.demoId,
     required this.userIdInDemo,
     required this.role,
@@ -25,7 +29,11 @@ class UserOptionsMenu extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       color: colors.surfaceContainer,
       elevation: 3,
-      onSelected: (value) {},
+      onSelected: (value) {
+        if (value == 0) {
+          UserInfoDialog.showForDemoMember(context, user);
+        }
+      },
       itemBuilder: (context) => [
         PopupMenuItem(
           value: 0,
@@ -39,23 +47,6 @@ class UserOptionsMenu extends StatelessWidget {
               const SizedBox(width: 12),
               Text(
                 l10n.viewPersonalInfo,
-                style: TextStyle(color: colors.onSurface),
-              ),
-            ],
-          ),
-        ),
-        PopupMenuItem(
-          value: 1,
-          child: Row(
-            children: [
-              Icon(
-                Icons.admin_panel_settings_rounded,
-                size: 20,
-                color: colors.onSurface,
-              ),
-              const SizedBox(width: 12),
-              Text(
-                l10n.changePermissions,
                 style: TextStyle(color: colors.onSurface),
               ),
             ],

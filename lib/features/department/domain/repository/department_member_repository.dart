@@ -16,7 +16,7 @@ abstract class DepartmentMemberRepository {
   Future<Either<String, void>> removeDepartmentMember(
     String departmentId,
     String demoId,
-    String demoMemberId,
+    String departmentMemberId,
   );
   Future<Either<String, List<MembersModel>>> searchDemoMembers(
     String departmentId,

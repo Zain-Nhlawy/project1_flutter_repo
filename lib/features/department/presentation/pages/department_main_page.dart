@@ -309,6 +309,7 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
             demoId: widget.demoId ?? '',
             departmentId: widget.department?.id ?? '',
             canManage: widget.canManage,
+            managerId: widget.department?.managerId,
           );
         default:
           return const SizedBox.shrink();
@@ -340,6 +341,7 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
           demoId: widget.demoId ?? '',
           departmentId: widget.department?.id ?? '',
           canManage: widget.canManage,
+          managerId: widget.department?.managerId,
         );
       case 4:
         return DepartmentEmptyPage(

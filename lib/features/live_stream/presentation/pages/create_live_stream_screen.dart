@@ -146,7 +146,7 @@ class _CreateLiveStreamScreenState extends State<CreateLiveStreamScreen> {
                     style: TextStyle(color: AppColors.textPrimaryOf(context)),
                     decoration: InputDecoration(
                       hintText: localizations.liveStreamTitle,
-                      hintStyle: TextStyle(color: AppColors.textSecondaryOf(context).withOpacity(0.7)),
+                      hintStyle: TextStyle(color: AppColors.textSecondaryOf(context).withValues(alpha: 0.7)),
                       prefixIcon: Icon(Icons.title_rounded, color: AppColors.primaryOf(context)),
                       filled: true,
                       fillColor: AppColors.surfaceOf(context),

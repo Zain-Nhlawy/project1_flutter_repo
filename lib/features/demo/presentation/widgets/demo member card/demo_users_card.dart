@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project1/features/demo/presentation/widgets/demo member card/user_info_dialog.dart';
 import 'package:project1/features/demo/presentation/widgets/demo member card/user_role.dart';
 import 'package:project1/features/demo/domain/entities/user_entity.dart';
 import 'user_avatar.dart';
@@ -39,7 +40,8 @@ class UserCard extends StatelessWidget {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: onTap ?? () {},
+            onTap: onTap ??
+                () => UserInfoDialog.showForDemoMember(context, user),
             child: Padding(
               padding: const EdgeInsets.only(
                 left: 16,
@@ -77,16 +79,16 @@ class UserCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  UserRoleBadge(role: user.role!),
-                  const SizedBox(width: 4),
-
-                  user.role != 'OWNER'
-                      ? UserOptionsMenu(
-                          demoId: user.demoId!,
-                          userIdInDemo: user.memberIdInDemo!,
-                          role: user.role!,
-                        )
-                      : const SizedBox.shrink(),
+                  if (user.role != null && user.role!.isNotEmpty) ...[
+                    UserRoleBadge(role: user.role!),
+                    const SizedBox(width: 4),
+                  ],
+                  UserOptionsMenu(
+                    user: user,
+                    demoId: user.demoId ?? '',
+                    userIdInDemo: user.memberIdInDemo ?? user.id ?? '',
+                    role: user.role ?? '',
+                  ),
                 ],
               ),
             ),

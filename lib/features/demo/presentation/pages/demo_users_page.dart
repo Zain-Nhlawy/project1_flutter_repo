@@ -118,15 +118,16 @@ class DemoUsersScreen extends StatelessWidget {
                   if (state is GetDemoUsersLoaded) {
                     if (state.users.isEmpty) {
                       return LayoutBuilder(
-                        builder: (context, constraints) => SingleChildScrollView(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          child: ConstrainedBox(
-                            constraints: BoxConstraints(
-                              minHeight: constraints.maxHeight,
+                        builder: (context, constraints) =>
+                            SingleChildScrollView(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  minHeight: constraints.maxHeight,
+                                ),
+                                child: _EmptyState(l10n: l10n),
+                              ),
                             ),
-                            child: _EmptyState(l10n: l10n),
-                          ),
-                        ),
                       );
                     }
                     return ListView.separated(

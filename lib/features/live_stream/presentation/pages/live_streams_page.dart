@@ -13,6 +13,7 @@ import 'package:project1/features/live_stream/presentation/cubit/live_stream_sta
 import 'package:project1/features/live_stream/presentation/pages/create_live_stream_screen.dart';
 import 'package:project1/features/live_stream/presentation/pages/edit_live_stream_screen.dart';
 import 'package:project1/features/live_stream/presentation/services/jitsi_meeting_service.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:project1/features/live_stream/presentation/widgets/live_stream_card.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
@@ -73,6 +74,15 @@ class _LiveStreamsPageViewState extends State<_LiveStreamsPageView> {
         : (isHost ? 'Host' : 'Viewer');
     final userEmail = currentUser?.email;
     final userAvatar = currentUser?.imagePath;
+
+    try {
+      await [
+        Permission.camera,
+        Permission.microphone,
+      ].request();
+    } catch (_) {}
+
+    if (!mounted) return;
 
     final roomName = (tokenRoomName != null && tokenRoomName.isNotEmpty)
         ? tokenRoomName

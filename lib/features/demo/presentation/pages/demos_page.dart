@@ -12,8 +12,14 @@ import 'package:project1/l10n/app_localizations.dart';
 class DemosPage extends StatelessWidget {
   final String title;
   final List<DemoEntity> demos;
+  final bool? isOwner;
 
-  const DemosPage({super.key, required this.title, required this.demos});
+  const DemosPage({
+    super.key,
+    required this.title,
+    required this.demos,
+    this.isOwner,
+  });
 
   Future<void> _refresh(BuildContext context) async {
     if (getIt.isRegistered<DemoCubit>()) {
@@ -25,8 +31,6 @@ class DemosPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final textScale = MediaQuery.textScalerOf(context).scale(1);
     final localizations = AppLocalizations.of(context)!;
-    final isOnlyOwner = demos.isNotEmpty && demos.every((d) => d.isOwner);
-    final isOnlyJoined = demos.isNotEmpty && demos.every((d) => !d.isOwner);
 
     return Scaffold(
       backgroundColor: AppColors.backgroundOf(context),
@@ -47,14 +51,18 @@ class DemosPage extends StatelessWidget {
       body: BlocBuilder<DemoCubit, DemoState>(
         bloc: getIt.isRegistered<DemoCubit>() ? getIt<DemoCubit>() : null,
         builder: (context, state) {
-          List<DemoEntity> currentDemos = demos;
+          List<DemoEntity> currentDemos;
           if (state is GetDemosLoaded) {
-            if (isOnlyOwner) {
-              currentDemos = state.demos.where((d) => d.isOwner).toList();
-            } else if (isOnlyJoined) {
-              currentDemos = state.demos.where((d) => !d.isOwner).toList();
+            if (isOwner != null) {
+              currentDemos = state.demos.where((d) => d.isOwner == isOwner).toList();
             } else {
               currentDemos = state.demos;
+            }
+          } else {
+            if (isOwner != null) {
+              currentDemos = demos.where((d) => d.isOwner == isOwner).toList();
+            } else {
+              currentDemos = demos;
             }
           }
 

@@ -8,6 +8,7 @@ class DepartmentMemberEntity {
   final String lastName;
   final String email;
   final String imagePath;
+  final String? role;
 
   DepartmentMemberEntity({
     required this.id,
@@ -19,5 +20,6 @@ class DepartmentMemberEntity {
     required this.lastName,
     required this.email,
     required this.imagePath,
+    this.role,
   });
 }

@@ -9,8 +9,14 @@ import 'package:animations/animations.dart';
 class SectionHeader extends StatelessWidget {
   final String title;
   final List<DemoEntity> demoList;
+  final bool? isOwner;
 
-  const SectionHeader({super.key, required this.title, required this.demoList});
+  const SectionHeader({
+    super.key,
+    required this.title,
+    required this.demoList,
+    this.isOwner,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +81,11 @@ class SectionHeader extends StatelessWidget {
               PageRouteBuilder(
                 transitionDuration: const Duration(milliseconds: 300),
                 pageBuilder: (context, animation, secondaryAnimation) =>
-                    DemosPage(title: title, demos: demoList),
+                    DemosPage(
+                      title: title,
+                      demos: demoList,
+                      isOwner: isOwner,
+                    ),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
                       return FadeThroughTransition(

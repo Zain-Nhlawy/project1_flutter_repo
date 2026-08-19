@@ -78,6 +78,7 @@ class HomePage extends StatelessWidget {
                           SectionHeader(
                             title: localizations.myDemos,
                             demoList: myDemosList,
+                            isOwner: true,
                           ),
                           const SizedBox(height: 14),
                           _buildSubContent(
@@ -98,6 +99,7 @@ class HomePage extends StatelessWidget {
                           SectionHeader(
                             title: localizations.demosImIn,
                             demoList: joinedDemosList,
+                            isOwner: false,
                           ),
                           const SizedBox(height: 14),
                           _buildSubContent(
