@@ -4039,6 +4039,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Subscribe to unlock lessons'**
   String get subscribeToUnlockLessons;
+
+  /// No description provided for @points.
+  ///
+  /// In en, this message translates to:
+  /// **'pts'**
+  String get points;
+
+  /// No description provided for @noLeaderboardData.
+  ///
+  /// In en, this message translates to:
+  /// **'No leaderboard data available yet'**
+  String get noLeaderboardData;
+
+  /// No description provided for @topMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Top Performers'**
+  String get topMembers;
 }
 
 class _AppLocalizationsDelegate

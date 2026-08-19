@@ -26,9 +26,9 @@ class JitsiMeetingService {
         "subject": subject,
       },
       featureFlags: {
-        "unauthenticatedUser.enabled": false,
-        "welcomepage.enabled": false,
-        "prejoinpage.enabled": isHost,
+        FeatureFlags.welcomePageEnabled: false,
+        FeatureFlags.preJoinPageEnabled: isHost,
+        FeatureFlags.unsafeRoomWarningEnabled: false,
       },
       userInfo: JitsiMeetUserInfo(
         displayName: displayName,

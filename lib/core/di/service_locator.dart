@@ -125,6 +125,11 @@ import 'package:project1/features/department/data/data_sources/department_member
 import 'package:project1/features/department/data/repository/department_member_repo_impl.dart';
 import 'package:project1/features/department/domain/repository/department_member_repository.dart';
 import 'package:project1/features/department/presentation/cubit/department%20members%20cubit/department_member_cubit.dart';
+import 'package:project1/features/department/data/data_sources/leaderboard_remote_data_source.dart';
+import 'package:project1/features/department/data/repository/leaderboard_repository_impl.dart';
+import 'package:project1/features/department/domain/repository/leaderboard_repository.dart';
+import 'package:project1/features/department/domain/use_case/get_leaderboard_usecase.dart';
+import 'package:project1/features/department/presentation/cubit/leaderboard_cubit/leaderboard_cubit.dart';
 import 'package:project1/features/faq/data/data_sources/course_faq_remote_data_source.dart';
 import 'package:project1/features/faq/data/repository/course_faq_repository_impl.dart';
 import 'package:project1/features/faq/domain/repository/course_faq_repository.dart';
@@ -506,6 +511,28 @@ void setupDI() {
 
   getIt.registerFactory<RoadmapCubit>(
     () => RoadmapCubit(getIt<RoadmapUseCase>()),
+  );
+
+  // Leaderboard
+  getIt.registerLazySingleton<LeaderboardRemoteDataSource>(
+    () => LeaderboardRemoteDataSourceImpl(
+      getIt<DioClient>(),
+      dio: getIt<DioClient>().dio,
+    ),
+  );
+
+  getIt.registerLazySingleton<LeaderboardRepository>(
+    () => LeaderboardRepositoryImpl(
+      remoteDataSource: getIt<LeaderboardRemoteDataSource>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<GetLeaderboardUseCase>(
+    () => GetLeaderboardUseCase(repository: getIt<LeaderboardRepository>()),
+  );
+
+  getIt.registerFactory<LeaderboardCubit>(
+    () => LeaderboardCubit(getIt<GetLeaderboardUseCase>()),
   );
 
 

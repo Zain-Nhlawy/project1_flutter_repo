@@ -2083,4 +2083,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get subscribeToUnlockLessons => 'Subscribe to unlock lessons';
+
+  @override
+  String get points => 'pts';
+
+  @override
+  String get noLeaderboardData => 'No leaderboard data available yet';
+
+  @override
+  String get topMembers => 'Top Performers';
 }

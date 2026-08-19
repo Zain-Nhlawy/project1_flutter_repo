@@ -759,5 +759,8 @@
 "deleteQuizConfirmation": "هل أنت متأكد من حذف الاختبار؟",
 "deleteQuiz": "حذف الاختبار",
 "failedToDeleteExam": "فشل حذف الاختبار",
-"subscribeToUnlockLessons": "اشترك لفتح الدروس"
+"subscribeToUnlockLessons": "اشترك لفتح الدروس",
+"points": "نقطة",
+"noLeaderboardData": "لا توجد بيانات للائحة الصدارة بعد",
+"topMembers": "المتصدرون"
 }

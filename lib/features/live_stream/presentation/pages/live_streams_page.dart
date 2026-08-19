@@ -90,27 +90,36 @@ class _LiveStreamsPageViewState extends State<_LiveStreamsPageView> {
             ? stream.roomName!
             : 'LiveStream-${stream.id}');
 
-    await _jitsiService.joinMeeting(
-      roomName: roomName,
-      token: token,
-      serverUrl: serverUrl,
-      displayName: userName,
-      email: userEmail,
-      avatarUrl: userAvatar,
-      subject: stream.title,
-      isHost: isHost,
-      eventListener: JitsiMeetEventListener(
-        conferenceTerminated: (url, error) {
-          if (isHost && mounted) {
-            context.read<LiveStreamCubit>().endLiveStream(
-                  id: stream.id,
-                  departmentId: widget.departmentId,
-                  demoId: widget.demoId,
-                );
-          }
-        },
-      ),
-    );
+    try {
+      await _jitsiService.joinMeeting(
+        roomName: roomName,
+        token: token,
+        serverUrl: serverUrl,
+        displayName: userName,
+        email: userEmail,
+        avatarUrl: userAvatar,
+        subject: stream.title,
+        isHost: isHost,
+        eventListener: JitsiMeetEventListener(
+          conferenceTerminated: (url, error) {
+            if (isHost && mounted) {
+              context.read<LiveStreamCubit>().endLiveStream(
+                    id: stream.id,
+                    departmentId: widget.departmentId,
+                    demoId: widget.demoId,
+                  );
+            }
+          },
+        ),
+      );
+    } catch (e) {
+      if (mounted) {
+        SnackbarTheme().newSnackBarError(
+          context,
+          e.toString(),
+        );
+      }
+    }
   }
 
   @override

@@ -5,6 +5,7 @@ import 'package:project1/features/course/presentation/pages/department_courses_s
 import 'package:project1/features/department/domain/entities/department_entity.dart';
 import 'package:project1/features/department/domain/entities/department_member_entity.dart';
 import 'package:project1/features/department/presentation/cubit/department_navigation_cubit.dart';
+import 'package:project1/features/department/presentation/pages/sidebar%20screens/department_leaderboard_screen.dart';
 import 'package:project1/features/department/presentation/pages/sidebar%20screens/department_members_screen.dart';
 import 'package:project1/features/department/presentation/pages/sidebar%20screens/roadmap_screen.dart';
 import 'package:project1/l10n/app_localizations.dart';
@@ -344,9 +345,10 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
           managerId: widget.department?.managerId,
         );
       case 4:
-        return DepartmentEmptyPage(
+        return DepartmentLeaderboardScreen(
           key: const ValueKey(4),
-          title: localizations.departmentLeaderboard,
+          departmentId: widget.department?.id ?? '',
+          demoId: widget.demoId,
         );
       case 5:
         return DepartmentChatScreen(

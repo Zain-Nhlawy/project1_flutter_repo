@@ -2061,4 +2061,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get subscribeToUnlockLessons => 'اشترك لفتح الدروس';
+
+  @override
+  String get points => 'نقطة';
+
+  @override
+  String get noLeaderboardData => 'لا توجد بيانات للائحة الصدارة بعد';
+
+  @override
+  String get topMembers => 'المتصدرون';
 }
