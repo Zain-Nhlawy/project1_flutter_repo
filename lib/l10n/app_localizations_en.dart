@@ -2092,4 +2092,41 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get topMembers => 'Top Performers';
+
+  @override
+  String get groupFeaturesTitle => 'Group Tools';
+
+  @override
+  String get groupFeaturesSubtitle =>
+      'Integrated tools to enhance collaboration, diagramming, and visual design.';
+
+  @override
+  String get drawioFeatureTitle => 'Draw.io';
+
+  @override
+  String get drawioFeatureTag => 'Flowcharts & Architecture';
+
+  @override
+  String get drawioFeatureDescription =>
+      'Create professional diagrams, system architecture blueprints, flowcharts, UML diagrams, and mind maps.';
+
+  @override
+  String get photopeaFeatureTitle => 'Photopea';
+
+  @override
+  String get photopeaFeatureTag => 'Graphic & Photo Editor';
+
+  @override
+  String get photopeaFeatureDescription =>
+      'Advanced graphic design and photo editing suite. Work with layers, edit PSD files, and export visual assets.';
+
+  @override
+  String get openFeatureTool => 'Open Tool';
+
+  @override
+  String get featuresBadge => 'Integrated Suite';
+
+  @override
+  String get featuresFooterNote =>
+      'All files and diagrams created with these tools can be saved and shared with your group members.';
 }

@@ -7,6 +7,7 @@ import 'package:project1/features/department/domain/entities/department_member_e
 import 'package:project1/features/department/presentation/cubit/department_navigation_cubit.dart';
 import 'package:project1/features/department/presentation/pages/sidebar%20screens/department_leaderboard_screen.dart';
 import 'package:project1/features/department/presentation/pages/sidebar%20screens/department_members_screen.dart';
+import 'package:project1/features/department/presentation/pages/sidebar%20screens/group_features_screen.dart';
 import 'package:project1/features/department/presentation/pages/sidebar%20screens/roadmap_screen.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:animations/animations.dart';
@@ -300,9 +301,8 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
             onOnlineMembersChanged: _updateOnlineChatMembers,
           );
         case 1:
-          return DepartmentEmptyPage(
-            key: const ValueKey('group_features'),
-            title: localizations.features,
+          return const GroupFeaturesScreen(
+            key: ValueKey('group_features'),
           );
         case 2:
           return DepartmentMembersPage(

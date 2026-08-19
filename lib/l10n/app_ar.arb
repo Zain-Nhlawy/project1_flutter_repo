@@ -762,5 +762,16 @@
 "subscribeToUnlockLessons": "اشترك لفتح الدروس",
 "points": "نقطة",
 "noLeaderboardData": "لا توجد بيانات للائحة الصدارة بعد",
-"topMembers": "المتصدرون"
+"topMembers": "المتصدرون",
+"groupFeaturesTitle": "أدوات المجموعة",
+"groupFeaturesSubtitle": "أدوات متكاملة لتعزيز التعاون وتصميم المخططات والجرافيك.",
+"drawioFeatureTitle": "Draw.io",
+"drawioFeatureTag": "مخططات وهندسة الأنظمة",
+"drawioFeatureDescription": "تصميم المخططات الانسيابية والهندسية والخرائط الذهنية وتصاميم الأنظمة باحترافية وسهولة.",
+"photopeaFeatureTitle": "Photopea",
+"photopeaFeatureTag": "محرر الصور والجرافيك",
+"photopeaFeatureDescription": "محرر متقدم لتصميم وتعديل الصور وملفات PSD والطبقات وتصدير المواد المرئية بجودة عالية.",
+"openFeatureTool": "فتح الأداة",
+"featuresBadge": "الأدوات المدمجة",
+"featuresFooterNote": "يمكنك حفظ وتصدير كافة المخططات والتصاميم ومشاركتها مع أعضاء مجموعتك."
 }

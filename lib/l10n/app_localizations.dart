@@ -4057,6 +4057,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Top Performers'**
   String get topMembers;
+
+  /// No description provided for @groupFeaturesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Group Tools'**
+  String get groupFeaturesTitle;
+
+  /// No description provided for @groupFeaturesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Integrated tools to enhance collaboration, diagramming, and visual design.'**
+  String get groupFeaturesSubtitle;
+
+  /// No description provided for @drawioFeatureTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Draw.io'**
+  String get drawioFeatureTitle;
+
+  /// No description provided for @drawioFeatureTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Flowcharts & Architecture'**
+  String get drawioFeatureTag;
+
+  /// No description provided for @drawioFeatureDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Create professional diagrams, system architecture blueprints, flowcharts, UML diagrams, and mind maps.'**
+  String get drawioFeatureDescription;
+
+  /// No description provided for @photopeaFeatureTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Photopea'**
+  String get photopeaFeatureTitle;
+
+  /// No description provided for @photopeaFeatureTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Graphic & Photo Editor'**
+  String get photopeaFeatureTag;
+
+  /// No description provided for @photopeaFeatureDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced graphic design and photo editing suite. Work with layers, edit PSD files, and export visual assets.'**
+  String get photopeaFeatureDescription;
+
+  /// No description provided for @openFeatureTool.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Tool'**
+  String get openFeatureTool;
+
+  /// No description provided for @featuresBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Integrated Suite'**
+  String get featuresBadge;
+
+  /// No description provided for @featuresFooterNote.
+  ///
+  /// In en, this message translates to:
+  /// **'All files and diagrams created with these tools can be saved and shared with your group members.'**
+  String get featuresFooterNote;
 }
 
 class _AppLocalizationsDelegate

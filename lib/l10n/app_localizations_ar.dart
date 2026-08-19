@@ -2070,4 +2070,41 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get topMembers => 'المتصدرون';
+
+  @override
+  String get groupFeaturesTitle => 'أدوات المجموعة';
+
+  @override
+  String get groupFeaturesSubtitle =>
+      'أدوات متكاملة لتعزيز التعاون وتصميم المخططات والجرافيك.';
+
+  @override
+  String get drawioFeatureTitle => 'Draw.io';
+
+  @override
+  String get drawioFeatureTag => 'مخططات وهندسة الأنظمة';
+
+  @override
+  String get drawioFeatureDescription =>
+      'تصميم المخططات الانسيابية والهندسية والخرائط الذهنية وتصاميم الأنظمة باحترافية وسهولة.';
+
+  @override
+  String get photopeaFeatureTitle => 'Photopea';
+
+  @override
+  String get photopeaFeatureTag => 'محرر الصور والجرافيك';
+
+  @override
+  String get photopeaFeatureDescription =>
+      'محرر متقدم لتصميم وتعديل الصور وملفات PSD والطبقات وتصدير المواد المرئية بجودة عالية.';
+
+  @override
+  String get openFeatureTool => 'فتح الأداة';
+
+  @override
+  String get featuresBadge => 'الأدوات المدمجة';
+
+  @override
+  String get featuresFooterNote =>
+      'يمكنك حفظ وتصدير كافة المخططات والتصاميم ومشاركتها مع أعضاء مجموعتك.';
 }

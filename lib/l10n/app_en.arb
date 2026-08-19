@@ -794,5 +794,16 @@
 "subscribeToUnlockLessons": "Subscribe to unlock lessons",
 "points": "pts",
 "noLeaderboardData": "No leaderboard data available yet",
-"topMembers": "Top Performers"
+"topMembers": "Top Performers",
+"groupFeaturesTitle": "Group Tools",
+"groupFeaturesSubtitle": "Integrated tools to enhance collaboration, diagramming, and visual design.",
+"drawioFeatureTitle": "Draw.io",
+"drawioFeatureTag": "Flowcharts & Architecture",
+"drawioFeatureDescription": "Create professional diagrams, system architecture blueprints, flowcharts, UML diagrams, and mind maps.",
+"photopeaFeatureTitle": "Photopea",
+"photopeaFeatureTag": "Graphic & Photo Editor",
+"photopeaFeatureDescription": "Advanced graphic design and photo editing suite. Work with layers, edit PSD files, and export visual assets.",
+"openFeatureTool": "Open Tool",
+"featuresBadge": "Integrated Suite",
+"featuresFooterNote": "All files and diagrams created with these tools can be saved and shared with your group members."
 }
