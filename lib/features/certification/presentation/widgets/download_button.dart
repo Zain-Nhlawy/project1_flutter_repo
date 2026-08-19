@@ -9,7 +9,7 @@ class DownloadButton extends StatelessWidget {
   final bool isPrimary;
   final VoidCallback? onPressed;
 
-  const DownloadButton({
+  const DownloadButton({super.key, 
     required this.label,
     required this.icon,
     required this.isLoading,

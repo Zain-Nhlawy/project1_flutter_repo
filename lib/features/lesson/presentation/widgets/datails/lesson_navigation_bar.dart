@@ -11,7 +11,7 @@ class LessonNavigationBar extends StatelessWidget {
   final VoidCallback? onPrevious;
   final VoidCallback? onNext;
 
-  const LessonNavigationBar({
+  const LessonNavigationBar({super.key, 
     required this.currentLesson,
     required this.totalLessons,
     required this.previousLabel,

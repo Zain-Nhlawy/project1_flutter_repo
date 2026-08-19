@@ -8,7 +8,7 @@ class ExamStatusView extends StatelessWidget {
   final String retryLabel;
   final VoidCallback onRetry;
 
-  const ExamStatusView({
+  const ExamStatusView({super.key, 
     required this.message,
     required this.retryLabel,
     required this.onRetry,

@@ -8,7 +8,7 @@ class LessonDetailsPageHeader extends StatelessWidget {
   final int currentLesson;
   final int totalLessons;
 
-  const LessonDetailsPageHeader({
+  const LessonDetailsPageHeader({super.key, 
     required this.topPadding,
     required this.title,
     required this.currentLesson,

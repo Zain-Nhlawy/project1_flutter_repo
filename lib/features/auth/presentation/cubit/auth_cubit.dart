@@ -121,7 +121,7 @@ Future<void> loginWithGoogle() async {
         await GoogleSignIn.instance.authenticate();
 
     final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
+        googleUser.authentication;
 
     final idToken = googleAuth.idToken;
 

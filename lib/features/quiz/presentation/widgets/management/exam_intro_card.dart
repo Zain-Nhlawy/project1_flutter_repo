@@ -6,7 +6,7 @@ class ExamIntroCard extends StatelessWidget {
   final String title;
   final String description;
 
-  const ExamIntroCard({required this.title, required this.description});
+  const ExamIntroCard({super.key, required this.title, required this.description});
 
   @override
   Widget build(BuildContext context) {

@@ -7,7 +7,7 @@ class InfoBadge extends StatelessWidget {
   final Color color;
   final bool isOutlined;
 
-  const InfoBadge({
+  const InfoBadge({super.key, 
     required this.icon,
     required this.label,
     required this.color,

@@ -7,7 +7,7 @@ class ExamAttemptHistoryCard extends StatelessWidget {
   final ExamAttemptModel attempt;
   final VoidCallback onDelete;
 
-  const ExamAttemptHistoryCard({
+  const ExamAttemptHistoryCard({super.key, 
     required this.attempt,
     required this.onDelete,
   });

@@ -7,7 +7,7 @@ class AttachmentsTab extends StatelessWidget {
   final List<LessonAttachmentEntity> attachments;
   final bool loading;
 
-  const AttachmentsTab({required this.attachments, required this.loading});
+  const AttachmentsTab({super.key, required this.attachments, required this.loading});
 
   String _fullAttachmentUrl(String path) {
     const baseUrl = 'https://lincostorage.blob.core.windows.net/uploads/';
