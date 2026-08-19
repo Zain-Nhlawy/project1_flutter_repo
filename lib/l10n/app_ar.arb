@@ -773,5 +773,12 @@
 "photopeaFeatureDescription": "محرر متقدم لتصميم وتعديل الصور وملفات PSD والطبقات وتصدير المواد المرئية بجودة عالية.",
 "openFeatureTool": "فتح الأداة",
 "featuresBadge": "الأدوات المدمجة",
-"featuresFooterNote": "يمكنك حفظ وتصدير كافة المخططات والتصاميم ومشاركتها مع أعضاء مجموعتك."
+"featuresFooterNote": "يمكنك حفظ وتصدير كافة المخططات والتصاميم ومشاركتها مع أعضاء مجموعتك.",
+"editCourse": "تعديل الكورس",
+"price": "السعر",
+"priceHint": "اتركه فارغ لكورس مجاني",
+"invalidPrice": "سعر غير صالح",
+"visibility": "الظهور",
+"visibilityPublic": "عام",
+"visibilityPrivate": "خاص"
 }

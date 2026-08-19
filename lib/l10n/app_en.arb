@@ -805,5 +805,12 @@
 "photopeaFeatureDescription": "Advanced graphic design and photo editing suite. Work with layers, edit PSD files, and export visual assets.",
 "openFeatureTool": "Open Tool",
 "featuresBadge": "Integrated Suite",
-"featuresFooterNote": "All files and diagrams created with these tools can be saved and shared with your group members."
+"featuresFooterNote": "All files and diagrams created with these tools can be saved and shared with your group members.",
+"editCourse": "Edit Course",
+"price": "Price",
+"priceHint": "Leave empty for a free course",
+"invalidPrice": "Invalid price",
+"visibility": "Visibility",
+"visibilityPublic": "Public",
+"visibilityPrivate": "Private"
 }

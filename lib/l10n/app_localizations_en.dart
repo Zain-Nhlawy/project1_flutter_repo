@@ -2129,4 +2129,19 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get featuresFooterNote =>
       'All files and diagrams created with these tools can be saved and shared with your group members.';
+
+  @override
+  String get priceHint => 'Leave empty for a free course';
+
+  @override
+  String get invalidPrice => 'Invalid price';
+
+  @override
+  String get visibility => 'Visibility';
+
+  @override
+  String get visibilityPublic => 'Public';
+
+  @override
+  String get visibilityPrivate => 'Private';
 }

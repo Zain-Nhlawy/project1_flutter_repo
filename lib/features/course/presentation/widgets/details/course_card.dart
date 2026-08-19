@@ -21,6 +21,7 @@ class CourseCard extends StatelessWidget {
   final VoidCallback? onSeeMore;
   final VoidCallback? onSelect;
   final VoidCallback? onBuy;
+  final VoidCallback? onEdit;
 
   const CourseCard({
     super.key,
@@ -39,6 +40,7 @@ class CourseCard extends StatelessWidget {
     this.onSeeMore,
     this.onSelect,
     this.onBuy,
+    this.onEdit,
   });
 
   String _buttonText(AppLocalizations localizations) {
@@ -276,43 +278,45 @@ class CourseCard extends StatelessWidget {
                   Divider(height: 1, color: border.withValues(alpha: 0.72)),
                   const SizedBox(height: 14),
                   Row(
-                    children: [
-                      if (mode == CourseCardMode.demoSelection)
-                        _CourseSelectionButton(
-                          isSelected: isSelected,
-                          onTap: onSelect,
-                        )
-                      else
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 7,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.backgroundOf(context),
-                            borderRadius: BorderRadius.circular(11),
-                            border: Border.all(
-                              color: border.withValues(alpha: 0.72),
-                            ),
-                          ),
-                          child: Icon(
-                            mode == CourseCardMode.ongoing
-                                ? Icons.settings_outlined
-                                : Icons.menu_book_outlined,
-                            size: 18,
-                            color: textSecondary,
-                          ),
-                        ),
-                      const Spacer(),
-                      _CourseCardActionButton(
-                        text: _buttonText(localizations),
-                        icon: mode == CourseCardMode.ongoing
-                            ? Icons.tune_rounded
-                            : Icons.arrow_forward_rounded,
-                        onPressed: _buttonAction(),
-                      ),
-                    ],
-                  ),
+  children: [
+    if (mode == CourseCardMode.demoSelection)
+      _CourseSelectionButton(
+        isSelected: isSelected,
+        onTap: onSelect,
+      )
+    else if (mode == CourseCardMode.demoView && onEdit != null)
+      _CourseEditButton(onTap: onEdit)
+    else
+      Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10,
+          vertical: 7,
+        ),
+        decoration: BoxDecoration(
+          color: AppColors.backgroundOf(context),
+          borderRadius: BorderRadius.circular(11),
+          border: Border.all(
+            color: border.withValues(alpha: 0.72),
+          ),
+        ),
+        child: Icon(
+          mode == CourseCardMode.ongoing
+              ? Icons.settings_outlined
+              : Icons.menu_book_outlined,
+          size: 18,
+          color: textSecondary,
+        ),
+      ),
+    const Spacer(),
+    _CourseCardActionButton(
+      text: _buttonText(localizations),
+      icon: mode == CourseCardMode.ongoing
+          ? Icons.tune_rounded
+          : Icons.arrow_forward_rounded,
+      onPressed: _buttonAction(),
+    ),
+  ],
+),
                 ],
               ),
             ),
@@ -518,6 +522,31 @@ class _CourseCardActionButton extends StatelessWidget {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _CourseEditButton extends StatelessWidget {
+  final VoidCallback? onTap;
+
+  const _CourseEditButton({this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final primary = AppColors.primaryOf(context);
+
+    return Material(
+      color: primary.withValues(alpha: 0.09),
+      borderRadius: BorderRadius.circular(11),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(11),
+        child: SizedBox(
+          width: 40,
+          height: 40,
+          child: Icon(Icons.edit_outlined, size: 18, color: primary),
         ),
       ),
     );

@@ -12,6 +12,8 @@ import 'package:project1/features/course/presentation/cubit/course_state.dart';
 import 'package:project1/features/course/presentation/pages/course_details_screen.dart';
 import 'package:project1/features/course/presentation/widgets/details/course_card.dart';
 import 'package:project1/l10n/app_localizations.dart';
+import 'package:project1/features/course/domain/use_case/update_course_usecase.dart';
+import 'package:project1/features/course/presentation/widgets/details/course_edit_dialog.dart';
 
 class DemoCoursesScreen extends StatefulWidget {
   final String demoId;
@@ -37,6 +39,7 @@ class _DemoCoursesScreenState extends State<DemoCoursesScreen> {
 
   late final CreateDepartmentCourseUseCase _createUseCase;
   late final DeleteDepartmentCourseUseCase _deleteUseCase;
+  late final UpdateCourseUseCase _updateUseCase;
 
   bool _isSaving = false;
   bool _hasSavedChanges = false;
@@ -50,7 +53,35 @@ class _DemoCoursesScreenState extends State<DemoCoursesScreen> {
     };
     _createUseCase = getIt<CreateDepartmentCourseUseCase>();
     _deleteUseCase = getIt<DeleteDepartmentCourseUseCase>();
+    _updateUseCase = getIt<UpdateCourseUseCase>();
   }
+
+  Future<void> _editCourse(dynamic course) async {
+  await showCourseEditDialog(
+    context,
+    initialPrice: course.price,
+    initialVisibility: course.visibility,
+    onSave: (price, visibility) async {
+      final updated = course.copyWith(price: price,clearPrice: price == null, visibility: visibility);
+      final result = await _updateUseCase(course.id, updated);
+
+      return result.fold(
+        (failure) {
+          if (mounted) {
+            SnackbarTheme().newSnackBarError(context, failure.message);
+          }
+          return false;
+        },
+        (_) {
+          if (mounted) {
+            context.read<CourseCubit>().getDemoCourses(widget.demoId);
+          }
+          return true;
+        },
+      );
+    },
+  );
+}
 
   bool get _isSelectionMode => widget.departmentId != null;
 
@@ -193,6 +224,9 @@ class _DemoCoursesScreenState extends State<DemoCoursesScreen> {
                 ? CourseCardMode.demoView
                 : CourseCardMode.demoSelection,
             isSelected: isSelected,
+            onEdit: (widget.showAppBar && course.demo?.id == widget.demoId)
+    ? () => _editCourse(course)
+    : null,
             onSelect:
                 (!widget.showAppBar &&
                     _isSelectionMode &&

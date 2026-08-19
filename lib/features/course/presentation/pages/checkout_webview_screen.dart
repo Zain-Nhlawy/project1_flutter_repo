@@ -25,7 +25,7 @@ class CheckoutWebViewScreen extends StatefulWidget {
 }
 
 class _CheckoutWebViewScreenState extends State<CheckoutWebViewScreen> {
-  InAppWebViewController? _controller;
+  InAppWebViewController? controller;
   bool _loading = true;
   bool _isConfirming = false;
 
@@ -113,7 +113,7 @@ class _CheckoutWebViewScreenState extends State<CheckoutWebViewScreen> {
                 transparentBackground: true,
               ),
               onWebViewCreated: (controller) {
-                _controller = controller;
+                controller = controller;
               },
               onLoadStart: (controller, url) {
                 if (mounted) setState(() => _loading = true);

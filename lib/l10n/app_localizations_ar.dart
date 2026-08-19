@@ -2107,4 +2107,19 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get featuresFooterNote =>
       'يمكنك حفظ وتصدير كافة المخططات والتصاميم ومشاركتها مع أعضاء مجموعتك.';
+
+  @override
+  String get priceHint => 'اتركه فارغ لكورس مجاني';
+
+  @override
+  String get invalidPrice => 'سعر غير صالح';
+
+  @override
+  String get visibility => 'الظهور';
+
+  @override
+  String get visibilityPublic => 'عام';
+
+  @override
+  String get visibilityPrivate => 'خاص';
 }

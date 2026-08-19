@@ -83,7 +83,47 @@ class CourseModel extends CourseEntity {
     );
   }
 
-  @override
+  CourseModel copyWith({
+    String? id,
+    String? title,
+    String? description,
+    String? visibility,
+    double? price,
+    bool clearPrice = false,
+    String? imagePath,
+    String? demoId,
+    String? assetId,
+    List<String>? tagIds,
+    List<String>? tags,
+    DemoModel? demo,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    int? sectionsCount,
+    int? totalLessons,
+    int? totalDuration,
+    bool? isPublished,
+  }) {
+    return CourseModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      visibility: visibility ?? this.visibility,
+      price: clearPrice ? null : (price ?? this.price),
+      imagePath: imagePath ?? this.imagePath,
+      demoId: demoId ?? this.demoId,
+      assetId: assetId ?? this.assetId,
+      tagIds: tagIds ?? this.tagIds,
+      tags: tags ?? this.tags,
+      demo: demo ?? this.demo,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      sectionsCount: sectionsCount ?? this.sectionsCount,
+      totalLessons: totalLessons ?? this.totalLessons,
+      totalDuration: totalDuration ?? this.totalDuration,
+      isPublished: isPublished ?? this.isPublished,
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       "title": title,
