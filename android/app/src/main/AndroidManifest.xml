@@ -76,11 +76,21 @@
             android:name="flutterEmbedding"
             android:value="2" />
 
-        <service
-            android:name="org.jitsi.meet.sdk.JitsiMeetOngoingConferenceService"
-            android:foregroundServiceType="camera|microphone|phoneCall|mediaProjection"
+        <!--
+          Jitsi 11.6.0 did not force its AndroidX Startup provider to merge
+          with providers contributed by other plugins. If its initializer is
+          lost, opening a meeting crashes because ReactInstanceManager is null.
+          This mirrors the upstream fix released in Jitsi 11.6.3.
+        -->
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
-            tools:replace="android:foregroundServiceType" />
+            tools:node="merge">
+            <meta-data
+                android:name="org.jitsi.meet.sdk.JitsiInitializer"
+                android:value="androidx.startup" />
+        </provider>
 
     </application>
 
