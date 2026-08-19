@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/features/department/data/models/department_member_model.dart';
 import 'package:project1/features/department/presentation/cubit/department%20members%20cubit/department_member_cubit.dart';
 import 'package:project1/features/department/presentation/cubit/department%20members%20cubit/deprtment_member_state.dart';
 import 'package:project1/features/department/presentation/widgets/department_member/department_member_card.dart';
@@ -12,12 +13,14 @@ class DepartmentMembersPage extends StatelessWidget {
   final String demoId;
   final String departmentId;
   final bool canManage;
+  final String? managerId;
 
   const DepartmentMembersPage({
     super.key,
     required this.demoId,
     required this.departmentId,
     this.canManage = false,
+    this.managerId,
   });
 
   @override
@@ -29,6 +32,7 @@ class DepartmentMembersPage extends StatelessWidget {
         demoId: demoId,
         departmentId: departmentId,
         canManage: canManage,
+        managerId: managerId,
       ),
     );
   }
@@ -38,11 +42,13 @@ class _DepartmentMembersView extends StatelessWidget {
   final String demoId;
   final String departmentId;
   final bool canManage;
+  final String? managerId;
 
   const _DepartmentMembersView({
     required this.demoId,
     required this.departmentId,
     required this.canManage,
+    this.managerId,
   });
 
   void _refresh(BuildContext context) {
@@ -78,9 +84,9 @@ class _DepartmentMembersView extends StatelessWidget {
                 color: Colors.transparent,
                 child: InkWell(
                   borderRadius: BorderRadius.circular(30),
-                  onTap: () {
+                  onTap: () async {
                     final cubit = context.read<DepartmentMemberCubit>();
-                    showDialog(
+                    await showDialog(
                       context: context,
                       builder: (dialogContext) {
                         return BlocProvider.value(
@@ -92,6 +98,9 @@ class _DepartmentMembersView extends StatelessWidget {
                         );
                       },
                     );
+                    if (context.mounted) {
+                      cubit.restoreDepartmentMembers();
+                    }
                   },
                   child: const Padding(
                     padding: EdgeInsets.all(16),
@@ -110,6 +119,11 @@ class _DepartmentMembersView extends StatelessWidget {
         backgroundColor: AppColors.surfaceOf(context),
         onRefresh: () async => _refresh(context),
         child: BlocBuilder<DepartmentMemberCubit, DepartmentMemberState>(
+          buildWhen: (previous, current) =>
+              current is DepartmentMemberInitial ||
+              current is DepartmentMemberLoading ||
+              current is DepartmentMemberLoaded ||
+              current is DepartmentMemberError,
           builder: (context, state) {
             if (state is DepartmentMemberInitial ||
                 state is DepartmentMemberLoading) {
@@ -134,42 +148,46 @@ class _DepartmentMembersView extends StatelessWidget {
               );
             }
 
+            List<DepartmentMemberModel> members = [];
             if (state is DepartmentMemberLoaded) {
-              if (state.departmentMembers.isEmpty) {
-                return LayoutBuilder(
-                  builder: (context, constraints) => SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minHeight: constraints.maxHeight,
-                      ),
-                      child: _EmptyState(l10n: l10n),
-                    ),
-                  ),
-                );
-              }
+              members = state.departmentMembers;
+            } else {
+              members = context.read<DepartmentMemberCubit>().cachedMembers;
+            }
 
-              return ListView.separated(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
+            if (members.isEmpty) {
+              return LayoutBuilder(
+                builder: (context, constraints) => SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight,
+                    ),
+                    child: _EmptyState(l10n: l10n),
+                  ),
                 ),
-                itemCount: state.departmentMembers.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 10),
-                itemBuilder: (context, index) {
-                  final member = state.departmentMembers[index];
-                  return DepartmentMemberCard(
-                    member: member,
-                    departmentId: departmentId,
-                    demoId: demoId,
-                    canManage: canManage,
-                  );
-                },
               );
             }
 
-            return const SizedBox.shrink();
+            return ListView.separated(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
+              itemCount: members.length,
+              separatorBuilder: (_, __) => const SizedBox(height: 10),
+              itemBuilder: (context, index) {
+                final member = members[index];
+                return DepartmentMemberCard(
+                  member: member,
+                  departmentId: departmentId,
+                  demoId: demoId,
+                  canManage: canManage,
+                  managerId: managerId,
+                );
+              },
+            );
           },
         ),
       ),

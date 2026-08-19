@@ -11,6 +11,7 @@ class DepartmentMemberModel extends DepartmentMemberEntity {
     required super.lastName,
     required super.email,
     required super.imagePath,
+    super.role,
   });
 
   factory DepartmentMemberModel.fromJson(Map<String, dynamic> json) {
@@ -27,6 +28,7 @@ class DepartmentMemberModel extends DepartmentMemberEntity {
       lastName: userJson['lastName'] ?? '',
       email: userJson['email'] ?? '',
       imagePath: userJson['imagePath']?.toString() ?? '',
+      role: demoMemberJson['role']?.toString() ?? json['role']?.toString(),
     );
   }
 }

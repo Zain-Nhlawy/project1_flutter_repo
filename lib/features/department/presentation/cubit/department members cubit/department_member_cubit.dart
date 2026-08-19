@@ -1,12 +1,20 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project1/features/department/data/models/department_member_model.dart';
 import 'package:project1/features/department/domain/repository/department_member_repository.dart';
 import 'package:project1/features/department/presentation/cubit/department%20members%20cubit/deprtment_member_state.dart';
 
 class DepartmentMemberCubit extends Cubit<DepartmentMemberState> {
   final DepartmentMemberRepository _departmentMemberRepository;
+  List<DepartmentMemberModel> cachedMembers = [];
 
   DepartmentMemberCubit(this._departmentMemberRepository)
     : super(DepartmentMemberInitial());
+
+  void restoreDepartmentMembers() {
+    if (cachedMembers.isNotEmpty) {
+      emit(DepartmentMemberLoaded(List.from(cachedMembers)));
+    }
+  }
 
   Future<void> getDepartmentMembers(String departmentId, String demoId) async {
     emit(DepartmentMemberLoading());
@@ -16,7 +24,10 @@ class DepartmentMemberCubit extends Cubit<DepartmentMemberState> {
     );
     result.fold(
       (error) => emit(DepartmentMemberError(error)),
-      (departmentMembers) => emit(DepartmentMemberLoaded(departmentMembers)),
+      (departmentMembers) {
+        cachedMembers = departmentMembers;
+        emit(DepartmentMemberLoaded(departmentMembers));
+      },
     );
   }
 
@@ -42,13 +53,13 @@ class DepartmentMemberCubit extends Cubit<DepartmentMemberState> {
   Future<bool> removeDepartmentMember(
     String departmentId,
     String demoId,
-    String demoMemberId,
+    String departmentMemberId,
   ) async {
     emit(DepartmentMemberLoading());
     final result = await _departmentMemberRepository.removeDepartmentMember(
       departmentId,
       demoId,
-      demoMemberId,
+      departmentMemberId,
     );
     return result.fold(
       (error) {

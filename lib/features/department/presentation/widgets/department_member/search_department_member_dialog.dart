@@ -40,7 +40,7 @@ class _SearchDepartmentMemberDialogState
     final l10n = AppLocalizations.of(context)!;
 
     return Dialog(
-      insetPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
+      insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
       backgroundColor: colors.surface,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       child: ClipRRect(
@@ -53,15 +53,19 @@ class _SearchDepartmentMemberDialogState
             child: Column(
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      l10n.searchDemoMembers,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                    Expanded(
+                      child: Text(
+                        l10n.searchDemoMembers,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
+                    const SizedBox(width: 8),
                     IconButton(
                       icon: const Icon(Icons.close_rounded),
                       onPressed: () => Navigator.of(context).pop(),
@@ -95,6 +99,10 @@ class _SearchDepartmentMemberDialogState
                 Expanded(
                   child: BlocBuilder<DepartmentMemberCubit,
                       DepartmentMemberState>(
+                    buildWhen: (previous, current) =>
+                        current is DepartmentMemberSearchLoading ||
+                        current is DepartmentMemberSearchLoaded ||
+                        current is DepartmentMemberSearchError,
                     builder: (context, state) {
                       if (state is DepartmentMemberSearchLoading) {
                         return const Center(

@@ -25,9 +25,9 @@ class DepartmentMemberUseCase {
   Future<Either<String, void>> removeDepartmentMember(
     String departmentId,
     String demoId,
-    String demoMemberId,
+    String departmentMemberId,
   ) async {
-    return await repository.removeDepartmentMember(departmentId, demoId, demoMemberId);
+    return await repository.removeDepartmentMember(departmentId, demoId, departmentMemberId);
   }
   Future<Either<String, List<MembersModel>>> searchDemoMembers(
     String departmentId,

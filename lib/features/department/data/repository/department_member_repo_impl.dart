@@ -39,10 +39,10 @@ class DepartmentMemberRepositoryImpl implements DepartmentMemberRepository {
   Future<Either<String, void>> removeDepartmentMember(
     String departmentId,
     String demoId,
-    String demoMemberId,
+    String departmentMemberId,
   ) async {
     try {
-      final result = await dataSource.removeDepartmentMember(departmentId, demoId, demoMemberId);
+      final result = await dataSource.removeDepartmentMember(departmentId, demoId, departmentMemberId);
       return Right(result);
     } catch (e) {
       return Left(e.toString());

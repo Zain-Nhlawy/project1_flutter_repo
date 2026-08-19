@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project1/features/demo/presentation/widgets/demo member card/user_info_dialog.dart';
 import 'package:project1/features/department/domain/entities/department_member_entity.dart';
 import 'department_member_options_menu.dart';
 
@@ -9,6 +10,7 @@ class DepartmentMemberCard extends StatelessWidget {
     required this.departmentId,
     required this.demoId,
     this.canManage = true,
+    this.managerId,
     this.onTap,
   });
 
@@ -16,6 +18,7 @@ class DepartmentMemberCard extends StatelessWidget {
   final String departmentId;
   final String demoId;
   final bool canManage;
+  final String? managerId;
   final VoidCallback? onTap;
 
   @override
@@ -42,7 +45,8 @@ class DepartmentMemberCard extends StatelessWidget {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: onTap ?? () {},
+            onTap: onTap ??
+                () => UserInfoDialog.showForDepartmentMember(context, member),
             child: Padding(
               padding: const EdgeInsets.only(
                 left: 16,
@@ -132,9 +136,10 @@ class DepartmentMemberCard extends StatelessWidget {
                   const SizedBox(width: 4),
                   if (canManage)
                     DepartmentMemberOptionsMenu(
+                      member: member,
                       departmentId: departmentId,
                       demoId: demoId,
-                      demoMemberId: member.demoMemberId,
+                      managerId: managerId,
                     ),
                 ],
               ),

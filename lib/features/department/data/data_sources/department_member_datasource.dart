@@ -19,7 +19,7 @@ abstract class DepartmentMemberDataSource {
   Future<void> removeDepartmentMember(
     String departmentId,
     String demoId,
-    String demoMemberId,
+    String departmentMemberId,
   );
   Future<List<MembersModel>> searchDemoMembers(
     String departmentId,
@@ -90,11 +90,11 @@ class DepartmentMemberDataSourceImpl implements DepartmentMemberDataSource {
   Future<void> removeDepartmentMember(
     String departmentId,
     String demoId,
-    String demoMemberId,
+    String departmentMemberId,
   ) async {
     try {
       final response = await dio.delete(
-        '/departmentMembers/$demoMemberId',
+        '/departmentMembers/$departmentMemberId',
         options: Options(
           headers: {'x-demo-id': demoId, 'x-department-id': departmentId},
         ),
