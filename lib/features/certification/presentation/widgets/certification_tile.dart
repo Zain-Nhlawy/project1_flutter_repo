@@ -10,7 +10,7 @@ class CertificationTile extends StatelessWidget {
   final String dateLabel;
   final VoidCallback onTap;
 
-  const CertificationTile({
+  const CertificationTile({super.key, 
     required this.certification,
     required this.dateLabel,
     required this.onTap,

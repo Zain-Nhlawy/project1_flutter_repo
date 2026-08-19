@@ -204,7 +204,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
   Future<void> _changeQuality(String qualityKey) async {
     if (qualityKey == _currentQuality) return;
 
-    final List<BetterPlayerAsmsTrack>? tracks =
+    final List<BetterPlayerAsmsTrack> tracks =
         _betterPlayerController.betterPlayerAsmsTracks;
 
     setState(() {
@@ -213,14 +213,14 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen> {
 
     try {
       if (qualityKey == 'auto') {
-        if (tracks != null && tracks.isNotEmpty) {
+        if (tracks.isNotEmpty) {
           _betterPlayerController.setTrack(tracks.first);
         }
         setState(() {
           _currentQuality = 'auto';
         });
       } else {
-        if (tracks == null || tracks.isEmpty) {
+        if (tracks.isEmpty) {
           return;
         }
 

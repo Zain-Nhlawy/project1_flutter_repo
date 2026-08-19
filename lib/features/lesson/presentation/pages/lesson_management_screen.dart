@@ -53,7 +53,7 @@ class _LessonManagementScreenState extends State<LessonManagementScreen> {
   bool _loadingThumbnail = false;
 
   bool isEditing = false;
-  bool _hasChanges = false;
+  final bool _hasChanges = false;
   bool _isSaving = false;
 
   @override

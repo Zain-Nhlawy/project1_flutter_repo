@@ -9,7 +9,7 @@ class QuizOverviewCard extends StatelessWidget {
   final double progress;
   final int remainingSeconds;
 
-  const QuizOverviewCard({
+  const QuizOverviewCard({super.key, 
     required this.currentQuestion,
     required this.totalQuestions,
     required this.progress,

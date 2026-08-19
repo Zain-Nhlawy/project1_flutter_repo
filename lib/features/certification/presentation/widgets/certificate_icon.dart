@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class CertificateIcon extends StatelessWidget {
   final Color color;
 
-  const CertificateIcon({
+  const CertificateIcon({super.key, 
     required this.color,
   });
 

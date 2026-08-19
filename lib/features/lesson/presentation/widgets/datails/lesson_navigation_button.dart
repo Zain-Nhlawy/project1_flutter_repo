@@ -9,7 +9,7 @@ class LessonNavigationButton extends StatelessWidget {
   final bool iconAtEnd;
   final bool isPrimary;
 
-  const LessonNavigationButton({
+  const LessonNavigationButton({super.key, 
     required this.label,
     required this.icon,
     required this.onPressed,
