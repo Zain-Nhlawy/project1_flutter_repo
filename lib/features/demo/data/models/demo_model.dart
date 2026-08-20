@@ -12,6 +12,7 @@ class DemoModel extends DemoEntity {
     super.plan,
     required super.membersCount,
     super.createdAt,
+    super.subscriptionStatus,
   });
 
   factory DemoModel.fromJson(Map<String, dynamic> json) {
@@ -28,6 +29,7 @@ class DemoModel extends DemoEntity {
       createdAt: json['createdAt'] != null
           ? DateTime.tryParse(json['createdAt'].toString())
           : null,
+      subscriptionStatus: json['subscriptionStatus']?.toString() ?? '',
     );
   }
 
@@ -42,6 +44,7 @@ class DemoModel extends DemoEntity {
       'plan': plan,
       'membersCount': membersCount,
       'createdAt': createdAt?.toIso8601String(),
+      'subscriptionStatus': subscriptionStatus,
     };
   }
 }

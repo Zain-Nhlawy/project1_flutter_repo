@@ -4,6 +4,7 @@ import 'package:project1/core/network/dio_client.dart';
 abstract class DemoPaymentDataSource {
   Future<String> requestPayment(String demoId, String plan);
   Future<String> confirmPayment(String sessionId);
+  Future<String> manageSubscription(String demoId);
 }
 
 class DemoPaymentDataSourceImpl implements DemoPaymentDataSource {
@@ -102,5 +103,52 @@ class DemoPaymentDataSourceImpl implements DemoPaymentDataSource {
     }
 
     return status;
+  }
+
+  @override
+  Future<String> manageSubscription(String demoId) async {
+    final response = await dio.post(
+      '/payments/subscriptions/manage',
+      options: Options(headers: {'x-demo-id': demoId}),
+    );
+
+    final statusCode = response.statusCode ?? 0;
+    if (statusCode < 200 || statusCode >= 300) {
+      throw Exception(
+        'Subscription management request failed with status '
+        '$statusCode: ${response.data}',
+      );
+    }
+
+    final body = response.data;
+    if (body is! Map) {
+      throw Exception(
+        'Unexpected subscription management response type: '
+        '${body.runtimeType}. Raw body: $body',
+      );
+    }
+
+    final data = body['data'];
+    if (data is! Map) {
+      throw Exception(
+        'Missing or invalid "data" field in subscription management '
+        'response. Full body: $body',
+      );
+    }
+
+    final url = data['url'];
+    final uri = url is String ? Uri.tryParse(url) : null;
+    if (url is! String ||
+        url.isEmpty ||
+        uri == null ||
+        !uri.hasScheme ||
+        !uri.hasAuthority) {
+      throw Exception(
+        'Missing or invalid portal URL in subscription management '
+        'response. Full body: $body',
+      );
+    }
+
+    return url;
   }
 }

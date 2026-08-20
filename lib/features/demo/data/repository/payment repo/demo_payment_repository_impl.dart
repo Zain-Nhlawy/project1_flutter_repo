@@ -30,4 +30,14 @@ class DemoPaymentRepositoryImpl implements DemoPaymentRepository {
       return Left(e.toString());
     }
   }
+
+  @override
+  Future<Either<String, String>> manageSubscription(String demoId) async {
+    try {
+      final result = await demoPaymentDataSource.manageSubscription(demoId);
+      return Right(result);
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
 }

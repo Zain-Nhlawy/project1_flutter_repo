@@ -632,6 +632,48 @@ abstract class AppLocalizations {
   /// **'Upgrade Plan'**
   String get upgradePlan;
 
+  /// No description provided for @managePlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Plan'**
+  String get managePlan;
+
+  /// No description provided for @manageSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your subscription'**
+  String get manageSubscription;
+
+  /// No description provided for @openingSubscriptionPortal.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening the secure subscription portal...'**
+  String get openingSubscriptionPortal;
+
+  /// No description provided for @subscriptionPortalError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the subscription portal'**
+  String get subscriptionPortalError;
+
+  /// No description provided for @subscriptionActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription is active'**
+  String get subscriptionActive;
+
+  /// No description provided for @subscriptionCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription cancelled'**
+  String get subscriptionCancelled;
+
+  /// No description provided for @freeTrialExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Free trial expired'**
+  String get freeTrialExpired;
+
   /// No description provided for @levelUpYourPlan.
   ///
   /// In en, this message translates to:

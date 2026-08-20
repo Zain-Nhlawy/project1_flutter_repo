@@ -297,6 +297,27 @@ class AppLocalizationsAr extends AppLocalizations {
   String get upgradePlan => 'ترقية الخطة';
 
   @override
+  String get managePlan => 'إدارة الخطة';
+
+  @override
+  String get manageSubscription => 'إدارة اشتراكك';
+
+  @override
+  String get openingSubscriptionPortal => 'جارٍ فتح بوابة الاشتراك الآمنة...';
+
+  @override
+  String get subscriptionPortalError => 'تعذر فتح بوابة الاشتراك';
+
+  @override
+  String get subscriptionActive => 'الاشتراك نشط';
+
+  @override
+  String get subscriptionCancelled => 'تم إلغاء الاشتراك';
+
+  @override
+  String get freeTrialExpired => 'انتهت الفترة التجريبية المجانية';
+
+  @override
   String get levelUpYourPlan => 'ارتقِ بخطتك';
 
   @override

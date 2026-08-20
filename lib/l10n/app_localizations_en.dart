@@ -298,6 +298,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get upgradePlan => 'Upgrade Plan';
 
   @override
+  String get managePlan => 'Manage Plan';
+
+  @override
+  String get manageSubscription => 'Manage your subscription';
+
+  @override
+  String get openingSubscriptionPortal =>
+      'Opening the secure subscription portal...';
+
+  @override
+  String get subscriptionPortalError =>
+      'Could not open the subscription portal';
+
+  @override
+  String get subscriptionActive => 'Subscription is active';
+
+  @override
+  String get subscriptionCancelled => 'Subscription cancelled';
+
+  @override
+  String get freeTrialExpired => 'Free trial expired';
+
+  @override
   String get levelUpYourPlan => 'Level Up your plan';
 
   @override

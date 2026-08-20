@@ -5,7 +5,7 @@ import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/demo/domain/entities/demo_entity.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20cubit/demo_cubit.dart';
 import 'package:project1/features/demo/presentation/pages/demo_main_page.dart';
-import 'package:project1/features/demo/presentation/pages/payment_pages/upgrade_plan.dart';
+import 'package:project1/features/demo/presentation/pages/payment_pages/manage_plan.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:animations/animations.dart';
 
@@ -28,9 +28,7 @@ class DemoMainContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final canOpen = !isRestricted;
-    final currentPlan = demo.plan?.toLowerCase() ?? 'starter';
-    final isEnterprise = currentPlan == 'enterprise';
-    final canUpgrade = isRestricted && demo.isOwner && !isEnterprise;
+    final canManage = isRestricted && demo.isOwner;
 
     return Expanded(
       child: Column(
@@ -69,14 +67,18 @@ class DemoMainContent extends StatelessWidget {
               Icon(
                 Icons.person_outline_rounded,
                 size: 13 * textScale,
-                color: AppColors.textSecondaryOf(context).withValues(alpha: 0.7),
+                color: AppColors.textSecondaryOf(
+                  context,
+                ).withValues(alpha: 0.7),
               ),
               const SizedBox(width: 4),
               Expanded(
                 child: Text(
                   demo.ownerName,
                   style: AppTextStyles.label.copyWith(
-                    color: AppColors.textSecondaryOf(context).withValues(alpha: 0.85),
+                    color: AppColors.textSecondaryOf(
+                      context,
+                    ).withValues(alpha: 0.85),
                     fontSize: 12 * textScale,
                     height: 1.25,
                   ),
@@ -88,12 +90,12 @@ class DemoMainContent extends StatelessWidget {
                 size: size,
                 textScale: textScale,
                 canOpen: canOpen,
-                canUpgrade: canUpgrade,
+                canManage: canManage,
                 label: canOpen
                     ? localizations.see
-                    : canUpgrade
-                    ? localizations.upgradePlan
-                    : localizations.see,
+                    : canManage
+                    ? localizations.managePlan
+                    : localizations.restricted,
                 onPressed: canOpen
                     ? () async {
                         Navigator.push(
@@ -121,7 +123,7 @@ class DemoMainContent extends StatelessWidget {
                           ),
                         );
                       }
-                    : canUpgrade
+                    : canManage
                     ? () async {
                         await Navigator.push(
                           context,
@@ -131,10 +133,7 @@ class DemoMainContent extends StatelessWidget {
                             ),
                             pageBuilder:
                                 (context, animation, secondaryAnimation) =>
-                                    UpgradePlanScreen(
-                                      demoId: demo.id!,
-                                      currentPlan: demo.plan,
-                                    ),
+                                    ManagePlanScreen(demoId: demo.id!),
                             transitionsBuilder:
                                 (
                                   context,
@@ -150,7 +149,8 @@ class DemoMainContent extends StatelessWidget {
                                 },
                           ),
                         );
-                        if (context.mounted && getIt.isRegistered<DemoCubit>()) {
+                        if (context.mounted &&
+                            getIt.isRegistered<DemoCubit>()) {
                           getIt<DemoCubit>().fetchDemos();
                         }
                       }
@@ -168,7 +168,7 @@ class _ActionButton extends StatelessWidget {
   final Size size;
   final double textScale;
   final bool canOpen;
-  final bool canUpgrade;
+  final bool canManage;
   final String label;
   final VoidCallback? onPressed;
 
@@ -176,7 +176,7 @@ class _ActionButton extends StatelessWidget {
     required this.size,
     required this.textScale,
     required this.canOpen,
-    required this.canUpgrade,
+    required this.canManage,
     required this.label,
     required this.onPressed,
   });
@@ -186,8 +186,8 @@ class _ActionButton extends StatelessWidget {
     final isDisabled = onPressed == null;
     final icon = canOpen
         ? Icons.chevron_right_rounded
-        : canUpgrade
-        ? Icons.bolt_rounded
+        : canManage
+        ? Icons.settings_outlined
         : Icons.lock_outline_rounded;
 
     return InkWell(

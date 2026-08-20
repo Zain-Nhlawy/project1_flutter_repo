@@ -90,6 +90,7 @@ class DemoCubit extends Cubit<DemoState> {
         plan: demo.plan,
         membersCount: demo.membersCount,
         createdAt: demo.createdAt,
+        subscriptionStatus: demo.subscriptionStatus,
       );
 
       final result = await getDemosUseCase.addDemo(demoToSave);

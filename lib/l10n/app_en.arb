@@ -119,6 +119,13 @@
   "selectPlan": "Select a Plan",
 
 "upgradePlan": "Upgrade Plan",
+"managePlan": "Manage Plan",
+"manageSubscription": "Manage your subscription",
+"openingSubscriptionPortal": "Opening the secure subscription portal...",
+"subscriptionPortalError": "Could not open the subscription portal",
+"subscriptionActive": "Subscription is active",
+"subscriptionCancelled": "Subscription cancelled",
+"freeTrialExpired": "Free trial expired",
 "levelUpYourPlan": "Level Up your plan",
 "currentPlan": "Current Plan",
 "restricted": "Restricted",
