@@ -389,6 +389,81 @@
 "confirmAnswer": "Confirm Answer",
 "usersTab": "Users",
 "demoStats": "Demo Stats",
+"demoReportSubtitle": "A clear view of learning, engagement, and content performance",
+"demoReportOverview": "Overview",
+"demoReportGeneratedAt": "Generated {date} at {time}",
+"@demoReportGeneratedAt": {
+  "placeholders": {
+    "date": { "type": "String" },
+    "time": { "type": "String" }
+  }
+},
+"demoReportTotalMembers": "Total members",
+"demoReportNewMembers": "New members",
+"demoReportDepartments": "Departments",
+"demoReportTotalCourses": "Total courses",
+"demoReportPublishedCourses": "Published courses",
+"demoReportCertifications": "Certifications",
+"demoReportExamAttempts": "Exam attempts",
+"demoReportAverageScore": "Average score",
+"demoReportPerformance": "Performance snapshot",
+"demoReportExamPassRate": "Exam pass rate",
+"demoReportCertificationRate": "Certification rate",
+"demoReportPublishingRate": "Course publishing rate",
+"demoReportCoursePerformance": "Course performance",
+"demoReportMemberActivity": "Member activity",
+"demoReportDepartmentBreakdown": "Department breakdown",
+"demoReportNoCourses": "No courses are available in this report yet.",
+"demoReportNoMembers": "No members are available in this report yet.",
+"demoReportNoDepartments": "No departments are available in this report yet.",
+"demoReportPublished": "Published",
+"demoReportDraft": "Draft",
+"demoReportAssignedMembers": "Assigned members",
+"demoReportSectionsAndLessons": "{sections} sections • {lessons} lessons",
+"@demoReportSectionsAndLessons": {
+  "placeholders": {
+    "sections": { "type": "int" },
+    "lessons": { "type": "int" }
+  }
+},
+"demoReportExamsAndAttempts": "{exams} exams • {attempts} attempts",
+"@demoReportExamsAndAttempts": {
+  "placeholders": {
+    "exams": { "type": "int" },
+    "attempts": { "type": "int" }
+  }
+},
+"demoReportHoursMinutes": "{hours}h {minutes}m",
+"@demoReportHoursMinutes": {
+  "placeholders": {
+    "hours": { "type": "int" },
+    "minutes": { "type": "int" }
+  }
+},
+"demoReportMinutes": "{minutes} min",
+"@demoReportMinutes": {
+  "placeholders": {
+    "minutes": { "type": "int" }
+  }
+},
+"demoReportPassRate": "Pass rate",
+"demoReportIssuedCertificates": "Certificates issued",
+"demoReportJoinedDate": "Joined {date}",
+"@demoReportJoinedDate": {
+  "placeholders": {
+    "date": { "type": "String" }
+  }
+},
+"demoReportAssignedCourses": "Assigned courses",
+"demoReportExams": "Exams",
+"demoReportHighestScore": "Highest score",
+"demoReportEngagement": "Engagement",
+"demoReportMembersCount": "Members",
+"demoReportCoursesCount": "Courses",
+"demoReportOwnerRole": "Owner",
+"demoReportManagerRole": "Manager",
+"demoReportMemberRole": "Member",
+"demoReportLoadError": "Could not load the demo report",
 "themeDark": "Dark",
 "areYouSureSendInvitation": "Are you sure you want to send an invitation to this user?",
 "userAlreadyInvited": "User is already invited to this demo",

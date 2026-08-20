@@ -87,17 +87,22 @@ import 'package:project1/features/course/upload_photo/domain/repository/upload_p
 import 'package:project1/features/course/upload_photo/domain/use_case/upload_photo_course_usecase.dart';
 import 'package:project1/features/course/upload_photo/presentation/cubit/upload_photo_course_cubit.dart';
 import 'package:project1/features/demo/data/data_sources/data_payment_data_source.dart';
+import 'package:project1/features/demo/data/data_sources/demo_report_remote_data_source.dart';
 import 'package:project1/features/demo/data/data_sources/demo_remote_data_source.dart';
 import 'package:project1/features/demo/data/data_sources/demo_users_remote_data_source.dart';
 import 'package:project1/features/demo/domain/repository/demo_repository.dart';
 import 'package:project1/features/demo/data/repository/demo_repository_impl.dart';
+import 'package:project1/features/demo/data/repository/demo_report_repository_impl.dart';
 import 'package:project1/features/demo/data/repository/demo_user_repository_impl.dart';
 import 'package:project1/features/demo/data/repository/payment%20repo/demo_payment_repository_impl.dart';
 import 'package:project1/features/demo/domain/repository/demo_payment_repository.dart';
+import 'package:project1/features/demo/domain/repository/demo_report_repository.dart';
 import 'package:project1/features/demo/domain/repository/demo_users_repository.dart';
 import 'package:project1/features/demo/domain/use%20case/demo_payment_usecase.dart';
 import 'package:project1/features/demo/domain/use%20case/demo_users_usecase.dart';
 import 'package:project1/features/demo/domain/use%20case/demos_usecase.dart';
+import 'package:project1/features/demo/domain/use%20case/get_demo_owner_report_usecase.dart';
+import 'package:project1/features/demo/presentation/cubit/demo%20report/demo_report_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20cubit/demo_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_cubit.dart';
 import 'package:project1/features/department/presentation/cubit/department%20cubit/department_cubit.dart';
@@ -406,6 +411,26 @@ void setupDI() {
     () => DemoPaymentDataSourceImpl(
       getIt<DioClient>(),
       dio: getIt<DioClient>().dio,
+    ),
+  );
+
+  getIt.registerLazySingleton<DemoReportRemoteDataSource>(
+    () => DemoReportRemoteDataSourceImpl(dio: getIt<DioClient>().dio),
+  );
+
+  getIt.registerLazySingleton<DemoReportRepository>(
+    () => DemoReportRepositoryImpl(
+      remoteDataSource: getIt<DemoReportRemoteDataSource>(),
+    ),
+  );
+
+  getIt.registerLazySingleton(
+    () => GetDemoOwnerReportUseCase(getIt<DemoReportRepository>()),
+  );
+
+  getIt.registerFactory(
+    () => DemoReportCubit(
+      getOwnerReportUseCase: getIt<GetDemoOwnerReportUseCase>(),
     ),
   );
 

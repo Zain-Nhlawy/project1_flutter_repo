@@ -6,17 +6,20 @@ import 'package:project1/features/course/presentation/pages/courses_selection_sc
 import 'package:project1/features/course/presentation/pages/public_library_screen.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_cubit.dart';
 import 'package:project1/features/demo/presentation/pages/demo_users_page.dart';
+import 'package:project1/features/demo/presentation/pages/demo_stats_page.dart';
 import 'package:project1/features/demo/presentation/pages/inquiries_page.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:animations/animations.dart';
 
 class MainActionsSheet extends StatelessWidget {
   final String demoId;
+  final String demoName;
   final bool isOwner;
 
   const MainActionsSheet({
     super.key,
     required this.demoId,
+    required this.demoName,
     this.isOwner = true,
   });
 
@@ -89,7 +92,9 @@ class MainActionsSheet extends StatelessWidget {
                       ),
                     ),
                     Material(
-                      color: colors.surfaceContainerHighest.withValues(alpha: 0.5),
+                      color: colors.surfaceContainerHighest.withValues(
+                        alpha: 0.5,
+                      ),
                       borderRadius: BorderRadius.circular(20),
                       child: InkWell(
                         borderRadius: BorderRadius.circular(20),
@@ -124,8 +129,9 @@ class MainActionsSheet extends StatelessWidget {
                       navigator.push(
                         PageRouteBuilder(
                           transitionDuration: const Duration(milliseconds: 300),
-                          pageBuilder: (context, animation, secondaryAnimation) =>
-                              CoursesSelectionScreen(demoId: demoId),
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  CoursesSelectionScreen(demoId: demoId),
                           transitionsBuilder:
                               (context, animation, secondaryAnimation, child) {
                                 return FadeThroughTransition(
@@ -150,8 +156,9 @@ class MainActionsSheet extends StatelessWidget {
                       navigator.push(
                         PageRouteBuilder(
                           transitionDuration: const Duration(milliseconds: 300),
-                          pageBuilder: (context, animation, secondaryAnimation) =>
-                              PublicLibraryScreen(demoId: demoId),
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  PublicLibraryScreen(demoId: demoId),
                           transitionsBuilder:
                               (context, animation, secondaryAnimation, child) {
                                 return FadeThroughTransition(
@@ -174,7 +181,8 @@ class MainActionsSheet extends StatelessWidget {
                       try {
                         demoUserCubit = context.read<DemoUserCubit>();
                       } catch (_) {
-                        demoUserCubit = getIt<DemoUserCubit>()..fetchUsers(demoId);
+                        demoUserCubit = getIt<DemoUserCubit>()
+                          ..fetchUsers(demoId);
                       }
 
                       final navigator = Navigator.of(context);
@@ -207,7 +215,27 @@ class MainActionsSheet extends StatelessWidget {
                     gradient: headerGradient,
                     colors: colors,
                     onTap: () {
-                      Navigator.pop(context);
+                      final navigator = Navigator.of(context);
+                      navigator.pop();
+                      navigator.push(
+                        PageRouteBuilder(
+                          transitionDuration: const Duration(milliseconds: 300),
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  DemoStatsPage(
+                                    demoId: demoId,
+                                    demoName: demoName,
+                                  ),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                                return FadeThroughTransition(
+                                  animation: animation,
+                                  secondaryAnimation: secondaryAnimation,
+                                  child: child,
+                                );
+                              },
+                        ),
+                      );
                     },
                   ),
                   _GridActionTile(
@@ -226,12 +254,12 @@ class MainActionsSheet extends StatelessWidget {
                                   InquiriesPage(demoId: demoId, isOwner: true),
                           transitionsBuilder:
                               (context, animation, secondaryAnimation, child) {
-                            return FadeThroughTransition(
-                              animation: animation,
-                              secondaryAnimation: secondaryAnimation,
-                              child: child,
-                            );
-                          },
+                                return FadeThroughTransition(
+                                  animation: animation,
+                                  secondaryAnimation: secondaryAnimation,
+                                  child: child,
+                                );
+                              },
                         ),
                       );
                     },

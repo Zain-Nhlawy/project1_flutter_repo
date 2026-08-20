@@ -7,6 +7,7 @@ import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/features/demo/domain/entities/demo_entity.dart';
 import 'package:project1/features/demo/domain/entities/demo_subscription_status.dart';
 import 'package:project1/features/demo/presentation/pages/payment_pages/manage_plan.dart';
+import 'package:project1/features/demo/presentation/pages/payment_pages/upgrade_plan.dart';
 import 'package:project1/features/demo/presentation/pages/invitations_page.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:animations/animations.dart';
@@ -363,6 +364,13 @@ class HeaderWidget extends StatelessWidget {
                         const SizedBox(width: 8),
                         InkWell(
                           onTap: () async {
+                            final destination =
+                                subscriptionStatus.usesCustomerPortal
+                                ? ManagePlanScreen(demoId: demo.id!)
+                                : UpgradePlanScreen(
+                                    demoId: demo.id!,
+                                    currentPlan: null,
+                                  );
                             await Navigator.push(
                               context,
                               PageRouteBuilder(
@@ -371,7 +379,7 @@ class HeaderWidget extends StatelessWidget {
                                 ),
                                 pageBuilder:
                                     (context, animation, secondaryAnimation) =>
-                                        ManagePlanScreen(demoId: demo.id!),
+                                        destination,
                                 transitionsBuilder:
                                     (
                                       context,
@@ -422,7 +430,9 @@ class HeaderWidget extends StatelessWidget {
                               ],
                             ),
                             child: Text(
-                              l10n.managePlan,
+                              subscriptionStatus.usesCustomerPortal
+                                  ? l10n.managePlan
+                                  : l10n.upgradePlan,
                               style: AppTextStyles.label.copyWith(
                                 color: AppColors.primaryOf(context),
                                 fontWeight: FontWeight.bold,

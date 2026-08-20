@@ -26,6 +26,8 @@ enum DemoSubscriptionStatus {
   bool get isRestricted =>
       this == DemoSubscriptionStatus.expired ||
       this == DemoSubscriptionStatus.cancelled;
+
+  bool get usesCustomerPortal => this == DemoSubscriptionStatus.active;
 }
 
 extension DemoSubscriptionDetails on DemoEntity {

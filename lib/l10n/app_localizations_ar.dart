@@ -1047,6 +1047,143 @@ class AppLocalizationsAr extends AppLocalizations {
   String get demoStats => 'إحصائيات الغرفة';
 
   @override
+  String get demoReportSubtitle =>
+      'نظرة واضحة على التعلم والتفاعل وأداء المحتوى';
+
+  @override
+  String get demoReportOverview => 'نظرة عامة';
+
+  @override
+  String demoReportGeneratedAt(String date, String time) {
+    return 'تم الإنشاء في $date الساعة $time';
+  }
+
+  @override
+  String get demoReportTotalMembers => 'إجمالي الأعضاء';
+
+  @override
+  String get demoReportNewMembers => 'الأعضاء الجدد';
+
+  @override
+  String get demoReportDepartments => 'الأقسام';
+
+  @override
+  String get demoReportTotalCourses => 'إجمالي الدورات';
+
+  @override
+  String get demoReportPublishedCourses => 'الدورات المنشورة';
+
+  @override
+  String get demoReportCertifications => 'الشهادات';
+
+  @override
+  String get demoReportExamAttempts => 'محاولات الاختبارات';
+
+  @override
+  String get demoReportAverageScore => 'متوسط الدرجات';
+
+  @override
+  String get demoReportPerformance => 'ملخص الأداء';
+
+  @override
+  String get demoReportExamPassRate => 'معدل النجاح في الاختبارات';
+
+  @override
+  String get demoReportCertificationRate => 'معدل الحصول على الشهادات';
+
+  @override
+  String get demoReportPublishingRate => 'معدل نشر الدورات';
+
+  @override
+  String get demoReportCoursePerformance => 'أداء الدورات';
+
+  @override
+  String get demoReportMemberActivity => 'نشاط الأعضاء';
+
+  @override
+  String get demoReportDepartmentBreakdown => 'تفاصيل الأقسام';
+
+  @override
+  String get demoReportNoCourses => 'لا توجد دورات في هذا التقرير حتى الآن.';
+
+  @override
+  String get demoReportNoMembers => 'لا يوجد أعضاء في هذا التقرير حتى الآن.';
+
+  @override
+  String get demoReportNoDepartments =>
+      'لا توجد أقسام في هذا التقرير حتى الآن.';
+
+  @override
+  String get demoReportPublished => 'منشورة';
+
+  @override
+  String get demoReportDraft => 'مسودة';
+
+  @override
+  String get demoReportAssignedMembers => 'الأعضاء المعيّنون';
+
+  @override
+  String demoReportSectionsAndLessons(int sections, int lessons) {
+    return '$sections أقسام • $lessons دروس';
+  }
+
+  @override
+  String demoReportExamsAndAttempts(int exams, int attempts) {
+    return '$exams اختبارات • $attempts محاولات';
+  }
+
+  @override
+  String demoReportHoursMinutes(int hours, int minutes) {
+    return '$hours س $minutes د';
+  }
+
+  @override
+  String demoReportMinutes(int minutes) {
+    return '$minutes دقيقة';
+  }
+
+  @override
+  String get demoReportPassRate => 'معدل النجاح';
+
+  @override
+  String get demoReportIssuedCertificates => 'الشهادات الصادرة';
+
+  @override
+  String demoReportJoinedDate(String date) {
+    return 'انضم في $date';
+  }
+
+  @override
+  String get demoReportAssignedCourses => 'الدورات المعيّنة';
+
+  @override
+  String get demoReportExams => 'الاختبارات';
+
+  @override
+  String get demoReportHighestScore => 'أعلى درجة';
+
+  @override
+  String get demoReportEngagement => 'التفاعل';
+
+  @override
+  String get demoReportMembersCount => 'الأعضاء';
+
+  @override
+  String get demoReportCoursesCount => 'الدورات';
+
+  @override
+  String get demoReportOwnerRole => 'المالك';
+
+  @override
+  String get demoReportManagerRole => 'المدير';
+
+  @override
+  String get demoReportMemberRole => 'عضو';
+
+  @override
+  String get demoReportLoadError => 'تعذر تحميل تقرير الديمو';
+
+  @override
   String get themeDark => 'داكن';
 
   @override
