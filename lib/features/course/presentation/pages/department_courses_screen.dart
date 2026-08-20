@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/core/dummy/dummy_entities.dart';
+import 'package:project1/core/presentation/widgets/app_skeletonizer.dart';
 import 'package:project1/features/course/domain/entities/department_course_entity.dart';
 import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
 import 'package:project1/features/course/presentation/cubit/department_course_cubit.dart';
@@ -27,20 +29,16 @@ class DepartmentCoursesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-  providers: [
-    BlocProvider(
-      create: (_) => getIt<DepartmentCourseCubit>()
-        ..getDepartmentCourses(
-          demoId: demoId,
-          departmentId: departmentId,
+      providers: [
+        BlocProvider(
+          create: (_) => getIt<DepartmentCourseCubit>()
+            ..getDepartmentCourses(demoId: demoId, departmentId: departmentId),
         ),
-    ),
-    BlocProvider(
-      create: (_) => getIt<CourseCubit>()
-        ..getDemoCourses(demoId),
-    ),
-  ],
-  child: _DepartmentCoursesView(
+        BlocProvider(
+          create: (_) => getIt<CourseCubit>()..getDemoCourses(demoId),
+        ),
+      ],
+      child: _DepartmentCoursesView(
         demoId: demoId,
         departmentId: departmentId,
         canManage: canManage,
@@ -62,40 +60,38 @@ class _DepartmentCoursesView extends StatelessWidget {
 
   void _refresh(BuildContext context) {
     context.read<DepartmentCourseCubit>().getDepartmentCourses(
-          demoId: demoId,
-          departmentId: departmentId,
-        );
+      demoId: demoId,
+      departmentId: departmentId,
+    );
   }
 
   Future<void> _openManageScreen(
-  BuildContext context,
-  List<DepartmentCourseEntity> currentCourses,
-) async {
-  final assetIdToDepartmentCourseId = <String, String>{
-    for (final dc in currentCourses) dc.asset.id: dc.id,
-  };
+    BuildContext context,
+    List<DepartmentCourseEntity> currentCourses,
+  ) async {
+    final assetIdToDepartmentCourseId = <String, String>{
+      for (final dc in currentCourses) dc.asset.id: dc.id,
+    };
 
-  final result = await Navigator.push<bool>(
-    context,
-    MaterialPageRoute(
-      builder: (_) => BlocProvider(
-        create: (_) => getIt<CourseCubit>()
-          ..getDemoCourses(demoId),
-        child: DemoCoursesScreen(
-          demoId: demoId,
-          showAppBar: false,
-          departmentId: departmentId,
-          initialAssetIdToDepartmentCourseId:
-              assetIdToDepartmentCourseId,
+    final result = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => BlocProvider(
+          create: (_) => getIt<CourseCubit>()..getDemoCourses(demoId),
+          child: DemoCoursesScreen(
+            demoId: demoId,
+            showAppBar: false,
+            departmentId: departmentId,
+            initialAssetIdToDepartmentCourseId: assetIdToDepartmentCourseId,
+          ),
         ),
       ),
-    ),
-  );
+    );
 
-  if (result == true && context.mounted) {
-    _refresh(context);
+    if (result == true && context.mounted) {
+      _refresh(context);
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +115,25 @@ class _DepartmentCoursesView extends StatelessWidget {
           builder: (context, state) {
             if (state is DepartmentCourseLoading ||
                 state is DepartmentCourseInitial) {
-              return const Center(child: CircularProgressIndicator());
+              final course = dummyDepartmentCourse.asset.course;
+              return AppSkeletonizer(
+                child: ListView.builder(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+                  itemCount: 2,
+                  itemBuilder: (context, index) => CourseCard(
+                    id: course.id,
+                    title: course.title,
+                    companyName: 'Company name',
+                    imageUrl: course.imagePath ?? '',
+                    price: course.price,
+                    description: course.description,
+                    visibility: course.visibility,
+                    isPublished: course.isPublished,
+                    mode: CourseCardMode.demoView,
+                    onSeeMore: () {},
+                  ),
+                ),
+              );
             }
 
             if (state is DepartmentCourseError) {

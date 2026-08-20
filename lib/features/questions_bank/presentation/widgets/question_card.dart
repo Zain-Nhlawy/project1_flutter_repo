@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
-import 'package:project1/features/questions_bank/data/models/question_bank_model.dart';
+import 'package:project1/features/questions_bank/domain/entities/question_bank_entity.dart';
 
 class QuestionCard extends StatelessWidget {
-  final QuestionBankModel question;
+  final QuestionBankEntity question;
   final VoidCallback onDelete;
 
   const QuestionCard({

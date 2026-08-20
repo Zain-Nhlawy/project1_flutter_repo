@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
-import 'package:project1/features/certification/data/models/certification_model.dart';
+import 'package:project1/features/certification/domain/entities/certification_entity.dart';
 import 'package:project1/features/certification/presentation/widgets/certificate_icon.dart';
 import 'package:project1/features/certification/presentation/widgets/info_badge.dart';
 
 class CertificationTile extends StatelessWidget {
-  final CertificationModel certification;
+  final CertificationEntity certification;
   final String dateLabel;
   final VoidCallback onTap;
 
-  const CertificationTile({super.key, 
+  const CertificationTile({
+    super.key,
     required this.certification,
     required this.dateLabel,
     required this.onTap,
@@ -21,11 +22,8 @@ class CertificationTile extends StatelessWidget {
     final primaryColor = AppColors.primaryOf(context);
     final textColor =
         Theme.of(context).textTheme.bodyMedium?.color ?? Colors.black;
-    final secondaryColor = Theme.of(context)
-            .textTheme
-            .bodySmall
-            ?.color
-            ?.withValues(alpha: 0.65) ??
+    final secondaryColor =
+        Theme.of(context).textTheme.bodySmall?.color?.withValues(alpha: 0.65) ??
         Colors.grey;
 
     return Material(
@@ -37,18 +35,14 @@ class CertificationTile extends StatelessWidget {
         child: Ink(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(22),
-            border: Border.all(
-              color: primaryColor.withValues(alpha: 0.10),
-            ),
+            border: Border.all(color: primaryColor.withValues(alpha: 0.10)),
           ),
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                CertificateIcon(
-                  color: primaryColor,
-                ),
+                CertificateIcon(color: primaryColor),
                 const SizedBox(width: 14),
                 Expanded(
                   child: Column(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/core/dummy/dummy_entities.dart';
+import 'package:project1/core/presentation/widgets/app_skeletonizer.dart';
 import 'package:project1/features/course/domain/entities/tag_entity.dart';
 import 'package:project1/features/course/presentation/widgets/course_tag.dart';
 import 'package:project1/l10n/app_localizations.dart';
@@ -25,9 +27,14 @@ class TagsSelector extends StatelessWidget {
     final localizations = AppLocalizations.of(context)!;
 
     if (isLoading) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 12),
-        child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+      return AppSkeletonizer(
+        child: TagsSelector(
+          availableTags: List.filled(4, dummyTag),
+          selectedTagIds: const {},
+          onToggle: (_) {},
+          enabled: false,
+          isLoading: false,
+        ),
       );
     }
 

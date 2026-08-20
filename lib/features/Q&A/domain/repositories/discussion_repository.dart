@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:project1/core/errors/failures.dart';
-import 'package:project1/features/q&a/data/models/discussion_answer_model.dart';
-import 'package:project1/features/q&a/data/models/discussion_question_model.dart';
-import 'package:project1/features/q&a/data/models/paginated_discussion_answers.dart';
-import 'package:project1/features/q&a/data/models/paginated_discussion_questions.dart';
+import 'package:project1/features/Q&A/data/models/discussion_answer_model.dart';
+import 'package:project1/features/Q&A/data/models/discussion_question_model.dart';
+import 'package:project1/features/Q&A/data/models/paginated_discussion_answers.dart';
+import 'package:project1/features/Q&A/data/models/paginated_discussion_questions.dart';
 
 abstract class DiscussionRepository {
   Future<Either<Failure, DiscussionQuestionModel>> createQuestion({

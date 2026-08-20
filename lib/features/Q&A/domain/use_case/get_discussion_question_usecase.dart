@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:project1/core/errors/failures.dart';
-import 'package:project1/features/q&a/data/models/paginated_discussion_questions.dart';
-import 'package:project1/features/q&a/domain/repositories/discussion_repository.dart';
+import 'package:project1/features/Q&A/data/models/paginated_discussion_questions.dart';
+import 'package:project1/features/Q&A/domain/repositories/discussion_repository.dart';
 
 class GetDiscussionQuestionsUseCase {
   final DiscussionRepository repository;

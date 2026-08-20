@@ -4,6 +4,8 @@ import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/core/dummy/dummy_entities.dart';
+import 'package:project1/core/presentation/widgets/app_skeletonizer.dart';
 import 'package:project1/features/demo/domain/entities/inquiry_entity.dart';
 import 'package:project1/features/demo/presentation/cubit/inquiry%20cubit/inquiry_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/inquiry%20cubit/inquiry_state.dart';
@@ -217,7 +219,17 @@ class _InquiriesPageViewState extends State<_InquiriesPageView> {
                 }
 
                 if (state is InquiryLoading && _inquiries.isEmpty) {
-                  return const Center(child: CircularProgressIndicator());
+                  return AppSkeletonizer(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.fromLTRB(16, 20, 16, 80),
+                      itemCount: 4,
+                      itemBuilder: (context, index) => InquiryCardWidget(
+                        inquiry: dummyInquiry,
+                        isOwner: widget.isOwner,
+                        onTap: () {},
+                      ),
+                    ),
+                  );
                 }
 
                 if (_inquiries.isEmpty) {

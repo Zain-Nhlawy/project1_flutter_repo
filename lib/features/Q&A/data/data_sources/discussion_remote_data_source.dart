@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:project1/core/errors/dio_exception_mapper.dart';
 import 'package:project1/core/network/dio_client.dart';
-import 'package:project1/features/q&a/data/models/discussion_answer_model.dart';
-import 'package:project1/features/q&a/data/models/discussion_question_model.dart';
-import 'package:project1/features/q&a/data/models/paginated_discussion_answers.dart';
-import 'package:project1/features/q&a/data/models/paginated_discussion_questions.dart';
+import 'package:project1/features/Q&A/data/models/discussion_answer_model.dart';
+import 'package:project1/features/Q&A/data/models/discussion_question_model.dart';
+import 'package:project1/features/Q&A/data/models/paginated_discussion_answers.dart';
+import 'package:project1/features/Q&A/data/models/paginated_discussion_questions.dart';
 
 class DiscussionRemoteDataSource {
   final DioClient dioClient;

@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/core/dummy/dummy_entities.dart';
+import 'package:project1/core/presentation/widgets/app_skeletonizer.dart';
 import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
 import 'package:project1/features/course/presentation/cubit/course_state.dart';
 import 'package:project1/features/course/presentation/cubit/tags_cubit.dart';
@@ -106,9 +108,11 @@ class _PublicLibraryViewState extends State<_PublicLibraryView> {
                 ),
               ),
               if (state is PublicCoursesLoading)
-                const SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: _LibraryLoadingState(),
+                AppSliverSkeletonizer(
+                  child: LibraryCoursesGrid(
+                    courses: List.filled(3, dummyCourse),
+                    userDemoId: widget.demoId,
+                  ),
                 )
               else if (state is PublicCoursesError)
                 SliverFillRemaining(
@@ -250,29 +254,6 @@ class _LibraryPageHeader extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _LibraryLoadingState extends StatelessWidget {
-  const _LibraryLoadingState();
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            width: 34,
-            height: 34,
-            child: CircularProgressIndicator(
-              strokeWidth: 3,
-              color: AppColors.primaryOf(context),
-            ),
-          ),
-        ],
       ),
     );
   }

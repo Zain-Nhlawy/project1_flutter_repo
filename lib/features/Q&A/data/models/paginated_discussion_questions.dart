@@ -1,4 +1,4 @@
-import 'package:project1/features/q&a/data/models/discussion_question_model.dart';
+import 'package:project1/features/Q&A/data/models/discussion_question_model.dart';
 
 class PaginatedDiscussionQuestions {
   final List<DiscussionQuestionModel> items;

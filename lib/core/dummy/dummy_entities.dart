@@ -28,8 +28,8 @@ import 'package:project1/features/lesson/domain/entities/lesson_entity.dart';
 import 'package:project1/features/live_stream/domain/entities/live_stream_entity.dart';
 import 'package:project1/features/live_stream/domain/entities/live_stream_token_entity.dart';
 import 'package:project1/features/notifications/domain/entities/notification_payload_entity.dart';
-import 'package:project1/features/q&a/domain/entities/discussion_answer_entity.dart';
-import 'package:project1/features/q&a/domain/entities/discussion_question_entity.dart';
+import 'package:project1/features/Q&A/domain/entities/discussion_answer_entity.dart';
+import 'package:project1/features/Q&A/domain/entities/discussion_question_entity.dart';
 import 'package:project1/features/questions_bank/domain/entities/question_bank_entity.dart';
 import 'package:project1/features/questions_bank/domain/entities/question_choice_entity.dart';
 import 'package:project1/features/quiz/domain/entities/exam_Attempt_question_entity.dart';
@@ -218,6 +218,21 @@ final dummyLeaderboardMember = LeaderboardMemberEntity(
   totalScore: 100,
 );
 
+final dummyLeaderboardMembers = List<LeaderboardMemberEntity>.generate(
+  5,
+  (index) => LeaderboardMemberEntity(
+    rank: index + 1,
+    userId: 'user-${index + 1}',
+    departmentMemberId: 'member-${index + 1}',
+    firstName: 'First',
+    lastName: 'Last',
+    imagePath: '',
+    jobTitle: 'Job title placeholder',
+    totalScore: 100 - (index * 5),
+  ),
+  growable: false,
+);
+
 // ---------------- Department Attachments ----------------
 
 final dummyDepartmentAttachmentFile = DepartmentAttachmentFileEntity(
@@ -297,7 +312,6 @@ final dummyRoadmap = RoadmapEntity(
   careerOutcomes: const ['Outcome one'],
   steps: [dummyRoadmapStep],
 );
-
 
 // ---------------- Course FAQ ----------------
 

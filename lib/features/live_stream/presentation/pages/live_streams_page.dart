@@ -5,6 +5,8 @@ import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/core/dummy/dummy_entities.dart';
+import 'package:project1/core/presentation/widgets/app_skeletonizer.dart';
 import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/user_state.dart';
 import 'package:project1/features/live_stream/domain/entities/live_stream_entity.dart';
@@ -32,7 +34,9 @@ class LiveStreamsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getIt<LiveStreamCubit>()..fetchLiveStreams(departmentId, demoId: demoId),
+      create: (_) =>
+          getIt<LiveStreamCubit>()
+            ..fetchLiveStreams(departmentId, demoId: demoId),
       child: _LiveStreamsPageView(
         departmentId: departmentId,
         demoId: demoId,
@@ -69,17 +73,17 @@ class _LiveStreamsPageViewState extends State<_LiveStreamsPageView> {
   }) async {
     final userState = context.read<UserCubit>().state;
     final currentUser = userState is UserLoaded ? userState.user : null;
-    final userName = currentUser != null && (currentUser.firstName.isNotEmpty || currentUser.lastName.isNotEmpty)
+    final userName =
+        currentUser != null &&
+            (currentUser.firstName.isNotEmpty ||
+                currentUser.lastName.isNotEmpty)
         ? '${currentUser.firstName} ${currentUser.lastName}'.trim()
         : (isHost ? 'Host' : 'Viewer');
     final userEmail = currentUser?.email;
     final userAvatar = currentUser?.imagePath;
 
     try {
-      await [
-        Permission.camera,
-        Permission.microphone,
-      ].request();
+      await [Permission.camera, Permission.microphone].request();
     } catch (_) {}
 
     if (!mounted) return;
@@ -87,8 +91,8 @@ class _LiveStreamsPageViewState extends State<_LiveStreamsPageView> {
     final roomName = (tokenRoomName != null && tokenRoomName.isNotEmpty)
         ? tokenRoomName
         : (stream.roomName?.isNotEmpty == true
-            ? stream.roomName!
-            : 'LiveStream-${stream.id}');
+              ? stream.roomName!
+              : 'LiveStream-${stream.id}');
 
     try {
       await _jitsiService.joinMeeting(
@@ -104,20 +108,17 @@ class _LiveStreamsPageViewState extends State<_LiveStreamsPageView> {
           conferenceTerminated: (url, error) {
             if (isHost && mounted) {
               context.read<LiveStreamCubit>().endLiveStream(
-                    id: stream.id,
-                    departmentId: widget.departmentId,
-                    demoId: widget.demoId,
-                  );
+                id: stream.id,
+                departmentId: widget.departmentId,
+                demoId: widget.demoId,
+              );
             }
           },
         ),
       );
     } catch (e) {
       if (mounted) {
-        SnackbarTheme().newSnackBarError(
-          context,
-          e.toString(),
-        );
+        SnackbarTheme().newSnackBarError(context, e.toString());
       }
     }
   }
@@ -162,11 +163,18 @@ class _LiveStreamsPageViewState extends State<_LiveStreamsPageView> {
                     );
                   },
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 14,
+                    ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(Icons.add_rounded, color: Colors.white, size: 22),
+                        const Icon(
+                          Icons.add_rounded,
+                          color: Colors.white,
+                          size: 22,
+                        ),
                         const SizedBox(width: 8),
                         Text(
                           localizations.createLiveStream,
@@ -201,15 +209,30 @@ class _LiveStreamsPageViewState extends State<_LiveStreamsPageView> {
         },
         builder: (context, state) {
           if (state is LiveStreamLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return AppSkeletonizer(
+              child: ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: 3,
+                itemBuilder: (context, index) => LiveStreamCard(
+                  stream: dummyLiveStream,
+                  canManage: widget.canManage,
+                  onJoin: () {},
+                  onStart: () {},
+                  onEnd: () {},
+                  onEdit: () {},
+                ),
+              ),
+            );
           }
 
           if (state is LiveStreamsLoaded) {
             if (state.streams.isEmpty) {
               return RefreshIndicator(
-                onRefresh: () => context
-                    .read<LiveStreamCubit>()
-                    .fetchLiveStreams(widget.departmentId, demoId: widget.demoId),
+                onRefresh: () =>
+                    context.read<LiveStreamCubit>().fetchLiveStreams(
+                      widget.departmentId,
+                      demoId: widget.demoId,
+                    ),
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
                   child: Container(
@@ -221,7 +244,9 @@ class _LiveStreamsPageViewState extends State<_LiveStreamsPageView> {
                         Icon(
                           Icons.live_tv_rounded,
                           size: 64,
-                          color: AppColors.textSecondaryOf(context).withValues(alpha: 0.4),
+                          color: AppColors.textSecondaryOf(
+                            context,
+                          ).withValues(alpha: 0.4),
                         ),
                         const SizedBox(height: 16),
                         Text(
@@ -238,9 +263,10 @@ class _LiveStreamsPageViewState extends State<_LiveStreamsPageView> {
             }
 
             return RefreshIndicator(
-              onRefresh: () => context
-                  .read<LiveStreamCubit>()
-                  .fetchLiveStreams(widget.departmentId, demoId: widget.demoId),
+              onRefresh: () => context.read<LiveStreamCubit>().fetchLiveStreams(
+                widget.departmentId,
+                demoId: widget.demoId,
+              ),
               child: ListView.builder(
                 padding: const EdgeInsets.all(16),
                 physics: const AlwaysScrollableScrollPhysics(),
@@ -252,29 +278,29 @@ class _LiveStreamsPageViewState extends State<_LiveStreamsPageView> {
                     canManage: widget.canManage,
                     onJoin: () {
                       context.read<LiveStreamCubit>().joinOrStartMeeting(
-                            stream: stream,
-                            isHost: widget.canManage,
-                            departmentId: widget.departmentId,
-                            demoId: widget.demoId,
-                          );
+                        stream: stream,
+                        isHost: widget.canManage,
+                        departmentId: widget.departmentId,
+                        demoId: widget.demoId,
+                      );
                     },
                     onStart: widget.canManage
                         ? () {
                             context.read<LiveStreamCubit>().joinOrStartMeeting(
-                                  stream: stream,
-                                  isHost: true,
-                                  departmentId: widget.departmentId,
-                                  demoId: widget.demoId,
-                                );
+                              stream: stream,
+                              isHost: true,
+                              departmentId: widget.departmentId,
+                              demoId: widget.demoId,
+                            );
                           }
                         : null,
                     onEnd: widget.canManage
                         ? () {
                             context.read<LiveStreamCubit>().endLiveStream(
-                                  id: stream.id,
-                                  departmentId: widget.departmentId,
-                                  demoId: widget.demoId,
-                                );
+                              id: stream.id,
+                              departmentId: widget.departmentId,
+                              demoId: widget.demoId,
+                            );
                           }
                         : null,
                     onEdit: widget.canManage
@@ -302,9 +328,10 @@ class _LiveStreamsPageViewState extends State<_LiveStreamsPageView> {
           }
 
           return RefreshIndicator(
-            onRefresh: () => context
-                .read<LiveStreamCubit>()
-                .fetchLiveStreams(widget.departmentId, demoId: widget.demoId),
+            onRefresh: () => context.read<LiveStreamCubit>().fetchLiveStreams(
+              widget.departmentId,
+              demoId: widget.demoId,
+            ),
             child: const SingleChildScrollView(
               physics: AlwaysScrollableScrollPhysics(),
               child: SizedBox(height: 300),

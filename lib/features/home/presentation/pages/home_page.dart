@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/core/dummy/dummy_entities.dart';
+import 'package:project1/core/presentation/widgets/app_skeletonizer.dart';
 import 'package:project1/features/demo/domain/entities/demo_entity.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20cubit/demo_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20cubit/demo_state.dart';
@@ -46,9 +48,12 @@ class HomePage extends StatelessWidget {
                           .length;
                     }
 
-                    return MainHeader(
-                      myDemosCount: myCount,
-                      enrolledDemosCount: enrolledCount,
+                    return AppSkeletonizer(
+                      enabled: state is GetDemosLoading,
+                      child: MainHeader(
+                        myDemosCount: myCount,
+                        enrolledDemosCount: enrolledCount,
+                      ),
                     );
                   },
                 ),
@@ -192,82 +197,7 @@ class _HomeLoadingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final primary = AppColors.primaryOf(context);
-    final placeholder = AppColors.textSecondaryOf(
-      context,
-    ).withValues(alpha: 0.10);
-
-    return Container(
-      width: double.infinity,
-      constraints: const BoxConstraints(minHeight: 112),
-      padding: const EdgeInsets.all(18),
-      decoration: _contentCardDecoration(context),
-      child: Row(
-        children: [
-          Container(
-            width: 54,
-            height: 54,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: primary.withValues(alpha: 0.08),
-              borderRadius: BorderRadius.circular(17),
-            ),
-            child: SizedBox(
-              width: 22,
-              height: 22,
-              child: CircularProgressIndicator(
-                strokeWidth: 2.4,
-                color: primary,
-              ),
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                FractionallySizedBox(
-                  widthFactor: 0.72,
-                  alignment: AlignmentDirectional.centerStart,
-                  child: Container(
-                    height: 11,
-                    decoration: BoxDecoration(
-                      color: placeholder,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                FractionallySizedBox(
-                  widthFactor: 0.94,
-                  alignment: AlignmentDirectional.centerStart,
-                  child: Container(
-                    height: 9,
-                    decoration: BoxDecoration(
-                      color: placeholder.withValues(alpha: 0.07),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                FractionallySizedBox(
-                  widthFactor: 0.56,
-                  alignment: AlignmentDirectional.centerStart,
-                  child: Container(
-                    height: 9,
-                    decoration: BoxDecoration(
-                      color: placeholder.withValues(alpha: 0.07),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+    return AppSkeletonizer(child: DemoCard(demo: dummyDemo));
   }
 }
 

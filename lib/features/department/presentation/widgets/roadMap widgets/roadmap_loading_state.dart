@@ -1,42 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:project1/config/theme/app_colors.dart';
-import 'package:project1/l10n/app_localizations.dart';
+import 'package:project1/core/dummy/dummy_entities.dart';
+import 'package:project1/core/presentation/widgets/app_skeletonizer.dart';
+import 'package:project1/features/department/presentation/widgets/roadMap widgets/roadmap_stats_bar.dart';
+import 'package:project1/features/department/presentation/widgets/roadMap widgets/roadmap_timeline_item.dart';
 
 class RoadmapLoadingState extends StatelessWidget {
   const RoadmapLoadingState({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final primaryColor = AppColors.primaryOf(context);
+    final steps = List.filled(3, dummyRoadmapStep);
 
-    return Center(
+    return AppSkeletonizer(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            width: 50,
-            height: 50,
-            child: CircularProgressIndicator(
-              strokeWidth: 3,
-              valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
-            ),
+          RoadmapStatsBar(
+            totalSteps: steps.length,
+            totalWeeks: steps.length,
+            onExportPdfPressed: () {},
           ),
-          const SizedBox(height: 20),
-          Text(
-            l10n.generatingRoadmap,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textPrimaryOf(context),
-            ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            l10n.generatingRoadmapSub,
-            style: TextStyle(
-              fontSize: 13,
-              color: AppColors.textSecondaryOf(context),
+          const SizedBox(height: 12),
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              itemCount: steps.length,
+              itemBuilder: (context, index) => RoadmapTimelineItem(
+                step: steps[index],
+                isFirst: index == 0,
+                isLast: index == steps.length - 1,
+              ),
             ),
           ),
         ],
