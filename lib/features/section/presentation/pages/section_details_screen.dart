@@ -196,6 +196,7 @@ class _SectionLessonsExpansionTileState
                 QuizTile(
                   examId: _examId!,
                   demoId: widget.demoId,
+                  courseId: widget.section.courseId,
                   locked: widget.lessonsLocked,
                 )
               else
@@ -207,7 +208,6 @@ class _SectionLessonsExpansionTileState
                     final index = entry.key;
                     final lesson = entry.value;
                     final isLast = index == _lessons.length - 1;
-                    // First 2 lessons in first section are free trial (not locked)
                     final isFirstSection = widget.section.order == 1;
                     final isLockedLesson =
                         widget.lessonsLocked &&
@@ -232,6 +232,7 @@ class _SectionLessonsExpansionTileState
                             QuizTile(
                               examId: _examId!,
                               demoId: widget.demoId,
+                              courseId: widget.section.courseId,
                               locked: widget.lessonsLocked,
                             ),
                         ],

@@ -869,5 +869,11 @@
 "invalidPrice": "سعر غير صالح",
 "visibility": "الظهور",
 "visibilityPublic": "عام",
-"visibilityPrivate": "خاص"
+"visibilityPrivate": "خاص",
+"certificateEarnedTitle": "استحقيت شهادة!",
+"certificateEarnedSubtitle": "أنجزت كل كويزات هالكورس بنجاح",
+  "outOf100": "100",
+  "passed": "ناجح",
+  "failed": "راسب",
+  "required": "المطلوب"
 }

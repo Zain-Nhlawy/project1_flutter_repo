@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/features/certification/presentation/cubit/certification_cubit.dart';
+import 'package:project1/features/certification/presentation/cubit/certification_state.dart';
+import 'package:project1/features/certification/domain/entities/certification_entity.dart';
 import 'package:project1/features/quiz/domain/entities/generated_exam_entity.dart';
 import 'package:project1/features/quiz/presentation/pages/details/exam_attempt_review_screen.dart';
 import 'package:project1/l10n/app_localizations.dart';
@@ -10,6 +15,7 @@ class QuizResultScreen extends StatelessWidget {
   final int total;
   final GeneratedExamEntity exam;
   final Map<String, Set<String>> selectedAnswers;
+  final String courseId;
 
   const QuizResultScreen({
     super.key,
@@ -17,14 +23,97 @@ class QuizResultScreen extends StatelessWidget {
     required this.total,
     required this.exam,
     required this.selectedAnswers,
+    required this.courseId,
   });
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
-
     final passed = score >= exam.passingScore;
-    
+
+    if (!passed) {
+      return _QuizResultView(
+        score: score,
+        exam: exam,
+        selectedAnswers: selectedAnswers,
+        passed: false,
+      );
+    }
+
+    return BlocProvider(
+      create: (_) => getIt<CertificationCubit>(),
+      child: _QuizResultView(
+        score: score,
+        exam: exam,
+        selectedAnswers: selectedAnswers,
+        passed: true,
+        courseId: courseId,
+      ),
+    );
+  }
+}
+
+class _QuizResultView extends StatefulWidget {
+  final int score;
+  final GeneratedExamEntity exam;
+  final Map<String, Set<String>> selectedAnswers;
+  final bool passed;
+  final String? courseId;
+
+  const _QuizResultView({
+    required this.score,
+    required this.exam,
+    required this.selectedAnswers,
+    required this.passed,
+    this.courseId,
+  });
+
+  @override
+  State<_QuizResultView> createState() => _QuizResultViewState();
+}
+
+class _QuizResultViewState extends State<_QuizResultView> {
+  CertificationEntity? _earnedCertificate;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.passed && widget.courseId != null) {
+      _checkForCertificate();
+    }
+  }
+
+  Future<void> _checkForCertificate({int attempt = 0}) async {
+    final cubit = context.read<CertificationCubit>();
+    await cubit.fetchMyCertifications();
+
+    if (!mounted) return;
+
+    final state = cubit.state;
+    if (state is MyCertificationsLoaded) {
+      final match = state.certifications
+          .where((c) => c.courseId == widget.courseId)
+          .toList();
+
+      if (match.isNotEmpty) {
+        setState(() => _earnedCertificate = match.first);
+        return;
+      }
+    }
+
+    if (attempt < 1) {
+      await Future.delayed(const Duration(milliseconds: 1500));
+      if (!mounted) return;
+      _checkForCertificate(attempt: attempt + 1);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    final exam = widget.exam;
+    final score = widget.score;
+    final passed = widget.passed;
+
     final title = passed
         ? localizations.excellent
         : localizations.keepPracticing;
@@ -51,10 +140,7 @@ class QuizResultScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 12),
 
-              Image.asset(
-                image,
-                height: 190,
-              ),
+              Image.asset(image, height: 190),
 
               const SizedBox(height: 20),
 
@@ -66,9 +152,7 @@ class QuizResultScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: AppColors.surfaceOf(context),
                   borderRadius: BorderRadius.circular(30),
-                  border: Border.all(
-                    color: AppColors.borderOf(context),
-                  ),
+                  border: Border.all(color: AppColors.borderOf(context)),
                   boxShadow: [
                     BoxShadow(
                       color: accentColor.withOpacity(.10),
@@ -88,7 +172,7 @@ class QuizResultScreen extends StatelessWidget {
                         ),
                       ),
                       TextSpan(
-                        text: ' / 100',
+                        text: ' / ${localizations.outOf100}',
                         style: AppTextStyles.titleLarge.copyWith(
                           fontFamily: AppTextStyles.fontFamily,
                           color: AppColors.textSecondaryOf(context),
@@ -103,7 +187,10 @@ class QuizResultScreen extends StatelessWidget {
               const SizedBox(height: 22),
 
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 decoration: BoxDecoration(
                   color: accentColor.withOpacity(0.08),
                   borderRadius: BorderRadius.circular(12),
@@ -113,7 +200,9 @@ class QuizResultScreen extends StatelessWidget {
                   TextSpan(
                     children: [
                       TextSpan(
-                        text: passed ? '✓ Passed ' : '✗ Failed ',
+                        text: passed
+    ? '✓ ${localizations.passed} '
+    : '✗ ${localizations.failed} ',
                         style: AppTextStyles.bodyMedium.copyWith(
                           fontFamily: AppTextStyles.fontFamily,
                           color: accentColor,
@@ -121,7 +210,7 @@ class QuizResultScreen extends StatelessWidget {
                         ),
                       ),
                       TextSpan(
-                        text: '(Required: ${exam.passingScore}%)',
+                        text: '(${localizations.required}: ${exam.passingScore}%)',
                         style: AppTextStyles.bodyMedium.copyWith(
                           fontFamily: AppTextStyles.fontFamily,
                           color: AppColors.textSecondaryOf(context),
@@ -156,6 +245,13 @@ class QuizResultScreen extends StatelessWidget {
                 ),
               ),
 
+              if (_earnedCertificate != null) ...[
+                const SizedBox(height: 22),
+                _CertificateEarnedBanner(
+                  certification: _earnedCertificate!,
+                ),
+              ],
+
               const SizedBox(height: 36),
 
               SizedBox(
@@ -181,7 +277,7 @@ class QuizResultScreen extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (_) => ExamAttemptReviewScreen(
                             exam: exam,
-                            selectedAnswers: selectedAnswers,
+                            selectedAnswers: widget.selectedAnswers,
                           ),
                         ),
                       );
@@ -206,9 +302,7 @@ class QuizResultScreen extends StatelessWidget {
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primaryOf(context),
-                    side: BorderSide(
-                      color: AppColors.primaryOf(context),
-                    ),
+                    side: BorderSide(color: AppColors.primaryOf(context)),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -228,6 +322,75 @@ class QuizResultScreen extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _CertificateEarnedBanner extends StatelessWidget {
+  final CertificationEntity certification;
+
+  const _CertificateEarnedBanner({required this.certification});
+
+  @override
+  Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    final primary = AppColors.primaryOf(context);
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        gradient: AppColors.headerGradientOf(context),
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          BoxShadow(
+            color: primary.withOpacity(0.25),
+            blurRadius: 14,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 46,
+            height: 46,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.18),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: const Icon(
+              Icons.workspace_premium_rounded,
+              color: Colors.white,
+              size: 24,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  localizations.certificateEarnedTitle,
+                  style: AppTextStyles.label.copyWith(
+                    fontFamily: AppTextStyles.fontFamily,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  localizations.certificateEarnedSubtitle,
+                  style: AppTextStyles.caption.copyWith(
+                    fontFamily: AppTextStyles.fontFamily,
+                    color: Colors.white.withOpacity(0.9),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

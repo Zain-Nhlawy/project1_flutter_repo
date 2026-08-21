@@ -19,8 +19,9 @@ import 'package:project1/l10n/app_localizations.dart';
 class QuizScreen extends StatefulWidget {
   final String examId;
   final String demoId;
+  final String courseId; 
 
-  const QuizScreen({super.key, required this.examId, required this.demoId});
+  const QuizScreen({super.key, required this.examId, required this.demoId, required this.courseId,});
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
@@ -94,6 +95,7 @@ class _QuizScreenState extends State<QuizScreen> {
           total: state.result.exam.numberOfQuestions,
           exam: state.result.exam,
           selectedAnswers: state.selectedAnswers,
+          courseId: widget.courseId,
         ),
       ),
     );

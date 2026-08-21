@@ -4483,6 +4483,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Private'**
   String get visibilityPrivate;
+
+  /// No description provided for @certificateEarnedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Certificate Earned!'**
+  String get certificateEarnedTitle;
+
+  /// No description provided for @certificateEarnedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve completed all quizzes for this course'**
+  String get certificateEarnedSubtitle;
+
+  /// No description provided for @outOf100.
+  ///
+  /// In en, this message translates to:
+  /// **'100'**
+  String get outOf100;
+
+  /// No description provided for @passed.
+  ///
+  /// In en, this message translates to:
+  /// **'Passed'**
+  String get passed;
+
+  /// No description provided for @failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get failed;
+
+  /// No description provided for @required.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get required;
 }
 
 class _AppLocalizationsDelegate
