@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/core/dummy/dummy_entities.dart';
+import 'package:project1/core/presentation/widgets/app_skeletonizer.dart';
 import 'package:project1/features/demo/presentation/widgets/demo%20member%20card/user_info_dialog.dart';
 import 'package:project1/features/department/domain/entities/department_member_entity.dart';
 import 'package:project1/features/department/domain/entities/leaderboard_member_entity.dart';
@@ -24,11 +26,9 @@ class DepartmentLeaderboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getIt<LeaderboardCubit>()
-        ..getLeaderboard(
-          departmentId: departmentId,
-          demoId: demoId ?? '',
-        ),
+      create: (_) =>
+          getIt<LeaderboardCubit>()
+            ..getLeaderboard(departmentId: departmentId, demoId: demoId ?? ''),
       child: _DepartmentLeaderboardView(
         departmentId: departmentId,
         demoId: demoId ?? '',
@@ -72,14 +72,27 @@ class _DepartmentLeaderboardView extends StatelessWidget {
         backgroundColor: AppColors.surfaceOf(context),
         onRefresh: () async {
           await context.read<LeaderboardCubit>().getLeaderboard(
-                departmentId: departmentId,
-                demoId: demoId,
-              );
+            departmentId: departmentId,
+            demoId: demoId,
+          );
         },
         child: BlocBuilder<LeaderboardCubit, LeaderboardState>(
           builder: (context, state) {
             if (state is LeaderboardLoading || state is LeaderboardInitial) {
-              return const Center(child: CircularProgressIndicator());
+              return AppSkeletonizer(
+                child: ListView(
+                  padding: const EdgeInsets.only(top: 8, bottom: 32),
+                  children: [
+                    LeaderboardPodium(
+                      topMembers: dummyLeaderboardMembers.take(3).toList(),
+                    ),
+                    const SizedBox(height: 16),
+                    ...dummyLeaderboardMembers
+                        .skip(3)
+                        .map((member) => LeaderboardListTile(member: member)),
+                  ],
+                ),
+              );
             }
 
             if (state is LeaderboardError) {
@@ -114,9 +127,9 @@ class _DepartmentLeaderboardView extends StatelessWidget {
                             ElevatedButton.icon(
                               onPressed: () {
                                 context.read<LeaderboardCubit>().getLeaderboard(
-                                      departmentId: departmentId,
-                                      demoId: demoId,
-                                    );
+                                  departmentId: departmentId,
+                                  demoId: demoId,
+                                );
                               },
                               icon: const Icon(Icons.refresh_rounded),
                               label: Text(l10n.tryAgain),
@@ -155,8 +168,9 @@ class _DepartmentLeaderboardView extends StatelessWidget {
                             Icon(
                               Icons.emoji_events_outlined,
                               size: 72,
-                              color: AppColors.textSecondaryOf(context)
-                                  .withValues(alpha: 0.4),
+                              color: AppColors.textSecondaryOf(
+                                context,
+                              ).withValues(alpha: 0.4),
                             ),
                             const SizedBox(height: 16),
                             Text(

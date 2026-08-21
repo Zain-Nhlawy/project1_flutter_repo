@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/core/dummy/dummy_entities.dart';
+import 'package:project1/core/presentation/widgets/app_skeletonizer.dart';
 import 'package:project1/features/department/data/models/department_member_model.dart';
 import 'package:project1/features/department/presentation/cubit/department%20members%20cubit/department_member_cubit.dart';
 import 'package:project1/features/department/presentation/cubit/department%20members%20cubit/deprtment_member_state.dart';
@@ -26,8 +28,9 @@ class DepartmentMembersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getIt<DepartmentMemberCubit>()
-        ..getDepartmentMembers(departmentId, demoId),
+      create: (_) =>
+          getIt<DepartmentMemberCubit>()
+            ..getDepartmentMembers(departmentId, demoId),
       child: _DepartmentMembersView(
         demoId: demoId,
         departmentId: departmentId,
@@ -53,9 +56,9 @@ class _DepartmentMembersView extends StatelessWidget {
 
   void _refresh(BuildContext context) {
     context.read<DepartmentMemberCubit>().getDepartmentMembers(
-          departmentId,
-          demoId,
-        );
+      departmentId,
+      demoId,
+    );
   }
 
   @override
@@ -127,7 +130,23 @@ class _DepartmentMembersView extends StatelessWidget {
           builder: (context, state) {
             if (state is DepartmentMemberInitial ||
                 state is DepartmentMemberLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return AppSkeletonizer(
+                child: ListView.separated(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                  itemCount: 5,
+                  separatorBuilder: (_, __) => const SizedBox(height: 10),
+                  itemBuilder: (context, index) => DepartmentMemberCard(
+                    member: dummyDepartmentMember,
+                    departmentId: departmentId,
+                    demoId: demoId,
+                    canManage: false,
+                    onTap: () {},
+                  ),
+                ),
+              );
             }
 
             if (state is DepartmentMemberError) {
@@ -171,10 +190,7 @@ class _DepartmentMembersView extends StatelessWidget {
 
             return ListView.separated(
               physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 12,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               itemCount: members.length,
               separatorBuilder: (_, __) => const SizedBox(height: 10),
               itemBuilder: (context, index) {
@@ -259,10 +275,7 @@ class _ErrorState extends StatelessWidget {
               style: theme.textTheme.bodyMedium,
             ),
             const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: onRetry,
-              child: Text(l10n.tryAgain),
-            ),
+            ElevatedButton(onPressed: onRetry, child: Text(l10n.tryAgain)),
           ],
         ),
       ),

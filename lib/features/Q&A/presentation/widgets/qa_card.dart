@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
-import 'package:project1/features/q&a/data/models/discussion_answer_model.dart';
-import 'package:project1/features/q&a/presentation/cubit/discussion_cubit.dart';
-import 'package:project1/features/q&a/presentation/widgets/avatar.dart';
-import 'package:project1/features/q&a/presentation/widgets/reply_tile.dart';
-import 'package:project1/features/q&a/presentation/widgets/discussion_composer.dart';
+import 'package:project1/features/Q&A/data/models/discussion_answer_model.dart';
+import 'package:project1/features/Q&A/presentation/cubit/discussion_cubit.dart';
+import 'package:project1/features/Q&A/presentation/widgets/avatar.dart';
+import 'package:project1/features/Q&A/presentation/widgets/reply_tile.dart';
+import 'package:project1/features/Q&A/presentation/widgets/discussion_composer.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class QaCard extends StatefulWidget {

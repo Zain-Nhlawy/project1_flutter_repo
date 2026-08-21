@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/core/dummy/dummy_entities.dart';
+import 'package:project1/core/presentation/widgets/app_skeletonizer.dart';
 import 'package:project1/features/demo/domain/use%20case/demo_users_usecase.dart';
 import 'package:project1/features/demo/presentation/cubit/search%20for%20users/serach_user_cubit.dart';
 import 'package:project1/features/demo/presentation/widgets/demo%20member%20card/search_user_dialog.dart';
@@ -95,7 +97,21 @@ class DemoUsersScreen extends StatelessWidget {
                 builder: (context, state) {
                   if (state is DemoUserInitial ||
                       state is GetDemoUsersLoading) {
-                    return const Center(child: CircularProgressIndicator());
+                    return AppSkeletonizer(
+                      child: ListView.separated(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        itemCount: 5,
+                        separatorBuilder: (_, __) => const SizedBox(height: 10),
+                        itemBuilder: (context, index) => UserCard(
+                          user: dummyMember,
+                          isOwner: isOwner,
+                          onTap: () {},
+                        ),
+                      ),
+                    );
                   }
 
                   if (state is GetDemoUsersError) {

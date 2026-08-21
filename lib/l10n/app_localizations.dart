@@ -176,6 +176,18 @@ abstract class AppLocalizations {
   /// **'Good morning,'**
   String get goodMorning;
 
+  /// No description provided for @goodAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon,'**
+  String get goodAfternoon;
+
+  /// No description provided for @goodEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Good evening,'**
+  String get goodEvening;
+
   /// No description provided for @addDemo.
   ///
   /// In en, this message translates to:
@@ -631,6 +643,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Upgrade Plan'**
   String get upgradePlan;
+
+  /// No description provided for @managePlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Plan'**
+  String get managePlan;
+
+  /// No description provided for @manageSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your subscription'**
+  String get manageSubscription;
+
+  /// No description provided for @openingSubscriptionPortal.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening the secure subscription portal...'**
+  String get openingSubscriptionPortal;
+
+  /// No description provided for @subscriptionPortalError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the subscription portal'**
+  String get subscriptionPortalError;
+
+  /// No description provided for @subscriptionActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription is active'**
+  String get subscriptionActive;
+
+  /// No description provided for @subscriptionCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription cancelled'**
+  String get subscriptionCancelled;
+
+  /// No description provided for @freeTrialExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Free trial expired'**
+  String get freeTrialExpired;
 
   /// No description provided for @levelUpYourPlan.
   ///
@@ -2048,6 +2102,252 @@ abstract class AppLocalizations {
   /// **'Demo Stats'**
   String get demoStats;
 
+  /// No description provided for @demoReportSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A clear view of learning, engagement, and content performance'**
+  String get demoReportSubtitle;
+
+  /// No description provided for @demoReportOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get demoReportOverview;
+
+  /// No description provided for @demoReportGeneratedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Generated {date} at {time}'**
+  String demoReportGeneratedAt(String date, String time);
+
+  /// No description provided for @demoReportTotalMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Total members'**
+  String get demoReportTotalMembers;
+
+  /// No description provided for @demoReportNewMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'New members'**
+  String get demoReportNewMembers;
+
+  /// No description provided for @demoReportDepartments.
+  ///
+  /// In en, this message translates to:
+  /// **'Departments'**
+  String get demoReportDepartments;
+
+  /// No description provided for @demoReportTotalCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Total courses'**
+  String get demoReportTotalCourses;
+
+  /// No description provided for @demoReportPublishedCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Published courses'**
+  String get demoReportPublishedCourses;
+
+  /// No description provided for @demoReportCertifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Certifications'**
+  String get demoReportCertifications;
+
+  /// No description provided for @demoReportExamAttempts.
+  ///
+  /// In en, this message translates to:
+  /// **'Exam attempts'**
+  String get demoReportExamAttempts;
+
+  /// No description provided for @demoReportAverageScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Average score'**
+  String get demoReportAverageScore;
+
+  /// No description provided for @demoReportPerformance.
+  ///
+  /// In en, this message translates to:
+  /// **'Performance snapshot'**
+  String get demoReportPerformance;
+
+  /// No description provided for @demoReportExamPassRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Exam pass rate'**
+  String get demoReportExamPassRate;
+
+  /// No description provided for @demoReportCertificationRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Certification rate'**
+  String get demoReportCertificationRate;
+
+  /// No description provided for @demoReportPublishingRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Course publishing rate'**
+  String get demoReportPublishingRate;
+
+  /// No description provided for @demoReportCoursePerformance.
+  ///
+  /// In en, this message translates to:
+  /// **'Course performance'**
+  String get demoReportCoursePerformance;
+
+  /// No description provided for @demoReportMemberActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Member activity'**
+  String get demoReportMemberActivity;
+
+  /// No description provided for @demoReportDepartmentBreakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Department breakdown'**
+  String get demoReportDepartmentBreakdown;
+
+  /// No description provided for @demoReportNoCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'No courses are available in this report yet.'**
+  String get demoReportNoCourses;
+
+  /// No description provided for @demoReportNoMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'No members are available in this report yet.'**
+  String get demoReportNoMembers;
+
+  /// No description provided for @demoReportNoDepartments.
+  ///
+  /// In en, this message translates to:
+  /// **'No departments are available in this report yet.'**
+  String get demoReportNoDepartments;
+
+  /// No description provided for @demoReportPublished.
+  ///
+  /// In en, this message translates to:
+  /// **'Published'**
+  String get demoReportPublished;
+
+  /// No description provided for @demoReportDraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Draft'**
+  String get demoReportDraft;
+
+  /// No description provided for @demoReportAssignedMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned members'**
+  String get demoReportAssignedMembers;
+
+  /// No description provided for @demoReportSectionsAndLessons.
+  ///
+  /// In en, this message translates to:
+  /// **'{sections} sections • {lessons} lessons'**
+  String demoReportSectionsAndLessons(int sections, int lessons);
+
+  /// No description provided for @demoReportExamsAndAttempts.
+  ///
+  /// In en, this message translates to:
+  /// **'{exams} exams • {attempts} attempts'**
+  String demoReportExamsAndAttempts(int exams, int attempts);
+
+  /// No description provided for @demoReportHoursMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours}h {minutes}m'**
+  String demoReportHoursMinutes(int hours, int minutes);
+
+  /// No description provided for @demoReportMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String demoReportMinutes(int minutes);
+
+  /// No description provided for @demoReportPassRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Pass rate'**
+  String get demoReportPassRate;
+
+  /// No description provided for @demoReportIssuedCertificates.
+  ///
+  /// In en, this message translates to:
+  /// **'Certificates issued'**
+  String get demoReportIssuedCertificates;
+
+  /// No description provided for @demoReportJoinedDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined {date}'**
+  String demoReportJoinedDate(String date);
+
+  /// No description provided for @demoReportAssignedCourses.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned courses'**
+  String get demoReportAssignedCourses;
+
+  /// No description provided for @demoReportExams.
+  ///
+  /// In en, this message translates to:
+  /// **'Exams'**
+  String get demoReportExams;
+
+  /// No description provided for @demoReportHighestScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Highest score'**
+  String get demoReportHighestScore;
+
+  /// No description provided for @demoReportEngagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Engagement'**
+  String get demoReportEngagement;
+
+  /// No description provided for @demoReportMembersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get demoReportMembersCount;
+
+  /// No description provided for @demoReportCoursesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Courses'**
+  String get demoReportCoursesCount;
+
+  /// No description provided for @demoReportOwnerRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner'**
+  String get demoReportOwnerRole;
+
+  /// No description provided for @demoReportManagerRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Manager'**
+  String get demoReportManagerRole;
+
+  /// No description provided for @demoReportMemberRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Member'**
+  String get demoReportMemberRole;
+
+  /// No description provided for @demoReportLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load the demo report'**
+  String get demoReportLoadError;
+
   /// No description provided for @themeDark.
   ///
   /// In en, this message translates to:
@@ -2096,11 +2396,41 @@ abstract class AppLocalizations {
   /// **'Notifications'**
   String get notificationsTitle;
 
+  /// No description provided for @notificationsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay updated with your latest alerts and activities'**
+  String get notificationsSubtitle;
+
   /// No description provided for @noNewNotifications.
   ///
   /// In en, this message translates to:
   /// **'No new notifications'**
   String get noNewNotifications;
+
+  /// No description provided for @noNotificationsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'When you receive invitations, updates, or messages, they will appear here.'**
+  String get noNotificationsSubtitle;
+
+  /// No description provided for @markAllAsRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all as read'**
+  String get markAllAsRead;
+
+  /// No description provided for @clearAllNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear all'**
+  String get clearAllNotifications;
+
+  /// No description provided for @clearNotificationsConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to clear all notifications?'**
+  String get clearNotificationsConfirmation;
 
   /// No description provided for @selectVideoFirst.
   ///

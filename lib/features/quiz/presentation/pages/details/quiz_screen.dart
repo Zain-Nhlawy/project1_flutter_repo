@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/core/dummy/dummy_entities.dart';
+import 'package:project1/core/presentation/widgets/app_skeletonizer.dart';
 import 'package:project1/features/quiz/presentation/cubit/exam_taking_cubit.dart';
 import 'package:project1/features/quiz/presentation/cubit/exam_taking_state.dart';
 import 'package:project1/features/quiz/presentation/pages/details/quiz_result_screen.dart';
@@ -253,32 +255,22 @@ class _QuizContent extends StatelessWidget {
     );
   }
 }
+
 class _LoadingView extends StatelessWidget {
   const _LoadingView();
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        width: 76,
-        height: 76,
-        padding: const EdgeInsets.all(22),
-        decoration: BoxDecoration(
-          color: AppColors.surfaceOf(context),
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: AppColors.borderOf(context)),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.primaryOf(context).withValues(alpha: 0.1),
-              blurRadius: 18,
-              offset: const Offset(0, 7),
-            ),
-          ],
+    return AppSkeletonizer(
+      child: _QuizContent(
+        state: ExamTakingInProgress(
+          exam: dummyGeneratedExam,
+          selectedAnswers: const {},
+          currentQuestionIndex: 0,
+          remainingSeconds: dummyGeneratedExam.durationMinutes * 60,
         ),
-        child: CircularProgressIndicator(
-          color: AppColors.primaryOf(context),
-          strokeWidth: 2.6,
-        ),
+        examId: dummyGeneratedExam.id,
+        demoId: 'demo-placeholder',
       ),
     );
   }

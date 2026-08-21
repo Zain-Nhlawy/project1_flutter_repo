@@ -59,6 +59,31 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                if (Navigator.canPop(context))
+                  PositionedDirectional(
+                    top: MediaQuery.paddingOf(context).top + 10,
+                    start: size.width * 0.06,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.surface.withValues(alpha: 0.25),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: IconButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        visualDensity: VisualDensity.compact,
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints.tightFor(
+                          width: 38,
+                          height: 38,
+                        ),
+                        icon: const Icon(
+                          Icons.arrow_back_rounded,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: size.width * 0.06),
                   child: Column(

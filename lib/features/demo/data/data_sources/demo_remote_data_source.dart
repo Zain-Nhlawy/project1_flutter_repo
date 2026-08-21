@@ -20,10 +20,18 @@ class DemoRemoteDataSourceImpl implements DemoRemoteDataSource {
       final response = await dio.get('/demos');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final List<dynamic> dataList = response.data['data'];
-        return dataList.map((json) => DemoModel.fromJson(json)).toList();
+        dynamic dataList = response.data;
+        if (dataList is Map && dataList.containsKey('data')) {
+          dataList = dataList['data'];
+        }
+        if (dataList is List) {
+          return dataList
+              .map((json) => DemoModel.fromJson(Map<String, dynamic>.from(json as Map)))
+              .toList();
+        }
+        return [];
       } else {
-        throw Exception(response.data['message']);
+        throw Exception(response.data['message'] ?? 'Failed to load demos');
       }
     } on DioException catch (e) {
       throw mapDioException(e); 

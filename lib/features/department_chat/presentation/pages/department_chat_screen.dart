@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/core/dummy/dummy_entities.dart';
+import 'package:project1/core/presentation/widgets/app_skeletonizer.dart';
 import 'package:project1/core/di/service_locator.dart';
 import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/user_state.dart';
@@ -185,7 +187,19 @@ class _DepartmentChatViewState extends State<_DepartmentChatView> {
                   builder: (context, state) {
                     if ((state.isLoadingHistory || !state.isUserResolved) &&
                         state.messages.isEmpty) {
-                      return const Center(child: CircularProgressIndicator());
+                      return AppSkeletonizer(
+                        child: ListView.builder(
+                          reverse: true,
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          itemCount: 6,
+                          itemBuilder: (context, index) => ChatMessageBubble(
+                            message: dummyDepartmentMessage,
+                            isMine: index.isEven,
+                            isFirstInGroup: index % 3 == 0,
+                            isLastInGroup: index % 3 == 2,
+                          ),
+                        ),
+                      );
                     }
 
                     if (state.messages.isEmpty) {

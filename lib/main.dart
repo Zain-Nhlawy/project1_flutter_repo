@@ -11,6 +11,7 @@ import 'package:project1/features/auth/domain/use_case/verify_email_usecase.dart
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/session_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
+import 'package:project1/features/demo/presentation/cubit/demo%20cubit/demo_cubit.dart';
 import 'package:project1/features/auth/presentation/pages/reset_password_screen.dart';
 import 'package:project1/features/auth/presentation/pages/session_gate.dart';
 import 'package:project1/core/storage/secure_storage.dart';
@@ -20,6 +21,7 @@ import 'package:project1/features/profile/presentation/cubit/theme_cubit.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:project1/l10n/l10n.dart';
 import 'package:project1/features/auth/presentation/cubit/user_state.dart';
+import 'package:project1/features/notifications/data/data_sources/notification_storage_service.dart';
 import 'package:project1/features/notifications/presentation/services/notification_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:project1/core/storage/storage_keys.dart';
@@ -77,6 +79,7 @@ void main() async {
         BlocProvider<SessionCubit>(
           create: (_) => getIt<SessionCubit>()..restoreSession(),
         ),
+        BlocProvider<DemoCubit>(create: (_) => getIt<DemoCubit>()),
         BlocProvider<AuthCubit>(
           create: (_) {
             return getIt<AuthCubit>();
@@ -173,7 +176,10 @@ class _MyAppState extends State<MyApp> {
                 BlocListener<UserCubit, UserState>(
                   listener: (context, state) {
                     if (state is UserLoaded) {
+                      getIt<NotificationStorageService>().setCurrentUserId(state.user.id);
                       getIt<NotificationService>().registerToken();
+                    } else if (state is UserInitial || state is UserError) {
+                      getIt<NotificationStorageService>().clearCurrentUser();
                     }
                   },
                 ),

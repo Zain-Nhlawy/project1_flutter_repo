@@ -52,6 +52,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get goodMorning => 'صباح الخير،';
 
   @override
+  String get goodAfternoon => 'مساء الخير،';
+
+  @override
+  String get goodEvening => 'مساء الخير،';
+
+  @override
   String get addDemo => 'إضافة غرفة';
 
   @override
@@ -295,6 +301,27 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get upgradePlan => 'ترقية الخطة';
+
+  @override
+  String get managePlan => 'إدارة الخطة';
+
+  @override
+  String get manageSubscription => 'إدارة اشتراكك';
+
+  @override
+  String get openingSubscriptionPortal => 'جارٍ فتح بوابة الاشتراك الآمنة...';
+
+  @override
+  String get subscriptionPortalError => 'تعذر فتح بوابة الاشتراك';
+
+  @override
+  String get subscriptionActive => 'الاشتراك نشط';
+
+  @override
+  String get subscriptionCancelled => 'تم إلغاء الاشتراك';
+
+  @override
+  String get freeTrialExpired => 'انتهت الفترة التجريبية المجانية';
 
   @override
   String get levelUpYourPlan => 'ارتقِ بخطتك';
@@ -1026,6 +1053,143 @@ class AppLocalizationsAr extends AppLocalizations {
   String get demoStats => 'إحصائيات الغرفة';
 
   @override
+  String get demoReportSubtitle =>
+      'نظرة واضحة على التعلم والتفاعل وأداء المحتوى';
+
+  @override
+  String get demoReportOverview => 'نظرة عامة';
+
+  @override
+  String demoReportGeneratedAt(String date, String time) {
+    return 'تم الإنشاء في $date الساعة $time';
+  }
+
+  @override
+  String get demoReportTotalMembers => 'إجمالي الأعضاء';
+
+  @override
+  String get demoReportNewMembers => 'الأعضاء الجدد';
+
+  @override
+  String get demoReportDepartments => 'الأقسام';
+
+  @override
+  String get demoReportTotalCourses => 'إجمالي الدورات';
+
+  @override
+  String get demoReportPublishedCourses => 'الدورات المنشورة';
+
+  @override
+  String get demoReportCertifications => 'الشهادات';
+
+  @override
+  String get demoReportExamAttempts => 'محاولات الاختبارات';
+
+  @override
+  String get demoReportAverageScore => 'متوسط الدرجات';
+
+  @override
+  String get demoReportPerformance => 'ملخص الأداء';
+
+  @override
+  String get demoReportExamPassRate => 'معدل النجاح في الاختبارات';
+
+  @override
+  String get demoReportCertificationRate => 'معدل الحصول على الشهادات';
+
+  @override
+  String get demoReportPublishingRate => 'معدل نشر الدورات';
+
+  @override
+  String get demoReportCoursePerformance => 'أداء الدورات';
+
+  @override
+  String get demoReportMemberActivity => 'نشاط الأعضاء';
+
+  @override
+  String get demoReportDepartmentBreakdown => 'تفاصيل الأقسام';
+
+  @override
+  String get demoReportNoCourses => 'لا توجد دورات في هذا التقرير حتى الآن.';
+
+  @override
+  String get demoReportNoMembers => 'لا يوجد أعضاء في هذا التقرير حتى الآن.';
+
+  @override
+  String get demoReportNoDepartments =>
+      'لا توجد أقسام في هذا التقرير حتى الآن.';
+
+  @override
+  String get demoReportPublished => 'منشورة';
+
+  @override
+  String get demoReportDraft => 'مسودة';
+
+  @override
+  String get demoReportAssignedMembers => 'الأعضاء المعيّنون';
+
+  @override
+  String demoReportSectionsAndLessons(int sections, int lessons) {
+    return '$sections أقسام • $lessons دروس';
+  }
+
+  @override
+  String demoReportExamsAndAttempts(int exams, int attempts) {
+    return '$exams اختبارات • $attempts محاولات';
+  }
+
+  @override
+  String demoReportHoursMinutes(int hours, int minutes) {
+    return '$hours س $minutes د';
+  }
+
+  @override
+  String demoReportMinutes(int minutes) {
+    return '$minutes دقيقة';
+  }
+
+  @override
+  String get demoReportPassRate => 'معدل النجاح';
+
+  @override
+  String get demoReportIssuedCertificates => 'الشهادات الصادرة';
+
+  @override
+  String demoReportJoinedDate(String date) {
+    return 'انضم في $date';
+  }
+
+  @override
+  String get demoReportAssignedCourses => 'الدورات المعيّنة';
+
+  @override
+  String get demoReportExams => 'الاختبارات';
+
+  @override
+  String get demoReportHighestScore => 'أعلى درجة';
+
+  @override
+  String get demoReportEngagement => 'التفاعل';
+
+  @override
+  String get demoReportMembersCount => 'الأعضاء';
+
+  @override
+  String get demoReportCoursesCount => 'الدورات';
+
+  @override
+  String get demoReportOwnerRole => 'المالك';
+
+  @override
+  String get demoReportManagerRole => 'المدير';
+
+  @override
+  String get demoReportMemberRole => 'عضو';
+
+  @override
+  String get demoReportLoadError => 'تعذر تحميل تقرير الديمو';
+
+  @override
   String get themeDark => 'داكن';
 
   @override
@@ -1051,7 +1215,24 @@ class AppLocalizationsAr extends AppLocalizations {
   String get notificationsTitle => 'الإشعارات';
 
   @override
+  String get notificationsSubtitle => 'ابقَ على اطلاع بأحدث التنبيهات والأنشطة';
+
+  @override
   String get noNewNotifications => 'لا توجد إشعارات جديدة';
+
+  @override
+  String get noNotificationsSubtitle =>
+      'عندما تتلقى دعوات أو تحديثات أو رسائل، ستظهر هنا.';
+
+  @override
+  String get markAllAsRead => 'تعيين الكل كمقروء';
+
+  @override
+  String get clearAllNotifications => 'مسح الكل';
+
+  @override
+  String get clearNotificationsConfirmation =>
+      'هل أنت متأكد من مسح جميع الإشعارات؟';
 
   @override
   String get selectVideoFirst => 'يرجى اختيار فيديو أولاً.';

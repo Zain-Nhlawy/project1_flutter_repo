@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/core/dummy/dummy_entities.dart';
+import 'package:project1/core/presentation/widgets/app_skeletonizer.dart';
 import 'package:project1/core/presentation/widgets/gradient_action_button.dart';
 import 'package:project1/core/presentation/widgets/gradient_page_app_bar.dart';
 import 'package:project1/features/course/domain/use_case/create_department_course_usecase.dart';
@@ -57,31 +59,35 @@ class _DemoCoursesScreenState extends State<DemoCoursesScreen> {
   }
 
   Future<void> _editCourse(dynamic course) async {
-  await showCourseEditDialog(
-    context,
-    initialPrice: course.price,
-    initialVisibility: course.visibility,
-    onSave: (price, visibility) async {
-      final updated = course.copyWith(price: price,clearPrice: price == null, visibility: visibility);
-      final result = await _updateUseCase(course.id, updated);
+    await showCourseEditDialog(
+      context,
+      initialPrice: course.price,
+      initialVisibility: course.visibility,
+      onSave: (price, visibility) async {
+        final updated = course.copyWith(
+          price: price,
+          clearPrice: price == null,
+          visibility: visibility,
+        );
+        final result = await _updateUseCase(course.id, updated);
 
-      return result.fold(
-        (failure) {
-          if (mounted) {
-            SnackbarTheme().newSnackBarError(context, failure.message);
-          }
-          return false;
-        },
-        (_) {
-          if (mounted) {
-            context.read<CourseCubit>().getDemoCourses(widget.demoId);
-          }
-          return true;
-        },
-      );
-    },
-  );
-}
+        return result.fold(
+          (failure) {
+            if (mounted) {
+              SnackbarTheme().newSnackBarError(context, failure.message);
+            }
+            return false;
+          },
+          (_) {
+            if (mounted) {
+              context.read<CourseCubit>().getDemoCourses(widget.demoId);
+            }
+            return true;
+          },
+        );
+      },
+    );
+  }
 
   bool get _isSelectionMode => widget.departmentId != null;
 
@@ -192,10 +198,7 @@ class _DemoCoursesScreenState extends State<DemoCoursesScreen> {
           ),
           child: Row(
             children: [
-              const Icon(
-                Icons.auto_stories_rounded,
-                color: AppColors.primary,
-              ),
+              const Icon(Icons.auto_stories_rounded, color: AppColors.primary),
               const SizedBox(width: 10),
               Text(
                 "${demoCourses.length} ${localizations.availableCourses}",
@@ -225,8 +228,8 @@ class _DemoCoursesScreenState extends State<DemoCoursesScreen> {
                 : CourseCardMode.demoSelection,
             isSelected: isSelected,
             onEdit: (widget.showAppBar && course.demo?.id == widget.demoId)
-    ? () => _editCourse(course)
-    : null,
+                ? () => _editCourse(course)
+                : null,
             onSelect:
                 (!widget.showAppBar &&
                     _isSelectionMode &&
@@ -261,7 +264,9 @@ class _DemoCoursesScreenState extends State<DemoCoursesScreen> {
     final body = BlocBuilder<CourseCubit, CourseState>(
       builder: (context, state) {
         if (state is CourseLoading) {
-          return const Center(child: CircularProgressIndicator());
+          return AppSkeletonizer(
+            child: _buildList(localizations, List.filled(2, dummyCourse)),
+          );
         }
 
         if (state is CourseLoaded) {

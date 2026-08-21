@@ -16,7 +16,6 @@ import 'package:project1/features/department_chat/presentation/widgets/online_me
 import 'package:project1/features/live_stream/presentation/pages/live_streams_page.dart';
 import '../widgets/department_main_page/department_nav_item.dart';
 import '../widgets/department_main_page/department_sidebar.dart';
-import '../widgets/department_main_page/department_empty_page.dart';
 
 class DepartmentMainPage extends StatelessWidget {
   final DepartmentEntity? department;
@@ -107,10 +106,6 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
           ]
         : [
             DepartmentNavItem(
-              Icons.dashboard_rounded,
-              localizations.departmentMainPage,
-            ),
-            DepartmentNavItem(
               Icons.menu_book_rounded,
               localizations.departmentCourses,
             ),
@@ -136,7 +131,7 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
             ),
           ];
 
-    final isChatActive = isGroup ? currentIndex == 0 : currentIndex == 5;
+    final isChatActive = isGroup ? currentIndex == 0 : currentIndex == 4;
 
     return Scaffold(
       backgroundColor: AppColors.backgroundOf(context),
@@ -269,7 +264,7 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
               departmentName: widget.department?.name ??
                   (isGroup
                       ? localizations.group
-                      : localizations.departmentMainPage),
+                      : localizations.department),
               departmentDescription: widget.department?.description ?? '',
               navigationLabel: isGroup
                   ? localizations.groupJourney
@@ -319,47 +314,42 @@ class _DepartmentMainPageViewState extends State<_DepartmentMainPageView> {
 
     switch (index) {
       case 0:
-        return DepartmentEmptyPage(
-          key: const ValueKey(0),
-          title: localizations.departmentMainPage,
-        );
-      case 1:
         return DepartmentCoursesPage(
-          key: const ValueKey(1),
-          demoId: widget.demoId!,
-          departmentId: widget.department!.id!,
+          key: const ValueKey(0),
+          demoId: widget.demoId ?? '',
+          departmentId: widget.department?.id ?? '',
           canManage: widget.canManage,
         );
-      case 2:
+      case 1:
         return RoadmapScreen(
-          key: const ValueKey(2),
+          key: const ValueKey(1),
           departmentId: widget.department?.id,
           demoId: widget.demoId,
         );
-      case 3:
+      case 2:
         return DepartmentMembersPage(
-          key: const ValueKey(3),
+          key: const ValueKey(2),
           demoId: widget.demoId ?? '',
           departmentId: widget.department?.id ?? '',
           canManage: widget.canManage,
           managerId: widget.department?.managerId,
         );
-      case 4:
+      case 3:
         return DepartmentLeaderboardScreen(
-          key: const ValueKey(4),
+          key: const ValueKey(3),
           departmentId: widget.department?.id ?? '',
           demoId: widget.demoId,
         );
-      case 5:
+      case 4:
         return DepartmentChatScreen(
-          key: const ValueKey(5),
+          key: const ValueKey(4),
           departmentId: widget.department?.id ?? '',
           demoId: widget.demoId ?? '',
           onOnlineMembersChanged: _updateOnlineChatMembers,
         );
-      case 6:
+      case 5:
         return LiveStreamsPage(
-          key: const ValueKey(6),
+          key: const ValueKey(5),
           departmentId: widget.department?.id ?? '',
           demoId: widget.demoId,
           canManage: widget.canManage,

@@ -1,4 +1,4 @@
-import 'package:project1/features/q&a/domain/entities/discussion_answer_entity.dart';
+import 'package:project1/features/Q&A/domain/entities/discussion_answer_entity.dart';
 
 class DiscussionAnswerModel extends DiscussionAnswerEntity {
   const DiscussionAnswerModel({

@@ -50,11 +50,11 @@ class AddDepartmentScreen extends StatelessWidget {
               context,
               isEdit
                   ? (effectiveIsGroup
-                      ? l10n.groupUpdatedSuccessfully
-                      : l10n.departmentUpdatedSuccessfully)
+                        ? l10n.groupUpdatedSuccessfully
+                        : l10n.departmentUpdatedSuccessfully)
                   : (effectiveIsGroup
-                      ? l10n.groupAddedSuccessfully
-                      : l10n.departmentAddedSuccessfully),
+                        ? l10n.groupAddedSuccessfully
+                        : l10n.departmentAddedSuccessfully),
             );
             context.read<DepartmentCubit>().fetchDepartments(demoId);
             Navigator.pop(context);
@@ -71,7 +71,7 @@ class AddDepartmentScreen extends StatelessWidget {
             title: Text(
               isEdit
                   ? (effectiveIsGroup ? l10n.editGroup : l10n.editDepartment)
-                  : (effectiveIsGroup ? l10n.addGroup : l10n.addSection),
+                  : (effectiveIsGroup ? l10n.addGroup : l10n.addDepartment),
               style: AppTextStyles.h3.copyWith(
                 color: AppColors.textPrimaryOf(context),
                 fontWeight: FontWeight.bold,

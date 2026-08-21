@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'app_colors.dart';
 import 'app_text_styles.dart';
 
@@ -28,6 +29,8 @@ class AppTheme {
       fillColor: AppColors.surface,
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
     ),
+
+    extensions: const [SkeletonizerConfigData()],
   );
 
   static ThemeData darkTheme([String? fontFamily]) => ThemeData(
@@ -60,6 +63,8 @@ class AppTheme {
 
     dividerColor: AppColors.darkBorder,
     cardColor: AppColors.darkSurface,
+
+    extensions: const [SkeletonizerConfigData.dark()],
   );
 
   static const BoxShadow primaryShadow = BoxShadow(

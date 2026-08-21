@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/core/dummy/dummy_entities.dart';
+import 'package:project1/core/presentation/widgets/app_skeletonizer.dart';
+import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:project1/features/demo/domain/entities/demo_entity.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20cubit/demo_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20cubit/demo_state.dart';
@@ -11,125 +13,143 @@ import 'package:project1/features/demo/presentation/widgets/demo_card_widgets/de
 import 'package:project1/features/home/presentation/widgets/main_header.dart';
 import '../widgets/section_header.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<DemoCubit>().fetchDemos();
+  }
+
+  Future<void> _handleRefresh() async {
+    await Future.wait([
+      context.read<DemoCubit>().fetchDemos(),
+      context.read<UserCubit>().getMe(),
+    ]);
+  }
 
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
+    final topPadding = MediaQuery.paddingOf(context).top;
 
-    return BlocProvider.value(
-      value: GetIt.instance<DemoCubit>()..fetchDemos(),
-      child: Scaffold(
-        backgroundColor: AppColors.backgroundOf(context),
-        body: RefreshIndicator(
-          color: AppColors.primaryOf(context),
-          backgroundColor: AppColors.surfaceOf(context),
-          onRefresh: () async {
-            await context.read<DemoCubit>().fetchDemos();
-          },
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                BlocBuilder<DemoCubit, DemoState>(
-                  builder: (context, state) {
-                    int myCount = 0;
-                    int enrolledCount = 0;
-                    if (state is GetDemosLoaded) {
-                      myCount = state.demos
-                          .where((demo) => demo.isOwner == true)
-                          .length;
-                      enrolledCount = state.demos
-                          .where((demo) => demo.isOwner == false)
-                          .length;
-                    }
+    return Scaffold(
+      backgroundColor: AppColors.backgroundOf(context),
+      body: RefreshIndicator(
+        color: AppColors.primaryOf(context),
+        backgroundColor: AppColors.surfaceOf(context),
+        edgeOffset: topPadding,
+        displacement: 40,
+        onRefresh: _handleRefresh,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(
+            parent: BouncingScrollPhysics(),
+          ),
+          child: BlocBuilder<DemoCubit, DemoState>(
+            builder: (context, state) {
+              final bool isLoading = state is GetDemosLoading;
+              List<DemoEntity> myDemosList = [];
+              List<DemoEntity> joinedDemosList = [];
 
-                    return MainHeader(
-                      myDemosCount: myCount,
-                      enrolledDemosCount: enrolledCount,
-                    );
-                  },
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(
-                    20,
-                    26,
-                    20,
-                    116,
+              if (state is GetDemosLoaded) {
+                myDemosList = state.demos
+                    .where((demo) => demo.isOwner == true)
+                    .toList();
+                joinedDemosList = state.demos
+                    .where((demo) => demo.isOwner == false)
+                    .toList();
+              }
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AppSkeletonizer(
+                    enabled: isLoading,
+                    child: MainHeader(
+                      myDemosCount: myDemosList.length,
+                      enrolledDemosCount: joinedDemosList.length,
+                    ),
                   ),
-                  child: BlocBuilder<DemoCubit, DemoState>(
-                    builder: (context, state) {
-                      List<DemoEntity> myDemosList = [];
-                      List<DemoEntity> joinedDemosList = [];
-                      if (state is GetDemosLoaded) {
-                        myDemosList = state.demos
-                            .where((demo) => demo.isOwner == true)
-                            .toList();
-                        joinedDemosList = state.demos
-                            .where((demo) => demo.isOwner == false)
-                            .toList();
-                      }
-
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SectionHeader(
-                            title: localizations.myDemos,
-                            demoList: myDemosList,
-                            isOwner: true,
-                          ),
-                          const SizedBox(height: 14),
-                          _buildSubContent(
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                      20,
+                      26,
+                      20,
+                      32,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SectionHeader(
+                          title: localizations.myDemos,
+                          demoList: myDemosList,
+                          isOwner: true,
+                        ),
+                        const SizedBox(height: 14),
+                        _buildDemosSection(
+                          context,
+                          state: state,
+                          demos: myDemosList,
+                          isOwnerList: true,
+                          emptyMessage: localizations.noDemosAvailable,
+                        ),
+                        const SizedBox(height: 14),
+                        Divider(
+                          height: 1,
+                          thickness: 1,
+                          color: AppColors.borderOf(
                             context,
-                            state,
-                            isOwnerList: true,
-                            emptyMessage: localizations.noDemosAvailable,
-                          ),
-                          const SizedBox(height: 14),
-                          Divider(
-                            height: 1,
-                            thickness: 1,
-                            color: AppColors.borderOf(
-                              context,
-                            ).withValues(alpha: 0.72),
-                          ),
-                          const SizedBox(height: 28),
-                          SectionHeader(
-                            title: localizations.demosImIn,
-                            demoList: joinedDemosList,
-                            isOwner: false,
-                          ),
-                          const SizedBox(height: 14),
-                          _buildSubContent(
-                            context,
-                            state,
-                            isOwnerList: false,
-                            emptyMessage: localizations.noDemosAvailable,
-                          ),
-                        ],
-                      );
-                    },
+                          ).withValues(alpha: 0.72),
+                        ),
+                        const SizedBox(height: 28),
+                        SectionHeader(
+                          title: localizations.demosImIn,
+                          demoList: joinedDemosList,
+                          isOwner: false,
+                        ),
+                        const SizedBox(height: 14),
+                        _buildDemosSection(
+                          context,
+                          state: state,
+                          demos: joinedDemosList,
+                          isOwnerList: false,
+                          emptyMessage: localizations.noDemosAvailable,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              );
+            },
           ),
         ),
       ),
     );
   }
 
-  Widget _buildSubContent(
-    BuildContext context,
-    DemoState state, {
+  Widget _buildDemosSection(
+    BuildContext context, {
+    required DemoState state,
+    required List<DemoEntity> demos,
     required bool isOwnerList,
     required String emptyMessage,
   }) {
     if (state is GetDemosLoading) {
-      return const _HomeLoadingCard();
+      return Column(
+        children: const [
+          _HomeLoadingCard(),
+          SizedBox(height: 12),
+          _HomeLoadingCard(),
+        ],
+      );
     }
+
     if (state is GetDemosError) {
       return _HomeStatusCard(
         icon: Icons.error_outline_rounded,
@@ -138,37 +158,11 @@ class HomePage extends StatelessWidget {
       );
     }
 
-    if (state is GetDemosLoaded) {
-      final filteredList = state.demos
-          .where((demo) => demo.isOwner == isOwnerList)
-          .toList();
-      return _buildDemosList(
-        context,
-        filteredList,
-        emptyMessage,
-        emptyIcon: isOwnerList
+    if (demos.isEmpty) {
+      return _HomeStatusCard(
+        icon: isOwnerList
             ? Icons.dashboard_customize_outlined
             : Icons.school_outlined,
-      );
-    }
-
-    final localizations = AppLocalizations.of(context)!;
-    return _HomeStatusCard(
-      icon: Icons.error_outline_rounded,
-      message: localizations.somethingWentWrong,
-      accentColor: AppColors.error,
-    );
-  }
-
-  Widget _buildDemosList(
-    BuildContext context,
-    List<DemoEntity> demosList,
-    String emptyMessage, {
-    required IconData emptyIcon,
-  }) {
-    if (demosList.isEmpty) {
-      return _HomeStatusCard(
-        icon: emptyIcon,
         message: emptyMessage,
         accentColor: AppColors.primaryOf(context),
       );
@@ -178,9 +172,9 @@ class HomePage extends StatelessWidget {
       shrinkWrap: true,
       padding: EdgeInsets.zero,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: demosList.length < 3 ? demosList.length : 3,
+      itemCount: demos.length < 3 ? demos.length : 3,
       itemBuilder: (context, index) {
-        final item = demosList[index];
+        final item = demos[index];
         return DemoCard(demo: item);
       },
     );
@@ -192,82 +186,7 @@ class _HomeLoadingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final primary = AppColors.primaryOf(context);
-    final placeholder = AppColors.textSecondaryOf(
-      context,
-    ).withValues(alpha: 0.10);
-
-    return Container(
-      width: double.infinity,
-      constraints: const BoxConstraints(minHeight: 112),
-      padding: const EdgeInsets.all(18),
-      decoration: _contentCardDecoration(context),
-      child: Row(
-        children: [
-          Container(
-            width: 54,
-            height: 54,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: primary.withValues(alpha: 0.08),
-              borderRadius: BorderRadius.circular(17),
-            ),
-            child: SizedBox(
-              width: 22,
-              height: 22,
-              child: CircularProgressIndicator(
-                strokeWidth: 2.4,
-                color: primary,
-              ),
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                FractionallySizedBox(
-                  widthFactor: 0.72,
-                  alignment: AlignmentDirectional.centerStart,
-                  child: Container(
-                    height: 11,
-                    decoration: BoxDecoration(
-                      color: placeholder,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                FractionallySizedBox(
-                  widthFactor: 0.94,
-                  alignment: AlignmentDirectional.centerStart,
-                  child: Container(
-                    height: 9,
-                    decoration: BoxDecoration(
-                      color: placeholder.withValues(alpha: 0.07),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                FractionallySizedBox(
-                  widthFactor: 0.56,
-                  alignment: AlignmentDirectional.centerStart,
-                  child: Container(
-                    height: 9,
-                    decoration: BoxDecoration(
-                      color: placeholder.withValues(alpha: 0.07),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+    return AppSkeletonizer(child: DemoCard(demo: dummyDemo));
   }
 }
 

@@ -16,7 +16,7 @@ import 'package:project1/features/lesson/presentation/widgets/datails/lesson_nav
 import 'package:project1/features/lesson/presentation/widgets/datails/lesson_tabs.dart';
 import 'package:project1/features/lesson/presentation/widgets/datails/video_controls.dart';
 import 'package:project1/l10n/app_localizations.dart';
-import 'package:project1/features/q&a/presentation/cubit/discussion_cubit.dart';
+import 'package:project1/features/Q&A/presentation/cubit/discussion_cubit.dart';
 
 class LessonDetailsScreen extends StatefulWidget {
   final List<LessonEntity> lessons;

@@ -49,6 +49,7 @@ class DemoFabWidget extends StatelessWidget {
                     value: demoUserCubit,
                     child: MainActionsSheet(
                       demoId: demo.id!,
+                      demoName: demo.name,
                       isOwner: true,
                     ),
                   );
@@ -64,12 +65,12 @@ class DemoFabWidget extends StatelessWidget {
                       InquiriesPage(demoId: demo.id!, isOwner: false),
                   transitionsBuilder:
                       (context, animation, secondaryAnimation, child) {
-                    return FadeThroughTransition(
-                      animation: animation,
-                      secondaryAnimation: secondaryAnimation,
-                      child: child,
-                    );
-                  },
+                        return FadeThroughTransition(
+                          animation: animation,
+                          secondaryAnimation: secondaryAnimation,
+                          child: child,
+                        );
+                      },
                 ),
               );
             }
@@ -108,4 +109,3 @@ class DemoFabWidget extends StatelessWidget {
     );
   }
 }
-

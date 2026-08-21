@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:project1/core/dummy/dummy_entities.dart';
+import 'package:project1/core/presentation/widgets/app_skeletonizer.dart';
 import 'package:project1/features/attachment/domain/entities/lesson_attachment_entity.dart';
 import 'package:project1/features/attachment/presentation/widgets/details/attachment_tile.dart';
 import 'package:project1/l10n/app_localizations.dart';
@@ -7,7 +9,11 @@ class AttachmentsTab extends StatelessWidget {
   final List<LessonAttachmentEntity> attachments;
   final bool loading;
 
-  const AttachmentsTab({super.key, required this.attachments, required this.loading});
+  const AttachmentsTab({
+    super.key,
+    required this.attachments,
+    required this.loading,
+  });
 
   String _fullAttachmentUrl(String path) {
     const baseUrl = 'https://lincostorage.blob.core.windows.net/uploads/';
@@ -20,7 +26,17 @@ class AttachmentsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (loading) {
-      return const Center(child: CircularProgressIndicator());
+      return AppSkeletonizer(
+        child: ListView.builder(
+          itemCount: 4,
+          itemBuilder: (context, index) => AttachmentTile(
+            title: dummyLessonAttachment.name,
+            type: 'PDF',
+            size: '1.2 MB',
+            url: '',
+          ),
+        ),
+      );
     }
 
     if (attachments.isEmpty) {

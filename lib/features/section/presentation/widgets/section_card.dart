@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/core/dummy/dummy_entities.dart';
+import 'package:project1/core/presentation/widgets/app_skeletonizer.dart';
 import 'package:project1/features/lesson/domain/entities/lesson_entity.dart';
 import 'package:project1/features/lesson/presentation/cubit/lesson_cubit.dart';
 import 'package:project1/features/lesson/presentation/pages/lesson_management_screen.dart';
@@ -9,7 +11,6 @@ import 'package:project1/features/section/domain/entities/section_entity.dart';
 import 'package:project1/features/section/presentation/widgets/lesson_tile.dart';
 import 'package:project1/features/section/presentation/widgets/section_sub_row.dart';
 import 'package:project1/l10n/app_localizations.dart';
-
 
 class SectionCard extends StatefulWidget {
   final SectionEntity section;
@@ -344,10 +345,16 @@ class _SectionCardState extends State<SectionCard> {
                   const SizedBox(height: 16),
 
                   if (_loadingLessons)
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 12),
-                      child: Center(
-                        child: CircularProgressIndicator(strokeWidth: 2),
+                    AppSkeletonizer(
+                      child: Column(
+                        children: [
+                          for (var index = 0; index < 3; index++)
+                            LessonTile(
+                              title: dummyLesson.title,
+                              onEdit: () {},
+                              onDelete: () {},
+                            ),
+                        ],
                       ),
                     )
                   else if (_lessons.isEmpty)

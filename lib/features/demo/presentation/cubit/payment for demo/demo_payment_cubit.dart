@@ -91,4 +91,18 @@ class PaymentWebViewCubit extends Cubit<PaymentWebViewState> {
       }
     }
   }
+
+  Future<void> requestSubscriptionManagement(String demoId) async {
+    if (isClosed) return;
+    emit(PaymentWebViewState(isLoading: true));
+
+    final result = await requestPaymentUseCase.manageSubscription(demoId);
+    if (isClosed) return;
+
+    result.fold(
+      (error) =>
+          emit(PaymentWebViewState(isLoading: false, errorMessage: error)),
+      (url) => emit(PaymentWebViewState(isLoading: false, managementUrl: url)),
+    );
+  }
 }

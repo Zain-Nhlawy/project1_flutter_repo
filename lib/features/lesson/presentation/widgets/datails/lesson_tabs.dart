@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
+import 'package:project1/core/dummy/dummy_entities.dart';
+import 'package:project1/core/presentation/widgets/app_skeletonizer.dart';
 import 'package:project1/features/attachment/domain/entities/lesson_attachment_entity.dart';
 import 'package:project1/features/attachment/presentation/cubit/lesson_attachment_cubit.dart';
 import 'package:project1/features/attachment/presentation/widgets/details/attachments_tab.dart';
 import 'package:project1/features/auth/presentation/cubit/user_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/user_state.dart';
-import 'package:project1/features/q&a/data/models/discussion_question_model.dart';
-import 'package:project1/features/q&a/presentation/cubit/discussion_cubit.dart';
-import 'package:project1/features/q&a/presentation/widgets/discussion_composer.dart';
-import 'package:project1/features/q&a/presentation/widgets/qa_card.dart';
+import 'package:project1/features/Q&A/data/models/discussion_question_model.dart';
+import 'package:project1/features/Q&A/presentation/cubit/discussion_cubit.dart';
+import 'package:project1/features/Q&A/presentation/widgets/discussion_composer.dart';
+import 'package:project1/features/Q&A/presentation/widgets/qa_card.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class LessonTabs extends StatefulWidget {
@@ -315,7 +317,21 @@ class _QuestionsTabState extends State<_QuestionsTab> {
     final localizations = AppLocalizations.of(context)!;
 
     if (widget.loading) {
-      return const _LessonTabStatus(isLoading: true);
+      return AppSkeletonizer(
+        child: ListView.builder(
+          padding: const EdgeInsets.fromLTRB(10, 8, 10, 12),
+          itemCount: 3,
+          itemBuilder: (context, index) => QaCard(
+            questionId: dummyDiscussionQuestion.id,
+            demoId: widget.demoId,
+            lessonId: widget.lessonId,
+            userName: dummyDiscussionQuestion.authorName,
+            avatarUrl: dummyDiscussionQuestion.authorAvatarUrl,
+            question: dummyDiscussionQuestion.content,
+            createdAt: dummyDiscussionQuestion.createdAt,
+          ),
+        ),
+      );
     }
 
     return Column(
@@ -510,7 +526,10 @@ class _LessonAttachmentsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (loading) {
-      return const _LessonTabStatus(isLoading: true);
+      return const Padding(
+        padding: EdgeInsets.fromLTRB(10, 8, 10, 12),
+        child: AttachmentsTab(attachments: [], loading: true),
+      );
     }
 
     if (attachments.isEmpty) {
@@ -528,12 +547,10 @@ class _LessonAttachmentsTab extends StatelessWidget {
 }
 
 class _LessonTabStatus extends StatelessWidget {
-  final bool isLoading;
   final IconData icon;
   final String? message;
 
   const _LessonTabStatus({
-    this.isLoading = false,
     this.icon = Icons.info_outline_rounded,
     this.message,
   });
@@ -545,39 +562,30 @@ class _LessonTabStatus extends StatelessWidget {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24),
-        child: isLoading
-            ? SizedBox(
-                width: 26,
-                height: 26,
-                child: CircularProgressIndicator(
-                  color: primary,
-                  strokeWidth: 2.5,
-                ),
-              )
-            : Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 54,
-                    height: 54,
-                    decoration: BoxDecoration(
-                      color: primary.withValues(alpha: 0.08),
-                      borderRadius: BorderRadius.circular(17),
-                    ),
-                    child: Icon(icon, color: primary, size: 25),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    message ?? '',
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.textSecondaryOf(context),
-                      fontWeight: FontWeight.w600,
-                      height: 1.4,
-                    ),
-                  ),
-                ],
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 54,
+              height: 54,
+              decoration: BoxDecoration(
+                color: primary.withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(17),
               ),
+              child: Icon(icon, color: primary, size: 25),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              message ?? '',
+              textAlign: TextAlign.center,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.textSecondaryOf(context),
+                fontWeight: FontWeight.w600,
+                height: 1.4,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -28,9 +28,7 @@ class DemoMainContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final canOpen = !isRestricted;
-    final currentPlan = demo.plan?.toLowerCase() ?? 'starter';
-    final isEnterprise = currentPlan == 'enterprise';
-    final canUpgrade = isRestricted && demo.isOwner && !isEnterprise;
+    final canSubscribe = isRestricted && demo.isOwner;
 
     return Expanded(
       child: Column(
@@ -64,102 +62,130 @@ class DemoMainContent extends StatelessWidget {
             color: AppColors.borderOf(context).withValues(alpha: 0.6),
           ),
           const SizedBox(height: 12),
-          Row(
-            children: [
-              Icon(
-                Icons.person_outline_rounded,
-                size: 13 * textScale,
-                color: AppColors.textSecondaryOf(context).withValues(alpha: 0.7),
-              ),
-              const SizedBox(width: 4),
-              Expanded(
-                child: Text(
-                  demo.ownerName,
-                  style: AppTextStyles.label.copyWith(
-                    color: AppColors.textSecondaryOf(context).withValues(alpha: 0.85),
-                    fontSize: 12 * textScale,
-                    height: 1.25,
-                  ),
-                  softWrap: true,
-                ),
-              ),
-              const SizedBox(width: 8),
-              _ActionButton(
-                size: size,
-                textScale: textScale,
-                canOpen: canOpen,
-                canUpgrade: canUpgrade,
-                label: canOpen
-                    ? localizations.see
-                    : canUpgrade
-                    ? localizations.upgradePlan
-                    : localizations.see,
-                onPressed: canOpen
-                    ? () async {
-                        Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                            transitionDuration: const Duration(
-                              milliseconds: 300,
-                            ),
-                            pageBuilder:
-                                (context, animation, secondaryAnimation) =>
-                                    DemoMainPage(demo: demo),
-                            transitionsBuilder:
-                                (
-                                  context,
-                                  animation,
-                                  secondaryAnimation,
-                                  child,
-                                ) {
-                                  return FadeThroughTransition(
-                                    animation: animation,
-                                    secondaryAnimation: secondaryAnimation,
-                                    child: child,
-                                  );
-                                },
-                          ),
-                        );
+          _OwnerActionLayout(
+            ownerName: demo.ownerName,
+            textScale: textScale,
+            stackAction: !canOpen,
+            action: _ActionButton(
+              size: size,
+              textScale: textScale,
+              canOpen: canOpen,
+              canSubscribe: canSubscribe,
+              label: canOpen
+                  ? localizations.see
+                  : canSubscribe
+                  ? localizations.upgradePlan
+                  : localizations.restricted,
+              onPressed: canOpen
+                  ? () async {
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          transitionDuration: const Duration(milliseconds: 300),
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  DemoMainPage(demo: demo),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                                return FadeThroughTransition(
+                                  animation: animation,
+                                  secondaryAnimation: secondaryAnimation,
+                                  child: child,
+                                );
+                              },
+                        ),
+                      );
+                    }
+                  : canSubscribe
+                  ? () async {
+                      await Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          transitionDuration: const Duration(milliseconds: 300),
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  UpgradePlanScreen(
+                                    demoId: demo.id!,
+                                    currentPlan: null,
+                                  ),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                                return FadeThroughTransition(
+                                  animation: animation,
+                                  secondaryAnimation: secondaryAnimation,
+                                  child: child,
+                                );
+                              },
+                        ),
+                      );
+                      if (context.mounted && getIt.isRegistered<DemoCubit>()) {
+                        getIt<DemoCubit>().fetchDemos();
                       }
-                    : canUpgrade
-                    ? () async {
-                        await Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                            transitionDuration: const Duration(
-                              milliseconds: 300,
-                            ),
-                            pageBuilder:
-                                (context, animation, secondaryAnimation) =>
-                                    UpgradePlanScreen(
-                                      demoId: demo.id!,
-                                      currentPlan: demo.plan,
-                                    ),
-                            transitionsBuilder:
-                                (
-                                  context,
-                                  animation,
-                                  secondaryAnimation,
-                                  child,
-                                ) {
-                                  return FadeThroughTransition(
-                                    animation: animation,
-                                    secondaryAnimation: secondaryAnimation,
-                                    child: child,
-                                  );
-                                },
-                          ),
-                        );
-                        if (context.mounted && getIt.isRegistered<DemoCubit>()) {
-                          getIt<DemoCubit>().fetchDemos();
-                        }
-                      }
-                    : null,
-              ),
-            ],
+                    }
+                  : null,
+            ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class _OwnerActionLayout extends StatelessWidget {
+  final String ownerName;
+  final double textScale;
+  final bool stackAction;
+  final Widget action;
+
+  const _OwnerActionLayout({
+    required this.ownerName,
+    required this.textScale,
+    required this.stackAction,
+    required this.action,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final owner = Row(
+      children: [
+        Icon(
+          Icons.person_outline_rounded,
+          size: 13 * textScale,
+          color: AppColors.textSecondaryOf(context).withValues(alpha: 0.7),
+        ),
+        const SizedBox(width: 4),
+        Expanded(
+          child: Text(
+            ownerName,
+            style: AppTextStyles.label.copyWith(
+              color: AppColors.textSecondaryOf(context).withValues(alpha: 0.85),
+              fontSize: 12 * textScale,
+              height: 1.25,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    );
+
+    if (stackAction) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          owner,
+          const SizedBox(height: 10),
+          Align(alignment: AlignmentDirectional.centerEnd, child: action),
+        ],
+      );
+    }
+
+    return Row(
+      children: [
+        Expanded(child: owner),
+        const SizedBox(width: 8),
+        action,
+      ],
     );
   }
 }
@@ -168,7 +194,7 @@ class _ActionButton extends StatelessWidget {
   final Size size;
   final double textScale;
   final bool canOpen;
-  final bool canUpgrade;
+  final bool canSubscribe;
   final String label;
   final VoidCallback? onPressed;
 
@@ -176,7 +202,7 @@ class _ActionButton extends StatelessWidget {
     required this.size,
     required this.textScale,
     required this.canOpen,
-    required this.canUpgrade,
+    required this.canSubscribe,
     required this.label,
     required this.onPressed,
   });
@@ -186,7 +212,7 @@ class _ActionButton extends StatelessWidget {
     final isDisabled = onPressed == null;
     final icon = canOpen
         ? Icons.chevron_right_rounded
-        : canUpgrade
+        : canSubscribe
         ? Icons.bolt_rounded
         : Icons.lock_outline_rounded;
 

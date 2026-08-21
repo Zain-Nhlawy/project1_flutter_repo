@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/features/demo/domain/entities/demo_entity.dart';
+import 'package:project1/features/demo/domain/entities/demo_subscription_status.dart';
+import 'package:project1/features/demo/presentation/pages/payment_pages/manage_plan.dart';
 import 'package:project1/features/demo/presentation/pages/payment_pages/upgrade_plan.dart';
 import 'package:project1/features/demo/presentation/pages/invitations_page.dart';
 import 'package:project1/l10n/app_localizations.dart';
@@ -16,6 +18,30 @@ import 'package:project1/features/demo/presentation/cubit/invitations_cubit/invi
 class HeaderWidget extends StatelessWidget {
   final DemoEntity demo;
   const HeaderWidget({super.key, required this.demo});
+
+  String _subscriptionMessage(
+    AppLocalizations localizations,
+    DemoSubscriptionStatus status,
+    int daysLeft,
+  ) {
+    return switch (status) {
+      DemoSubscriptionStatus.trialing => localizations.daysLeftText(daysLeft),
+      DemoSubscriptionStatus.active => localizations.subscriptionActive,
+      DemoSubscriptionStatus.expired => localizations.freeTrialExpired,
+      DemoSubscriptionStatus.cancelled => localizations.subscriptionCancelled,
+      DemoSubscriptionStatus.unknown => localizations.manageSubscription,
+    };
+  }
+
+  IconData _subscriptionIcon(DemoSubscriptionStatus status) {
+    return switch (status) {
+      DemoSubscriptionStatus.trialing => Icons.timer_outlined,
+      DemoSubscriptionStatus.active => Icons.check_circle_outline_rounded,
+      DemoSubscriptionStatus.expired => Icons.timer_off_outlined,
+      DemoSubscriptionStatus.cancelled => Icons.cancel_outlined,
+      DemoSubscriptionStatus.unknown => Icons.settings_outlined,
+    };
+  }
 
   Widget _buildHeaderImage(String? imagePath) {
     if (imagePath != null && imagePath.trim().isNotEmpty) {
@@ -69,14 +95,8 @@ class HeaderWidget extends StatelessWidget {
     final textScale = MediaQuery.textScalerOf(context).scale(1);
     final double topPadding = MediaQuery.paddingOf(context).top;
 
-    final createdAt = demo.createdAt ?? DateTime.now();
-    final daysPassed = DateTime.now().difference(createdAt).inDays;
-    final int daysLeft = (14 - daysPassed) > 0 ? (14 - daysPassed) : 0;
-
-    final currentPlan = demo.plan?.trim().toLowerCase() ?? 'free';
-    final isFree =
-        currentPlan == 'free' || currentPlan == 'trial' || currentPlan.isEmpty;
-    final isEnterprise = currentPlan == 'enterprise';
+    final subscriptionStatus = demo.resolvedSubscriptionStatus();
+    final daysLeft = demo.trialDaysLeft();
 
     return Container(
       width: size.width,
@@ -234,9 +254,7 @@ class HeaderWidget extends StatelessWidget {
                             child: Text(
                               l10n.byAuthor(demo.ownerName),
                               style: AppTextStyles.bodyMedium.copyWith(
-                                color: Colors.white.withValues(
-                                  alpha: 0.85,
-                                ),
+                                color: Colors.white.withValues(alpha: 0.85),
                                 fontSize: 13,
                               ),
                               maxLines: 1,
@@ -288,8 +306,8 @@ class HeaderWidget extends StatelessWidget {
               ],
             ),
 
-            // Trial / Plan Upgrade Banner
-            if (demo.isOwner && !isEnterprise) ...[
+            // Subscription management banner
+            if (demo.isOwner) ...[
               const SizedBox(height: 18),
               ClipRRect(
                 borderRadius: BorderRadius.circular(18),
@@ -321,7 +339,7 @@ class HeaderWidget extends StatelessWidget {
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
-                            isFree ? Icons.timer_outlined : Icons.bolt_rounded,
+                            _subscriptionIcon(subscriptionStatus),
                             color: Colors.amberAccent,
                             size: 16,
                           ),
@@ -329,9 +347,11 @@ class HeaderWidget extends StatelessWidget {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            isFree
-                                ? l10n.daysLeftText(daysLeft)
-                                : l10n.levelUpYourPlan,
+                            _subscriptionMessage(
+                              l10n,
+                              subscriptionStatus,
+                              daysLeft,
+                            ),
                             style: AppTextStyles.label.copyWith(
                               color: Colors.white,
                               fontWeight: FontWeight.w600,
@@ -344,6 +364,13 @@ class HeaderWidget extends StatelessWidget {
                         const SizedBox(width: 8),
                         InkWell(
                           onTap: () async {
+                            final destination =
+                                subscriptionStatus.usesCustomerPortal
+                                ? ManagePlanScreen(demoId: demo.id!)
+                                : UpgradePlanScreen(
+                                    demoId: demo.id!,
+                                    currentPlan: null,
+                                  );
                             await Navigator.push(
                               context,
                               PageRouteBuilder(
@@ -352,10 +379,7 @@ class HeaderWidget extends StatelessWidget {
                                 ),
                                 pageBuilder:
                                     (context, animation, secondaryAnimation) =>
-                                        UpgradePlanScreen(
-                                          demoId: demo.id!,
-                                          currentPlan: demo.plan,
-                                        ),
+                                        destination,
                                 transitionsBuilder:
                                     (
                                       context,
@@ -386,13 +410,17 @@ class HeaderWidget extends StatelessWidget {
                               color: AppColors.surfaceOf(context),
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: AppColors.primaryOf(context).withValues(alpha: 0.25),
+                                color: AppColors.primaryOf(
+                                  context,
+                                ).withValues(alpha: 0.25),
                                 width: 1,
                               ),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withValues(
-                                    alpha: Theme.of(context).brightness == Brightness.dark
+                                    alpha:
+                                        Theme.of(context).brightness ==
+                                            Brightness.dark
                                         ? 0.3
                                         : 0.1,
                                   ),
@@ -402,7 +430,9 @@ class HeaderWidget extends StatelessWidget {
                               ],
                             ),
                             child: Text(
-                              l10n.upgradePlan,
+                              subscriptionStatus.usesCustomerPortal
+                                  ? l10n.managePlan
+                                  : l10n.upgradePlan,
                               style: AppTextStyles.label.copyWith(
                                 color: AppColors.primaryOf(context),
                                 fontWeight: FontWeight.bold,

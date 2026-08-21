@@ -9,6 +9,7 @@ class DemoEntity {
   final String? plan;
   final int membersCount;
   final DateTime? createdAt;
+  final String? subscriptionStatus;
 
   DemoEntity({
     this.id,
@@ -21,6 +22,6 @@ class DemoEntity {
     this.plan,
     this.membersCount = 0,
     this.createdAt,
+    this.subscriptionStatus,
   });
-
 }

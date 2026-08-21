@@ -106,7 +106,7 @@ class ToggleSwitchWidget extends StatelessWidget {
                                           : FontWeight.w600,
                                       fontSize: 13,
                                     ),
-                                    child: Text(l10n.sections),
+                                    child: Text(l10n.department),
                                   ),
                                 ),
                               ),

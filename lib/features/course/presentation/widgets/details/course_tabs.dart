@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/core/dummy/dummy_entities.dart';
+import 'package:project1/core/presentation/widgets/app_skeletonizer.dart';
 import 'package:project1/features/faq/domain/entities/course_faq_entity.dart';
 import 'package:project1/features/faq/presentation/cubit/course_faq_cubit.dart';
 import 'package:project1/features/faq/presentation/cubit/course_faq_state.dart';
@@ -109,7 +111,18 @@ class _CourseTabsState extends State<CourseTabs> {
                 BlocBuilder<SectionCubit, SectionState>(
                   builder: (context, state) {
                     if (state.isLoading) {
-                      return const _CourseTabStatus(isLoading: true);
+                      return AppSkeletonizer(
+                        child: ListView.builder(
+                          padding: const EdgeInsets.fromLTRB(12, 10, 12, 90),
+                          itemCount: 4,
+                          itemBuilder: (context, index) =>
+                              SectionLessonsExpansionTile(
+                                section: dummySection,
+                                demoId: widget.demoId,
+                                lessonsLocked: widget.lessonsLocked,
+                              ),
+                        ),
+                      );
                     }
 
                     if (state.errors != null && state.errors!.isNotEmpty) {
@@ -145,7 +158,18 @@ class _CourseTabsState extends State<CourseTabs> {
                     builder: (context, state) {
                       if (state is CourseFaqLoading ||
                           state is CourseFaqInitial) {
-                        return const _CourseTabStatus(isLoading: true);
+                        return AppSkeletonizer(
+                          child: ListView.separated(
+                            padding: const EdgeInsets.fromLTRB(12, 10, 12, 24),
+                            itemCount: 4,
+                            separatorBuilder: (_, __) =>
+                                const SizedBox(height: 12),
+                            itemBuilder: (context, index) => FaqItem(
+                              question: dummyCourseFaq.question,
+                              answer: dummyCourseFaq.answer,
+                            ),
+                          ),
+                        );
                       }
 
                       if (state is CourseFaqError) {
@@ -191,13 +215,11 @@ class _CourseTabsState extends State<CourseTabs> {
 }
 
 class _CourseTabStatus extends StatelessWidget {
-  final bool isLoading;
   final bool isError;
   final IconData icon;
   final String? message;
 
   const _CourseTabStatus({
-    this.isLoading = false,
     this.isError = false,
     this.icon = Icons.info_outline_rounded,
     this.message,
@@ -210,43 +232,34 @@ class _CourseTabStatus extends StatelessWidget {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24),
-        child: isLoading
-            ? SizedBox(
-                width: 26,
-                height: 26,
-                child: CircularProgressIndicator(
-                  color: color,
-                  strokeWidth: 2.5,
-                ),
-              )
-            : Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 54,
-                    height: 54,
-                    decoration: BoxDecoration(
-                      color: color.withValues(alpha: 0.08),
-                      borderRadius: BorderRadius.circular(17),
-                    ),
-                    child: Icon(
-                      isError ? Icons.error_outline_rounded : icon,
-                      color: color,
-                      size: 25,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    message ?? '',
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.textSecondaryOf(context),
-                      fontWeight: FontWeight.w600,
-                      height: 1.4,
-                    ),
-                  ),
-                ],
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 54,
+              height: 54,
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(17),
               ),
+              child: Icon(
+                isError ? Icons.error_outline_rounded : icon,
+                color: color,
+                size: 25,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              message ?? '',
+              textAlign: TextAlign.center,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.textSecondaryOf(context),
+                fontWeight: FontWeight.w600,
+                height: 1.4,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

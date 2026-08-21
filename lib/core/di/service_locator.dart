@@ -12,9 +12,11 @@ import 'package:project1/features/certification/domain/use_case/get_my_certifica
 import 'package:project1/features/certification/presentation/cubit/certification_cubit.dart';
 import 'package:project1/features/notifications/data/data_sources/device_info_data_source.dart';
 import 'package:project1/features/notifications/data/data_sources/notification_remote_data_source.dart';
+import 'package:project1/features/notifications/data/data_sources/notification_storage_service.dart';
 import 'package:project1/features/notifications/domain/repository/notification_repository.dart';
 import 'package:project1/features/notifications/data/repository/notification_repository_impl.dart';
 import 'package:project1/features/notifications/domain/use_case/register_fcm_token_usecase.dart';
+import 'package:project1/features/notifications/presentation/cubit/notifications_cubit.dart';
 import 'package:project1/features/notifications/presentation/services/notification_service.dart';
 import 'package:project1/features/demo/data/data_sources/inquery_data_source.dart';
 import 'package:project1/features/demo/data/repository/inquiry_repository_impl.dart';
@@ -87,17 +89,22 @@ import 'package:project1/features/course/upload_photo/domain/repository/upload_p
 import 'package:project1/features/course/upload_photo/domain/use_case/upload_photo_course_usecase.dart';
 import 'package:project1/features/course/upload_photo/presentation/cubit/upload_photo_course_cubit.dart';
 import 'package:project1/features/demo/data/data_sources/data_payment_data_source.dart';
+import 'package:project1/features/demo/data/data_sources/demo_report_remote_data_source.dart';
 import 'package:project1/features/demo/data/data_sources/demo_remote_data_source.dart';
 import 'package:project1/features/demo/data/data_sources/demo_users_remote_data_source.dart';
 import 'package:project1/features/demo/domain/repository/demo_repository.dart';
 import 'package:project1/features/demo/data/repository/demo_repository_impl.dart';
+import 'package:project1/features/demo/data/repository/demo_report_repository_impl.dart';
 import 'package:project1/features/demo/data/repository/demo_user_repository_impl.dart';
 import 'package:project1/features/demo/data/repository/payment%20repo/demo_payment_repository_impl.dart';
 import 'package:project1/features/demo/domain/repository/demo_payment_repository.dart';
+import 'package:project1/features/demo/domain/repository/demo_report_repository.dart';
 import 'package:project1/features/demo/domain/repository/demo_users_repository.dart';
 import 'package:project1/features/demo/domain/use%20case/demo_payment_usecase.dart';
 import 'package:project1/features/demo/domain/use%20case/demo_users_usecase.dart';
 import 'package:project1/features/demo/domain/use%20case/demos_usecase.dart';
+import 'package:project1/features/demo/domain/use%20case/get_demo_owner_report_usecase.dart';
+import 'package:project1/features/demo/presentation/cubit/demo%20report/demo_report_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20cubit/demo_cubit.dart';
 import 'package:project1/features/demo/presentation/cubit/demo%20users%20cubit/demo_users_cubit.dart';
 import 'package:project1/features/department/presentation/cubit/department%20cubit/department_cubit.dart';
@@ -162,18 +169,18 @@ import 'package:project1/features/profile/data/data_sources/profile_remote_datas
 import 'package:project1/features/profile/data/repository/profile_repository_impl.dart';
 import 'package:project1/features/profile/domain/repository/profile_repository.dart';
 import 'package:project1/features/profile/domain/use_case/update_profile_image_usecase.dart';
-import 'package:project1/features/q&a/data/data_sources/discussion_remote_data_source.dart';
-import 'package:project1/features/q&a/data/repositories/discussion_repository_impl.dart';
-import 'package:project1/features/q&a/domain/repositories/discussion_repository.dart';
-import 'package:project1/features/q&a/domain/use_case/create_discussion_answer_usecase.dart';
-import 'package:project1/features/q&a/domain/use_case/create_discussion_question_usecase.dart';
-import 'package:project1/features/q&a/domain/use_case/delete_discussion_answer_usecase.dart';
-import 'package:project1/features/q&a/domain/use_case/delete_discussion_question_usecase.dart';
-import 'package:project1/features/q&a/domain/use_case/get_discussion_answers_usecase.dart';
-import 'package:project1/features/q&a/domain/use_case/get_discussion_questions_usecase.dart';
-import 'package:project1/features/q&a/domain/use_case/update_discussion_answer_usecase.dart';
-import 'package:project1/features/q&a/domain/use_case/update_discussion_question_usecase.dart';
-import 'package:project1/features/q&a/presentation/cubit/discussion_cubit.dart';
+import 'package:project1/features/Q&A/data/data_sources/discussion_remote_data_source.dart';
+import 'package:project1/features/Q&A/data/repositories/discussion_repository_impl.dart';
+import 'package:project1/features/Q&A/domain/repositories/discussion_repository.dart';
+import 'package:project1/features/Q&A/domain/use_case/create_discussion_answer_usecase.dart';
+import 'package:project1/features/Q&A/domain/use_case/create_discussion_question_usecase.dart';
+import 'package:project1/features/Q&A/domain/use_case/delete_discussion_answer_usecase.dart';
+import 'package:project1/features/Q&A/domain/use_case/delete_discussion_question_usecase.dart';
+import 'package:project1/features/Q&A/domain/use_case/get_discussion_answers_usecase.dart';
+import 'package:project1/features/Q&A/domain/use_case/get_discussion_questions_usecase.dart';
+import 'package:project1/features/Q&A/domain/use_case/update_discussion_answer_usecase.dart';
+import 'package:project1/features/Q&A/domain/use_case/update_discussion_question_usecase.dart';
+import 'package:project1/features/Q&A/presentation/cubit/discussion_cubit.dart';
 import 'package:project1/features/questions_bank/data/data_sources/question_bank_remote_data_source.dart';
 import 'package:project1/features/questions_bank/data/repository/question_bank_repository_impl.dart';
 import 'package:project1/features/questions_bank/domain/repository/question_bank_repository.dart';
@@ -406,6 +413,26 @@ void setupDI() {
     () => DemoPaymentDataSourceImpl(
       getIt<DioClient>(),
       dio: getIt<DioClient>().dio,
+    ),
+  );
+
+  getIt.registerLazySingleton<DemoReportRemoteDataSource>(
+    () => DemoReportRemoteDataSourceImpl(dio: getIt<DioClient>().dio),
+  );
+
+  getIt.registerLazySingleton<DemoReportRepository>(
+    () => DemoReportRepositoryImpl(
+      remoteDataSource: getIt<DemoReportRemoteDataSource>(),
+    ),
+  );
+
+  getIt.registerLazySingleton(
+    () => GetDemoOwnerReportUseCase(getIt<DemoReportRepository>()),
+  );
+
+  getIt.registerFactory(
+    () => DemoReportCubit(
+      getOwnerReportUseCase: getIt<GetDemoOwnerReportUseCase>(),
     ),
   );
 
@@ -1091,6 +1118,9 @@ getIt.registerFactory<ExamAttemptsHistoryCubit>(() => ExamAttemptsHistoryCubit(
   getIt.registerLazySingleton<DeviceInfoDataSource>(
     () => DeviceInfoDataSourceImpl(),
   );
+  getIt.registerLazySingleton<NotificationStorageService>(
+    () => NotificationStorageService(storage: getIt<AppSecureStorage>()),
+  );
   getIt.registerLazySingleton<NotificationRemoteDataSource>(
     () => NotificationRemoteDataSourceImpl(getIt<DioClient>()),
   );
@@ -1105,7 +1135,11 @@ getIt.registerFactory<ExamAttemptsHistoryCubit>(() => ExamAttemptsHistoryCubit(
       registerFcmTokenUseCase: getIt<RegisterFcmTokenUseCase>(),
       deviceInfoDataSource: getIt<DeviceInfoDataSource>(),
       storage: getIt<AppSecureStorage>(),
+      storageService: getIt<NotificationStorageService>(),
     ),
+  );
+  getIt.registerFactory<NotificationsCubit>(
+    () => NotificationsCubit(storageService: getIt<NotificationStorageService>()),
   );
   //////////////////////// Notifications ////////////////////////
 

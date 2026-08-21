@@ -3,9 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/core/dummy/dummy_entities.dart';
+import 'package:project1/core/presentation/widgets/app_skeletonizer.dart';
 import 'package:project1/core/presentation/widgets/gradient_action_button.dart';
 import 'package:project1/core/presentation/widgets/gradient_page_app_bar.dart';
 import 'package:project1/features/quiz/data/models/exam_model.dart';
+import 'package:project1/features/quiz/domain/entities/exam_entity.dart';
 import 'package:project1/features/quiz/presentation/cubit/exam_cubit.dart';
 import 'package:project1/features/quiz/presentation/cubit/exam_state.dart';
 import 'package:project1/features/quiz/presentation/widgets/management/exam_form_field.dart';
@@ -54,9 +57,14 @@ class _ExamManagementScreenState extends State<ExamManagementScreen> {
           child: BlocBuilder<ExamCubit, ExamState>(
             builder: (context, state) {
               if (state is ExamLoading) {
-                return Center(
-                  child: CircularProgressIndicator(
-                    color: AppColors.primaryOf(context),
+                return AppSkeletonizer(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.fromLTRB(18, 24, 18, 54),
+                    child: _ExamFormContent(
+                      cubit: _cubit,
+                      sectionId: widget.sectionId,
+                      exam: dummyExam,
+                    ),
                   ),
                 );
               }
@@ -96,7 +104,7 @@ class _ExamManagementScreenState extends State<ExamManagementScreen> {
 class _ExamFormContent extends StatefulWidget {
   final ExamCubit cubit;
   final String sectionId;
-  final ExamModel? exam;
+  final ExamEntity? exam;
 
   const _ExamFormContent({
     required this.cubit,
@@ -147,69 +155,62 @@ class _ExamFormContentState extends State<_ExamFormContent> {
   }
 
   Future<void> _save() async {
-  final localizations = AppLocalizations.of(context)!;
+    final localizations = AppLocalizations.of(context)!;
 
-  final title = _titleController.text.trim();
-  final numberOfQuestions =
-      int.tryParse(_questionsController.text.trim());
-  final durationMinutes =
-      int.tryParse(_durationController.text.trim());
-  final passingScore =
-      int.tryParse(_passingScoreController.text.trim());
+    final title = _titleController.text.trim();
+    final numberOfQuestions = int.tryParse(_questionsController.text.trim());
+    final durationMinutes = int.tryParse(_durationController.text.trim());
+    final passingScore = int.tryParse(_passingScoreController.text.trim());
 
-  setState(() {
-    _titleError = title.isEmpty;
-    _questionsError =
-        numberOfQuestions == null || numberOfQuestions <= 0;
-    _durationError =
-        durationMinutes == null || durationMinutes <= 0;
-    _passingScoreError =
-        passingScore == null ||
-        passingScore < 0 ||
-        passingScore > 100;
-  });
+    setState(() {
+      _titleError = title.isEmpty;
+      _questionsError = numberOfQuestions == null || numberOfQuestions <= 0;
+      _durationError = durationMinutes == null || durationMinutes <= 0;
+      _passingScoreError =
+          passingScore == null || passingScore < 0 || passingScore > 100;
+    });
 
-  if (_titleError ||
-      _questionsError ||
-      _durationError ||
-      _passingScoreError) {
-    return;
+    if (_titleError ||
+        _questionsError ||
+        _durationError ||
+        _passingScoreError) {
+      return;
+    }
+
+    setState(() => _isSaving = true);
+
+    final success = _isEditing
+        ? await widget.cubit.updateExam(
+            sectionId: widget.sectionId,
+            examId: widget.exam!.id,
+            title: title,
+            numberOfQuestions: numberOfQuestions!,
+            durationMinutes: durationMinutes!,
+            passingScore: passingScore!,
+          )
+        : await widget.cubit.createExam(
+            sectionId: widget.sectionId,
+            title: title,
+            numberOfQuestions: numberOfQuestions!,
+            durationMinutes: durationMinutes!,
+            passingScore: passingScore!,
+          );
+
+    if (!mounted) return;
+
+    setState(() => _isSaving = false);
+
+    if (success) {
+      Navigator.pop(context, true);
+    } else {
+      SnackbarTheme().newSnackBarError(
+        context,
+        _isEditing
+            ? localizations.failedToUpdateExam
+            : localizations.failedToCreateExam,
+      );
+    }
   }
-
-  setState(() => _isSaving = true);
-
-  final success = _isEditing
-      ? await widget.cubit.updateExam(
-          sectionId: widget.sectionId,
-          examId: widget.exam!.id,
-          title: title,
-          numberOfQuestions: numberOfQuestions!,
-          durationMinutes: durationMinutes!,
-          passingScore: passingScore!,
-        )
-      : await widget.cubit.createExam(
-          sectionId: widget.sectionId,
-          title: title,
-          numberOfQuestions: numberOfQuestions!,
-          durationMinutes: durationMinutes!,
-          passingScore: passingScore!,
-        );
-
-  if (!mounted) return;
-
-  setState(() => _isSaving = false);
-
-  if (success) {
-    Navigator.pop(context, true);
-  } else {
-    SnackbarTheme().newSnackBarError(
-      context,
-      _isEditing
-          ? localizations.failedToUpdateExam
-          : localizations.failedToCreateExam,
-    );
-  }
-}
 
   @override
   Widget build(BuildContext context) {

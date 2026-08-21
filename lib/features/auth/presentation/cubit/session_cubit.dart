@@ -94,5 +94,6 @@ class SessionCubit extends Cubit<SessionState> {
   Future<void> _clearStoredTokens() async {
     await storage.delete(StorageKeys.token);
     await storage.delete(StorageKeys.refreshToken);
+    await storage.delete(StorageKeys.currentUserId);
   }
 }

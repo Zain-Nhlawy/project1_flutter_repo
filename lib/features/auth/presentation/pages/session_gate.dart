@@ -4,7 +4,7 @@ import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/features/auth/presentation/cubit/session_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/session_state.dart';
 import 'package:project1/features/auth/presentation/pages/unauthenticated_gate.dart';
-import 'package:project1/features/home/presentation/pages/navigations_tabs.dart';
+import 'package:project1/features/home/presentation/pages/home_page.dart';
 import 'package:project1/l10n/app_localizations.dart';
 
 class SessionGate extends StatelessWidget {
@@ -30,7 +30,7 @@ class SessionGate extends StatelessWidget {
       },
       builder: (context, state) {
         if (state is SessionAuthenticated) {
-          return authenticatedBuilder?.call(context) ?? const NavigationsTabs();
+          return authenticatedBuilder?.call(context) ?? const HomePage();
         }
 
         if (state is SessionUnauthenticated) {

@@ -3,6 +3,8 @@ import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/core/dummy/dummy_entities.dart';
+import 'package:project1/core/presentation/widgets/app_skeletonizer.dart';
 import 'package:project1/features/lesson/domain/entities/lesson_entity.dart';
 import 'package:project1/features/lesson/presentation/cubit/lesson_cubit.dart';
 import 'package:project1/features/lesson/presentation/pages/lesson_details_screen.dart';
@@ -181,17 +183,12 @@ class _SectionLessonsExpansionTileState
             ),
             const SizedBox(height: 14),
             if (_loading)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 18),
-                child: Center(
-                  child: SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: CircularProgressIndicator(
-                      color: primary,
-                      strokeWidth: 2.4,
-                    ),
-                  ),
+              AppSkeletonizer(
+                child: Column(
+                  children: [
+                    for (var index = 0; index < 3; index++)
+                      LessonTile(num: index + 1, title: dummyLesson.title),
+                  ],
                 ),
               )
             else if (_lessons.isEmpty)

@@ -2,12 +2,16 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/features/auth/upload_photo/domain/use_case/upload_photo_usecase.dart';
 import 'package:project1/features/demo/data/models/demo_model.dart';
+import 'package:project1/features/demo/domain/entities/demo_entity.dart';
 import 'package:project1/features/demo/domain/use%20case/demos_usecase.dart';
 import 'demo_state.dart';
 
 class DemoCubit extends Cubit<DemoState> {
   final GetDemosUseCase getDemosUseCase;
   final UploadPhotoUseCase uploadPhotoUseCase;
+
+  List<DemoEntity> _currentDemos = [];
+  List<DemoEntity> get currentDemos => _currentDemos;
 
   DemoCubit({required this.getDemosUseCase, required this.uploadPhotoUseCase})
     : super(DemoInitial());
@@ -20,11 +24,19 @@ class DemoCubit extends Cubit<DemoState> {
 
       result.fold(
         (error) => emit(GetDemosError(error)),
-        (demos) => emit(GetDemosLoaded(demos)),
+        (demos) {
+          _currentDemos = demos;
+          emit(GetDemosLoaded(demos));
+        },
       );
     } catch (e) {
       emit(GetDemosError(e.toString()));
     }
+  }
+
+  void clear() {
+    _currentDemos = [];
+    emit(DemoInitial());
   }
 
   Future<void> addDemo(DemoModel demo) async {
@@ -90,6 +102,7 @@ class DemoCubit extends Cubit<DemoState> {
         plan: demo.plan,
         membersCount: demo.membersCount,
         createdAt: demo.createdAt,
+        subscriptionStatus: demo.subscriptionStatus,
       );
 
       final result = await getDemosUseCase.addDemo(demoToSave);

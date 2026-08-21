@@ -13,4 +13,8 @@ class DemoPaymentUseCase {
   Future<Either<String, String>> confirmPayment(String sessionId) {
     return repository.confirmPayment(sessionId);
   }
+
+  Future<Either<String, String>> manageSubscription(String demoId) {
+    return repository.manageSubscription(demoId);
+  }
 }

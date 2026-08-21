@@ -1,15 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/core/errors/failures.dart';
-import 'package:project1/features/q&a/data/models/discussion_answer_model.dart';
-import 'package:project1/features/q&a/data/models/discussion_question_model.dart';
-import 'package:project1/features/q&a/domain/use_case/create_discussion_answer_usecase.dart';
-import 'package:project1/features/q&a/domain/use_case/create_discussion_question_usecase.dart';
-import 'package:project1/features/q&a/domain/use_case/delete_discussion_answer_usecase.dart';
-import 'package:project1/features/q&a/domain/use_case/delete_discussion_question_usecase.dart';
-import 'package:project1/features/q&a/domain/use_case/get_discussion_answers_usecase.dart';
-import 'package:project1/features/q&a/domain/use_case/get_discussion_questions_usecase.dart';
-import 'package:project1/features/q&a/domain/use_case/update_discussion_answer_usecase.dart';
-import 'package:project1/features/q&a/domain/use_case/update_discussion_question_usecase.dart';
+import 'package:project1/features/Q&A/data/models/discussion_answer_model.dart';
+import 'package:project1/features/Q&A/data/models/discussion_question_model.dart';
+import 'package:project1/features/Q&A/domain/use_case/create_discussion_answer_usecase.dart';
+import 'package:project1/features/Q&A/domain/use_case/create_discussion_question_usecase.dart';
+import 'package:project1/features/Q&A/domain/use_case/delete_discussion_answer_usecase.dart';
+import 'package:project1/features/Q&A/domain/use_case/delete_discussion_question_usecase.dart';
+import 'package:project1/features/Q&A/domain/use_case/get_discussion_answers_usecase.dart';
+import 'package:project1/features/Q&A/domain/use_case/get_discussion_questions_usecase.dart';
+import 'package:project1/features/Q&A/domain/use_case/update_discussion_answer_usecase.dart';
+import 'package:project1/features/Q&A/domain/use_case/update_discussion_question_usecase.dart';
 import 'discussion_state.dart';
 
 class DiscussionCubit extends Cubit<DiscussionState> {

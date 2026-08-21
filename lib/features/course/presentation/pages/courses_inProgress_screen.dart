@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/core/dummy/dummy_entities.dart';
+import 'package:project1/core/presentation/widgets/app_skeletonizer.dart';
 import 'package:project1/features/course/presentation/cubit/course_cubit.dart';
 import 'package:project1/features/course/presentation/cubit/tags_cubit.dart';
 import 'package:project1/features/course/upload_photo/presentation/cubit/upload_photo_course_cubit.dart';
@@ -54,7 +56,52 @@ class CoursesInProgressScreen extends StatelessWidget {
       body: BlocBuilder<CourseCubit, CourseState>(
         builder: (context, state) {
           if (state is CourseLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return AppSkeletonizer(
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 160),
+                children: [
+                  Text(
+                    localizations.ongoingCourses,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(localizations.manageCoursesDescription),
+                  const SizedBox(height: 18),
+                  Container(
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withValues(alpha: 0.08),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.menu_book_rounded),
+                        const SizedBox(width: 10),
+                        Text('2 ${localizations.coursesInProgress}'),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  for (var index = 0; index < 2; index++)
+                    CourseCard(
+                      id: dummyCourse.id,
+                      title: dummyCourse.title,
+                      companyName: 'Company name',
+                      imageUrl: dummyCourse.imagePath,
+                      price: dummyCourse.price,
+                      description: dummyCourse.description,
+                      tags: dummyCourse.tags,
+                      visibility: dummyCourse.visibility,
+                      isPublished: false,
+                      mode: CourseCardMode.ongoing,
+                      onTap: () {},
+                    ),
+                ],
+              ),
+            );
           }
           if (state is CourseError) {
             return Center(
@@ -66,8 +113,9 @@ class CoursesInProgressScreen extends StatelessWidget {
           }
 
           final courses = state is CourseLoaded ? state.courses : <dynamic>[];
-          final ongoingCourses =
-              courses.where((course) => !course.isPublished).toList();
+          final ongoingCourses = courses
+              .where((course) => !course.isPublished)
+              .toList();
 
           return ListView(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 160),
@@ -83,9 +131,12 @@ class CoursesInProgressScreen extends StatelessWidget {
               const SizedBox(height: 6),
               Text(
                 localizations.manageCoursesDescription,
-                style: TextStyle(fontSize: 14, color:AppColors.textSecondaryOf(
+                style: TextStyle(
+                  fontSize: 14,
+                  color: AppColors.textSecondaryOf(
                     context,
-                  ).withValues(alpha: 0.8),),
+                  ).withValues(alpha: 0.8),
+                ),
               ),
               const SizedBox(height: 18),
               Container(
@@ -109,57 +160,57 @@ class CoursesInProgressScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-                ...ongoingCourses.map((course) {
-                  return CourseCard(
-                    id: course.id,
-                    title: course.title,
-                    companyName: course.demo?.name ?? '',
-                    imageUrl: course.imagePath,
-                    price: course.price,
-                    description: course.description,
-                    tags: course.tags,
-                    visibility: course.visibility,
-                    isPublished: course.isPublished,
-                    mode: CourseCardMode.ongoing,
-                    onTap: () async {
-                      final result = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => MultiBlocProvider(
-                            providers: [
-                              BlocProvider.value(
-                                value: context.read<CourseCubit>(),
-                              ),
-                              BlocProvider(
-                                create: (_) => getIt<TagsCubit>()..fetchTags(),
-                              ),
-                              BlocProvider(
-                                create: (_) => getIt<UploadPhotoCourseCubit>(),
-                              ),
-                            ],
-                            child: CourseManagementScreen(
-                              courseId: course.id,
-                              assetId: course.assetId!,
-                              demoId: demoId,
-                              title: course.title,
-                              company: course.demo?.name ?? '',
-                              image: course.imagePath,
-                              lessons: course.totalLessons,
-                              duration: course.totalDuration,
-                              description: course.description,
-                              price: course.price,
-                              visibility: course.visibility,
-                              tagIds: course.tagIds,
+              ...ongoingCourses.map((course) {
+                return CourseCard(
+                  id: course.id,
+                  title: course.title,
+                  companyName: course.demo?.name ?? '',
+                  imageUrl: course.imagePath,
+                  price: course.price,
+                  description: course.description,
+                  tags: course.tags,
+                  visibility: course.visibility,
+                  isPublished: course.isPublished,
+                  mode: CourseCardMode.ongoing,
+                  onTap: () async {
+                    final result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => MultiBlocProvider(
+                          providers: [
+                            BlocProvider.value(
+                              value: context.read<CourseCubit>(),
                             ),
+                            BlocProvider(
+                              create: (_) => getIt<TagsCubit>()..fetchTags(),
+                            ),
+                            BlocProvider(
+                              create: (_) => getIt<UploadPhotoCourseCubit>(),
+                            ),
+                          ],
+                          child: CourseManagementScreen(
+                            courseId: course.id,
+                            assetId: course.assetId!,
+                            demoId: demoId,
+                            title: course.title,
+                            company: course.demo?.name ?? '',
+                            image: course.imagePath,
+                            lessons: course.totalLessons,
+                            duration: course.totalDuration,
+                            description: course.description,
+                            price: course.price,
+                            visibility: course.visibility,
+                            tagIds: course.tagIds,
                           ),
                         ),
-                      );
-                      if (result == true && context.mounted) {
-                        context.read<CourseCubit>().getDemoCourses(demoId);
-                      }
-                    },
-                  );
-                }),
+                      ),
+                    );
+                    if (result == true && context.mounted) {
+                      context.read<CourseCubit>().getDemoCourses(demoId);
+                    }
+                  },
+                );
+              }),
             ],
           );
         },

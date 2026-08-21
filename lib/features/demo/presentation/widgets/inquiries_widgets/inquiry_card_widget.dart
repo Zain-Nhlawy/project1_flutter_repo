@@ -191,10 +191,13 @@ class InquiryCardWidget extends StatelessWidget {
                       ],
                     ),
                   ),
-                ] else if (isReplied &&
+                ],
+
+                // Reply preview (shown when replied)
+                if (isReplied &&
                     inquiry.reply != null &&
                     inquiry.reply!.isNotEmpty) ...[
-                  // Member view when replied
+                  const SizedBox(height: 10),
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 12,

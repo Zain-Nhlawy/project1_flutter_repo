@@ -13,16 +13,18 @@ class MembersModel extends MembersEntity {
   });
 
   factory MembersModel.fromJson(Map<String, dynamic> json) {
-    final user = json['user'] as Map<String, dynamic>;
+    final user = json['user'] is Map<String, dynamic>
+        ? json['user'] as Map<String, dynamic>
+        : json;
     return MembersModel(
-      demoId: json['demoId'] as String,
+      demoId: json['demoId'] as String? ?? user['demoId'] as String? ?? '',
       memberIdInDemo: json['id'] as String?,
-      id: user['id'] as String,
-      firstName: user['firstName'] as String,
-      lastName: user['lastName'] as String,
-      email: user['email'] as String,
+      id: user['id'] as String? ?? json['id'] as String? ?? '',
+      firstName: user['firstName'] as String? ?? json['firstName'] as String? ?? '',
+      lastName: user['lastName'] as String? ?? json['lastName'] as String? ?? '',
+      email: user['email'] as String? ?? json['email'] as String? ?? '',
       imagePath: user['imagePath'] as String?,
-      role: json['role'] as String,
+      role: json['role'] as String? ?? user['role'] as String? ?? '',
     );
   }
 

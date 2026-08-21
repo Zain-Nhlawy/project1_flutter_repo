@@ -12,9 +12,23 @@ class DemoModel extends DemoEntity {
     super.plan,
     required super.membersCount,
     super.createdAt,
+    super.subscriptionStatus,
   });
 
   factory DemoModel.fromJson(Map<String, dynamic> json) {
+    int parsedMembersCount = 0;
+    if (json['membersCount'] is int) {
+      parsedMembersCount = json['membersCount'] as int;
+    } else if (json['membersCount'] != null) {
+      parsedMembersCount = int.tryParse(json['membersCount'].toString()) ?? 0;
+    }
+
+    final rawIsOwner = json['isOwner'];
+    final bool parsedIsOwner = rawIsOwner == true ||
+        rawIsOwner == 'true' ||
+        rawIsOwner == 1 ||
+        rawIsOwner == '1';
+
     return DemoModel(
       id: json['id']?.toString(),
       name: json['name']?.toString() ?? '',
@@ -22,12 +36,13 @@ class DemoModel extends DemoEntity {
       imagePath: json['imagePath']?.toString(),
       signatureImagePath: json['signatureImagePath']?.toString(),
       ownerName: json['ownerName']?.toString() ?? '',
-      isOwner: json['isOwner'] ?? false,
+      isOwner: parsedIsOwner,
       plan: json['plan']?.toString(),
-      membersCount: json['membersCount'] ?? 0,
+      membersCount: parsedMembersCount,
       createdAt: json['createdAt'] != null
           ? DateTime.tryParse(json['createdAt'].toString())
           : null,
+      subscriptionStatus: json['subscriptionStatus']?.toString() ?? '',
     );
   }
 
@@ -42,6 +57,7 @@ class DemoModel extends DemoEntity {
       'plan': plan,
       'membersCount': membersCount,
       'createdAt': createdAt?.toIso8601String(),
+      'subscriptionStatus': subscriptionStatus,
     };
   }
 }

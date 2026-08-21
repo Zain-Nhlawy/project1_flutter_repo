@@ -4,8 +4,10 @@ import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/config/theme/snackbar_theme.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/core/dummy/dummy_entities.dart';
 import 'package:project1/core/presentation/widgets/gradient_action_button.dart';
 import 'package:project1/core/presentation/widgets/gradient_page_app_bar.dart';
+import 'package:project1/core/presentation/widgets/app_skeletonizer.dart';
 import 'package:project1/features/questions_bank/data/models/question_bank_model.dart';
 import 'package:project1/features/questions_bank/data/models/question_choice_model.dart';
 import 'package:project1/features/questions_bank/presentation/cubit/question_bank_cubit.dart';
@@ -132,9 +134,18 @@ class _QuestionBankManagementScreenState
           child: BlocBuilder<QuestionBankCubit, QuestionBankState>(
             builder: (context, state) {
               if (state is QuestionBankLoading) {
-                return Center(
-                  child: CircularProgressIndicator(
-                    color: AppColors.primaryOf(context),
+                return AppSkeletonizer(
+                  child: ListView(
+                    padding: const EdgeInsets.fromLTRB(18, 24, 18, 100),
+                    children: [
+                      const QuestionBankHeader(questionsCount: 4),
+                      const SizedBox(height: 18),
+                      for (var index = 0; index < 4; index++)
+                        QuestionCard(
+                          question: dummyQuestionBank,
+                          onDelete: () {},
+                        ),
+                    ],
                   ),
                 );
               }

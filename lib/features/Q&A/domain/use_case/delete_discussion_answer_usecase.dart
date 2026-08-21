@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:project1/core/errors/failures.dart';
-import 'package:project1/features/q&a/domain/repositories/discussion_repository.dart';
+import 'package:project1/features/Q&A/domain/repositories/discussion_repository.dart';
 
 class DeleteDiscussionAnswerUseCase {
   final DiscussionRepository repository;

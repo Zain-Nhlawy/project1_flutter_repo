@@ -52,6 +52,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get goodMorning => 'Good morning,';
 
   @override
+  String get goodAfternoon => 'Good afternoon,';
+
+  @override
+  String get goodEvening => 'Good evening,';
+
+  @override
   String get addDemo => 'Add Demo';
 
   @override
@@ -296,6 +302,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get upgradePlan => 'Upgrade Plan';
+
+  @override
+  String get managePlan => 'Manage Plan';
+
+  @override
+  String get manageSubscription => 'Manage your subscription';
+
+  @override
+  String get openingSubscriptionPortal =>
+      'Opening the secure subscription portal...';
+
+  @override
+  String get subscriptionPortalError =>
+      'Could not open the subscription portal';
+
+  @override
+  String get subscriptionActive => 'Subscription is active';
+
+  @override
+  String get subscriptionCancelled => 'Subscription cancelled';
+
+  @override
+  String get freeTrialExpired => 'Free trial expired';
 
   @override
   String get levelUpYourPlan => 'Level Up your plan';
@@ -1030,6 +1059,145 @@ class AppLocalizationsEn extends AppLocalizations {
   String get demoStats => 'Demo Stats';
 
   @override
+  String get demoReportSubtitle =>
+      'A clear view of learning, engagement, and content performance';
+
+  @override
+  String get demoReportOverview => 'Overview';
+
+  @override
+  String demoReportGeneratedAt(String date, String time) {
+    return 'Generated $date at $time';
+  }
+
+  @override
+  String get demoReportTotalMembers => 'Total members';
+
+  @override
+  String get demoReportNewMembers => 'New members';
+
+  @override
+  String get demoReportDepartments => 'Departments';
+
+  @override
+  String get demoReportTotalCourses => 'Total courses';
+
+  @override
+  String get demoReportPublishedCourses => 'Published courses';
+
+  @override
+  String get demoReportCertifications => 'Certifications';
+
+  @override
+  String get demoReportExamAttempts => 'Exam attempts';
+
+  @override
+  String get demoReportAverageScore => 'Average score';
+
+  @override
+  String get demoReportPerformance => 'Performance snapshot';
+
+  @override
+  String get demoReportExamPassRate => 'Exam pass rate';
+
+  @override
+  String get demoReportCertificationRate => 'Certification rate';
+
+  @override
+  String get demoReportPublishingRate => 'Course publishing rate';
+
+  @override
+  String get demoReportCoursePerformance => 'Course performance';
+
+  @override
+  String get demoReportMemberActivity => 'Member activity';
+
+  @override
+  String get demoReportDepartmentBreakdown => 'Department breakdown';
+
+  @override
+  String get demoReportNoCourses =>
+      'No courses are available in this report yet.';
+
+  @override
+  String get demoReportNoMembers =>
+      'No members are available in this report yet.';
+
+  @override
+  String get demoReportNoDepartments =>
+      'No departments are available in this report yet.';
+
+  @override
+  String get demoReportPublished => 'Published';
+
+  @override
+  String get demoReportDraft => 'Draft';
+
+  @override
+  String get demoReportAssignedMembers => 'Assigned members';
+
+  @override
+  String demoReportSectionsAndLessons(int sections, int lessons) {
+    return '$sections sections • $lessons lessons';
+  }
+
+  @override
+  String demoReportExamsAndAttempts(int exams, int attempts) {
+    return '$exams exams • $attempts attempts';
+  }
+
+  @override
+  String demoReportHoursMinutes(int hours, int minutes) {
+    return '${hours}h ${minutes}m';
+  }
+
+  @override
+  String demoReportMinutes(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String get demoReportPassRate => 'Pass rate';
+
+  @override
+  String get demoReportIssuedCertificates => 'Certificates issued';
+
+  @override
+  String demoReportJoinedDate(String date) {
+    return 'Joined $date';
+  }
+
+  @override
+  String get demoReportAssignedCourses => 'Assigned courses';
+
+  @override
+  String get demoReportExams => 'Exams';
+
+  @override
+  String get demoReportHighestScore => 'Highest score';
+
+  @override
+  String get demoReportEngagement => 'Engagement';
+
+  @override
+  String get demoReportMembersCount => 'Members';
+
+  @override
+  String get demoReportCoursesCount => 'Courses';
+
+  @override
+  String get demoReportOwnerRole => 'Owner';
+
+  @override
+  String get demoReportManagerRole => 'Manager';
+
+  @override
+  String get demoReportMemberRole => 'Member';
+
+  @override
+  String get demoReportLoadError => 'Could not load the demo report';
+
+  @override
   String get themeDark => 'Dark';
 
   @override
@@ -1055,7 +1223,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notificationsTitle => 'Notifications';
 
   @override
+  String get notificationsSubtitle =>
+      'Stay updated with your latest alerts and activities';
+
+  @override
   String get noNewNotifications => 'No new notifications';
+
+  @override
+  String get noNotificationsSubtitle =>
+      'When you receive invitations, updates, or messages, they will appear here.';
+
+  @override
+  String get markAllAsRead => 'Mark all as read';
+
+  @override
+  String get clearAllNotifications => 'Clear all';
+
+  @override
+  String get clearNotificationsConfirmation =>
+      'Are you sure you want to clear all notifications?';
 
   @override
   String get selectVideoFirst => 'Please select a video first.';

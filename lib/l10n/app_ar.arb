@@ -12,6 +12,8 @@
 "navHistory": "السجل",
 "navProfile": "الحساب",
 "goodMorning": "صباح الخير،",
+"goodAfternoon": "مساء الخير،",
+"goodEvening": "مساء الخير،",
 "addDemo": "إضافة غرفة",
 "statMyDemos": "غرفي",
 "statEnrolled": "المسجلة",
@@ -95,6 +97,13 @@
   "tapToUpload": "اضغط لرفع الصورة",
   "selectPlan": "اختر الخطة",
 "upgradePlan": "ترقية الخطة",
+"managePlan": "إدارة الخطة",
+"manageSubscription": "إدارة اشتراكك",
+"openingSubscriptionPortal": "جارٍ فتح بوابة الاشتراك الآمنة...",
+"subscriptionPortalError": "تعذر فتح بوابة الاشتراك",
+"subscriptionActive": "الاشتراك نشط",
+"subscriptionCancelled": "تم إلغاء الاشتراك",
+"freeTrialExpired": "انتهت الفترة التجريبية المجانية",
 "levelUpYourPlan": "ارتقِ بخطتك",
 "currentPlan": "الخطة الحالية",
 "restricted": "مقيدة",
@@ -361,6 +370,81 @@
   "confirmAnswer": "تأكيد الإجابة",
   "usersTab": "المستخدمون",
   "demoStats": "إحصائيات الغرفة",
+  "demoReportSubtitle": "نظرة واضحة على التعلم والتفاعل وأداء المحتوى",
+  "demoReportOverview": "نظرة عامة",
+  "demoReportGeneratedAt": "تم الإنشاء في {date} الساعة {time}",
+  "@demoReportGeneratedAt": {
+    "placeholders": {
+      "date": { "type": "String" },
+      "time": { "type": "String" }
+    }
+  },
+  "demoReportTotalMembers": "إجمالي الأعضاء",
+  "demoReportNewMembers": "الأعضاء الجدد",
+  "demoReportDepartments": "الأقسام",
+  "demoReportTotalCourses": "إجمالي الدورات",
+  "demoReportPublishedCourses": "الدورات المنشورة",
+  "demoReportCertifications": "الشهادات",
+  "demoReportExamAttempts": "محاولات الاختبارات",
+  "demoReportAverageScore": "متوسط الدرجات",
+  "demoReportPerformance": "ملخص الأداء",
+  "demoReportExamPassRate": "معدل النجاح في الاختبارات",
+  "demoReportCertificationRate": "معدل الحصول على الشهادات",
+  "demoReportPublishingRate": "معدل نشر الدورات",
+  "demoReportCoursePerformance": "أداء الدورات",
+  "demoReportMemberActivity": "نشاط الأعضاء",
+  "demoReportDepartmentBreakdown": "تفاصيل الأقسام",
+  "demoReportNoCourses": "لا توجد دورات في هذا التقرير حتى الآن.",
+  "demoReportNoMembers": "لا يوجد أعضاء في هذا التقرير حتى الآن.",
+  "demoReportNoDepartments": "لا توجد أقسام في هذا التقرير حتى الآن.",
+  "demoReportPublished": "منشورة",
+  "demoReportDraft": "مسودة",
+  "demoReportAssignedMembers": "الأعضاء المعيّنون",
+  "demoReportSectionsAndLessons": "{sections} أقسام • {lessons} دروس",
+  "@demoReportSectionsAndLessons": {
+    "placeholders": {
+      "sections": { "type": "int" },
+      "lessons": { "type": "int" }
+    }
+  },
+  "demoReportExamsAndAttempts": "{exams} اختبارات • {attempts} محاولات",
+  "@demoReportExamsAndAttempts": {
+    "placeholders": {
+      "exams": { "type": "int" },
+      "attempts": { "type": "int" }
+    }
+  },
+  "demoReportHoursMinutes": "{hours} س {minutes} د",
+  "@demoReportHoursMinutes": {
+    "placeholders": {
+      "hours": { "type": "int" },
+      "minutes": { "type": "int" }
+    }
+  },
+  "demoReportMinutes": "{minutes} دقيقة",
+  "@demoReportMinutes": {
+    "placeholders": {
+      "minutes": { "type": "int" }
+    }
+  },
+  "demoReportPassRate": "معدل النجاح",
+  "demoReportIssuedCertificates": "الشهادات الصادرة",
+  "demoReportJoinedDate": "انضم في {date}",
+  "@demoReportJoinedDate": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  },
+  "demoReportAssignedCourses": "الدورات المعيّنة",
+  "demoReportExams": "الاختبارات",
+  "demoReportHighestScore": "أعلى درجة",
+  "demoReportEngagement": "التفاعل",
+  "demoReportMembersCount": "الأعضاء",
+  "demoReportCoursesCount": "الدورات",
+  "demoReportOwnerRole": "المالك",
+  "demoReportManagerRole": "المدير",
+  "demoReportMemberRole": "عضو",
+  "demoReportLoadError": "تعذر تحميل تقرير الديمو",
   "themeDark": "داكن",
   "areYouSureSendInvitation": "هل أنت متأكد أنك تريد إرسال دعوة لهذا المستخدم؟",
   "userAlreadyInvited": "المستخدم مدعو بالفعل إلى هذه الغرفة",
@@ -369,7 +453,12 @@
   "invitationsSubtitle": "إدارة دعوات الديمو المستلمة",
   "noNewInvitations": "لا توجد دعوات متاحة",
   "notificationsTitle": "الإشعارات",
+  "notificationsSubtitle": "ابقَ على اطلاع بأحدث التنبيهات والأنشطة",
   "noNewNotifications": "لا توجد إشعارات جديدة",
+  "noNotificationsSubtitle": "عندما تتلقى دعوات أو تحديثات أو رسائل، ستظهر هنا.",
+  "markAllAsRead": "تعيين الكل كمقروء",
+  "clearAllNotifications": "مسح الكل",
+  "clearNotificationsConfirmation": "هل أنت متأكد من مسح جميع الإشعارات؟",
   "invitedBy": "تمت دعوتك بواسطة {firstName} {lastName}",
    "selectVideoFirst": "يرجى اختيار فيديو أولاً.",
   "operationInProgressTitle": "عملية جارية", "operationInProgressMessage": "يوجد رفع فيديو أو إنشاء درس قيد التنفيذ. إذا غادرت الآن، قد يكتمل رفع الفيديو دون ربطه بالدرس. هل تريد المغادرة على أي حال؟", "stay": "البقاء", "leaveAnyway": "المغادرة على أي حال",

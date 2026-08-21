@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/core/dummy/dummy_entities.dart';
+import 'package:project1/core/presentation/widgets/app_skeletonizer.dart';
 import 'package:project1/core/presentation/widgets/gradient_page_app_bar.dart';
 import 'package:project1/features/certification/presentation/cubit/certification_cubit.dart';
 import 'package:project1/features/certification/presentation/cubit/certification_state.dart';
@@ -15,8 +17,7 @@ class MyCertificationsPage extends StatefulWidget {
   const MyCertificationsPage({super.key});
 
   @override
-  State<MyCertificationsPage> createState() =>
-      _MyCertificationsPageState();
+  State<MyCertificationsPage> createState() => _MyCertificationsPageState();
 }
 
 class _MyCertificationsPageState extends State<MyCertificationsPage> {
@@ -35,10 +36,7 @@ class _MyCertificationsPageState extends State<MyCertificationsPage> {
     super.dispose();
   }
 
-  String _formatDate(
-    DateTime date,
-    AppLocalizations localizations,
-  ) {
+  String _formatDate(DateTime date, AppLocalizations localizations) {
     final months = [
       localizations.january,
       localizations.february,
@@ -65,14 +63,14 @@ class _MyCertificationsPageState extends State<MyCertificationsPage> {
       value: _cubit,
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        appBar: GradientPageAppBar(
-          title: l.myCertificates,
-        ),
+        appBar: GradientPageAppBar(title: l.myCertificates),
         body: BlocBuilder<CertificationCubit, CertificationState>(
           builder: (context, state) {
             if (state is CertificationLoading ||
                 state is CertificationInitial) {
-              return const _CertificationsLoadingView();
+              return _CertificationsLoadingView(
+                dateLabel: _formatDate(dummyCertification.issuedAt, l),
+              );
             }
 
             if (state is CertificationError) {
@@ -100,24 +98,12 @@ class _MyCertificationsPageState extends State<MyCertificationsPage> {
                   slivers: [
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          20,
-                          22,
-                          20,
-                          18,
-                        ),
-                        child: CertificatesHeader(
-                          count: certifications.length,
-                        ),
+                        padding: const EdgeInsets.fromLTRB(20, 22, 20, 18),
+                        child: CertificatesHeader(count: certifications.length),
                       ),
                     ),
                     SliverPadding(
-                      padding: const EdgeInsets.fromLTRB(
-                        20,
-                        0,
-                        20,
-                        28,
-                      ),
+                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 28),
                       sliver: SliverList.separated(
                         itemCount: certifications.length,
                         itemBuilder: (context, index) {
@@ -125,10 +111,7 @@ class _MyCertificationsPageState extends State<MyCertificationsPage> {
 
                           return CertificationTile(
                             certification: certification,
-                            dateLabel: _formatDate(
-                              certification.issuedAt,
-                              l,
-                            ),
+                            dateLabel: _formatDate(certification.issuedAt, l),
                             onTap: () {
                               Navigator.push(
                                 context,
@@ -141,8 +124,7 @@ class _MyCertificationsPageState extends State<MyCertificationsPage> {
                             },
                           );
                         },
-                        separatorBuilder: (_, __) =>
-                            const SizedBox(height: 14),
+                        separatorBuilder: (_, __) => const SizedBox(height: 14),
                       ),
                     ),
                   ],
@@ -158,32 +140,35 @@ class _MyCertificationsPageState extends State<MyCertificationsPage> {
   }
 }
 
-
 class _CertificationsLoadingView extends StatelessWidget {
-  const _CertificationsLoadingView();
+  final String dateLabel;
+
+  const _CertificationsLoadingView({required this.dateLabel});
 
   @override
   Widget build(BuildContext context) {
-    final primaryColor = AppColors.primaryOf(context);
-
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.all(22),
-        decoration: BoxDecoration(
-          color: primaryColor.withValues(alpha: 0.06),
-          borderRadius: BorderRadius.circular(22),
-          border: Border.all(
-            color: primaryColor.withValues(alpha: 0.10),
+    return AppSkeletonizer(
+      child: CustomScrollView(
+        slivers: [
+          const SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(20, 22, 20, 18),
+              child: CertificatesHeader(count: 3),
+            ),
           ),
-        ),
-        child: SizedBox(
-          width: 32,
-          height: 32,
-          child: CircularProgressIndicator(
-            strokeWidth: 2.5,
-            color: primaryColor,
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 28),
+            sliver: SliverList.separated(
+              itemCount: 3,
+              itemBuilder: (context, index) => CertificationTile(
+                certification: dummyCertification,
+                dateLabel: dateLabel,
+                onTap: () {},
+              ),
+              separatorBuilder: (_, __) => const SizedBox(height: 14),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -209,9 +194,7 @@ class _ErrorView extends StatelessWidget {
         padding: const EdgeInsets.all(24),
         child: Container(
           width: double.infinity,
-          constraints: const BoxConstraints(
-            maxWidth: 420,
-          ),
+          constraints: const BoxConstraints(maxWidth: 420),
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
@@ -227,10 +210,9 @@ class _ErrorView extends StatelessWidget {
                 width: 68,
                 height: 68,
                 decoration: BoxDecoration(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .error
-                      .withValues(alpha: 0.10),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.error.withValues(alpha: 0.10),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -245,9 +227,7 @@ class _ErrorView extends StatelessWidget {
                 textAlign: TextAlign.center,
                 maxLines: 5,
                 overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.bodyMedium.copyWith(
-                  height: 1.5,
-                ),
+                style: AppTextStyles.bodyMedium.copyWith(height: 1.5),
               ),
               const SizedBox(height: 22),
               SizedBox(
@@ -263,10 +243,7 @@ class _ErrorView extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                     ),
                   ),
-                  icon: const Icon(
-                    Icons.refresh_rounded,
-                    size: 20,
-                  ),
+                  icon: const Icon(Icons.refresh_rounded, size: 20),
                   label: Text(
                     retryLabel,
                     style: AppTextStyles.bodyMedium.copyWith(
@@ -304,17 +281,13 @@ class _EmptyCertificationsView extends StatelessWidget {
           return SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: constraints.maxHeight,
-              ),
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.all(28),
                   child: Container(
                     width: double.infinity,
-                    constraints: const BoxConstraints(
-                      maxWidth: 420,
-                    ),
+                    constraints: const BoxConstraints(maxWidth: 420),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 28,
                       vertical: 34,

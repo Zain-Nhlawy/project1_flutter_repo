@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project1/config/theme/app_colors.dart';
+import 'package:project1/core/dummy/dummy_entities.dart';
+import 'package:project1/core/presentation/widgets/app_skeletonizer.dart';
 import 'package:project1/features/course/presentation/cubit/tags_cubit.dart';
 import 'package:project1/features/course/presentation/cubit/tags_state.dart';
 import 'package:project1/features/course/presentation/widgets/tags_selector.dart';
@@ -42,7 +44,14 @@ class CourseTagsSection extends StatelessWidget {
         BlocBuilder<TagsCubit, TagsState>(
           builder: (context, state) {
             if (state is TagsLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return AppSkeletonizer(
+                child: TagsSelector(
+                  availableTags: List.filled(4, dummyTag),
+                  selectedTagIds: const {},
+                  onToggle: (_) {},
+                  enabled: false,
+                ),
+              );
             }
 
             if (state is TagsLoaded) {

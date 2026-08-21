@@ -10,6 +10,9 @@ import 'package:project1/features/demo/presentation/cubit/invitations_cubit/invi
 import 'package:project1/features/demo/presentation/pages/add_demo_screen.dart';
 import 'package:project1/features/demo/presentation/pages/invitations_page.dart';
 import 'package:project1/features/home/presentation/widgets/state_card.dart';
+import 'package:project1/features/notifications/data/data_sources/notification_storage_service.dart';
+import 'package:project1/features/notifications/presentation/pages/notifications_page.dart';
+import 'package:project1/features/profile/presentation/pages/profile_screen.dart';
 import 'package:project1/l10n/app_localizations.dart';
 import 'package:animations/animations.dart';
 
@@ -84,19 +87,52 @@ class MainHeader extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    BlocBuilder<UserCubit, UserState>(
+                      builder: (context, userState) {
+                        String? imagePath;
+                        if (userState is UserLoaded &&
+                            userState.user.imagePath.trim().isNotEmpty) {
+                          imagePath = userState.user.imagePath;
+                        }
+                        return _GhostIconButton(
+                          icon: Icons.person_outline_rounded,
+                          imagePath: imagePath,
+                          textScale: textScale,
+                          iconSize: 18,
+                          buttonSize: 38,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ProfileScreen(),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            localizations.goodMorning,
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: AppColors.surface.withValues(alpha: 0.76),
-                              fontWeight: FontWeight.w500,
-                            ) ?? AppTextStyles.bodyMedium.copyWith(
-                              color: AppColors.surface.withValues(alpha: 0.76),
-                              fontWeight: FontWeight.w500,
-                            ),
+                            _getGreeting(localizations),
+                            style:
+                                Theme.of(
+                                  context,
+                                ).textTheme.bodyMedium?.copyWith(
+                                  color: AppColors.surface.withValues(
+                                    alpha: 0.76,
+                                  ),
+                                  fontWeight: FontWeight.w500,
+                                ) ??
+                                AppTextStyles.bodyMedium.copyWith(
+                                  color: AppColors.surface.withValues(
+                                    alpha: 0.76,
+                                  ),
+                                  fontWeight: FontWeight.w500,
+                                ),
                           ),
                           const SizedBox(height: 5),
                           BlocBuilder<UserCubit, UserState>(
@@ -110,18 +146,22 @@ class MainHeader extends StatelessWidget {
                                 name,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                  color: AppColors.surface,
-                                  fontSize: 25,
-                                  height: 1.15,
-                                  letterSpacing: -0.4,
-                                  fontWeight: FontWeight.w700,
-                                ) ?? AppTextStyles.h2.copyWith(
-                                  color: AppColors.surface,
-                                  fontSize: 25,
-                                  height: 1.15,
-                                  letterSpacing: -0.4,
-                                ),
+                                style:
+                                    Theme.of(
+                                      context,
+                                    ).textTheme.headlineMedium?.copyWith(
+                                      color: AppColors.surface,
+                                      fontSize: 25,
+                                      height: 1.15,
+                                      letterSpacing: -0.4,
+                                      fontWeight: FontWeight.w700,
+                                    ) ??
+                                    AppTextStyles.h2.copyWith(
+                                      color: AppColors.surface,
+                                      fontSize: 25,
+                                      height: 1.15,
+                                      letterSpacing: -0.4,
+                                    ),
                               );
                             },
                           ),
@@ -132,7 +172,7 @@ class MainHeader extends StatelessWidget {
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // Invitation button (left)
+                        // Invitation button
                         _GhostIconButton(
                           icon: Icons.mail_outline_rounded,
                           textScale: textScale,
@@ -152,21 +192,34 @@ class MainHeader extends StatelessWidget {
                           },
                         ),
                         const SizedBox(width: 8),
-                        // Notification button (right)
-                        _GhostIconButton(
-                          icon: Icons.notifications_none_rounded,
-                          textScale: textScale,
-                          iconSize: 17,
-                          buttonSize: 38,
-                          onTap: () {
-                            // Notifications action
+                        // Notification button
+                        StreamBuilder<int>(
+                          stream: getIt<NotificationStorageService>().unreadCountStream,
+                          initialData: getIt<NotificationStorageService>().unreadCount,
+                          builder: (context, snapshot) {
+                            final unreadCount = snapshot.data ?? 0;
+                            return _GhostIconButton(
+                              icon: Icons.notifications_none_rounded,
+                              textScale: textScale,
+                              iconSize: 17,
+                              buttonSize: 38,
+                              hasBadge: unreadCount > 0,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const NotificationsPage(),
+                                  ),
+                                );
+                              },
+                            );
                           },
                         ),
                       ],
                     ),
                   ],
                 ),
-                const SizedBox(height: 22),
+                const SizedBox(height: 50),
                 Row(
                   children: [
                     Expanded(
@@ -244,23 +297,23 @@ class MainHeader extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
-                      textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                      ),
+                      textStyle: Theme.of(context).textTheme.titleMedium
+                          ?.copyWith(fontSize: 14, fontWeight: FontWeight.w700),
                     ),
                     icon: const Icon(Icons.add_rounded, size: 21),
                     label: Text(
                       localizations.addDemo,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: AppColors.surface,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                      ) ?? AppTextStyles.titleMedium.copyWith(
-                        color: AppColors.surface,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                      ),
+                      style:
+                          Theme.of(context).textTheme.titleMedium?.copyWith(
+                            color: AppColors.surface,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                          ) ??
+                          AppTextStyles.titleMedium.copyWith(
+                            color: AppColors.surface,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                          ),
                     ),
                   ),
                 ),
@@ -271,42 +324,90 @@ class MainHeader extends StatelessWidget {
       ),
     );
   }
+
+  String _getGreeting(AppLocalizations localizations) {
+    final hour = DateTime.now().hour;
+    if (hour < 12) {
+      return localizations.goodMorning;
+    } else if (hour < 17) {
+      return localizations.goodAfternoon;
+    } else {
+      return localizations.goodEvening;
+    }
+  }
 }
 
 class _GhostIconButton extends StatelessWidget {
-  final IconData icon;
+  final IconData? icon;
+  final String? imagePath;
   final double textScale;
   final double iconSize;
   final double buttonSize;
+  final bool hasBadge;
   final VoidCallback onTap;
 
   const _GhostIconButton({
-    required this.icon,
+    this.icon,
+    this.imagePath,
     required this.textScale,
     this.iconSize = 17,
     this.buttonSize = 38,
+    this.hasBadge = false,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: buttonSize,
-      height: buttonSize,
-      decoration: BoxDecoration(
-        color: AppColors.surface.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: IconButton(
-        onPressed: onTap,
-        visualDensity: VisualDensity.compact,
-        padding: EdgeInsets.zero,
-        constraints: BoxConstraints.tightFor(
+    final hasImage = imagePath != null && imagePath!.trim().isNotEmpty;
+
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Container(
           width: buttonSize,
           height: buttonSize,
+          decoration: BoxDecoration(
+            color: AppColors.surface.withValues(alpha: 0.3),
+            borderRadius: BorderRadius.circular(12),
+            image: hasImage
+                ? DecorationImage(
+                    image: NetworkImage(imagePath!),
+                    fit: BoxFit.cover,
+                  )
+                : null,
+          ),
+          child: Material(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(12),
+            child: InkWell(
+              onTap: onTap,
+              borderRadius: BorderRadius.circular(12),
+              child: hasImage
+                  ? const SizedBox.shrink()
+                  : Center(
+                      child: Icon(
+                        icon ?? Icons.person_outline_rounded,
+                        color: AppColors.surface,
+                        size: iconSize * textScale,
+                      ),
+                    ),
+            ),
+          ),
         ),
-        icon: Icon(icon, color: AppColors.surface, size: iconSize * textScale),
-      ),
+        if (hasBadge)
+          Positioned(
+            top: 2,
+            right: 2,
+            child: Container(
+              width: 8,
+              height: 8,
+              decoration: const BoxDecoration(
+                color: Color(0xFFEF4444),
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

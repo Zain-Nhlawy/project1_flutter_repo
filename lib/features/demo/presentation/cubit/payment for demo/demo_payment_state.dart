@@ -2,8 +2,14 @@ class PaymentWebViewState {
   final bool isLoading;
   final String? status;
   final String? errorMessage;
+  final String? managementUrl;
 
-  PaymentWebViewState({this.isLoading = false, this.status, this.errorMessage});
+  PaymentWebViewState({
+    this.isLoading = false,
+    this.status,
+    this.errorMessage,
+    this.managementUrl,
+  });
 }
 
 abstract class PaymentRequestState {}
