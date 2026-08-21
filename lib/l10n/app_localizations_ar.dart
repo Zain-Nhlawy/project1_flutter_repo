@@ -2280,4 +2280,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get visibilityPrivate => 'خاص';
+
+  @override
+  String get certificateEarnedTitle => 'استحقيت شهادة!';
+
+  @override
+  String get certificateEarnedSubtitle => 'أنجزت كل كويزات هالكورس بنجاح';
+
+  @override
+  String get outOf100 => '100';
+
+  @override
+  String get passed => 'ناجح';
+
+  @override
+  String get failed => 'راسب';
+
+  @override
+  String get required => 'المطلوب';
 }

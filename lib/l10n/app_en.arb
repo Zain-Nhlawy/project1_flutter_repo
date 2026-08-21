@@ -894,5 +894,11 @@
 "invalidPrice": "Invalid price",
 "visibility": "Visibility",
 "visibilityPublic": "Public",
-"visibilityPrivate": "Private"
+"visibilityPrivate": "Private",
+"certificateEarnedTitle": "Certificate Earned!",
+"certificateEarnedSubtitle": "You've completed all quizzes for this course",
+"outOf100": "100",
+  "passed": "Passed",
+  "failed": "Failed",
+  "required": "Required"
 }

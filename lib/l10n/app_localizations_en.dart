@@ -2306,4 +2306,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get visibilityPrivate => 'Private';
+
+  @override
+  String get certificateEarnedTitle => 'Certificate Earned!';
+
+  @override
+  String get certificateEarnedSubtitle =>
+      'You\'ve completed all quizzes for this course';
+
+  @override
+  String get outOf100 => '100';
+
+  @override
+  String get passed => 'Passed';
+
+  @override
+  String get failed => 'Failed';
+
+  @override
+  String get required => 'Required';
 }

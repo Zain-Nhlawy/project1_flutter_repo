@@ -6,12 +6,14 @@ class QuizTile extends StatelessWidget {
   final String examId;
   final String? demoId;
   final bool locked;
+  final String courseId;
 
   const QuizTile({
     super.key,
     required this.examId,
     this.demoId,
     this.locked = false,
+    required this.courseId,
   });
 
   @override
@@ -26,7 +28,7 @@ class QuizTile extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => QuizScreen(demoId: demoId!, examId: examId),
+                  builder: (_) => QuizScreen(demoId: demoId!, examId: examId, courseId: courseId,),
                 ),
               );
             },
