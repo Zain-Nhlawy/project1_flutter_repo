@@ -90,9 +90,9 @@ class MainHeader extends StatelessWidget {
                     BlocBuilder<UserCubit, UserState>(
                       builder: (context, userState) {
                         String? imagePath;
-                        if (userState is UserLoaded &&
-                            userState.user.imagePath.trim().isNotEmpty) {
-                          imagePath = userState.user.imagePath;
+                        final user = userState.user;
+                        if (user != null && user.imagePath.trim().isNotEmpty) {
+                          imagePath = user.imagePath;
                         }
                         return _GhostIconButton(
                           icon: Icons.person_outline_rounded,
@@ -138,9 +138,9 @@ class MainHeader extends StatelessWidget {
                           BlocBuilder<UserCubit, UserState>(
                             builder: (context, state) {
                               String name = '';
-                              if (state is UserLoaded) {
-                                name =
-                                    '${state.user.firstName} ${state.user.lastName}';
+                              final user = state.user;
+                              if (user != null) {
+                                name = '${user.firstName} ${user.lastName}';
                               }
                               return Text(
                                 name,

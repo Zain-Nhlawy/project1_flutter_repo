@@ -28,10 +28,20 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _handleRefresh() async {
-    await Future.wait([
-      context.read<DemoCubit>().fetchDemos(),
-      context.read<UserCubit>().getMe(),
+    final errors = await Future.wait<String?>([
+      context.read<DemoCubit>().refreshDemos(),
+      context.read<UserCubit>().refreshUser(),
     ]);
+
+    if (!mounted) return;
+
+    final messages = errors.whereType<String>().toSet().toList();
+    if (messages.isEmpty) return;
+
+    final messenger = ScaffoldMessenger.of(context);
+    messenger
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(messages.join('\n'))));
   }
 
   @override
@@ -49,28 +59,34 @@ class _HomePageState extends State<HomePage> {
         onRefresh: _handleRefresh,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(
-            parent: BouncingScrollPhysics(),
+            parent: ClampingScrollPhysics(),
           ),
           child: BlocBuilder<DemoCubit, DemoState>(
             builder: (context, state) {
-              final bool isLoading = state is GetDemosLoading;
-              List<DemoEntity> myDemosList = [];
-              List<DemoEntity> joinedDemosList = [];
-
-              if (state is GetDemosLoaded) {
-                myDemosList = state.demos
-                    .where((demo) => demo.isOwner == true)
-                    .toList();
-                joinedDemosList = state.demos
-                    .where((demo) => demo.isOwner == false)
-                    .toList();
-              }
+              final isInitialLoading =
+                  state is GetDemosLoading && !state.isRefresh;
+              final initialErrorMessage =
+                  state is GetDemosError && !state.isRefresh
+                  ? state.message
+                  : null;
+              final visibleDemos = switch (state) {
+                GetDemosLoaded(:final demos) => demos,
+                GetDemosLoading(:final previousDemos) => previousDemos,
+                GetDemosError(:final previousDemos) => previousDemos,
+                _ => const <DemoEntity>[],
+              };
+              final myDemosList = visibleDemos
+                  .where((demo) => demo.isOwner == true)
+                  .toList();
+              final joinedDemosList = visibleDemos
+                  .where((demo) => demo.isOwner == false)
+                  .toList();
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AppSkeletonizer(
-                    enabled: isLoading,
+                    enabled: isInitialLoading,
                     child: MainHeader(
                       myDemosCount: myDemosList.length,
                       enrolledDemosCount: joinedDemosList.length,
@@ -85,43 +101,51 @@ class _HomePageState extends State<HomePage> {
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SectionHeader(
-                          title: localizations.myDemos,
-                          demoList: myDemosList,
-                          isOwner: true,
-                        ),
-                        const SizedBox(height: 14),
-                        _buildDemosSection(
-                          context,
-                          state: state,
-                          demos: myDemosList,
-                          isOwnerList: true,
-                          emptyMessage: localizations.noDemosAvailable,
-                        ),
-                        const SizedBox(height: 14),
-                        Divider(
-                          height: 1,
-                          thickness: 1,
-                          color: AppColors.borderOf(
-                            context,
-                          ).withValues(alpha: 0.72),
-                        ),
-                        const SizedBox(height: 28),
-                        SectionHeader(
-                          title: localizations.demosImIn,
-                          demoList: joinedDemosList,
-                          isOwner: false,
-                        ),
-                        const SizedBox(height: 14),
-                        _buildDemosSection(
-                          context,
-                          state: state,
-                          demos: joinedDemosList,
-                          isOwnerList: false,
-                          emptyMessage: localizations.noDemosAvailable,
-                        ),
-                      ],
+                      children: initialErrorMessage != null
+                          ? [
+                              _HomeStatusCard(
+                                icon: Icons.error_outline_rounded,
+                                message: initialErrorMessage,
+                                accentColor: AppColors.error,
+                              ),
+                            ]
+                          : [
+                              SectionHeader(
+                                title: localizations.myDemos,
+                                demoList: myDemosList,
+                                isOwner: true,
+                              ),
+                              const SizedBox(height: 14),
+                              _buildDemosSection(
+                                context,
+                                demos: myDemosList,
+                                isLoading: isInitialLoading,
+                                isOwnerList: true,
+                                emptyMessage: localizations.noDemosAvailable,
+                              ),
+                              const SizedBox(height: 14),
+                              Divider(
+                                height: 1,
+                                thickness: 1,
+                                color: AppColors.borderOf(
+                                  context,
+                                ).withValues(alpha: 0.72),
+                              ),
+                              const SizedBox(height: 28),
+                              SectionHeader(
+                                title: localizations.demosImIn,
+                                demoList: joinedDemosList,
+                                isOwner: false,
+                              ),
+                              const SizedBox(height: 14),
+                              _buildDemosSection(
+                                context,
+                                demos: joinedDemosList,
+                                isLoading: isInitialLoading,
+                                isOwnerList: false,
+                                emptyMessage: localizations.noDemosAvailable,
+                              ),
+                            ],
                     ),
                   ),
                 ],
@@ -135,26 +159,18 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildDemosSection(
     BuildContext context, {
-    required DemoState state,
     required List<DemoEntity> demos,
+    required bool isLoading,
     required bool isOwnerList,
     required String emptyMessage,
   }) {
-    if (state is GetDemosLoading) {
+    if (isLoading) {
       return Column(
         children: const [
           _HomeLoadingCard(),
           SizedBox(height: 12),
           _HomeLoadingCard(),
         ],
-      );
-    }
-
-    if (state is GetDemosError) {
-      return _HomeStatusCard(
-        icon: Icons.error_outline_rounded,
-        message: state.message,
-        accentColor: AppColors.error,
       );
     }
 

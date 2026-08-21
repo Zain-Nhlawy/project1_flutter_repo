@@ -4,7 +4,12 @@ abstract class DemoState {}
 
 class DemoInitial extends DemoState {}
 
-class GetDemosLoading extends DemoState {}
+class GetDemosLoading extends DemoState {
+  final List<DemoEntity> previousDemos;
+  final bool isRefresh;
+
+  GetDemosLoading({this.previousDemos = const [], this.isRefresh = false});
+}
 
 class GetDemosLoaded extends DemoState {
   final List<DemoEntity> demos;
@@ -14,8 +19,14 @@ class GetDemosLoaded extends DemoState {
 
 class GetDemosError extends DemoState {
   final String message;
+  final List<DemoEntity> previousDemos;
+  final bool isRefresh;
 
-  GetDemosError(this.message);
+  GetDemosError(
+    this.message, {
+    this.previousDemos = const [],
+    this.isRefresh = false,
+  });
 }
 
 class AddDemoLoading extends DemoState {}

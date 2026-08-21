@@ -8,6 +8,8 @@ import 'package:project1/features/auth/presentation/cubit/user_state.dart';
 class UserCubit extends Cubit<UserState> {
   final GetMeUseCase getMeUseCase;
   final UpdateProfileImageUseCase updateProfileImageUseCase;
+  UserEntity? _currentUser;
+  int _getMeRevision = 0;
 
   UserCubit({
     required this.getMeUseCase,
@@ -15,40 +17,71 @@ class UserCubit extends Cubit<UserState> {
   }) : super(const UserInitial());
 
   Future<void> getMe() async {
-    emit(const UserLoading());
+    await _loadUser(isRefresh: false);
+  }
 
-    final result = await getMeUseCase();
+  Future<String?> refreshUser() {
+    return _loadUser(isRefresh: true);
+  }
 
-    result.fold(
-      (failure) {
-        emit(UserError(failure.errors ?? [failure.message]));
-      },
-      (user) {
-        emit(UserLoaded(user));
-      },
-    );
+  Future<String?> _loadUser({required bool isRefresh}) async {
+    final revision = ++_getMeRevision;
+    final previousUser = isRefresh ? _currentUser : null;
+
+    emit(UserLoading(user: previousUser, isRefresh: isRefresh));
+
+    try {
+      final result = await getMeUseCase();
+      if (revision != _getMeRevision) return null;
+
+      String? errorMessage;
+      result.fold(
+        (failure) {
+          final errors = failure.errors ?? [failure.message];
+          errorMessage = errors.join('\n');
+          emit(UserError(errors, user: previousUser, isRefresh: isRefresh));
+        },
+        (user) {
+          _currentUser = user;
+          emit(UserLoaded(user));
+        },
+      );
+      return errorMessage;
+    } catch (error) {
+      if (revision != _getMeRevision) return null;
+
+      final message = error.toString();
+      emit(UserError([message], user: previousUser, isRefresh: isRefresh));
+      return message;
+    }
   }
 
   Future<void> updateProfileImage(File file, String userId) async {
-    emit(const UserLoading());
+    emit(UserLoading(user: _currentUser));
 
     final result = await updateProfileImageUseCase(file, userId);
 
-    result.fold(
-      (failure) {
-        emit(UserError(failure.errors ?? [failure.message]));
+    await result.fold<Future<void>>(
+      (failure) async {
+        emit(
+          UserError(failure.errors ?? [failure.message], user: _currentUser),
+        );
       },
       (_) async {
-        await getMe();
+        await refreshUser();
       },
     );
   }
 
   void setUser(UserEntity user) {
+    _getMeRevision++;
+    _currentUser = user;
     emit(UserLoaded(user));
   }
 
   void clearUser() {
+    _getMeRevision++;
+    _currentUser = null;
     emit(const UserInitial());
   }
 }

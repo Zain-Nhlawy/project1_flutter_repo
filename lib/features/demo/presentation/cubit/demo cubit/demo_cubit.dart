@@ -10,32 +10,78 @@ class DemoCubit extends Cubit<DemoState> {
   final GetDemosUseCase getDemosUseCase;
   final UploadPhotoUseCase uploadPhotoUseCase;
 
-  List<DemoEntity> _currentDemos = [];
+  List<DemoEntity> _currentDemos = const [];
+  bool _hasLoadedDemos = false;
+  int _fetchRevision = 0;
+
   List<DemoEntity> get currentDemos => _currentDemos;
 
   DemoCubit({required this.getDemosUseCase, required this.uploadPhotoUseCase})
     : super(DemoInitial());
 
   Future<void> fetchDemos() async {
-    emit(GetDemosLoading());
+    await _loadDemos(isRefresh: false);
+  }
+
+  Future<String?> refreshDemos() {
+    return _loadDemos(isRefresh: _hasLoadedDemos);
+  }
+
+  Future<String?> _loadDemos({required bool isRefresh}) async {
+    final revision = ++_fetchRevision;
+    final previousDemos = isRefresh
+        ? List<DemoEntity>.unmodifiable(_currentDemos)
+        : const <DemoEntity>[];
+
+    if (!isRefresh) {
+      _currentDemos = const [];
+      _hasLoadedDemos = false;
+    }
+
+    emit(GetDemosLoading(previousDemos: previousDemos, isRefresh: isRefresh));
 
     try {
       final result = await getDemosUseCase.getDemos();
+      if (revision != _fetchRevision) return null;
 
+      String? errorMessage;
       result.fold(
-        (error) => emit(GetDemosError(error)),
+        (error) {
+          errorMessage = error;
+          emit(
+            GetDemosError(
+              error,
+              previousDemos: previousDemos,
+              isRefresh: isRefresh,
+            ),
+          );
+        },
         (demos) {
-          _currentDemos = demos;
-          emit(GetDemosLoaded(demos));
+          _currentDemos = List<DemoEntity>.unmodifiable(demos);
+          _hasLoadedDemos = true;
+          emit(GetDemosLoaded(_currentDemos));
         },
       );
+      return errorMessage;
     } catch (e) {
-      emit(GetDemosError(e.toString()));
+      if (revision != _fetchRevision) return null;
+
+      final message = e.toString();
+      emit(
+        GetDemosError(
+          message,
+          previousDemos: previousDemos,
+          isRefresh: isRefresh,
+        ),
+      );
+      return message;
     }
   }
 
   void clear() {
-    _currentDemos = [];
+    _fetchRevision++;
+    _currentDemos = const [];
+    _hasLoadedDemos = false;
     emit(DemoInitial());
   }
 

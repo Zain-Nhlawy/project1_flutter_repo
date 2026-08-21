@@ -178,7 +178,7 @@ class _MyAppState extends State<MyApp> {
                     if (state is UserLoaded) {
                       getIt<NotificationStorageService>().setCurrentUserId(state.user.id);
                       getIt<NotificationService>().registerToken();
-                    } else if (state is UserInitial || state is UserError) {
+                    } else if (state is UserInitial) {
                       getIt<NotificationStorageService>().clearCurrentUser();
                     }
                   },
