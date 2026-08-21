@@ -1,32 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project1/core/di/service_locator.dart';
-import 'package:project1/core/storage/secure_storage.dart';
-import 'package:project1/core/storage/storage_keys.dart';
+import 'package:project1/core/services/app_language_service.dart';
 
 class LocaleCubit extends Cubit<Locale> {
-  final AppSecureStorage storage;
+  final AppLanguageService languageService;
 
-  LocaleCubit({
-    AppSecureStorage? storage,
-    Locale initialLocale = const Locale('en'),
-  })  : storage = storage ?? getIt<AppSecureStorage>(),
-        super(initialLocale);
+  LocaleCubit({required this.languageService})
+    : super(Locale(languageService.currentLanguage));
 
   Future<void> loadLocale() async {
-    try {
-      final lang = await storage.read(StorageKeys.language);
-      if (lang != null && lang.isNotEmpty) {
-        emit(Locale(lang));
-      }
-    } catch (_) {}
+    await languageService.initialize();
+    emit(Locale(languageService.currentLanguage));
   }
 
   Future<void> changeLanguage(String languageCode) async {
-    emit(Locale(languageCode));
+    final normalizedLanguage = languageService.updateLanguage(languageCode);
+    emit(Locale(normalizedLanguage));
     try {
-      await storage.write(StorageKeys.language, languageCode);
+      await languageService.persistCurrentLanguage();
     } catch (_) {}
   }
 }
-

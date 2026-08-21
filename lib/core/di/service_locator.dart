@@ -2,6 +2,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:project1/core/network/dio_client.dart';
+import 'package:project1/core/services/app_language_service.dart';
 import 'package:project1/core/storage/secure_storage.dart';
 import 'package:project1/core/storage/storage_keys.dart';
 import 'package:project1/features/certification/data/data_sources/certification_remote_data_source.dart';
@@ -246,12 +247,16 @@ final String baseUrl = dotenv.env['BASE_URL'] ?? '';
 void setupDI() {
   ////////////////////////storage////////////////////////
   getIt.registerLazySingleton<AppSecureStorage>(() => AppSecureStorage());
+  getIt.registerLazySingleton<AppLanguageService>(
+    () => AppLanguageService(storage: getIt<AppSecureStorage>()),
+  );
   ////////////////////////storage////////////////////////
 
   ////////////////////////Dio+refresh////////////////////////
   getIt.registerLazySingleton<DioClient>(
     () => DioClient(
       storage: getIt<AppSecureStorage>(),
+      languageService: getIt<AppLanguageService>(),
       refreshToken: () async {
         final storage = getIt<AppSecureStorage>();
         final refresh = await storage.read(StorageKeys.refreshToken);
@@ -259,7 +264,10 @@ void setupDI() {
         final dio = Dio(
           BaseOptions(
             baseUrl: baseUrl,
-            headers: {'Accept': 'application/json'},
+            headers: {
+              'Accept': 'application/json',
+              'Accept-Language': getIt<AppLanguageService>().currentLanguage,
+            },
           ),
         );
         final res = await dio.post(

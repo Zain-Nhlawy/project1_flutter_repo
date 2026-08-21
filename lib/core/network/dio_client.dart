@@ -1,11 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:project1/core/services/app_language_service.dart';
 import 'package:project1/core/storage/secure_storage.dart';
 import 'api.dart';
 import '../storage/storage_keys.dart';
 
 class DioClient extends Api {
   final AppSecureStorage storage;
+  final AppLanguageService languageService;
   final Future<Map<String, dynamic>?> Function() refreshToken;
   final Future<void> Function()? onSessionExpired;
 
@@ -13,6 +15,7 @@ class DioClient extends Api {
 
   DioClient({
     required this.storage,
+    required this.languageService,
     required this.refreshToken,
     this.onSessionExpired,
   }) : super() {
@@ -27,6 +30,7 @@ class DioClient extends Api {
             'isWeb': 'false',
             'Accept': 'application/json',
           });
+          options.headers['Accept-Language'] = languageService.currentLanguage;
 
           if (options.extra['noAuth'] != true) {
             final accessToken = await storage.read(StorageKeys.token);

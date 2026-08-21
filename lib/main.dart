@@ -7,6 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:project1/config/theme/app_theme.dart';
 import 'package:project1/config/theme/app_text_styles.dart';
 import 'package:project1/core/di/service_locator.dart';
+import 'package:project1/core/services/app_language_service.dart';
 import 'package:project1/features/auth/domain/use_case/verify_email_usecase.dart';
 import 'package:project1/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:project1/features/auth/presentation/cubit/session_cubit.dart';
@@ -37,20 +38,18 @@ void main() async {
   setupDI();
   print("DI DONE");
 
+  final languageService = getIt<AppLanguageService>();
+  await languageService.initialize();
+
   await getIt<NotificationService>().initialize();
 
   final storage = getIt<AppSecureStorage>();
 
-  String? savedLanguage;
   String? savedTheme;
   try {
-    savedLanguage = await storage.read(StorageKeys.language);
     savedTheme = await storage.read(StorageKeys.theme);
   } catch (_) {}
 
-  final initialLocale = (savedLanguage != null && savedLanguage.isNotEmpty)
-      ? Locale(savedLanguage)
-      : const Locale('en');
   final initialTheme = savedTheme == 'dark' ? ThemeMode.dark : ThemeMode.light;
 
   String? initialResetToken;
@@ -87,10 +86,7 @@ void main() async {
         ),
 
         BlocProvider<LocaleCubit>(
-          create: (_) => LocaleCubit(
-            storage: storage,
-            initialLocale: initialLocale,
-          ),
+          create: (_) => LocaleCubit(languageService: languageService),
         ),
         BlocProvider<ThemeCubit>(
           create: (_) => ThemeCubit(

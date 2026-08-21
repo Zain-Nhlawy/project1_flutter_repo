@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:project1/core/network/dio_client.dart';
+import 'package:project1/core/services/app_language_service.dart';
 import 'package:project1/core/storage/storage_keys.dart';
 
 import '../../helpers/auth_test_fakes.dart';
@@ -21,6 +22,7 @@ void main() {
     var refreshCount = 0;
     final client = DioClient(
       storage: storage,
+      languageService: AppLanguageService(storage: storage),
       refreshToken: () async {
         refreshCount++;
         return {
@@ -49,6 +51,7 @@ void main() {
     });
     final client = DioClient(
       storage: storage,
+      languageService: AppLanguageService(storage: storage),
       refreshToken: () async {
         final options = RequestOptions(path: '/authentication/refresh-tokens');
         throw DioException(
@@ -73,6 +76,7 @@ void main() {
     var expirationNotifications = 0;
     final client = DioClient(
       storage: storage,
+      languageService: AppLanguageService(storage: storage),
       refreshToken: () async {
         final options = RequestOptions(path: '/authentication/refresh-tokens');
         throw DioException.badResponse(
@@ -93,6 +97,35 @@ void main() {
     expect(storage.values[StorageKeys.refreshToken], isNull);
     expect(expirationNotifications, 1);
   });
+
+  test(
+    'sends the current normalized app language with every request',
+    () async {
+      final storage = FakeSecureStorage();
+      final languageService = AppLanguageService(storage: storage);
+      final adapter = RecordingAdapter();
+      final client = DioClient(
+        storage: storage,
+        languageService: languageService,
+        refreshToken: () async => null,
+      );
+      client.dio.httpClientAdapter = adapter;
+
+      languageService.updateLanguage('ar');
+      await client.dio.get(
+        '/localized',
+        options: Options(extra: {'noAuth': true}),
+      );
+      expect(adapter.lastRequest?.headers['Accept-Language'], 'ar');
+
+      languageService.updateLanguage('unsupported');
+      await client.dio.get(
+        '/localized',
+        options: Options(extra: {'noAuth': true}),
+      );
+      expect(adapter.lastRequest?.headers['Accept-Language'], 'en');
+    },
+  );
 }
 
 class RecordingAdapter implements HttpClientAdapter {
